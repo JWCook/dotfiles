@@ -1,4 +1,4 @@
-install: install-bash install-postgres install-vim
+install: install-bash install-postgres install-vim install-fonts install-terminator
 
 install-bash:
 	rm -rf ~/.bashrc
@@ -29,3 +29,7 @@ install-fonts:
 	xset +fp ~/.fonts
 	fc-cache -vf ~/.fonts/
 	echo 'Done. Set terminal font to DejaVuSansMono'
+
+install-terminator:
+	rm -rf ~/.config/terminator
+	ln -s `pwd`/terminator ~/.config/terminator

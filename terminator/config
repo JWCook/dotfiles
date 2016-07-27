@@ -1,0 +1,137 @@
+[global_config]
+  focus = system
+  suppress_multiple_term_dialog = True
+  title_transmit_bg_color = "#d30102"
+[keybindings]
+  close_term = <Primary><Shift><Alt>w
+  close_window = <Primary><Shift><Alt>q
+  go_down = <Shift><Alt>Down
+  go_left = <Shift><Alt>Left
+  go_right = <Shift><Alt>Right
+  go_up = <Shift><Alt>Up
+  help = <Primary><Shift>F1
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = solarized-dark
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+  [[8-split]]
+    [[[child0]]]
+      order = 0
+      parent = ""
+      position = 0:0
+      size = 1920, 1080
+      type = Window
+    [[[child1]]]
+      order = 0
+      parent = child0
+      position = 964
+      type = HPaned
+    [[[child10]]]
+      order = 0
+      parent = child9
+      position = 272
+      type = VPaned
+    [[[child13]]]
+      order = 1
+      parent = child9
+      position = 271
+      type = VPaned
+    [[[child2]]]
+      order = 0
+      parent = child1
+      position = 544
+      type = VPaned
+    [[[child3]]]
+      order = 0
+      parent = child2
+      position = 272
+      type = VPaned
+    [[[child6]]]
+      order = 1
+      parent = child2
+      position = 271
+      type = VPaned
+    [[[child9]]]
+      order = 1
+      parent = child1
+      position = 544
+      type = VPaned
+    [[[terminal11]]]
+      command = env TERM_START_CMD="wo analyticonda" bash
+      directory = ""
+      order = 0
+      parent = child10
+      profile = default
+      type = Terminal
+    [[[terminal12]]]
+      command = echo "6"; bash
+      directory = ""
+      order = 1
+      parent = child10
+      profile = default
+      type = Terminal
+    [[[terminal14]]]
+      command = echo "7"; bash
+      directory = ""
+      order = 0
+      parent = child13
+      profile = default
+      type = Terminal
+    [[[terminal15]]]
+      command = echo "8"; bash
+      directory = /home/cookjo/workspace
+      order = 1
+      parent = child13
+      profile = default
+      type = Terminal
+    [[[terminal4]]]
+      command = env TERM_START_CMD="wo data-dredge" bash
+      order = 0
+      parent = child3
+      profile = default
+      type = Terminal
+    [[[terminal5]]]
+      command = env TERM_START_CMD="wo data-dredge" bash
+      order = 1
+      parent = child3
+      profile = default
+      type = Terminal
+    [[[terminal7]]]
+      command = ""
+      order = 0
+      parent = child6
+      profile = default
+      type = Terminal
+    [[[terminal8]]]
+      command = env TERM_START_CMD="wo-dtresources" bash
+      directory = ""
+      order = 1
+      parent = child6
+      profile = default
+      type = Terminal
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#002b36"
+    background_image = None
+    cursor_color = "#eee8d5"
+    font = DejaVu Sans Mono for Powerline 9
+    foreground_color = "#839496"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[solarized-light]]
+    background_color = "#eee8d5"
+    background_image = None
+    cursor_color = "#002b36"
+    foreground_color = "#002b36"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
