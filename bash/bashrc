@@ -14,13 +14,13 @@ which virtualenvwrapper.sh  > /dev/null 2>&1 && source $(which virtualenvwrapper
 # Support bash_history across multiple terminals
 export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
-export PROMPT_COMMAND='history -a'
 
 # Paths
 # export PATH=$PATH:~/scripts
 # export JRE_HOME=/opt/jdk1.8.0_51/jre
 # export JAVA_HOME=/opt/jdk1.8.0_51
 export DOTFILES=~/dotfiles
+export DOTFILES_EXTRA=~/dotfiles_extra
 export WORKSPACE=~/workspace
 
 # Proxy
@@ -35,6 +35,7 @@ export WORKSPACE=~/workspace
 
 # General Bash
 alias df='df -khT'
+alias du='du -S | sort -n -r | less'
 alias list-users='column -ts: /etc/passwd | sort'
 alias list-users-current='w -hs | cut -d " " -f1 | sort | uniq'
 alias ll='ls -Alhv --group-directories-first'
@@ -49,9 +50,9 @@ alias tracert='traceroute'
 alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
 alias tree2='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__" -L 2'
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
-alias vb='vim -O2 ~/.bashrc*'
-alias vp='vim ~/.psqlrc'
-alias vv='vim ~/.vimrc'
+alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
+alias vp='vim $DOTFILES/postgres/psqlrc'
+alias vv='vim $DOTFILES/vim/vimrc'
 
 # Git
 alias gp='git pull'

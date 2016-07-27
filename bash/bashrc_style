@@ -1,35 +1,9 @@
 # .bashrc_style
 
 
-######################
-# ❰❰ Colorization ❱❱ #
-######################
-
-# Aliases: Colorized Commands
-GRC=`which grc`
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]
-then
-    alias colourify="$GRC -es --colour=auto"
-    alias as='colourify as'
-    alias configure='colourify ./configure'
-    alias df='colourify df'
-    alias diff='colourify diff'
-    alias dig='colourify dig'
-    alias gas='colourify gas'
-    alias gcc='colourify gcc'
-    alias g++='colourify g++'
-    alias head='colourify head'
-    alias ld='colourify ld'
-    alias make='colourify make'
-    alias mount='colourify mount'
-    alias mtr='colourify mtr'
-    alias netstat='colourify netstat'
-    alias nmap='colourify nmap'
-    alias ping='colourify ping'
-    alias ps='colourify ps'
-    alias traceroute='colourify traceroute'
-    alias tail='colourify tail'
-fi
+#########################
+# ❰❰ Terminal Colors ❱❱ #
+#########################
 
 # Terminal Control Characters
 function term-color() { echo -e '\['$1'\]'; }
@@ -60,7 +34,61 @@ export DIM_CYAN='\033[2;36;29m'
 export DIM_WHITE='\033[2;37;29m'
 export NOCOLOR='\033[0m'
 
-# PSQL Pager Customization
+
+############################
+# ❰❰ Colorized Commands ❱❱ #
+############################
+
+# Bash commands using GRC
+GRC=`which grc`
+if [ "$TERM" != dumb ] && [ -n "$GRC" ]
+then
+    alias colourify="$GRC -es --colour=auto"
+    alias as='colourify as'
+    alias configure='colourify ./configure'
+    alias df='colourify df'
+    alias diff='colourify diff'
+    alias dig='colourify dig'
+    alias gas='colourify gas'
+    alias gcc='colourify gcc'
+    alias g++='colourify g++'
+    alias head='colourify head'
+    alias ld='colourify ld'
+    alias make='colourify make'
+    alias mount='colourify mount'
+    alias mtr='colourify mtr'
+    alias netstat='colourify netstat'
+    alias nmap='colourify nmap'
+    alias ping='colourify ping'
+    alias ps='colourify ps'
+    alias traceroute='colourify traceroute'
+    alias tail='colourify tail'
+fi
+
+# Man pages
+export LESS_TERMCAP_mb=$'\E[0;103m'
+export LESS_TERMCAP_md=$'\E[04;34m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$(tput bold; tput setaf 8; tput setab 3)
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;36m'
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
+
+# Other Commands
+LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
+alias color-filesize='sed "s/\(\[.*K\]\)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*M\]\)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*G\]\)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
+
+
+####################
+# ❰❰ Psql Pager ❱❱ #
+####################
+
 export PG_LESS="-ieMSx4FXR"
 PG_PAGER="sed \"s/\([[:space:]]\+[0-9.\-]\+\)$/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/;"
 PG_PAGER+="s/\([[:space:]]\+[0-9.\-]\+[[:space:]]\)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g;"
@@ -70,14 +98,10 @@ PG_PAGER+="s/\([[:space:]]\+[a-f0-9\-]\{36\}[[:space:]]\)/$(pg-color $GREEN)\1$(
 PG_PAGER+="s/\([|│]\)/$(pg-color $BLUE)\1$(pg-color $NOCOLOR)/g;s/^\([-+─┌┐├┬┼┴┤└┘]\+\)/$(pg-color $BLUE)\1$(pg-color $NOCOLOR)/\" 2>/dev/null | less"
 export PG_PAGER
 
-# Other Command Colors
-LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
-alias color-filesize='sed "s/\(\[.*K\]\)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*M\]\)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*G\]\)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
 
-
-###################################
-# ❰❰ Bash Prompt Customization ❱❱ #
-###################################
+#####################
+# ❰❰ Bash Prompt ❱❱ #
+#####################
 
 # Return the prompt symbol to use, colorized based on the return value of the previous command
 function set_prompt_symbol() {
@@ -97,10 +121,12 @@ function set_virtualenv() {
     fi
 }
 
+# Run after every command before prompt is displayed
 function set_bash_prompt() {
+    history -a  # Append to bash_history
     set_prompt_symbol $?
     set_virtualenv
     PS1="$PYTHON_VIRTUALENV$(term-color $CYAN)❰\u$(term-color $NOCOLOR)@$(term-color $CYAN)\h \W❱$(term-color $NOCOLOR) $PROMPT_SYMBOL "
 }
 
-PROMPT_COMMAND=set_bash_prompt
+export PROMPT_COMMAND=set_bash_prompt
