@@ -1,0 +1,387 @@
+"""""""""""""""""
+" ❰❰ Plugins ❱❱ "
+"""""""""""""""""
+
+" Plugins managed by vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'qpkorr/vim-bufkill'
+Plug 'chrisbra/csv.vim'
+Plug 'MicahChambers/vim-flake8'
+Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
+Plug 'tpope/vim-git'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-scripts/Gundo'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'davidhalter/jedi-vim'
+Plug 'Shougo/neoyank.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'alfredodeza/pytest.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'mhinz/vim-startify'
+Plug 'ervandew/supertab'
+Plug 'majutsushi/tagbar'
+Plug 'tomtom/tcomment_vim'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-markdown'
+Plug 'jtratner/vim-flavored-markdown'
+Plug 'jmcantrell/vim-virtualenv'
+call plug#end()
+
+" Plugin updates (including snapshot, help tags, and vim-plug itself)
+nnoremap <silent> <F12> :PlugSnapshot! ~/.vim/plug-snapshot \| :q \| PlugClean! \| :PlugUpdate \| :PlugUpgrade<CR>
+nnoremap <silent> <C-F12> :PlugStatus<CR>
+
+
+"""""""""""""""""""""""""
+" ❰❰ Plugin Settings ❱❱ "
+"""""""""""""""""""""""""
+
+" Enable filetype-specific plugins and indent files
+filetype plugin on
+filetype indent on
+
+" Airline
+let g:airline_theme='ubaryd'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#fnamemod=':t'
+set laststatus=2
+set timeoutlen=50
+
+" tig
+command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
+nnoremap <silent> tig :Gcd / \| :Silent tig<CR>
+nnoremap <silent> tt  :Gcd / \| :Silent tig %<CR>
+
+" GitGutter
+nnoremap <silent> gt :GitGutterToggle<CR>
+let g:gitgutter_realtime=0
+let g:gitgutter_eager=0
+let g:gitgutter_sign_added='➕'
+let g:gitgutter_sign_removed='➖'
+let g:gitgutter_sign_modified_removed='≃'
+
+" Fugitive
+let g:fugitive_gitlab_domains = [ 'https://gitlab.encirca.auto.pioneer.com',
+                                \ 'https://gitlab-encirca.phibred.com']
+nnoremap <silent> <F2> :Gdiff<CR>
+nnoremap <silent> gs :Gstatus<CR>
+nnoremap <silent> gp :Gpull<CR>
+nnoremap <silent> gw :Gwrite<CR>
+nnoremap <silent> gb :Gbrowse<CR>
+nnoremap <silent> gl :Gblame<CR>
+nnoremap <silent> gc :execute ':Gcommit' \| :startinsert<CR>
+nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
+
+" tComment
+nnoremap <silent> <F3> :TComment<CR>
+vnoremap <silent> <F3> :TCommentBlock<CR>
+let g:tcommentMapLeaderOp1='tc'
+
+" Gundo
+nnoremap <silent> <F5> :GundoToggle<CR>
+let g:gundo_width=30
+let g:gundo_close_on_revert=1
+
+" NERD Tree
+" nnoremap <silent> <F6> :NERDTreeToggle<CR>
+nnoremap <silent> <F6> ::NERDTreeTabsToggle<CR>
+let NERDTreeIgnore=[ '\~$', '\.swp$', '\.pyc$' ]
+let NERDTreeShowHidden=1
+let NERDTreeWinSize=30
+
+" Tagbar
+nnoremap <silent> <F7> :TagbarToggle<CR>
+let g:tagbar_width=20
+let g:tagbar_compact=1
+let g:tagbar_zoomwidth=0 " Zoom to longest tag length
+let g:tagbar_sort=0      " Sort tags by file order instead of by name
+
+" Flake8
+autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR>
+autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
+let g:flake8_show_in_gutter=1
+
+" Indent guides
+nnoremap <silent> <F9> :IndentGuidesToggle<CR>
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_auto_colors=0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+
+" Pytest
+nnoremap pf :Pytest function<CR>
+nnoremap pt :Pytest file<CR>
+nnoremap pp :Pytest project<CR>
+nnoremap ps :Pytest session<CR>
+nnoremap pl :Pytest fails<CR>
+nnoremap pd :Pytest projecttestwd<CR>
+
+" Syntastic
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_auto_loc_list=1
+" let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+" let g:syntastic_warning_symbol='⚠'
+let g:syntastic_warning_symbol='‽❱'
+let g:syntastic_error_symbol='✘❱'
+let g:syntastic_style_warning_symbol='‡❱'
+let g:syntastic_style_error_symbol='‡❱'
+
+" Startify
+let g:startify_files_number=15
+let g:startify_change_to_vcs_root=1
+let g:startify_skiplist=[ '.gitignore' ]
+let g:startify_bookmarks=[ '~/.vim/vimrc',
+                         \ '~/Documents/vim.txt',
+                         \ '~/Documents/commands.txt',
+                         \ '~/.analyticonda/analyticonda.ini'  ]
+" let g:startify_session_before_save=['silent! NERDTreeClose']
+let g:startify_session_before_save=['silent! NERDTreeTabsClose']
+" Make Startify play nicely with NERD Tree
+autocmd User Startified setlocal buftype=
+autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
+
+" Unite
+let g:unite_source_history_yank_enable=1
+nnoremap <C-P> :Unite -start-insert file_rec/async<CR>
+nnoremap <C-B> :Unite -start-insert buffer<CR>
+nnoremap <C-F> :Unite grep:/home/cookjo/workspace<CR>
+nnoremap <C-G> :Unite grep/git<CR>
+nnoremap <C-Y> :Unite history/yank<CR>
+nnoremap <C-L> <Plug>(unite_redraw)
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', join(
+    \['__pycache__/','\.git/','.virtualenvs/','tmp/','dist/','.cache','.coverage','.idea','.sonar','.swp','.swo','.pyc',], '\|'))
+
+" Virtualenvs
+let g:virtualenv_auto_activate=1
+let g:virtualenv_stl_format='⦗%n⦘'
+command! VA VirtualEnvActivate
+nnoremap <silent> vl :VirtualEnvList<CR>
+nnoremap <silent> vd :VirtualEnvDeactivate<CR>
+
+" Whitespace
+nnoremap ww :StripWhitespace<CR>
+nnoremap wt :ToggleWhitespace<CR>
+nnoremap ws :ToggleStripWhitespaceOnSave<CR>
+
+" Disable jedi-vim docstring popup
+"autocmd FileType python setlocal completeopt-=preview
+
+
+""""""""""""""""""""""
+" ❰❰ Bash Aliases ❱❱ "
+""""""""""""""""""""""
+
+nnoremap ls !ls -Alhv --group-directories-first<CR>
+
+
+"""""""""""""""""
+" ❰❰ General ❱❱ "
+"""""""""""""""""
+
+set viminfo='100,n$HOME/.vim/viminfo
+nnoremap ev :split $MYVIMRC<CR>
+nnoremap sv :source $MYVIMRC<CR>
+
+" Sets how many lines of history VIM remembers
+set history=1000
+
+" Prevents VIM from being nerfed into acting like VI
+set nocompatible
+
+" Don't save local values or folds in sessions
+set ssop-=options
+set ssop-=folds
+
+" Mapped commands will timeout after 100ms
+set ttimeout
+set ttimeoutlen=100
+
+" Ignore these files when completing names
+set wildignore=.svn,CVS,.git,*.o,*.a,*~,*.pyc,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,node_modules/*
+set wildmenu
+
+" Add minimum screen rows/columns around cursor
+set scrolloff=1
+set sidescrolloff=5
+
+" Darn those fat fingers
+ca W w
+ca WQ wq
+ca Wq wq
+ca WQa wqa
+ca Wqa wqa
+ca Qa qa
+ca Q q
+
+" Tabs and non-breaking spaces are evil
+set list
+set listchars=tab:❱·,nbsp:¤
+
+" Pressing shift is hard
+nnoremap ; :
+vnoremap ; :
+
+
+""""""""""""""""""""""""""
+" ❰❰ Colors and Fonts ❱❱ "
+""""""""""""""""""""""""""
+
+set encoding=utf-8
+
+" Enable syntax highlighting
+syntax on
+
+" Extra Highlighting Rules
+au BufNewFile,BufRead *.ejs set filetype=html
+au BufNewFile,BufRead *.less set filetype=css
+
+" Color scheme
+set t_Co=256
+set background=dark
+try
+  let g:solarized_termcolors=256
+  colorscheme solarized
+endtry
+autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+
+" Add color columns at 80, 100, and 120
+if exists('+colorcolumn')
+    let &colorcolumn="80,100,120"
+    highlight ColorColumn ctermbg=235
+endif
+
+
+""""""""""""""""""""""""""
+" ❰❰ Tabs/Indentation ❱❱ "
+""""""""""""""""""""""""""
+
+" 1 tab == 4 spaces
+set tabstop=4
+set expandtab
+set smarttab
+set autoindent
+set copyindent
+set shiftwidth=4
+set shiftround
+set backspace=indent,eol,start
+
+
+""""""""""""""""
+" ❰❰ Search ❱❱ "
+""""""""""""""""
+
+set ignorecase " Ignore case when searching
+set smartcase  " Except when uppercase is used in search
+set hlsearch   " Highlight search results
+set incsearch  " Search while typing
+
+" Clear search highligts
+nnoremap <leader>b :nohlsearch<CR>
+
+
+""""""""""""""""""""""""""""
+" ❰❰ VIM user interface ❱❱ "
+""""""""""""""""""""""""""""
+
+set nu                         " Enable Line Numbers
+set fillchars+=vert:▚          " Split bar fill character
+set backspace=eol,start,indent " Configure backspace so it acts as it should
+set whichwrap+=<,>,h,l         " Arrow keys wrap
+set lazyredraw                 " Don't redraw while executing macros
+
+" Code folding
+set foldmethod=indent
+set foldlevel=99
+inoremap <silent> <F4> <C-O>za
+nnoremap <silent> <F4> za
+
+" Show match for brackets under cursor
+set showmatch
+set mat=2
+
+" No sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Command bar
+"set cmdheight=2
+"
+" Status line format
+"set statusline=%<%f\ %h%m%r%=%{fugitive#statusline()}\ \ %-14.(%l,%c%V%)\ %P
+
+
+""""""""""""""""""""""""""""""
+" ❰❰ Buffers/Windows/Tabs ❱❱ "
+""""""""""""""""""""""""""""""
+
+" CTRL+Left/Right/h/l to move between buffers
+noremap <silent> <C-left>  :bprev<CR>
+noremap <silent> <C-right> :bnext<CR>
+noremap <silent> <C-h>     :bprev<CR>
+noremap <silent> <C-l>     :bnext<CR>
+
+" Alt+Left/Right/Up/Down/h/j/k/l to move between windows
+noremap <silent> <A-Up>    :wincmd k<CR>
+noremap <silent> <A-Down>  :wincmd j<CR>
+noremap <silent> <A-Left>  :wincmd h<CR>
+noremap <silent> <A-Right> :wincmd l<CR>
+noremap <silent> <A-k>     :wincmd k<CR>
+noremap <silent> <A-j>     :wincmd j<CR>
+noremap <silent> <A-h>     :wincmd h<CR>
+noremap <silent> <A-l>     :wincmd l<CR>
+
+" Shift+ Left/Right to move between tabs
+noremap <silent> <S-Left>  :tabp<CR>
+noremap <silent> <S-Right> :tabn<CR>
+
+" Windows splits
+set splitbelow
+set splitright
+nnoremap <silent> vv <C-w>v
+nnoremap <silent> hh <C-w>s
+
+" Create/close buffers/tabs
+command! BN new
+nnoremap <silent> <Leader>q :BD<CR>
+command! TD tabclose
+command! TN tabnew
+
+" Switch between unsaved buffers w/o save, preserves history
+set hidden
+
+set pastetoggle=<leader>p
+
+" Alt+h/j/k/l moves cursor in insert mode
+" inoremap <C-V><A-h> <left>
+" inoremap <C-V><A-j> <down>
+" inoremap <C-V><A-k> <up>
+" inoremap <C-V><A-l> <right>
+
+
+"""""""""""""""""""""""""""""
+" ❰❰ Misc. Auto Commands ❱❱ "
+"""""""""""""""""""""""""""""
+
+" Disable overhead for large files (over 10MB)
+if !exists("auto_commands_loaded")
+  let auto_commands_loaded=1
+  let g:LargeFile=1024 * 1024 * 10
+  augroup LargeFile
+    autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+    augroup END
+  endif

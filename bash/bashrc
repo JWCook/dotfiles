@@ -1,0 +1,200 @@
+# .bashrc
+
+# Additional runtime config
+[[ -f /etc/bashrc ]] && source /etc/bashrc
+[[ -f ~/.bashrc_style ]] && source ~/.bashrc_style  # Prompt & command colorization
+[[ -f ~/.bashrc_extra ]] && source ~/.bashrc_extra  # Machine/employer-specific config
+which virtualenvwrapper.sh  > /dev/null 2>&1 && source $(which virtualenvwrapper.sh)
+
+
+###############################
+# ❰❰ Environment Variables ❱❱ #
+###############################
+
+# Support bash_history across multiple terminals
+export HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+export PROMPT_COMMAND='history -a'
+
+# Paths
+# export PATH=$PATH:~/scripts
+# export JRE_HOME=/opt/jdk1.8.0_51/jre
+# export JAVA_HOME=/opt/jdk1.8.0_51
+export DOTFILES=~/dotfiles
+export WORKSPACE=~/workspace
+
+# Proxy
+# export http_proxy=
+# export https_proxy=
+# export no_proxy=localhost,127.0.0.1
+
+
+#################
+# ❰❰ Aliases ❱❱ #
+#################
+
+# General Bash
+alias df='df -khT'
+alias list-users='column -ts: /etc/passwd | sort'
+alias list-users-current='w -hs | cut -d " " -f1 | sort | uniq'
+alias ll='ls -Alhv --group-directories-first'
+alias lt='tree | color-filesize'
+alias lt2='tree2 | color-filesize'
+alias netconn='netstat -pan --inet'
+alias path='echo -e ${PATH//:/\\n}'
+alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
+alias tailf='tail -f -n 50'
+alias top='htop'
+alias tracert='traceroute'
+alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
+alias tree2='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__" -L 2'
+alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
+alias vb='vim -O2 ~/.bashrc*'
+alias vp='vim ~/.psqlrc'
+alias vv='vim ~/.vimrc'
+
+# Git
+alias gp='git pull'
+alias gs='git status'
+alias git-undo-commit='git reset --soft HEAD~1'
+
+# Misc Shortcuts
+alias devterm='terminator -mfl 8-split &'
+alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
+alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
+
+# Postgres
+alias pg-start='sudo service postgresql-9.5 start'
+alias pg-stop='sudo service postgresql-9.5 stop'
+alias pg-restart='sudo service postgresql-9.5 restart'
+alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
+
+# Python
+type -a pt > /dev/null 2>&1 && alias pt='py.test -s -rwrs ./test'
+alias pipr='pip install -U pip -r requirements.txt | lolcat'
+alias py-cleanup='find . -name "*.pyc" -type f -delete; find . -name "__pycache__" -type d -exec rm -rf '{}' \;'
+wo ()
+{
+    if [ -n "$1" ]; then
+        workon $1
+        export _VIRT_ENV_PREV_PWD=$PWD
+        cd $WORKSPACE/$1
+    else
+        deactivate
+        cd $_VIRT_ENV_PREV_PWD
+    fi
+}
+complete -o default -o nospace -F _virtualenvs wo
+
+
+#################################
+# ❰❰ Miscellaneous Functions ❱❱ #
+#################################
+
+# Use with caution!
+function grepsed() { grep -rl $1 ./ | xargs sed -i "s/$1/$2/g" ; }
+function rr() { find . -name $1 -type f -delete ; }
+function rrdir() { find . -name $1 -type d -exec rm -rf '{}' \; ; }
+
+# Create an archive (*.tar.gz) from given directory
+function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/" ; }
+
+# Create a ZIP archive of a file or folder.
+function makezip() { zip -r "${1%%/}.zip" "$1" ; }
+
+# Mutli-format extract function
+function extract(){
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xvjf $1     ;;
+            *.tar.gz)    tar xvzf $1     ;;
+            *.bz2)       bunzip2 $1      ;;
+            *.rar)       unrar x $1      ;;
+            *.gz)        gunzip $1       ;;
+            *.tar)       tar xvf $1      ;;
+            *.tbz2)      tar xvjf $1     ;;
+            *.tgz)       tar xvzf $1     ;;
+            *.zip)       unzip $1        ;;
+            *.Z)         uncompress $1   ;;
+            *.7z)        7z x $1         ;;
+            *)           echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
+}
+
+# Swap 2 filenames around, if they exist
+function swap() {
+    local TMPFILE=tmp.$$
+    [ $# -ne 2 ] && echo "swap: 2 arguments needed" && return 1
+    [ ! -e $1 ] && echo "swap: $1 does not exist" && return 1
+    [ ! -e $2 ] && echo "swap: $2 does not exist" && return 1
+
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+}
+
+# Print various pieces of system information
+function sysinfo() {
+    echo -e "\n${RED}Host information:$NOCOLOR " ; uname -a | lolcat -p 10 -S 50
+    echo -e "\n${RED}Distro information:$NOCOLOR " ; cat /etc/os-release | lolcat -p 10 -S 50 ; lsb_release -a | lolcat -p 10 -S 50
+    echo -e "\n${RED}Users logged on:$NOCOLOR " ; list-users-current | lolcat -p 10 -S 50
+    echo -e "\n${RED}Current date :$NOCOLOR " ; date | lolcat -p 10 -S 50
+    echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lolcat -p 10 -S 50
+    echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lolcat -p 10 -S 50
+    echo -e "\n${RED}Diskspace :$NOCOLOR " ; df -h
+    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lolcat -p 10 -S 50
+    echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
+    echo
+}
+
+# Enable Terminator to execute startup commands and keep shell open
+[[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
+
+
+############################
+# ❰❰ Frivolous Nonsense ❱❱ #
+############################
+
+# While $USER has active queries, show progress indicator
+alias pg-check-progress='while pg-stat-user $USER; do colordot; done; printf "\e[1;31;29m****\e[0m\n";'
+
+alias ratelimit='pv -qL80k'
+alias randombit='shuf -i 0-1 -n 1 -z'
+alias randomchars='grep -o --binary-files=text "[[:alpha:]]" /dev/urandom | tr -d "[a-zA-Z]" | xargs -n $((($COLUMNS*80)/100)) | tr -d " "'
+function charbar() { python -c "print('$1' * $(($COLUMNS*2)))"; }
+function charbar2() { python -c "print('$1 ' * $(($COLUMNS)))"; }  # Extra spacing for emoji & other extra-wide unicode chars
+function charbarf() { charbar $1 | lolcat -a -d 99999999 -p $2; }
+function charbarf2() { charbar2 $1 | lolcat -a -d 99999999 -p $2; }
+function color-bit() { printf "\e[$(echo $1|tr 01 20);32;29m$1\e[0m"; }
+function color-bar() { printf "\x1b[48;5;$1m\n"; }
+function color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
+
+alias term-barf-0='while true; do color-bit $(randombit); done'
+alias term-barf-1='while true; do color-str •; done'
+alias term-barf-2='yes "$(seq 231 -1 16)" | while read i; do color-bar $i; sleep .02; done'
+alias term-barf-3='randomchars | lolcat -f | ratelimit'
+alias term-barf-4='randomchars | figlet -w 120 | lolcat -f | ratelimit'
+alias term-barf-5a='charbarf '•' 2'
+alias term-barf-5b='charbarf '¤' 4'
+alias term-barf-5c='charbarf '●' 55'
+alias term-barf-5d='charbarf '◤' 60'
+alias term-barf-5e='charbarf '█' 1'
+alias term-barf-5f='charbarf '▉' 65'
+alias term-barf-5f='charbarf ― 2'
+alias term-barf-6a='charbarf2 ⬛️ 0.5'
+alias term-barf-6b='charbarf2 🔲 2'
+alias term-barf-6c='charbarf2 💩 10'
+
+function fabulous() { figlet -w 270 -f ~/.figlet/alligator.flf $1 | lolcat -a -d 6; }
+function faabulous() { figlet -w 270 -f ~/.figlet/starwars.flf $1 | lolcat -a -d 2; }
+function faaabulous() { figlet -w 270 -f ~/.figlet/univers.flf $1 | lolcat -a -d 2; }
+function faaaabulous() { figlet -w 270 -f ~/.figlet/roman.flf $1 | lolcat -a -d 2; }
+function faaaaabulous() { figlet -w 270 -f ~/.figlet/contessa.flf $1 | lolcat -a -d 2; }
+function faaaaaabulous() { figlet -w 270 -f ~/.figlet/cybermedium.flf $1 | lolcat -a -d 2; }
+alias fabulous-syslog='syslog | lolcat -a'
+alias fabulous-ls='ll | lolcat -a'
+alias fabulous-netstat='while true; do netstat -pan --inet | lolcat -a; done'
+alias fabulous-ps='ps -u $USER -o pid,%cpu,%mem,bsdtime,command | lolcat -a'
