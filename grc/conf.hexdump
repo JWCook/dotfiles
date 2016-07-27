@@ -1,0 +1,15 @@
+# offset
+regexp=^[0-9a-fA-F]{1,8}\b
+colours=bold red
+======
+# Hex Bytes %_p
+regexp=\|.+\|\s*$
+colours=cyan
+======
+# Hex bytes
+regexp=([0-9a-fA-F]{1,2 })+
+colours=green
+#======
+# everything in brackets
+regexp=\b00 
+colours=bold black

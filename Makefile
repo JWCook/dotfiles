@@ -30,6 +30,10 @@ install-fonts:
 	fc-cache -vf ~/.fonts/
 	echo 'Done. Set terminal font to DejaVuSansMono'
 
+install-grc:
+	rm -rf ~/.grc
+	ln -s `pwd`/grc ~/.grc
+
 install-terminator:
 	rm -rf ~/.config/terminator
 	ln -s `pwd`/terminator ~/.config/terminator

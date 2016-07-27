@@ -1,0 +1,69 @@
+# starting Nmap
+regexp=^Starting Nmap.*$
+colours=bold black
+======
+# ip address
+regexp=\b(?:[01]?\d\d?|2[0-4]\d|25[0-5])(?:\.[01]?\d\d?|2[0-4]\d|25[0-5]){3}\b
+colours=magenta
+======
+# hostname
+regexp=\s(\w[\w.-]*\w) \((?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])(?:\.[01]?\d\d?|2[0-4]\d|25[0-5]){3}\b|not scanned)
+colours=unchanged,bold yellow
+count=once
+======
+# list header
+#regexp=\b(?:PORT|STATE|SERVICE|REASON|VERSION)\b
+regexp=^PORT\s.*$
+colours=reverse
+======
+# open
+regexp=\bopen\b
+colours=dark green
+count=once
+======
+# filtered
+regexp=\bfiltered\b
+colours=dark yellow
+count=once
+======
+# closed
+regexp=\bclosed\b(?! ports)
+colours= dark red
+count=once
+======
+# tcp n udp
+regexp=/(?:tcp|udp)\b
+colours=bold black
+count=once
+======
+# device type
+regexp=\bDevice type:
+colours=cyan
+======
+# running
+regexp=\bRunning\b:?
+colours=cyan
+======
+# os details
+regexp=\bOS details:
+colours=cyan
+======
+# MAC
+regexp=\bMAC Address:
+colours=cyan
+======
+# network distance
+regexp=\bNetwork Distance:
+colours=cyan
+======
+# Service Info
+regexp=\bService Info:
+colours=cyan
+======
+# Agressive
+regexp=\bAggressive OS guesses:
+colours=cyan
+======
+# no exact match
+regexp=\bNo exact OS matches for host\b
+colours=magenta

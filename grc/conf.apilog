@@ -1,0 +1,33 @@
+# Log levels
+regexp=\[(INFO|DEBUG)\]
+colours=green
+count=once
+======
+regexp=\[(WARNING|ERROR|CRITICAL)\]
+colours=red
+count=once
+======
+# Log class
+regexp=\[[a-z_\.]+?([\.A-Z][a-z]+)*\]
+colours=cyan
+count=once
+======
+# Timestamp
+regexp=^(\d\d\d\d)(-)(\d\d)(-)(\d\d) (\d\d)(:)(\d\d)(:)(\d\d)
+colours=none, blue, none, blue, none, blue, blue, none, blue, none, blue
+count=once
+======
+# SQL Statements
+regexp=(SELECT|INSERT|UPDATE|DELETE|CREATE) (.+)
+colours=yellow
+count=once
+======
+# Request params / JSON
+regexp=\{[\S]*\}
+colours=yellow
+count=more
+======
+# UUID
+regexp=[a-z\d-]{36}
+colours=yellow
+count=more

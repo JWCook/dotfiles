@@ -12,6 +12,8 @@ which virtualenvwrapper.sh  > /dev/null 2>&1 && source $(which virtualenvwrapper
 ###############################
 
 # Support bash_history across multiple terminals
+export HISTFILESIZE=20000
+export HISTSIZE=10000
 export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 
