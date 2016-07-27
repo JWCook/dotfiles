@@ -1,4 +1,4 @@
-install: install-bash install-postgres install-vim install-fonts install-terminator
+install: install-bash install-postgres install-vim install-fonts iinstall-grc nstall-htop install-pep8 install-terminator
 
 install-bash:
 	rm -rf ~/.bashrc
@@ -33,6 +33,16 @@ install-fonts:
 install-grc:
 	rm -rf ~/.grc
 	ln -s `pwd`/grc ~/.grc
+
+install-htop:
+	rm -rf ~/.config/htop
+	ln -s `pwd`/htop ~/.config/htop
+
+install-pep8:
+	rm -rf ~/.config/pep8
+	rm -rf ~/.config/flake8
+	ln -s `pwd`/pep8/pep8  ~/.config/pep8
+	ln -s `pwd`/pep8/flake8  ~/.config/flake8
 
 install-terminator:
 	rm -rf ~/.config/terminator
