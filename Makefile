@@ -1,14 +1,14 @@
-install: install-bash install-postgres install-vim install-fonts iinstall-grc nstall-htop install-pep8 install-terminator
+install: install-bash install-postgres install-vim install-fonts iinstall-grc nstall-htop install-ipython install-pep8 install-terminator
 
 install-bash:
 	rm -rf ~/.bashrc
 	rm -rf ~/.bashrc_style
 	rm -rf ~/.bash_profile
 	rm -rf ~/.bash_logout
-	ln -s `pwd`/bash/bashrc ~/.bashrc
+	ln -s `pwd`/bash/bashrc       ~/.bashrc
 	ln -s `pwd`/bash/bashrc_style ~/.bashrc_style
 	ln -s `pwd`/bash/bash_profile ~/.bash_profile
-	ln -s `pwd`/bash/bash_logout ~/.bash_logout
+	ln -s `pwd`/bash/bash_logout  ~/.bash_logout
 
 install-postgres:
 	rm -rf ~/.psqlrc
@@ -38,10 +38,17 @@ install-htop:
 	rm -rf ~/.config/htop
 	ln -s `pwd`/htop ~/.config/htop
 
+install-ipython:
+	mkdir -p ~/.ipython/profile_default
+	rm -rf ~/.ipython/profile_default/ipython_config.py
+	rm -rf ~/.ipython/profile_default/startup
+	ln -s `pwd`/ipython/profile_default/ipython_config.py  ~/.ipython/profile_default/ipython_config.py
+	ln -s `pwd`/ipython/profile_default/startup            ~/.ipython/profile_default/startup
+
 install-pep8:
 	rm -rf ~/.config/pep8
 	rm -rf ~/.config/flake8
-	ln -s `pwd`/pep8/pep8  ~/.config/pep8
+	ln -s `pwd`/pep8/pep8    ~/.config/pep8
 	ln -s `pwd`/pep8/flake8  ~/.config/flake8
 
 install-terminator:
