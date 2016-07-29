@@ -1,5 +1,12 @@
 # .bashrc
 
+# Append to path, without duplicates
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
 # Additional runtime config
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 [[ -f ~/.bashrc_style ]] && source ~/.bashrc_style  # Prompt & command colorization
@@ -18,7 +25,8 @@ export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 
 # Paths
-# export PATH=$PATH:~/scripts
+pathadd ~/bin
+pathadd ~/scripts
 # export JRE_HOME=/opt/jdk1.8.0_51/jre
 # export JAVA_HOME=/opt/jdk1.8.0_51
 export DOTFILES=~/dotfiles
@@ -62,7 +70,7 @@ alias gs='git status'
 alias git-undo-commit='git reset --soft HEAD~1'
 
 # Misc Shortcuts
-alias devterm='terminator -mfl 8-split &'
+alias devterm='terminator -mfl 6-split &'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 

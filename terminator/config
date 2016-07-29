@@ -19,6 +19,99 @@
     [[[window0]]]
       parent = ""
       type = Window
+  [[6-split]]
+    [[[child0]]]
+      fullscreen = True
+      last_active_term = f48f73d0-cb4d-47da-a701-2efb823e370d
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 0:0
+      size = 1920, 1080
+      title = /bin/bash
+      type = Window
+    [[[child1]]]
+      order = 0
+      parent = child0
+      position = 956
+      ratio = 0.49921875
+      type = HPaned
+    [[[child2]]]
+      order = 0
+      parent = child1
+      position = 536
+      ratio = 0.498611111111
+      type = VPaned
+    [[[child4]]]
+      order = 1
+      parent = child2
+      position = 266
+      ratio = 0.49814471243
+      type = VPaned
+    [[[child7]]]
+      order = 1
+      parent = child1
+      position = 536
+      ratio = 0.498611111111
+      type = VPaned
+    [[[child9]]]
+      order = 1
+      parent = child7
+      position = 265
+      ratio = 0.496289424861
+      type = VPaned
+    [[[terminal3]]]
+      # 1
+      command = env TERM_START_CMD="wo data-dredge" bash
+      directory = ""
+      order = 0
+      parent = child2
+      profile = default+
+      type = Terminal
+      uuid = 0f3bfe8e-aff8-4b5d-b1cb-0d1d824c9bb2
+    [[[terminal5]]]
+      # 2
+      directory = workspace
+      order = 0
+      parent = child4
+      profile = default
+      type = Terminal
+      uuid = bd1b33b6-ae77-40c4-b974-be93481b3607
+    [[[terminal6]]]
+      # 3
+      directory = workspace
+      order = 1
+      parent = child4
+      profile = default
+      type = Terminal
+      uuid = 0edf4d53-f175-4018-bdac-326830727489
+    [[[terminal8]]]
+      # 4
+      command = env TERM_START_CMD="wo analyticonda2" bash
+      directory = ""
+      order = 0
+      parent = child7
+      profile = default+
+      type = Terminal
+      uuid = f48f73d0-cb4d-47da-a701-2efb823e370d
+    [[[terminal10]]]
+      # 5
+      directory = workspace
+      order = 0
+      parent = child9
+      profile = default
+      type = Terminal
+      uuid = 40d30c62-0792-4548-b872-026738af05aa
+    [[[terminal11]]]
+      command = ""
+      directory = ""
+      # 6
+      order = 1
+      parent = child9
+      profile = default
+      type = Terminal
+      uuid = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
   [[8-split]]
     [[[child0]]]
       order = 0
@@ -61,57 +154,62 @@
       parent = child1
       position = 544
       type = VPaned
-    [[[terminal11]]]
-      command = env TERM_START_CMD="wo analyticonda" bash
-      directory = ""
-      order = 0
-      parent = child10
-      profile = default
-      type = Terminal
-    [[[terminal12]]]
-      command = echo "6"; bash
-      directory = ""
-      order = 1
-      parent = child10
-      profile = default
-      type = Terminal
-    [[[terminal14]]]
-      command = echo "7"; bash
-      directory = ""
-      order = 0
-      parent = child13
-      profile = default
-      type = Terminal
-    [[[terminal15]]]
-      command = echo "8"; bash
-      directory = /home/cookjo/workspace
-      order = 1
-      parent = child13
-      profile = default
-      type = Terminal
     [[[terminal4]]]
+      # 1
       command = env TERM_START_CMD="wo data-dredge" bash
       order = 0
       parent = child3
       profile = default
       type = Terminal
     [[[terminal5]]]
-      command = env TERM_START_CMD="wo data-dredge" bash
+      # 2
+      directory = workspace
       order = 1
       parent = child3
       profile = default
       type = Terminal
     [[[terminal7]]]
-      command = ""
+      # 3
+      directory = workspace
       order = 0
       parent = child6
       profile = default
       type = Terminal
     [[[terminal8]]]
-      command = env TERM_START_CMD="wo-dtresources" bash
-      directory = ""
+      # 4
+      directory = workspace
       order = 1
       parent = child6
+      profile = default
+      type = Terminal
+
+    [[[terminal11]]]
+      # 5
+      command = env TERM_START_CMD="wo analyticonda2" bash
+      directory = ""
+      order = 0
+      parent = child10
+      profile = default
+      type = Terminal
+    [[[terminal12]]]
+      # 6
+      directory = workspace
+      order = 1
+      parent = child10
+      profile = default
+      type = Terminal
+    [[[terminal14]]]
+      # 7
+      directory = workspace
+      order = 0
+      parent = child13
+      profile = default
+      type = Terminal
+    [[[terminal15]]]
+      # 8
+      directory = ""
+      order = 1
+      parent = child13
       profile = default
       type = Terminal
 [plugins]
@@ -121,6 +219,17 @@
     background_image = None
     cursor_color = "#eee8d5"
     font = DejaVu Sans Mono for Powerline 9
+    foreground_color = "#839496"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[default+]]
+    background_color = "#002b36"
+    background_image = None
+    cursor_color = "#eee8d5"
+    font = DejaVu Sans Mono for Powerline 13
     foreground_color = "#839496"
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
     scrollback_lines = 5000
