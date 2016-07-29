@@ -4,6 +4,7 @@
 
 " Plugins managed by vim-plug
 call plug#begin('~/.vim/plugged')
+
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ntpeters/vim-better-whitespace'
@@ -16,11 +17,13 @@ Plug 'tpope/vim-git'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/Gundo'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'pangloss/vim-javascript'
 Plug 'davidhalter/jedi-vim'
 Plug 'Shougo/neoyank.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'alfredodeza/pytest.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'mhinz/vim-startify'
@@ -33,6 +36,20 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'ryanoasis/vim-devicons'
+
+" Color schemes
+Plug 'atelierbram/Base2Tone-vim'
+Plug 'antlypls/vim-colors-codeschool'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'aereal/vim-colors-japanesque'
+Plug 'nanotech/jellybeans.vim'
+Plug 'sickill/vim-monokai'
+Plug 'CruizeMissile/Revolution.vim'
+Plug 'ninja/sky'
+Plug 'rakr/vim-two-firewatch'
+Plug 'Donearm/Ubaryd'
+
 call plug#end()
 
 " Plugin updates (including snapshot, help tags, and vim-plug itself)
@@ -320,9 +337,6 @@ set tm=500
 
 " Command bar
 "set cmdheight=2
-"
-" Status line format
-"set statusline=%<%f\ %h%m%r%=%{fugitive#statusline()}\ \ %-14.(%l,%c%V%)\ %P
 
 
 """"""""""""""""""""""""""""""

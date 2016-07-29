@@ -61,6 +61,23 @@
       position = 265
       ratio = 0.496289424861
       type = VPaned
+    [[[terminal10]]]
+      # 5
+      directory = workspace
+      order = 0
+      parent = child9
+      profile = default
+      type = Terminal
+      uuid = 40d30c62-0792-4548-b872-026738af05aa
+    [[[terminal11]]]
+      command = ""
+      directory = ""
+      # 6
+      order = 1
+      parent = child9
+      profile = default
+      type = Terminal
+      uuid = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
     [[[terminal3]]]
       # 1
       command = env TERM_START_CMD="wo data-dredge" bash
@@ -95,23 +112,6 @@
       profile = default+
       type = Terminal
       uuid = f48f73d0-cb4d-47da-a701-2efb823e370d
-    [[[terminal10]]]
-      # 5
-      directory = workspace
-      order = 0
-      parent = child9
-      profile = default
-      type = Terminal
-      uuid = 40d30c62-0792-4548-b872-026738af05aa
-    [[[terminal11]]]
-      command = ""
-      directory = ""
-      # 6
-      order = 1
-      parent = child9
-      profile = default
-      type = Terminal
-      uuid = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
   [[8-split]]
     [[[child0]]]
       order = 0
@@ -154,35 +154,7 @@
       parent = child1
       position = 544
       type = VPaned
-    [[[terminal4]]]
-      # 1
-      command = env TERM_START_CMD="wo data-dredge" bash
-      order = 0
-      parent = child3
-      profile = default
-      type = Terminal
-    [[[terminal5]]]
-      # 2
-      directory = workspace
-      order = 1
-      parent = child3
-      profile = default
-      type = Terminal
-    [[[terminal7]]]
-      # 3
-      directory = workspace
-      order = 0
-      parent = child6
-      profile = default
-      type = Terminal
-    [[[terminal8]]]
-      # 4
-      directory = workspace
-      order = 1
-      parent = child6
-      profile = default
-      type = Terminal
-
+    
     [[[terminal11]]]
       # 5
       command = env TERM_START_CMD="wo analyticonda2" bash
@@ -212,13 +184,41 @@
       parent = child13
       profile = default
       type = Terminal
+    [[[terminal4]]]
+      # 1
+      command = env TERM_START_CMD="wo data-dredge" bash
+      order = 0
+      parent = child3
+      profile = default
+      type = Terminal
+    [[[terminal5]]]
+      # 2
+      directory = workspace
+      order = 1
+      parent = child3
+      profile = default
+      type = Terminal
+    [[[terminal7]]]
+      # 3
+      directory = workspace
+      order = 0
+      parent = child6
+      profile = default
+      type = Terminal
+    [[[terminal8]]]
+      # 4
+      directory = workspace
+      order = 1
+      parent = child6
+      profile = default
+      type = Terminal
 [plugins]
 [profiles]
   [[default]]
     background_color = "#002b36"
     background_image = None
     cursor_color = "#eee8d5"
-    font = DejaVu Sans Mono for Powerline 9
+    font = DroidSansMonoForPowerline Nerd Font 10
     foreground_color = "#839496"
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
     scrollback_lines = 5000
@@ -229,7 +229,7 @@
     background_color = "#002b36"
     background_image = None
     cursor_color = "#eee8d5"
-    font = DejaVu Sans Mono for Powerline 13
+    font = DroidSansMonoForPowerline Nerd Font 12
     foreground_color = "#839496"
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
     scrollback_lines = 5000
