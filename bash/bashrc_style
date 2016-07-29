@@ -82,7 +82,7 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Other Commands
 LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
-alias color-filesize='sed "s/\(\[.*K\]\)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*M\]\)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g; s/\(\[.*G\]\)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
+alias color-filesize='sed -r "s/([0-9\.]+K)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g; s/([0-9\.]+M)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g; s/([0-9\.]+G)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
 
 
 ####################

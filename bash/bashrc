@@ -44,35 +44,38 @@ export WORKSPACE=~/workspace
 #################
 
 # General Bash
-alias df='df -khT'
-alias du='du -S | sort -n -r | less'
+function cpv() { rsync -WavP --human-readable --progress $1 $2; }   # Verbose copy w/progress
+alias cw='cd $WORKSPACE'
+alias df='df -khT | color-filesize'                                 # Readable disk usage
+alias du='du -Sh | sort -hr | color-filesize | more'                # Recursive folder size
+function fd() { find . -name "$1" -type d; }
+function ff() { find . -name "$1" -type f; }
 alias list-users='column -ts: /etc/passwd | sort'
 alias list-users-current='w -hs | cut -d " " -f1 | sort | uniq'
 alias ll='ls -Alhv --group-directories-first'
-alias lt='tree | color-filesize'
-alias lt2='tree2 | color-filesize'
+function lt() { tree $@ | color-filesize; }                         # Colored folder tree
+function lt2() { tree -L 2 $@ | color-filesize; }                   # Colored folder tree (depth 2)
+function md() { mkdir -p "$@" && cd "$@"; }                         # Create a dir and enter it
 alias netconn='netstat -pan --inet'
-alias path='echo -e ${PATH//:/\\n}'
+alias path='echo -e ${PATH//:/\\n}  | lolcat'
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
 alias tailf='tail -f -n 50'
 alias top='htop'
 alias tracert='traceroute'
 alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
-alias tree2='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__" -L 2'
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
-alias vp='vim $DOTFILES/postgres/psqlrc'
 alias vv='vim $DOTFILES/vim/vimrc'
+alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
 
 # Git
-alias gp='git pull'
+alias gp='git pull | lolcat -a -s 250'
 alias gs='git status'
 alias git-undo-commit='git reset --soft HEAD~1'
 
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
-alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 
 # Postgres
 alias pg-start='sudo service postgresql-9.5 start'
@@ -82,10 +85,10 @@ alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
 
 # Python
 type -a pt > /dev/null 2>&1 && alias pt='py.test -s -rwrs ./test'
+alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias pipr='pip install -U pip -r requirements.txt | lolcat'
 alias py-cleanup='find . -name "*.pyc" -type f -delete; find . -name "__pycache__" -type d -exec rm -rf '{}' \;'
-wo ()
-{
+function wo() {
     if [ -n "$1" ]; then
         workon $1
         export _VIRT_ENV_PREV_PWD=$PWD
@@ -94,6 +97,7 @@ wo ()
         deactivate
         cd $_VIRT_ENV_PREV_PWD
     fi
+    pwd
 }
 complete -o default -o nospace -F _virtualenvs wo
 
@@ -102,10 +106,13 @@ complete -o default -o nospace -F _virtualenvs wo
 # ❰❰ Miscellaneous Functions ❱❱ #
 #################################
 
+function csvpreview(){ sed 's/,,/, ,/g;s/,,/, ,/g' "$@" | column -s, -t | less -#2 -N -S; }
+function nullify() { "$@" >/dev/null 2>&1; }
+
 # Use with caution!
-function grepsed() { grep -rl $1 ./ | xargs sed -i "s/$1/$2/g" ; }
-function rr() { find . -name $1 -type f -delete ; }
-function rrdir() { find . -name $1 -type d -exec rm -rf '{}' \; ; }
+function grepsed() { grep -rl "$1" ./ | xargs sed -i "s/$1/$2/g" ; }
+function rr() { find . -name "$1" -type f -delete ; }
+function rrdir() { find . -name "$1" -type d -exec rm -rf '{}' \; ; }
 
 # Create an archive (*.tar.gz) from given directory
 function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/" ; }
@@ -114,7 +121,7 @@ function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/" ; }
 function makezip() { zip -r "${1%%/}.zip" "$1" ; }
 
 # Mutli-format extract function
-function extract(){
+function extract() {
     if [ -f $1 ] ; then
         case $1 in
             *.tar.bz2)   tar xvjf $1     ;;
@@ -199,12 +206,12 @@ alias term-barf-6a='charbarf2 ⬛️ 0.5'
 alias term-barf-6b='charbarf2 🔲 2'
 alias term-barf-6c='charbarf2 💩 10'
 
-function fabulous() { figlet -w 270 -f ~/.figlet/alligator.flf $1 | lolcat -a -d 6; }
-function faabulous() { figlet -w 270 -f ~/.figlet/starwars.flf $1 | lolcat -a -d 2; }
-function faaabulous() { figlet -w 270 -f ~/.figlet/univers.flf $1 | lolcat -a -d 2; }
-function faaaabulous() { figlet -w 270 -f ~/.figlet/roman.flf $1 | lolcat -a -d 2; }
-function faaaaabulous() { figlet -w 270 -f ~/.figlet/contessa.flf $1 | lolcat -a -d 2; }
-function faaaaaabulous() { figlet -w 270 -f ~/.figlet/cybermedium.flf $1 | lolcat -a -d 2; }
+function fabulous() { figlet -w 270 -f ~/.figlet/alligator.flf $@ | lolcat -a -d 6; }
+function faabulous() { figlet -w 270 -f ~/.figlet/starwars.flf $@ | lolcat -a -d 2; }
+function faaabulous() { figlet -w 270 -f ~/.figlet/univers.flf $@ | lolcat -a -d 2; }
+function faaaabulous() { figlet -w 270 -f ~/.figlet/roman.flf $@ | lolcat -a -d 2; }
+function faaaaabulous() { figlet -w 270 -f ~/.figlet/contessa.flf $@ | lolcat -a -d 2; }
+function faaaaaabulous() { figlet -w 270 -f ~/.figlet/cybermedium.flf $@ | lolcat -a -d 2; }
 alias fabulous-syslog='syslog | lolcat -a'
 alias fabulous-ls='ll | lolcat -a'
 alias fabulous-netstat='while true; do netstat -pan --inet | lolcat -a; done'

@@ -2,9 +2,9 @@
 " ❰❰ Plugins ❱❱ "
 """""""""""""""""
 
-" Plugins managed by vim-plug
 call plug#begin('~/.vim/plugged')
 
+" Plugins managed by vim-plug
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ntpeters/vim-better-whitespace'
@@ -66,17 +66,13 @@ filetype plugin on
 filetype indent on
 
 " Airline
-let g:airline_theme='ubaryd'
+" let g:airline_theme='ubaryd'
+let g:airline_theme='deep-space'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
 set timeoutlen=50
-
-" tig
-command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
-nnoremap <silent> tig :Gcd / \| :Silent tig<CR>
-nnoremap <silent> tt  :Gcd / \| :Silent tig %<CR>
 
 " GitGutter
 nnoremap <silent> gt :GitGutterToggle<CR>
@@ -199,6 +195,10 @@ nnoremap ws :ToggleStripWhitespaceOnSave<CR>
 " ❰❰ Bash Aliases ❱❱ "
 """"""""""""""""""""""
 
+" Launch a subshell command without prompt
+command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
+
+nnoremap <silent> tt :Gcd / \| :Silent tig<CR>
 nnoremap ls !ls -Alhv --group-directories-first<CR>
 
 
@@ -267,8 +267,9 @@ au BufNewFile,BufRead *.less set filetype=css
 set t_Co=256
 set background=dark
 try
-  let g:solarized_termcolors=256
-  colorscheme solarized
+  " let g:solarized_termcolors=256
+  " let g:deepspace_italics=1
+  colorscheme monokai
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
@@ -373,7 +374,7 @@ nnoremap <silent> hh <C-w>s
 command! BN new
 nnoremap <silent> <Leader>q :BD<CR>
 command! TD tabclose
-command! TN tabnew
+command! TN tabnew | vsp
 
 " Switch between unsaved buffers w/o save, preserves history
 set hidden
