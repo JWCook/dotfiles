@@ -123,8 +123,8 @@ function set_virtualenv() {
 
 # Run after every command before prompt is displayed
 function set_bash_prompt() {
-    history -a  # Append to bash_history
     set_prompt_symbol $?
+    history -a  # Append to bash_history
     set_virtualenv
     PS1="$PYTHON_VIRTUALENV$(term-color $CYAN)❰\u$(term-color $NOCOLOR)@$(term-color $CYAN)\h \W❱$(term-color $NOCOLOR) $PROMPT_SYMBOL "
 }

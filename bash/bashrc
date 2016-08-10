@@ -48,8 +48,9 @@ function cpv() { rsync -WavP --human-readable --progress $1 $2; }   # Verbose co
 alias cw='cd $WORKSPACE'
 alias df='df -khT | color-filesize'                                 # Readable disk usage
 alias du='du -Sh | sort -hr | color-filesize | more'                # Recursive folder size
-function fd() { find . -name "$1" -type d; }
-function ff() { find . -name "$1" -type f; }
+function fd() { find ${2:-.} -name "$1" -type d; }                  # Recursive search (lit, dirs)
+function ff() { find ${2:-.} -name "$1" -type f; }                  # Recursive search (lit, files)
+function gr() { grep -r "$1" ${2:-.}; }                             # Recursive search
 alias list-users='column -ts: /etc/passwd | sort'
 alias list-users-current='w -hs | cut -d " " -f1 | sort | uniq'
 alias ll='ls -Alhv --group-directories-first'
@@ -57,24 +58,28 @@ function lt() { tree $@ | color-filesize; }                         # Colored fo
 function lt2() { tree -L 2 $@ | color-filesize; }                   # Colored folder tree (depth 2)
 function md() { mkdir -p "$@" && cd "$@"; }                         # Create a dir and enter it
 alias netconn='netstat -pan --inet'
-alias path='echo -e ${PATH//:/\\n}  | lolcat'
+alias path='echo -e ${PATH//:/\\n}  | lc-gradient --seed=8'
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
 alias tailf='tail -f -n 50'
 alias top='htop'
 alias tracert='traceroute'
 alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
+function wcr() { gr "$1" $2 | wc -l; }                               # Recursive word count
+
+# Config
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
 alias vv='vim $DOTFILES/vim/vimrc'
-alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
+alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/.gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
 
 # Git
-alias gp='git pull | lolcat -a -s 250'
+alias gp='git pull'
 alias gs='git status'
 alias git-undo-commit='git reset --soft HEAD~1'
 
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
+alias tt='tig'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
 
 # Postgres
@@ -86,8 +91,11 @@ alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
 # Python
 type -a pt > /dev/null 2>&1 && alias pt='py.test -s -rwrs ./test'
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
-alias pipr='pip install -U pip -r requirements.txt | lolcat'
+alias lsv='lsvirtualenv -b'
+alias mkprojenv='mkvirtualenv -a . -r ./requirements.txt'
+alias pipr='pip install -U pip -r requirements.txt | lc-gradient --seed=100'
 alias py-cleanup='find . -name "*.pyc" -type f -delete; find . -name "__pycache__" -type d -exec rm -rf '{}' \;'
+function pyfile() { python -c "import $@; print $@.__file__"; }
 function wo() {
     if [ -n "$1" ]; then
         workon $1
@@ -97,10 +105,13 @@ function wo() {
         deactivate
         cd $_VIRT_ENV_PREV_PWD
     fi
-    pwd
 }
 complete -o default -o nospace -F _virtualenvs wo
 
+# AWS
+function s3cat() { aws s3 cp s3://$@ -; }
+function s3ls() { aws s3 ls s3://$@; }
+function s3rm() { aws s3 rm s3://$@; }
 
 #################################
 # ❰❰ Miscellaneous Functions ❱❱ #
@@ -156,14 +167,14 @@ function swap() {
 
 # Print various pieces of system information
 function sysinfo() {
-    echo -e "\n${RED}Host information:$NOCOLOR " ; uname -a | lolcat -p 10 -S 50
-    echo -e "\n${RED}Distro information:$NOCOLOR " ; cat /etc/os-release | lolcat -p 10 -S 50 ; lsb_release -a | lolcat -p 10 -S 50
-    echo -e "\n${RED}Users logged on:$NOCOLOR " ; list-users-current | lolcat -p 10 -S 50
-    echo -e "\n${RED}Current date :$NOCOLOR " ; date | lolcat -p 10 -S 50
-    echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lolcat -p 10 -S 50
-    echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lolcat -p 10 -S 50
-    echo -e "\n${RED}Diskspace :$NOCOLOR " ; df -h
-    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lolcat -p 10 -S 50
+    echo -e "\n${RED}Host information:$NOCOLOR " ; uname -a | lc-gradient -S 60
+    echo -e "\n${RED}Distro information:$NOCOLOR " ; cat /etc/os-release | lc-gradient -S 60 ; lsb_release -a | lc-gradient -S 60
+    echo -e "\n${RED}Users logged on:$NOCOLOR " ; list-users-current | lc-gradient -S 60
+    echo -e "\n${RED}Current date :$NOCOLOR " ; date | lc-gradient -S 60
+    echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lc-gradient -S 60
+    echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lc-gradient -S 60
+    echo -e "\n${RED}Diskspace :$NOCOLOR " ; df
+    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lc-gradient -S 60
     echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
     echo
 }
@@ -176,16 +187,24 @@ function sysinfo() {
 # ❰❰ Frivolous Nonsense ❱❱ #
 ############################
 
+# lolcat
+alias lc-gradient='lolcat --spread=100 --freq=0.08'
+alias lc-hgradient='lolcat --spread=0.1 --freq=0.005'
+alias lc-gradient-delay='lc-gradient --animate --speed 250'
+alias lc-loop='lolcat --animate --duration=99999999'
+alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
+
 # While $USER has active queries, show progress indicator
 alias pg-check-progress='while pg-stat-user $USER; do colordot; done; printf "\e[1;31;29m****\e[0m\n";'
 
+alias fortune='fortune | lolcat -a'
 alias ratelimit='pv -qL80k'
 alias randombit='shuf -i 0-1 -n 1 -z'
 alias randomchars='grep -o --binary-files=text "[[:alpha:]]" /dev/urandom | tr -d "[a-zA-Z]" | xargs -n $((($COLUMNS*80)/100)) | tr -d " "'
 function charbar() { python -c "print('$1' * $(($COLUMNS*2)))"; }
 function charbar2() { python -c "print('$1 ' * $(($COLUMNS)))"; }  # Extra spacing for emoji & other extra-wide unicode chars
-function charbarf() { charbar $1 | lolcat -a -d 99999999 -p $2; }
-function charbarf2() { charbar2 $1 | lolcat -a -d 99999999 -p $2; }
+function charbarf() { charbar $1 | lc-loop -p $2; }
+function charbarf2() { charbar2 $1 | lc-loop -p $2; }
 function color-bit() { printf "\e[$(echo $1|tr 01 20);32;29m$1\e[0m"; }
 function color-bar() { printf "\x1b[48;5;$1m\n"; }
 function color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
