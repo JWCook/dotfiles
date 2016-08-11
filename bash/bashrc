@@ -69,7 +69,7 @@ function wcr() { gr "$1" $2 | wc -l; }                               # Recursive
 # Config
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
-alias vv='vim $DOTFILES/vim/vimrc'
+alias vv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
 alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/.gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
 
 # Git
