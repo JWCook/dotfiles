@@ -9,7 +9,7 @@
   go_left = <Shift><Alt>Left
   go_right = <Shift><Alt>Right
   go_up = <Shift><Alt>Up
-  help = <Primary><Shift>F1
+  help = None
 [layouts]
   [[default]]
     [[[child1]]]

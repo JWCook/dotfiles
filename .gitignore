@@ -11,3 +11,4 @@ vim/vim/session
 plugged
 viminfo
 plug.vim.old
+.netrwhist

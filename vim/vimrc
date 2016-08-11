@@ -4,38 +4,58 @@
 
 call plug#begin('~/.vim/plugged')
 
-" Plugins managed by vim-plug
+" UI
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'qpkorr/vim-bufkill'
-Plug 'chrisbra/csv.vim'
-Plug 'MicahChambers/vim-flake8'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'JWCook/vim-startify'
+
+" Git
 Plug 'tpope/vim-fugitive'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-git'
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/Gundo'
-Plug 'nathanaelkane/vim-indent-guides'
+
+" Syntax
+Plug 'chrisbra/csv.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'davidhalter/jedi-vim'
-Plug 'Shougo/neoyank.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'alfredodeza/pytest.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'mhinz/vim-startify'
 Plug 'ervandew/supertab'
-Plug 'majutsushi/tagbar'
-Plug 'tomtom/tcomment_vim'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
+Plug 'godlygeek/tabular'
+
+" Markdown/Docs
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
+Plug 'suan/vim-instant-markdown'
+" Plug 'Rykka/riv.vim'
+" Plug 'Rykka/InstantRst', {'do': 'sudo pip install -U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
+
+" Python
+Plug 'MicahChambers/vim-flake8'
+Plug 'alfredodeza/pytest.vim'
 Plug 'jmcantrell/vim-virtualenv'
+
+" Other Utilities (Commands)
+Plug 'qpkorr/vim-bufkill'
+Plug 'tomtom/tcomment_vim'
+Plug 'wellle/visual-split.vim'
+Plug 'ntpeters/vim-better-whitespace'
+" Plug 'drmikehenry/vim-fixkey'
+
+" Other Utilities (UI)
+Plug 'vim-scripts/Gundo'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'jistr/vim-nerdtree-tabs'
+Plug 'majutsushi/tagbar'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/neoyank.vim'
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
+
+" Must be loaded last to work with other plugins
 Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
@@ -43,6 +63,7 @@ Plug 'atelierbram/Base2Tone-vim'
 Plug 'antlypls/vim-colors-codeschool'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'aereal/vim-colors-japanesque'
+Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'sickill/vim-monokai'
 Plug 'CruizeMissile/Revolution.vim'
@@ -57,6 +78,38 @@ nnoremap <silent> <F12> :PlugSnapshot! ~/.vim/plug-snapshot \| :q \| PlugClean! 
 nnoremap <silent> <C-F12> :PlugStatus<CR>
 
 
+""""""""""""""""""""""""
+" ❰❰ Terminal Codes ❱❱ "
+""""""""""""""""""""""""
+
+" Make vim work with some non-ASCII terminal codes by mapping them to vim keycodes.
+" Only tested in gnome-terminal.
+set <F13>=O1;5Q   " F13 -> C-F2
+set <F14>=O1;5R   " F14 -> C-F3
+set <F15>=O1;5S   " F15 -> C-F4
+set <F16>=O1;2P   " F16 -> S-F1
+set <F17>=O1;2Q   " F17 -> S-F2
+set <F18>=O1;2R   " F18 -> S-F3
+set <F19>=O1;2S   " F19 -> S-F4
+set <F21>=O1;6P   " F21 -> C-S-F1
+set <F22>=O1;6Q   " F22 -> C-S-F2
+set <F23>=O1;6R   " F23 -> C-S-F3
+set <F24>=O1;6S   " F24 -> C-S-F4
+
+" Available function key mappings
+"           S-F1  C-S-F1
+" F2  C-F2  S-F2  C-S-F2
+"           S-F3  C-S-F3
+"           S-F4  C-S-F4
+" F5  C-F5  S-F5  C-S-F5
+"           S-F6  S-S-F6
+"     C-F7  S-F7  C-S-F7
+"           S-F8  S-S-F8
+" F9  C-F9  S-F9  C-S-F9
+"                 C-S-F10
+"           S-F12 C-S-F12
+
+
 """""""""""""""""""""""""
 " ❰❰ Plugin Settings ❱❱ "
 """""""""""""""""""""""""
@@ -67,25 +120,17 @@ filetype indent on
 
 " Airline
 " let g:airline_theme='ubaryd'
-let g:airline_theme='deep-space'
+let g:airline_theme='deep_space'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
 set timeoutlen=50
 
-" GitGutter
-nnoremap <silent> gt :GitGutterToggle<CR>
-let g:gitgutter_realtime=0
-let g:gitgutter_eager=0
-let g:gitgutter_sign_added='➕'
-let g:gitgutter_sign_removed='➖'
-let g:gitgutter_sign_modified_removed='≃'
-
 " Fugitive
 let g:fugitive_gitlab_domains = [ 'https://gitlab.encirca.auto.pioneer.com',
                                 \ 'https://gitlab-encirca.phibred.com']
-nnoremap <silent> <F2> :Gdiff<CR>
+nnoremap <silent> gf :Gdiff<CR>
 nnoremap <silent> gs :Gstatus<CR>
 nnoremap <silent> gp :Gpull<CR>
 nnoremap <silent> gw :Gwrite<CR>
@@ -96,23 +141,36 @@ nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
 
 " tComment
 nnoremap <silent> <F3> :TComment<CR>
+inoremap <silent> <F3> <C-O>:TComment<CR>
 vnoremap <silent> <F3> :TCommentBlock<CR>
 let g:tcommentMapLeaderOp1='tc'
 
+" Visual Split (F4/Ctrl-F4)
+vnoremap <silent> <F4>  :VSResize<CR>
+vnoremap <silent> <F15> :VSSplit<CR>
+
+" Tabular (Ctrl-F3)
+nnoremap <silent> <F14> :Tabularize /\|<CR>
+inoremap <silent> <F14> <C-O>:Tabularize /\|<CR>
+vnoremap <silent> <F14> :Tabularize /\|<CR>
+
+" NERD Tree
+" nnoremap <silent> <F6> ::NERDTreeTabsToggle<CR>
+nnoremap <silent> <F6> :NERDTreeToggle<CR>
+inoremap <silent> <F6> <ESC>:NERDTreeToggle<CR>
+let NERDTreeIgnore=[ '\~$', '\.swp$', '\.pyc$' ]
+let NERDTreeShowHidden=1
+let NERDTreeWinSize=28
+
 " Gundo
-nnoremap <silent> <F5> :GundoToggle<CR>
+nnoremap <silent> <C-F6> :GundoToggle<CR>
+inoremap <silent> <C-F6> <ESC>:GundoToggle<CR>
 let g:gundo_width=30
 let g:gundo_close_on_revert=1
 
-" NERD Tree
-" nnoremap <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <silent> <F6> ::NERDTreeTabsToggle<CR>
-let NERDTreeIgnore=[ '\~$', '\.swp$', '\.pyc$' ]
-let NERDTreeShowHidden=1
-let NERDTreeWinSize=30
-
 " Tagbar
 nnoremap <silent> <F7> :TagbarToggle<CR>
+inoremap <silent> <F7> <C-O>:TagbarToggle<CR>
 let g:tagbar_width=20
 let g:tagbar_compact=1
 let g:tagbar_zoomwidth=0 " Zoom to longest tag length
@@ -123,8 +181,16 @@ autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR
 autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
 let g:flake8_show_in_gutter=1
 
+" GitGutter
+noremap <silent> \ :GitGutterToggle<CR>
+let g:gitgutter_realtime=0
+let g:gitgutter_eager=0
+let g:gitgutter_sign_added='➕'
+let g:gitgutter_sign_removed='➖'
+let g:gitgutter_sign_modified_removed='≃'
+
 " Indent guides
-nnoremap <silent> <F9> :IndentGuidesToggle<CR>
+noremap <silent> <C-\> :IndentGuidesToggle<CR>
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_guide_size=1
 let g:indent_guides_auto_colors=0
@@ -151,6 +217,12 @@ let g:syntastic_style_warning_symbol='‡❱'
 let g:syntastic_style_error_symbol='‡❱'
 
 " Startify
+nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
+inoremap <silent> <F10>   <C-O>:SSave! ~quicksave<CR>
+nnoremap <silent> <C-F10> :SLoad  ~quicksave<CR>
+inoremap <silent> <C-F10> <C-O>:SLoad  ~quicksave<CR>
+nnoremap <silent> <S-F10> :Startify<CR>
+inoremap <silent> <S-F10> <ESC>:Startify<CR>
 let g:startify_files_number=15
 let g:startify_change_to_vcs_root=1
 let g:startify_skiplist=[ '.gitignore' ]
@@ -158,20 +230,26 @@ let g:startify_bookmarks=[ '~/.vim/vimrc',
                          \ '~/Documents/vim.txt',
                          \ '~/Documents/commands.txt',
                          \ '~/.analyticonda/analyticonda.ini'  ]
-" let g:startify_session_before_save=['silent! NERDTreeClose']
-let g:startify_session_before_save=['silent! NERDTreeTabsClose']
 " Make Startify play nicely with NERD Tree
+" let g:startify_session_before_save=['silent! NERDTreeTabsClose']
+let g:startify_session_before_save=['silent! NERDTreeClose']
 autocmd User Startified setlocal buftype=
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 
 " Unite
 let g:unite_source_history_yank_enable=1
 nnoremap <C-P> :Unite -start-insert file_rec/async<CR>
+inoremap <C-P> <ESC>:Unite -start-insert file_rec/async<CR>
 nnoremap <C-B> :Unite -start-insert buffer<CR>
+inoremap <C-B> <ESC>:Unite -start-insert buffer<CR>
 nnoremap <C-F> :Unite grep:/home/cookjo/workspace<CR>
+inoremap <C-F> :<ESC>Unite grep:/home/cookjo/workspace<CR>
 nnoremap <C-G> :Unite grep/git<CR>
+inoremap <C-G> <ESC>:Unite grep/git<CR>
 nnoremap <C-Y> :Unite history/yank<CR>
+inoremap <C-Y> <ESC>:Unite history/yank<CR>
 nnoremap <C-L> <Plug>(unite_redraw)
+inoremap <C-L> <ESC><Plug>(unite_redraw)
 call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', join(
     \['__pycache__/','\.git/','.virtualenvs/','tmp/','dist/','.cache','.coverage','.idea','.sonar','.swp','.swo','.pyc',], '\|'))
 
@@ -199,6 +277,7 @@ nnoremap ws :ToggleStripWhitespaceOnSave<CR>
 command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
 
 nnoremap <silent> tt :Gcd / \| :Silent tig<CR>
+nnoremap <silent> th :Gcd / \| :Silent tig %<CR>
 nnoremap ls !ls -Alhv --group-directories-first<CR>
 
 
@@ -207,7 +286,7 @@ nnoremap ls !ls -Alhv --group-directories-first<CR>
 """""""""""""""""
 
 set viminfo='100,n$HOME/.vim/viminfo
-nnoremap ev :split $MYVIMRC<CR>
+nnoremap ev :vsplit $MYVIMRC<CR>
 nnoremap sv :source $MYVIMRC<CR>
 
 " Sets how many lines of history VIM remembers
@@ -288,6 +367,7 @@ endif
 
 " 1 tab == 4 spaces
 set tabstop=4
+set softtabstop=4
 set expandtab
 set smarttab
 set autoindent
@@ -295,6 +375,7 @@ set copyindent
 set shiftwidth=4
 set shiftround
 set backspace=indent,eol,start
+set pastetoggle=<leader>p
 
 
 """"""""""""""""
@@ -320,11 +401,11 @@ set backspace=eol,start,indent " Configure backspace so it acts as it should
 set whichwrap+=<,>,h,l         " Arrow keys wrap
 set lazyredraw                 " Don't redraw while executing macros
 
-" Code folding
+" Code folding with S-F4
 set foldmethod=indent
 set foldlevel=99
-inoremap <silent> <F4> <C-O>za
 nnoremap <silent> <F4> za
+inoremap <silent> <F4> <C-O>za
 
 " Show match for brackets under cursor
 set showmatch
@@ -351,18 +432,26 @@ noremap <silent> <C-h>     :bprev<CR>
 noremap <silent> <C-l>     :bnext<CR>
 
 " Alt+Left/Right/Up/Down/h/j/k/l to move between windows
-noremap <silent> <A-Up>    :wincmd k<CR>
-noremap <silent> <A-Down>  :wincmd j<CR>
-noremap <silent> <A-Left>  :wincmd h<CR>
-noremap <silent> <A-Right> :wincmd l<CR>
+nnoremap <silent> <A-Up>    :wincmd k<CR>
+inoremap <silent> <A-Up>    <C-O>:wincmd k<CR>
+nnoremap <silent> <A-Down>  :wincmd j<CR>
+inoremap <silent> <A-Down>  :<C-O>wincmd j<CR>
+nnoremap <silent> <A-Left>  :wincmd h<CR>
+inoremap <silent> <A-Left>  :<C-O>wincmd h<CR>
+nnoremap <silent> <A-Right> :wincmd l<CR>
+inoremap <silent> <A-Right> <C-O>:wincmd l<CR>
 noremap <silent> <A-k>     :wincmd k<CR>
 noremap <silent> <A-j>     :wincmd j<CR>
 noremap <silent> <A-h>     :wincmd h<CR>
 noremap <silent> <A-l>     :wincmd l<CR>
 
-" Shift+ Left/Right to move between tabs
-noremap <silent> <S-Left>  :tabp<CR>
-noremap <silent> <S-Right> :tabn<CR>
+" Alt +/-/= to increase/decrease/equalize window size
+nnoremap <silent> +    :wincmd +<CR>
+inoremap <silent> +    <C-O>:wincmd +<CR>
+nnoremap <silent> -    :wincmd -<CR>
+inoremap <silent> -    <C-O>:wincmd -<CR>
+nnoremap <silent> =    :wincmd =<CR>
+inoremap <silent> =    <C-O>:wincmd =<CR>
 
 " Windows splits
 set splitbelow
@@ -376,10 +465,14 @@ nnoremap <silent> <Leader>q :BD<CR>
 command! TD tabclose
 command! TN tabnew | vsp
 
+" Shift+ Left/Right to move between tabs
+nnoremap <silent> <S-Left>  :tabp<CR>
+inoremap <silent> <S-Left>  <C-O>:tabp<CR>
+nnoremap <silent> <S-Right> :tabn<CR>
+inoremap <silent> <S-Right> <C-O>:tabn<CR>
+
 " Switch between unsaved buffers w/o save, preserves history
 set hidden
-
-set pastetoggle=<leader>p
 
 " Alt+h/j/k/l moves cursor in insert mode
 " inoremap <C-V><A-h> <left>
