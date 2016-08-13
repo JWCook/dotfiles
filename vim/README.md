@@ -17,6 +17,7 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | git blame          | gl    | `:Gblame`
 | git pull           | gp    | `:Gpull`
 | git add %          | gw    | `:Gwrite`
+| git checkout %     |       | `:Gread`
 | git commit         | gc    | `:Gcommit`
 | undo last commit   | gu    | `:Git reset --soft HEAD~1`
 | git move (+file)   |       | `:Gmove`
@@ -26,14 +27,15 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | Git cd repo        |       | `:Gcd`
 
 # Plugins
-| Plugin       | Action                     | Alias    | Command
-| ------       | ------                     | -----    | -------
-| tComment     | Toggle                     | F3       | `:TComment[Block]`
-| Tabular      | Align Markdown Table       | Ctrl-F3  | `:Tabularize /[char]`
-| Visual Split | Resize to visual selection | F4       | `:VSResize`
-|              | Split to visual selection  | Ctrl-F4  | `:VSSplit`
-| Folding      | Toggle                     | F4 (n,i) | za
-| NERD Tree    | Toggle (left vsplit)       | F6
+| Plugin       | Action                     | Alias     | Command
+| ------       | ------                     | -----     | -------
+| tComment     | toggle comment (line/v)    | F3        | `:TComment[Block]`
+| Tabular      | align Markdown Table       | Ctrl-F3   | `:Tabularize /[char]`
+| Wrap         | wrap selected text         | Shift-F3
+| Visual Split | resize to visual selection | F4        | `:VSResize`
+|              | split to visual selection  | Ctrl-F4   | `:VSSplit`
+| Folding      | toggle                     | F4 (n,i)  | za
+| NERD Tree    | toggle (left vsplit)       | F6
 |              | open selected in split     | i
 |              | open selected in vsplit    | s
 |              | refresh all                | R
@@ -41,98 +43,100 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 |              | change root to selected    | C
 |              | change root to `..`        | u
 |              | show hidden files          | I
-|              | Maximize/Minimize window   | A
-| Gundo        | Toggle (left vsplit)       | Ctrl-F6
-| Tagbar       | Toggle (right vsplit)      | F7
-|              | Zoom                       | x
-| Pep8         | Check                      | F8
-|              | Clear markers              | Ctrl-F8
-| Startify     | Quicksave                  | F10      | `:SSave ~quicksave`
-|              | Load quicksave             | Ctrl-F10 | `:Sload  ~quicksave`
-|              | Open Startify              | Shift-F1 | `:Startify`
-|              | Load session               |          | `:SLoad [name]`
-|              | Save session               |          | `:SSave [name]`
-|              | Delete session             |          | `:SDelete [name]`
-|              | Save/close session         |          | `:SClose`
-| Plug         | Update plugins             | F12
-|              | Plugin status              | Ctrl-F12
-| Misc toggles | Indent guides              | Ctrl-\
-|              | GitGutter                  | Alt-\
-| Pytest       | run current func           | pf       | `:Pytest function [verbose]`
-|              | run current file           | pt       | `:Pytest file     [verbose]`
-|              | run all in project         | pp       | `:Pytest project  [verbose]`
-|              | last session               | ps       | `:Pytest session`
-|              | last failures              | pl       | `:Pytest fails`
-|              | see test dir               | pd       | `:Pytest projecttestwd`
-| Whitespace   | Strip whitespace           | ww       | `:StripWhitespace`
-|              | Toggle Markers             | wt       | `:ToggleWhitespace`
-|              | Strip on save              | ws       | `:ToggleStripWhitespaceOnSave`
-| Unite        | File search                | Ctrl-P
-|              | Buffer search              | Ctrl-B
-|              | Content search             | Ctrl-F
-|              | Git Content search         | Ctrl-G
-|              | Yank hist search           | Ctrl-Y
-|              | Refresh cache              | Ctrl-L
-| Virtualenvs  | list                       | vl       | `:VirtualEnvList`
-|              | deactivate                 | vd       | `:VirtualEnvDeactivate`
-|              | activate                   |          | `:VirtualEnvActivate [name/tab-complete]`
+|              | maximize/Minimize window   | A
+| Gundo        | toggle (left vsplit)       | Ctrl-F6
+| Tagbar       | toggle (right vsplit)      | F7
+|              | zoom                       | x
+| Pep8         | check                      | F8
+|              | clear markers              | Ctrl-F8
+| Startify     | quicksave                  | F10       | `:SSave ~quicksave`
+|              | load quicksave             | Ctrl-F10  | `:Sload  ~quicksave`
+|              | open Startify              | Shift-F10 | `:Startify`
+|              | load session               |           | `:SLoad [name]`
+|              | save session               |           | `:SSave [name]`
+|              | delete session             |           | `:SDelete [name]`
+|              | save/close session         |           | `:SClose`
+| Plug         | update plugins             | F12
+|              | plugin status              | Ctrl-F12
+| Misc toggles | indent guides              | Ctrl-\
+|              | gitGutter                  | Alt-\
+| Pytest       | run current func           | pf        | `:Pytest function [verbose]`
+|              | run current file           | pt        | `:Pytest file     [verbose]`
+|              | run all in project         | pp        | `:Pytest project  [verbose]`
+|              | last session               | ps        | `:Pytest session`
+|              | last failures              | pl        | `:Pytest fails`
+|              | see test dir               | pd        | `:Pytest projecttestwd`
+| Whitespace   | strip whitespace           | ww        | `:StripWhitespace`
+|              | toggle Markers             | wt        | `:ToggleWhitespace`
+|              | strip on save              | ws        | `:ToggleStripWhitespaceOnSave`
+| Unite        | file search                | Ctrl-P
+|              | buffer search              | Ctrl-B
+|              | content search             | Ctrl-F
+|              | git Content search         | Ctrl-G
+|              | yank hist search           | Ctrl-Y
+|              | refresh cache              | Ctrl-L
+| Virtualenvs  | list                       | vl        | `:VirtualEnvList`
+|              | deactivate                 | vd        | `:VirtualEnvDeactivate`
+|              | activate                   |           | `:VirtualEnvActivate [name/tab-complete]`
 
 
 # General Reference
 
-| Category          | Action                         | Command                              | Example
-| --------          | ------                         | -------                              | -------
-| Movement          | beginning of line              | 0
-|                   | end of line                    | $$
-|                   | beginning/end of file          | gg/G
+| Category          | Action                         | Command                  | Example
+| --------          | ------                         | -------                  | -------
+| Movement          | beginning/end of line          | 0 , $
+|                   | (non-blank) beginning of line  | ^
+|                   | beginning/end of file          | gg , GG
 |                   | show current line #            | Ctrl-G
-|                   | goto line #                    | ##G
+|                   | goto line #                    | ``:[#]`` OR  [#]G
 |                   | goto matching bracket `(){}{}` | %
-| Copy/Paste        | Delete line                    | dd
-|                   | Copy (yank)                    | y
-|                   | Copy line                      | Y OR yy
-|                   | Paste after                    | p
-|                   | Paste before                   | P
-|                   | Set paste mode                 | \p
-|                   | Replace between markers        | ci[mark]                             | ci" (between quotes) | ci[ (between brackets)
-|
-| Search/Replace    | Search                         | /pattern
-|                   | copy from here to str          | y/pattern
-|                   | next/prev result               | n/N
+| Copy/Paste        | delete line                    | dd
+|                   | copy (yank)                    | y
+|                   | copy line                      | Y OR yy
+|                   | paste after                    | p
+|                   | paste before                   | P
+|                   | set paste mode                 | \p
+|                   | replace between markers        | ci[mark]                 | ci" (between quotes)                           | ci[ (between brackets)
+|                   | yank history                   | Ctrl-Y
+| Search/Replace    | search                         | /[pattern]
+|                   | copy from here to str          | y/[pattern]
+|                   | next/prev result               | n , N
 |                   | clear search highlights        | \b
-|                   | indent/unindent line           | >> / <<
-|                   | Substistutions                 | :s/find/replace
-|                   | Global                         | :%s/find/replace/g
-|                   | With confirmation              | :%s/find/replace/gc
-| Marks             | m[a-z]
+|                   | indent/unindent line           | >> , <<
+|                   | substistutions                 | `:s/find/replace`
+|                   | sub (global)                   | `:%s/find/replace/g`
+|                   | sub (global with confirmation) | `:%s/find/replace/gc`
+| Marks             | create mark                    | m[a-z]
 |                   | goto a line beginning          | 'a
 |                   | goto a exact location          | `a
 |                   | copy from here to a            | y`a
 | Registers         | "[a-z]
 |                   | copy to register a             | "ay
 | Buffers           | movement                       | Ctrl+Left/Right
-|                   | New buffer                     | :BN OR :new
-|                   | open file in new buffer        | :e [filename]
-|                   | open inactive buffer           | :badd [filename]
-|                   | list open buffers              | :buffers
-|                   | switch buffer (by #)           | :b[#]                                | :b1
-|                   | switch buffer (by file)        | :b [filename]                        | :b text.txt
-|                   | close current buffer           | :bd
-|                   | close buffer                   | :bd[#] OR :bd [filename]
-|                   | close buffer w/o window        | :BD OR \q
-|                   | close buffer range             | :<x,y>bd                             | :5,6bd
+|                   | buffer list                    | Ctrl-B
+|                   | new (empty) buffer             | `:BN` OR `:new`
+|                   | open file in new buffer        | `:e [filename]`
+|                   | close current buffer           | `:bd`
+|                   | close buffer (& keep window)   | `:BD` OR \q
 | Windows (Splits)  | movement                       | Alt+Up/Down/Left/Right
-|                   | open vim w/ vert split         | vim -O2 <filename1> ... <filename n>
-|                   | (h) split                      | :hh                                  | [N]sp  Ex            | :2sp
-|                   | (v) split                      | :vv                                  | [N]vsp
-|                   | open file in new split         | :[v]sp <filename>
-|                   | close current window           | :q
-|                   | resize split                   | Alt -/+/=                            | Ctrl-W, -/+/=
+|                   | open vim w/ vert split         | `vim -O2 [filenames]...`
+|                   | horizontal split               | hh OR `:[N]sp`           | `:2sp`
+|                   | vertical split                 | vv OR `:[N]vsp`
+|                   | open file in new split         | `:[v]sp [filename]`
+|                   | close current window           | `:q`
+|                   | resize split                   | Alt -/+/=
 | Tabs              | movement                       | Shift+Left/Right
-|                   | list tabs                      | :tabn
-|                   | new tab                        | :TN                                  | :tabnew
-|                   | new tab w/ file                | :tabnew <filename>
-|                   | close tab                      | :TD                                  | :tabclose
-| Sessions          | save session                   | :mksession <filename>
-|                   | resume session                 | :source <filename>                   | vim -S <filename>
-| External commands | :!<command>                    | :r !ls (insert results of ls)
+|                   | list tabs                      | `:tabn`
+|                   | new tab                        | `:TN` OR `:tabnew`
+|                   | new tab w/ file                | `:tabnew [filename]`
+|                   | close tab                      | `:TD` OR `:tabclose`
+|                   | move tab to last position      | `:tabm`
+| Visual Mode       | charwise/linewise/blockwise    | v, V, Ctrl-v
+|                   | last visual selection          | gv
+|                   | upper/lower/toggle case        | U , u, ~
+|                   | indent/unindent                | > , <
+|                   | format lines                   | Shift-F3
+|                   | block insert/append            | I, A                     | I{str}<ESC> inserts {str} at beginning of each line in block
+|                   | remove selection from `ex` cmd | Ctrl-U
+| External commands | run external command           | `:![command]`
+|                   | insert output of command       | `:r ![command]`

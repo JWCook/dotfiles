@@ -42,7 +42,6 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'tomtom/tcomment_vim'
 Plug 'wellle/visual-split.vim'
 Plug 'ntpeters/vim-better-whitespace'
-" Plug 'drmikehenry/vim-fixkey'
 
 " Other Utilities (UI)
 Plug 'vim-scripts/Gundo'
@@ -320,10 +319,6 @@ ca Wqa wqa
 ca Qa qa
 ca Q q
 
-" Tabs and non-breaking spaces are evil
-set list
-set listchars=tab:❱·,nbsp:¤
-
 " Pressing shift is hard
 nnoremap ; :
 vnoremap ; :
@@ -361,9 +356,9 @@ if exists('+colorcolumn')
 endif
 
 
-""""""""""""""""""""""""""
-" ❰❰ Tabs/Indentation ❱❱ "
-""""""""""""""""""""""""""
+""""""""""""""""""""
+" ❰❰ Whitepsace ❱❱ "
+""""""""""""""""""""
 
 " 1 tab == 4 spaces
 set tabstop=4
@@ -374,8 +369,31 @@ set autoindent
 set copyindent
 set shiftwidth=4
 set shiftround
+
 set backspace=indent,eol,start
 set pastetoggle=<leader>p
+
+" Tabs and non-breaking spaces are evil
+set list
+set listchars=tab:❱·,nbsp:¤
+
+" Wrap visual selection to 100 chars (Shift-F3)
+vnoremap <silent> <F18> :<C-U>set textwidth=100<CR> \| gv \| gq \| :<C-U>set textwidth=0<CR>
+set wrap
+set showbreak=❱❱❱❱
+set whichwrap+=<,>,h,l
+
+" Ctrl+Up/Down/j/k to move across display lines (i.e., including line breaks)
+nnoremap <C-Up> gk
+inoremap <C-Up> <C-O>gk
+vnoremap <C-Up> gk
+nnoremap <C-Down> gj
+inoremap <C-Down> <C-O>gj
+vnoremap <C-Down> gj
+nnoremap <C-k> gk
+vnoremap <C-k> gk
+nnoremap <C-j> gj
+vnoremap <C-j> gj
 
 
 """"""""""""""""
@@ -391,14 +409,12 @@ set incsearch  " Search while typing
 nnoremap <leader>b :nohlsearch<CR>
 
 
-""""""""""""""""""""""""""""
-" ❰❰ VIM user interface ❱❱ "
-""""""""""""""""""""""""""""
+""""""""""""""""""""""""
+" ❰❰ User Interface ❱❱ "
+""""""""""""""""""""""""
 
 set nu                         " Enable Line Numbers
 set fillchars+=vert:▚          " Split bar fill character
-set backspace=eol,start,indent " Configure backspace so it acts as it should
-set whichwrap+=<,>,h,l         " Arrow keys wrap
 set lazyredraw                 " Don't redraw while executing macros
 
 " Code folding with S-F4
@@ -426,8 +442,8 @@ set tm=500
 """"""""""""""""""""""""""""""
 
 " CTRL+Left/Right/h/l to move between buffers
-noremap <silent> <C-left>  :bprev<CR>
-noremap <silent> <C-right> :bnext<CR>
+noremap <silent> <C-Left>  :bprev<CR>
+noremap <silent> <C-Right> :bnext<CR>
 noremap <silent> <C-h>     :bprev<CR>
 noremap <silent> <C-l>     :bnext<CR>
 
