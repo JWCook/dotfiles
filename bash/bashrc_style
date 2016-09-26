@@ -89,7 +89,7 @@ alias color-filesize='sed -r "s/([0-9\.]+K)/$(pg-color $GREEN)\1$(pg-color $NOCO
 # ❰❰ Psql Pager ❱❱ #
 ####################
 
-export PG_LESS="-ieMSx4FXR"
+export PG_LESS="-ieMSKx4FXR"
 PG_PAGER="sed \"s/\([[:space:]]\+[0-9.\-]\+\)$/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/;"
 PG_PAGER+="s/\([[:space:]]\+[0-9.\-]\+[[:space:]]\)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g;"
 PG_PAGER+="s/\([[:space:]]\+¤[[:space:]]\)/$(pg-color $MAGENTA)\1$(pg-color $NOCOLOR)/g;"

@@ -64,13 +64,14 @@ alias tailf='tail -f -n 50'
 alias top='htop'
 alias tracert='traceroute'
 alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
-function wcr() { gr "$1" $2 | wc -l; }                               # Recursive word count
+function wcr() { gr "$1" $2 | wc -l; }                              # Recursive word count
 
 # Config
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
 alias vv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
 alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/.gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
+alias vp='vpyfile'
 
 # Git
 alias gp='git pull'
@@ -79,6 +80,7 @@ alias git-undo-commit='git reset --soft HEAD~1'
 
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
+alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias tt='tig'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
 
@@ -89,13 +91,19 @@ alias pg-restart='sudo service postgresql-9.5 restart'
 alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
 
 # Python
-type -a pt > /dev/null 2>&1 && alias pt='py.test -s -rwrs ./test'
+type -a pt > /dev/null 2>&1 && function pt(){ py-cleanup; py.test ${1:-./test}; }
+function ptv(){ py-cleanup; py.test -vvs -rwrs ${1:-./test}; }
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
-alias mkprojenv='mkvirtualenv -a . -r ./requirements.txt'
+alias mkv='mkvirtualenv -a . -r ./requirements.txt'
 alias pipr='pip install -U pip -r requirements.txt | lc-gradient --seed=100'
-alias py-cleanup='find . -name "*.pyc" -type f -delete; find . -name "__pycache__" -type d -exec rm -rf '{}' \;'
-function pyfile() { python -c "import $@; print $@.__file__"; }
+alias py-cleanup='find . -name "*.pyc" -type f -delete;\
+                  find . -name "__pycache__" -type d -exec rm -rf '{}' \; 2> /dev/null'
+# Print source path of a python module
+function pyfile() { python -c "import $@; print $@.__file__" | sed 's/\.pyc/\.py/'; }
+# Open source file of a python module
+function vpyfile() { pf_path=$(pyfile $@); [[ -f $pf_path ]] && vim $pf_path; }
+# Workon & cd to a virtualenv (with autocomplete)
 function wo() {
     if [ -n "$1" ]; then
         workon $1
@@ -123,7 +131,6 @@ function nullify() { "$@" >/dev/null 2>&1; }
 # Use with caution!
 function grepsed() {
     read -p "Replacing $(wcr $1 $3) occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
-    echo
     if [[ $CONFIRM =~ ^[Yy]$ ]]; then
         grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
     fi

@@ -105,7 +105,7 @@
       uuid = 0edf4d53-f175-4018-bdac-326830727489
     [[[terminal8]]]
       # 4
-      command = env TERM_START_CMD="wo analyticonda2" bash
+      command = env TERM_START_CMD="wo alina" bash
       directory = ""
       order = 0
       parent = child7

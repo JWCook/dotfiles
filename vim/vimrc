@@ -343,7 +343,7 @@ set background=dark
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
-  colorscheme monokai
+  colorscheme elflord
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
@@ -377,12 +377,6 @@ set pastetoggle=<leader>p
 set list
 set listchars=tab:❱·,nbsp:¤
 
-" Wrap visual selection to 100 chars (Shift-F3)
-vnoremap <silent> <F18> :<C-U>set textwidth=100<CR> \| gv \| gq \| :<C-U>set textwidth=0<CR>
-set wrap
-set showbreak=❱❱❱❱
-set whichwrap+=<,>,h,l
-
 " Ctrl+Up/Down/j/k to move across display lines (i.e., including line breaks)
 nnoremap <C-Up> gk
 inoremap <C-Up> <C-O>gk
@@ -394,6 +388,15 @@ nnoremap <C-k> gk
 vnoremap <C-k> gk
 nnoremap <C-j> gj
 vnoremap <C-j> gj
+
+" Wrap visual selection to 100 chars (Shift-F3)
+vnoremap <silent> <F18> :<C-U>set textwidth=100<CR> \| gv \| gq \| :<C-U>set textwidth=0<CR>
+set wrap
+set showbreak=❱❱❱❱
+set whichwrap+=<,>,h,l
+
+" Sort visual selection, keeping only unique (Ctrl-Shift-F3)
+vnoremap <silent> <F23> :sort u<CR>
 
 
 """"""""""""""""
