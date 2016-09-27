@@ -1,0 +1,32 @@
+[user]
+    name = cookjo
+    email = jordan.cook@pioneer.com
+[github]
+    user = JWCook
+[core]
+    editor = vim
+[alias]
+    p = pull
+    down = pull
+    up = push
+    s = status
+    c = commit --verbose
+    cm = commit -m
+    stat = shortlog --summary --numbered
+[push]
+    default = simple
+[merge "ours"]
+    driver = true
+[color]
+    diff = always
+    grep = always
+    status = always
+[color "diff"]
+    meta = blue
+[color "status"]
+    header = blue
+    branch = cyan
+    added = green
+    changed = cyan
+    deleted = red
+    untracked = magenta

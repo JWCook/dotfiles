@@ -1,4 +1,4 @@
-install: install-bash install-postgres install-vim install-fonts iinstall-grc nstall-htop install-ipython install-pep8 install-terminator
+install: install-bash install-fonts install-git install-grc install-htop install-ipython install-pep8 install-postgres install-terminator install-vim
 
 install-bash:
 	rm -rf ~/.bashrc
@@ -10,24 +10,18 @@ install-bash:
 	ln -s `pwd`/bash/bash_profile ~/.bash_profile
 	ln -s `pwd`/bash/bash_logout  ~/.bash_logout
 
-install-postgres:
-	rm -rf ~/.psqlrc
-	ln -s `pwd`/postgres/psqlrc ~/.psqlrc
-
-install-vim:
-	rm -rf ~/.vim
-	rm -rf ~/.vimrc
-	ln -s `pwd`/vim/vimrc  ~/.vimrc
-	ln -s `pwd`/vim/vim  ~/.vim
-
 install-fonts:
 	echo 'Installing patched fonts...'
 	mkdir -p ~/.fonts
-	wget -P ~/.fonts/ https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.ttf
+	wget -P ~/.fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.ttf
 	wget -P ~/.fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
 	xset +fp ~/.fonts
-	fc-cache -vf ~/.fonts/
+	fc-cache -vf ~/.fonts
 	echo 'Done. Set terminal font to DejaVuSansMono'
+
+install-git:
+	rm -rf ~/.gitconfig
+	ln -s `pwd`/git/gitconfig ~/.gitconfig
 
 install-grc:
 	rm -rf ~/.grc
@@ -50,6 +44,16 @@ install-pep8:
 	ln -s `pwd`/pep8/pep8    ~/.config/pep8
 	ln -s `pwd`/pep8/flake8  ~/.config/flake8
 
+install-postgres:
+	rm -rf ~/.psqlrc
+	ln -s `pwd`/postgres/psqlrc ~/.psqlrc
+
 install-terminator:
 	rm -rf ~/.config/terminator
 	ln -s `pwd`/terminator ~/.config/terminator
+
+install-vim:
+	rm -rf ~/.vim
+	rm -rf ~/.vimrc
+	ln -s `pwd`/vim/vimrc  ~/.vimrc
+	ln -s `pwd`/vim/vim  ~/.vim

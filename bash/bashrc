@@ -70,13 +70,33 @@ function wcr() { gr "$1" $2 | wc -l; }                              # Recursive 
 alias sb='echo "reloading bashrc..." | lolcat -a -d 20; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
 alias vv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
-alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/.gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
+alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
 alias vp='vpyfile'
 
 # Git
+GLOG_FORMAT='%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d'
 alias gp='git pull'
 alias gs='git status'
-alias git-undo-commit='git reset --soft HEAD~1'
+alias gss='git status --short'
+alias gc='git commit --verbose'
+alias gcm='git commit -m'
+function ggr() { git grep "$1" ${2:-.}; }
+alias gunstage='git reset HEAD'
+alias guncommit='git reset --soft HEAD~1'
+alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
+# alias glog='git log --oneline --graph --no-merges'
+alias glog-branch='glog master..HEAD'
+alias grebase='git rebase --interactive master'
+alias gstat='git shortlog --summary --numbered'
+function grm(){ rm $1; git rm $1; }
+# Delete local and remote branch
+function grm-branch() {
+    read -p "Deleting branch $1. Continue?" -n 1 -r CONFIRM; echo
+    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+        git branch -d $1; git push origin --delete $1;
+    fi
+}
+__git_complete git-delete-branch _git_branch
 
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
