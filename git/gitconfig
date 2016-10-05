@@ -30,3 +30,8 @@
     changed = cyan
     deleted = red
     untracked = magenta
+[tig]
+    vertical-split = false
+    split-view-height = 80%
+    tab-size = 4
+    line-graphics = utf-8

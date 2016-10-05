@@ -454,9 +454,9 @@ noremap <silent> <C-l>     :bnext<CR>
 nnoremap <silent> <A-Up>    :wincmd k<CR>
 inoremap <silent> <A-Up>    <C-O>:wincmd k<CR>
 nnoremap <silent> <A-Down>  :wincmd j<CR>
-inoremap <silent> <A-Down>  :<C-O>wincmd j<CR>
+inoremap <silent> <A-Down>  <C-O>:wincmd j<CR>
 nnoremap <silent> <A-Left>  :wincmd h<CR>
-inoremap <silent> <A-Left>  :<C-O>wincmd h<CR>
+inoremap <silent> <A-Left>  <C-O>:wincmd h<CR>
 nnoremap <silent> <A-Right> :wincmd l<CR>
 inoremap <silent> <A-Right> <C-O>:wincmd l<CR>
 noremap <silent> <A-k>     :wincmd k<CR>
