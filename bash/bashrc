@@ -96,7 +96,7 @@ function grm-branch() {
         git branch -d $1; git push origin --delete $1;
     fi
 }
-__git_complete git-delete-branch _git_branch
+type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git_branch
 
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
