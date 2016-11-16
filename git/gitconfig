@@ -9,6 +9,8 @@
     p = pull
     down = pull
     up = push
+    amend = commit --amend
+    patch = add --patch
     s = status
     c = commit --verbose
     cm = commit -m

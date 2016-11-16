@@ -1,14 +1,14 @@
 # Log levels
 regexp=\[(INFO|DEBUG)\]
 colours=green
-count=once
+count=more
 ======
 regexp=\[(WARNING|ERROR|CRITICAL)\]
 colours=red
-count=once
+count=more
 ======
 # Log class
-regexp=\[[a-z_\.]+?([\.A-Z][a-z]+)*\]
+regexp=\[[0-9a-z_\.]+?([0-9A-Z\.][0-9a-z]+)*\]
 colours=cyan
 count=once
 ======

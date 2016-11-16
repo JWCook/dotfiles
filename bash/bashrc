@@ -48,7 +48,7 @@ function cpv() { rsync -WavP --human-readable --progress $1 $2; }   # Verbose co
 alias cw='cd $WORKSPACE'
 alias df='df -khT | color-filesize'                                 # Readable disk usage
 alias du='du -Sh | sort -hr | color-filesize | more'                # Recursive folder size
-function fd() { find ${2:-.} -name "$1" -type d; }                  # Recursive search (lit, dirs)
+function fd() { find ${2:-.} -name "$1" -prune -type d; }           # Recursive search (lit, dirs)
 function ff() { find ${2:-.} -name "$1" -type f; }                  # Recursive search (lit, files)
 function gr() { grep -r "$1" ${2:-.}; }                             # Recursive search
 alias list-users='column -ts: /etc/passwd | sort'
@@ -63,7 +63,7 @@ alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
 alias tailf='tail -f -n 50'
 alias top='htop'
 alias tracert='traceroute'
-alias tree='tree -CAFah --du --dirsfirst --prune -I ".git|__pycache__"'
+alias tree='tree -CAFah --du --dirsfirst --prune -I "*.sw*|.git|__pycache__"'
 function wcr() { gr "$1" $2 | wc -l; }                              # Recursive word count
 
 # Config
@@ -80,14 +80,19 @@ alias gs='git status'
 alias gss='git status --short'
 alias gc='git commit --verbose'
 alias gcm='git commit -m'
-function ggr() { git grep "$1" ${2:-.}; }
+alias gmend='git commit --amend'
+alias grevise='git add --all; git commit --amend --no-edit'
+alias gpatch='git add --patch'
 alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
 alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
-# alias glog='git log --oneline --graph --no-merges'
 alias glog-branch='glog master..HEAD'
 alias grebase='git rebase --interactive master'
-alias gstat='git shortlog --summary --numbered'
+alias gcontinue='git rebase --continue'
+alias gcstat='git shortlog --summary --numbered'
+alias gcstat-all='git rev-list --count HEAD'
+function gadd() { git add ${1:-.}; }
+function ggr() { git grep "$1" ${2:-.}; }
 function grm(){ rm $1; git rm $1; }
 # Delete local and remote branch
 function grm-branch() {
@@ -111,14 +116,17 @@ alias pg-restart='sudo service postgresql-9.5 restart'
 alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
 
 # Python
-type -a pt > /dev/null 2>&1 && function pt(){ py-cleanup; py.test ${1:-./test}; }
+type -a pt > /dev/null 2>&1 || function pt(){ py-cleanup; py.test ${1:-./test}; }
 function ptv(){ py-cleanup; py.test -vvs -rwrs ${1:-./test}; }
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 alias mkv='mkvirtualenv -a . -r ./requirements.txt'
 alias pipr='pip install -U pip -r requirements.txt | lc-gradient --seed=100'
-alias py-cleanup='find . -name "*.pyc" -type f -delete;\
-                  find . -name "__pycache__" -type d -exec rm -rf '{}' \; 2> /dev/null'
+function py-cleanup() {
+    find ${1:-.} -name "*.pyc" -type f -delete
+    find ${1:-.} -name "__pycache__" -prune -type d -exec rm -rf '{}' \; 2> /dev/null
+}
+function vim-cleanup() { find ${1:-.} -name "*.sw[mnop]" -type f -delete; }
 # Print source path of a python module
 function pyfile() { python -c "import $@; print $@.__file__" | sed 's/\.pyc/\.py/'; }
 # Open source file of a python module
