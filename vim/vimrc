@@ -93,9 +93,9 @@ set <F19>=O1;2S   " F19 -> S-F4
 set <F21>=O1;6P   " F21 -> C-S-F1
 set <F22>=O1;6Q   " F22 -> C-S-F2
 set <F23>=O1;6R   " F23 -> C-S-F3
-set <F24>=O1;6S   " F24 -> C-S-F4
 
-" Available function key mappings
+" Available vim keycodes: <F13-F37>, <S-F13>-<S-F37>
+" Available function key mappings:
 "           S-F1  C-S-F1
 " F2  C-F2  S-F2  C-S-F2
 "           S-F3  C-S-F3
@@ -343,7 +343,7 @@ set background=dark
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
-  colorscheme elflord
+  colorscheme jellybeans
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
@@ -444,13 +444,13 @@ set tm=500
 " ❰❰ Buffers/Windows/Tabs ❱❱ "
 """"""""""""""""""""""""""""""
 
-" CTRL+Left/Right/h/l to move between buffers
+" CTRL-Left/Right/h/l to move between buffers
 noremap <silent> <C-Left>  :bprev<CR>
 noremap <silent> <C-Right> :bnext<CR>
 noremap <silent> <C-h>     :bprev<CR>
 noremap <silent> <C-l>     :bnext<CR>
 
-" Alt+Left/Right/Up/Down/h/j/k/l to move between windows
+" Alt-Left/Right/Up/Down/h/j/k/l to move between windows
 nnoremap <silent> <A-Up>    :wincmd k<CR>
 inoremap <silent> <A-Up>    <C-O>:wincmd k<CR>
 nnoremap <silent> <A-Down>  :wincmd j<CR>
@@ -489,6 +489,10 @@ nnoremap <silent> <S-Left>  :tabp<CR>
 inoremap <silent> <S-Left>  <C-O>:tabp<CR>
 nnoremap <silent> <S-Right> :tabn<CR>
 inoremap <silent> <S-Right> <C-O>:tabn<CR>
+
+" Ctrl-Shift-Left/Right to move tabs
+nnoremap <silent> <C-S-Left>   :tabm -1<CR>
+nnoremap <silent> <C-S-Right>  :tabm +1<CR>
 
 " Switch between unsaved buffers w/o save, preserves history
 set hidden

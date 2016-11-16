@@ -1,0 +1,10 @@
+pip>=9.0
+ipython[all]
+python-dateutil
+flake8
+pylint
+pytest
+pytest-cov
+requests[security]
+virtualenv
+virtualenvwrapper

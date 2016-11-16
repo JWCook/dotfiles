@@ -11,7 +11,7 @@ pathadd() {
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 [[ -f ~/.bashrc_style ]] && source ~/.bashrc_style  # Prompt & command colorization
 [[ -f ~/.bashrc_extra ]] && source ~/.bashrc_extra  # Machine/employer-specific config
-which virtualenvwrapper.sh  > /dev/null 2>&1 && source $(which virtualenvwrapper.sh)
+which virtualenvwrapper.sh > /dev/null 2>&1 && source $(which virtualenvwrapper.sh)
 
 
 ###############################
@@ -71,7 +71,6 @@ alias sb='echo "reloading bashrc..." | lolcat; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
 alias vv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
 alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
-alias vp='vpyfile'
 
 # Git
 GLOG_FORMAT='%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d'
@@ -87,10 +86,12 @@ alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
 alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
 alias glog-branch='glog master..HEAD'
-alias grebase='git rebase --interactive master'
+alias grebase='git fetch origin; git rebase --interactive master'
+alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
 alias gcontinue='git rebase --continue'
 alias gcstat='git shortlog --summary --numbered'
 alias gcstat-all='git rev-list --count HEAD'
+alias groot='cd $(git rev-parse --show-toplevel)'
 function gadd() { git add ${1:-.}; }
 function ggr() { git grep "$1" ${2:-.}; }
 function grm(){ rm $1; git rm $1; }
@@ -121,7 +122,7 @@ function ptv(){ py-cleanup; py.test -vvs -rwrs ${1:-./test}; }
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 alias mkv='mkvirtualenv -a . -r ./requirements.txt'
-alias pipr='pip install -U pip -r requirements.txt | lc-gradient --seed=100'
+alias pipr='pip install -Ur requirements.txt | lc-gradient --seed=100'
 function py-cleanup() {
     find ${1:-.} -name "*.pyc" -type f -delete
     find ${1:-.} -name "__pycache__" -prune -type d -exec rm -rf '{}' \; 2> /dev/null
@@ -129,8 +130,10 @@ function py-cleanup() {
 function vim-cleanup() { find ${1:-.} -name "*.sw[mnop]" -type f -delete; }
 # Print source path of a python module
 function pyfile() { python -c "import $@; print $@.__file__" | sed 's/\.pyc/\.py/'; }
+alias pf='pyfile'
 # Open source file of a python module
 function vpyfile() { pf_path=$(pyfile $@); [[ -f $pf_path ]] && vim $pf_path; }
+alias vp='vpyfile'
 # Workon & cd to a virtualenv (with autocomplete)
 function wo() {
     if [ -n "$1" ]; then
@@ -158,9 +161,14 @@ function nullify() { "$@" >/dev/null 2>&1; }
 
 # Recursive find/replace
 function grepsed() {
-    read -p "Replacing $(wcr $1 $3) occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
-        grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
+    FILE_COUNT=$(wcr $1 $3)
+    if [ $FILE_COUNT -gt 0 ]; then
+       read -p "Replacing $FILE_COUNT occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
+       if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+            grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
+       fi
+    else
+        echo "No occurances of '$1' found"
     fi
 }
 

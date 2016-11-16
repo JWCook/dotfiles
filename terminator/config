@@ -10,6 +10,8 @@
   go_right = <Shift><Alt>Right
   go_up = <Shift><Alt>Up
   help = None
+  resize_left = None
+  resize_right = None
 [layouts]
   [[default]]
     [[[child1]]]
