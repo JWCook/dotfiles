@@ -137,6 +137,7 @@ install-system-packages-centos:
 install-vim-centos:
 	scipts/centos/install_vim_prereqs.sh
 	scripts/install_vim.sh
+	scripts/install_vim_plug.sh
 
 install-chrome-centos:
 	scripts/centos/install_chrome.sh
@@ -158,6 +159,7 @@ install-system-packages-ubuntu:
 install-vim-ubuntu:
 	scripts/ubuntu/install_vim_prereqs.sh
 	scripts/install_vim.sh
+	scripts/install_vim_plug.sh
 
 install-chrome-ubuntu:
 	scripts/ubuntu/install_chrome.sh

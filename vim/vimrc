@@ -1,3 +1,15 @@
+let vim_header = [
+    \ '                 88                           ad88888ba',
+    \ '                 ^^                          d8^     ^8b',
+    \ '                                             Y8a     a8P',
+    \ '  8b       d8    88    88.dPYba..adPYba.      ^Y8aaa8P^',
+    \ '  `8b     d8`    88    88P`   ^88^    ^8a     .d8^^^8b.',
+    \ '   `8b   d8`     88    88      88      88    d8^     ^8b',
+    \ '    `8b.d8`      88    88      88      88    Y8a     a8P',
+    \ '      ^8^        88    88      88      88     ^Y88888P^',
+    \ ]
+
+
 """""""""""""""""
 " ❰❰ Plugins ❱❱ "
 """""""""""""""""
@@ -24,6 +36,8 @@ Plug 'ervandew/supertab'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
 Plug 'godlygeek/tabular'
+Plug 'Kuniwak/vint', {'do': 'sudo pip install -U vim-vint'}
+Plug 'WolfgangMehner/bash-support'
 
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
@@ -113,6 +127,10 @@ set <F23>=O1;6R   " F23 -> C-S-F3
 " ❰❰ Plugin Settings ❱❱ "
 """""""""""""""""""""""""
 
+let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.sonar$',
+                   \ '^\.tox$', '_build$', '^dist$', 'htmlcov$', '^tmp$', '^\.coverage$', '\.a$',
+                   \ '\.class$', '\.idea$', '\.o$', '\.obj$', '\.pyc$','\.sw\a$', '\.so$']
+
 " Enable filetype-specific plugins and indent files
 filetype plugin on
 filetype indent on
@@ -157,7 +175,7 @@ vnoremap <silent> <F14> :Tabularize /\|<CR>
 " nnoremap <silent> <F6> ::NERDTreeTabsToggle<CR>
 nnoremap <silent> <F6> :NERDTreeToggle<CR>
 inoremap <silent> <F6> <ESC>:NERDTreeToggle<CR>
-let NERDTreeIgnore=[ '\~$', '\.swp$', '\.pyc$' ]
+let NERDTreeIgnore=ignore_files
 let NERDTreeShowHidden=1
 let NERDTreeWinSize=28
 
@@ -196,7 +214,12 @@ let g:indent_guides_auto_colors=0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
+" Jedi
+" Disable docstring popup
+"autocmd FileType python setlocal completeopt-=preview
+
 " Pytest
+let g:pytest_test_dir = 'test'
 nnoremap pf :Pytest function<CR>
 nnoremap pt :Pytest file<CR>
 nnoremap pp :Pytest project<CR>
@@ -214,6 +237,7 @@ let g:syntastic_warning_symbol='‽❱'
 let g:syntastic_error_symbol='✘❱'
 let g:syntastic_style_warning_symbol='‡❱'
 let g:syntastic_style_error_symbol='‡❱'
+let g:syntastic_vim_checkers = ['vint']
 
 " Startify
 nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
@@ -225,10 +249,8 @@ inoremap <silent> <S-F10> <ESC>:Startify<CR>
 let g:startify_files_number=15
 let g:startify_change_to_vcs_root=1
 let g:startify_skiplist=[ '.gitignore' ]
-let g:startify_bookmarks=[ '~/.vim/vimrc',
-                         \ '~/Documents/vim.txt',
-                         \ '~/Documents/commands.txt',
-                         \ '~/.analyticonda/analyticonda.ini'  ]
+let g:startify_bookmarks=[]
+let g:startify_custom_header=vim_header
 " Make Startify play nicely with NERD Tree
 " let g:startify_session_before_save=['silent! NERDTreeTabsClose']
 let g:startify_session_before_save=['silent! NERDTreeClose']
@@ -249,8 +271,8 @@ nnoremap <C-Y> :Unite history/yank<CR>
 inoremap <C-Y> <ESC>:Unite history/yank<CR>
 nnoremap <C-L> <Plug>(unite_redraw)
 inoremap <C-L> <ESC><Plug>(unite_redraw)
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', join(
-    \['__pycache__/','\.git/','.virtualenvs/','tmp/','dist/','.cache','.coverage','.idea','.sonar','.swp','.swo','.pyc',], '\|'))
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+                        \ 'ignore_pattern', join(ignore_files, '\|'))
 
 " Virtualenvs
 let g:virtualenv_auto_activate=1
@@ -263,9 +285,6 @@ nnoremap <silent> vd :VirtualEnvDeactivate<CR>
 nnoremap ww :StripWhitespace<CR>
 nnoremap wt :ToggleWhitespace<CR>
 nnoremap ws :ToggleStripWhitespaceOnSave<CR>
-
-" Disable jedi-vim docstring popup
-"autocmd FileType python setlocal completeopt-=preview
 
 
 """"""""""""""""""""""
@@ -294,6 +313,9 @@ set history=1000
 " Prevents VIM from being nerfed into acting like VI
 set nocompatible
 
+" Disable (slow) saving backup of current buffer on write
+set nobackup
+
 " Don't save local values or folds in sessions
 set ssop-=options
 set ssop-=folds
@@ -303,7 +325,7 @@ set ttimeout
 set ttimeoutlen=100
 
 " Ignore these files when completing names
-set wildignore=.svn,CVS,.git,*.o,*.a,*~,*.pyc,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,node_modules/*
+set wildignore=*.o,*.a,*~,*.pyc,*.class,*.mo,*.la,*.so,*.obj,*.swo,*.swp,*.jpg,*.png,*.xpm,*.gif
 set wildmenu
 
 " Add minimum screen rows/columns around cursor
@@ -322,6 +344,10 @@ ca Q q
 " Pressing shift is hard
 nnoremap ; :
 vnoremap ; :
+
+" Who even uses ex mode
+map q: <nop>
+nnoremap Q <nop>
 
 
 """"""""""""""""""""""""""

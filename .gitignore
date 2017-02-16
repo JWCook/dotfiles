@@ -8,6 +8,7 @@ dist
 *.swo
 _build.py
 .cache
+vim/vim/autoload
 vim/vim/session
 plugged
 viminfo

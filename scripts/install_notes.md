@@ -4,6 +4,7 @@ Unscripted setup steps:
 * Browser plugins + config
 * Screen lock / power settings
 * Desktop environment extensions
+* File viewer (UI) settings
 * User theme
 * System font
 * Adjust sudoers file:
