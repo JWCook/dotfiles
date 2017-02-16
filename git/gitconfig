@@ -1,6 +1,6 @@
 [user]
-    name = cookjo
-    email = jordan.cook@pioneer.com
+	name = JWCook
+	email = JCook83@gmail.com
 [github]
     user = JWCook
 [core]
@@ -39,3 +39,5 @@
     split-view-height = 80%
     tab-size = 4
     line-graphics = utf-8
+[credential]
+	helper = cache --timeout=3600
