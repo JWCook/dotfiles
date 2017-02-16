@@ -6,15 +6,17 @@
 [core]
     editor = vim
 [alias]
-    p = pull
-    down = pull
-    up = push
     amend = commit --amend
-    patch = add --patch
-    s = status
     c = commit --verbose
     cm = commit -m
+    down = pull
+    f = fetch origin master:master
+    p = pull
+    patch = add --patch
+    rb = git rebase --interactive master
+    s = status
     stat = shortlog --summary --numbered
+    up = push
 [push]
     default = simple
 [merge "ours"]
