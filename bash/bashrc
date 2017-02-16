@@ -8,10 +8,11 @@ pathadd() {
 }
 
 # Additional runtime config
-[[ -f /etc/bashrc ]] && source /etc/bashrc
+[[ -f /etc/bashrc ]] && source /etc/bashrc          # Global bashrc
 [[ -f ~/.bashrc_style ]] && source ~/.bashrc_style  # Prompt & command colorization
-[[ -f ~/.bashrc_extra ]] && source ~/.bashrc_extra  # Machine/employer-specific config
-which virtualenvwrapper.sh  > /dev/null 2>&1 && source $(which virtualenvwrapper.sh)
+[[ -f ~/.bashrc_extra ]] && source ~/.bashrc_extra  # Machine-specific config
+[[ -f ~/.proxy ]] && source ~/.proxy                # Proxy settings
+which virtualenvwrapper.sh > /dev/null 2>&1 && source $(which virtualenvwrapper.sh)
 
 
 ###############################
@@ -33,11 +34,6 @@ export DOTFILES=~/dotfiles
 export DOTFILES_EXTRA=~/dotfiles_extra
 export WORKSPACE=~/workspace
 
-# Proxy
-# export http_proxy=
-# export https_proxy=
-# export no_proxy=localhost,127.0.0.1
-
 
 #################
 # ❰❰ Aliases ❱❱ #
@@ -58,8 +54,13 @@ function lt() { tree $@ | color-filesize; }                         # Colored fo
 function lt2() { tree -L 2 $@ | color-filesize; }                   # Colored folder tree (depth 2)
 function md() { mkdir -p "$@" && cd "$@"; }                         # Create a dir and enter it
 alias netconn='netstat -pan --inet'
+function newest() {                                                 # Most recent file w/ pattern
+    find ${2:-.} -type f -name $1 -print0 | xargs -0 ls -t | head -n1
+}
 alias path='echo -e ${PATH//:/\\n}  | lc-gradient --seed=8'
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
+function pwd-base() { basename $(pwd); }
+alias pwd-src="pwd-base | sed 's/-/_/g'"
 alias tailf='tail -f -n 50'
 alias top='htop'
 alias tracert='traceroute'
@@ -69,9 +70,13 @@ function wcr() { gr "$1" $2 | wc -l; }                              # Recursive 
 # Config
 alias sb='echo "reloading bashrc..." | lolcat; source ~/.bashrc'
 alias vb='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*'
-alias vv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
+alias vv='vim $DOTFILES/vim/vimrc'
+alias vvv='vim -O2 $DOTFILES/vim/vimrc $DOTFILES/vim/README.md'
 alias vc='vim -O2 $DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc* $DOTFILES/vim/vimrc $DOTFILES/git/gitconfig $DOTFILES/postgres/psqlrc $DOTFILES_EXTRA/ssh/config $DOTFILES/Makefile $DOTFILES_EXTRA/Makefile'
-alias vp='vpyfile'
+
+# Encryption
+alias gen-aes='openssl enc -aes-256-cbc -P -md sha512'
+alias gen-rsa='ssh-keygen -t rsa -b 4096'
 
 # Git
 GLOG_FORMAT='%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d'
@@ -87,10 +92,22 @@ alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
 alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
 alias glog-branch='glog master..HEAD'
-alias grebase='git rebase --interactive master'
+alias grebase='git fetch origin master:master; git rebase --interactive master'
+alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
 alias gcontinue='git rebase --continue'
 alias gcstat='git shortlog --summary --numbered'
 alias gcstat-all='git rev-list --count HEAD'
+alias groot='cd $(git rev-parse --show-toplevel)'
+# Pull if repo is alredy cloned, otherwise clone
+function gpclone() {
+    repo_dir=${2:-$(basename $1)}
+    echo $repo_dir
+    if [ -d "$repo_dir" ]; then
+        git -C $repo_dir pull
+    else
+        git clone $1 $repo_dir
+    fi
+}
 function gadd() { git add ${1:-.}; }
 function ggr() { git grep "$1" ${2:-.}; }
 function grm(){ rm $1; git rm $1; }
@@ -98,7 +115,8 @@ function grm(){ rm $1; git rm $1; }
 function grm-branch() {
     read -p "Deleting branch $1. Continue?" -n 1 -r CONFIRM; echo
     if [[ $CONFIRM =~ ^[Yy]$ ]]; then
-        git branch -d $1; git push origin --delete $1;
+        git branch -d $1
+        git push origin --delete $1
     fi
 }
 type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git_branch
@@ -108,6 +126,8 @@ alias devterm='terminator -mfl 6-split &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias tt='tig'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
+alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
+alias weather='date;curl -4 http://wttr.in'
 
 # Postgres
 alias pg-start='sudo service postgresql-9.5 start'
@@ -116,21 +136,34 @@ alias pg-restart='sudo service postgresql-9.5 restart'
 alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
 
 # Python
-type -a pt > /dev/null 2>&1 || function pt(){ py-cleanup; py.test ${1:-./test}; }
-function ptv(){ py-cleanup; py.test -vvs -rwrs ${1:-./test}; }
+alias pipr='pip install -Ur requirements.txt | lc-gradient --seed=100'
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
-alias mkv='mkvirtualenv -a . -r ./requirements.txt'
-alias pipr='pip install -U pip -r requirements.txt | lc-gradient --seed=100'
+function mkv() {
+    mkvirtualenv -a . ${1:-$(pwd-base)}
+    add2virtualenv .
+    pipr
+}
 function py-cleanup() {
     find ${1:-.} -name "*.pyc" -type f -delete
     find ${1:-.} -name "__pycache__" -prune -type d -exec rm -rf '{}' \; 2> /dev/null
 }
 function vim-cleanup() { find ${1:-.} -name "*.sw[mnop]" -type f -delete; }
+type -a pt > /dev/null 2>&1 || function pt(){ py-cleanup; py.test ${1:-./test}; }
+# Run py.test with verbose output
+function ptv(){ py-cleanup; py.test -vvs -rwrs ${1:-./test}; }
+# Generate HTML py.test coverage report
+function ptc() {
+    py-cleanup
+    py.test --junit-xml=test-reports/py.test-latest.xml --cov ${1:-$(pwd-src)} --cov-report html ./test
+    [[ -f htmlcov/index.html ]] && firefox htmlcov/index.html &
+}
 # Print source path of a python module
 function pyfile() { python -c "import $@; print $@.__file__" | sed 's/\.pyc/\.py/'; }
+alias pf='pyfile'
 # Open source file of a python module
 function vpyfile() { pf_path=$(pyfile $@); [[ -f $pf_path ]] && vim $pf_path; }
+alias vp='vpyfile'
 # Workon & cd to a virtualenv (with autocomplete)
 function wo() {
     if [ -n "$1" ]; then
@@ -158,9 +191,14 @@ function nullify() { "$@" >/dev/null 2>&1; }
 
 # Recursive find/replace
 function grepsed() {
-    read -p "Replacing $(wcr $1 $3) occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
-        grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
+    FILE_COUNT=$(wcr $1 $3)
+    if [ $FILE_COUNT -gt 0 ]; then
+       read -p "Replacing $FILE_COUNT occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
+       if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+            grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
+       fi
+    else
+        echo "No occurances of '$1' found"
     fi
 }
 

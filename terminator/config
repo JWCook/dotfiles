@@ -1,5 +1,6 @@
 [global_config]
   focus = system
+  inactive_color_offset = 0.9
   suppress_multiple_term_dialog = True
   title_transmit_bg_color = "#d30102"
 [keybindings]
@@ -10,6 +11,8 @@
   go_right = <Shift><Alt>Right
   go_up = <Shift><Alt>Up
   help = None
+  resize_left = None
+  resize_right = None
 [layouts]
   [[default]]
     [[[child1]]]
@@ -216,7 +219,6 @@
 [profiles]
   [[default]]
     background_color = "#002b36"
-    background_image = None
     cursor_color = "#eee8d5"
     font = DroidSansMonoForPowerline Nerd Font 10
     foreground_color = "#839496"
@@ -227,7 +229,6 @@
     use_system_font = False
   [[default+]]
     background_color = "#002b36"
-    background_image = None
     cursor_color = "#eee8d5"
     font = DroidSansMonoForPowerline Nerd Font 12
     foreground_color = "#839496"
@@ -238,7 +239,6 @@
     use_system_font = False
   [[solarized-light]]
     background_color = "#eee8d5"
-    background_image = None
     cursor_color = "#002b36"
     foreground_color = "#002b36"
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"

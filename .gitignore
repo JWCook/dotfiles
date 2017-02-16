@@ -1,12 +1,14 @@
 build
 dist
 *~
+*.lock
 *.log
 *.pyc
 *.swp
 *.swo
 _build.py
 .cache
+vim/vim/autoload
 vim/vim/session
 plugged
 viminfo
