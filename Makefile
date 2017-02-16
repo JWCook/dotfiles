@@ -2,42 +2,57 @@
 # Cross-platform packages & config
 
 install-conf: install-bash-conf \
-	          install-figlet-conf \
-	          install-git-conf \
-	          install-grc-conf \
-	          install-htop-conf \
-	          install-ipython-conf \
-	          install-pep8-conf \
-	          install-postgres-conf \
-	          install-terminator-conf \
-	          install-vim-conf
+              install-figlet-conf \
+              install-git-conf \
+              install-grc-conf \
+              install-htop-conf \
+              install-ipython-conf \
+              install-pep8-conf \
+              install-postgres-conf \
+              install-terminator-conf \
+              install-vim-conf
 
 install-pkgs: install-fonts \
-	          install-haroopad \
-	          install-grc \
-	          install-ruby-gems \
-	          install-js-packages
+              install-haroopad \
+              install-grc \
+              install-ruby-gems \
+              install-js-packages \
+              update-python
 
-update: update-python update-ruby update-vim
+update: update-python \
+        update-ruby \
+        update-vim
 
 # Distro-specific packages
 
-install-pkgs-centos: install-system-packages-centos \
-	                 install-vim-centos\
-	                 install-chrome-centos \
-	                 install-retroterm-centos \
-	                 install-pkgs
+install-centos: install-conf \
+                install-system-packages-centos \
+                install-vim-centos\
+                install-chrome-centos \
+                install-retroterm-centos \
+                install-pkgs
 
-update-centos: update\
-		update-system-packages-centos
+update-centos: update
+	sudo yum upgrade -y
 
-install-pkgs-ubuntu: install-system-packages-ubuntu \
-	                 install-chrome-ubuntu \
-	                 install-vim-ubuntu \
-	                 install-pkgs
+install-fedora: install-conf \
+                install-system-packages-fedora \
+                install-vim-centos\
+                install-chrome-centos \
+                install-retroterm-centos \
+                install-pkgs
 
-update-ubuntu: update\
-		update-system-packages-ubuntu
+update-fedora: update
+	sudo dnf upgrade -y
+
+install-ubuntu: install-conf \
+                install-system-packages-ubuntu \
+                install-chrome-ubuntu \
+                install-vim-ubuntu \
+                install-pkgs
+
+update-ubuntu: update
+	sudo apt-get update && sudo apt-get upgrade -y
 
 
 #########################
@@ -117,6 +132,10 @@ install-js-packages:
 install-ruby-gems:
 	sudo gem install -g scripts/Gemfile
 
+install-vim:
+	scripts/install_vim.sh
+	scripts/install_vim_plug.sh
+
 update-python:
 	sudo -H pip install -Ur scripts/requirements-global.txt
 
@@ -132,21 +151,33 @@ update-vim:
 ####################
 
 install-system-packages-centos:
+	scripts/centos/install_repos.sh
 	scripts/centos/install_system_packages.sh
 
 install-vim-centos:
-	scipts/centos/install_vim_prereqs.sh
+	scripts/centos/install_vim_prereqs.sh
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
 
 install-chrome-centos:
-	scripts/centos/install_chrome.sh
+	sudo scripts/centos/install_chrome.sh
 
 install-retroterm-centos:
 	scripts/centos/install_retroterm.sh
 
-update-system-packages-centos:
-	sudo yum update -y
+
+####################
+# Packages: Fedora #
+####################
+
+install-system-packages-fedora:
+	scripts/fedora/install_repos.sh
+	scripts/centos/install_system_packages.sh
+
+install-vim-fedora:
+	scripts/fedora/install_vim_prereqs.sh
+	scripts/install_vim.sh
+	scripts/install_vim_plug.sh
 
 
 #####################
@@ -162,7 +193,4 @@ install-vim-ubuntu:
 	scripts/install_vim_plug.sh
 
 install-chrome-ubuntu:
-	scripts/ubuntu/install_chrome.sh
-
-update-system-packages-ubuntu:
-	sudo apt update && sudo apt upgrade -y
+	sudo scripts/ubuntu/install_chrome.sh
