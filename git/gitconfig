@@ -1,6 +1,6 @@
 [user]
-	name = JWCook
-	email = JCook83@gmail.com
+    name = JWCook
+    email = JCook83@gmail.com
 [github]
     user = JWCook
 [core]
@@ -40,4 +40,4 @@
     tab-size = 4
     line-graphics = utf-8
 [credential]
-	helper = cache --timeout=3600
+    helper = cache --timeout=3600

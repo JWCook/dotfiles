@@ -82,6 +82,7 @@ install-grc-conf:
 	ln -s `pwd`/grc ~/.grc
 
 install-htop-conf:
+	mkdir -p ~/.config
 	rm -rf ~/.config/htop
 	ln -s `pwd`/htop ~/.config/htop
 
@@ -93,6 +94,7 @@ install-ipython-conf:
 	ln -s `pwd`/ipython/profile_default/startup           ~/.ipython/profile_default/startup
 
 install-pep8-conf:
+	mkdir -p ~/.config
 	rm -rf ~/.config/pep8
 	rm -rf ~/.config/flake8
 	ln -s `pwd`/pep8/pep8    ~/.config/pep8
