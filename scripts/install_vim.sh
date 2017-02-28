@@ -11,9 +11,11 @@
 # Fedora
 PYTHON_CONFIG_DIR=/usr/lib64/python2.7/config/
 PYTHON3_CONFIG_DIR=/usr/lib64/python3.5/config-3.5m/
+
+REPO=https://github.com/vim/vim
 REPO_DIR=/usr/local/src/vim
 
-sudo git -C $REPO_DIR pull || sudo git clone https://github.com/vim/vim $REPO_DIR
+sudo git -C $REPO_DIR pull || sudo git clone $REPO $REPO_DIR
 cd $REPO_DIR
 
 echo 'Building vim...'
@@ -21,18 +23,20 @@ deactivate
 sudo make distclean
 sudo ./configure \
 --with-features=huge \
+--enable-fail-if-missing \
 --with-tlib=ncurses \
 --enable-pythoninterp=dynamic \
 --with-python-config-dir=$PYTHON_CONFIG_DIR \
 --enable-python3interp=dynamic \
 --with-python3-config-dir=$PYTHON3_CONFIG_DIR \
---enable-luainterp=dynamic \
---enable-perlinterp=dynamic \
---enable-rubyinterp=dynamic \
 --with-x \
 --enable-gui=auto \
 --with-compiledby=jordan.cook
 #--with-vim-name=vim8  # To keep separate from base repo vim
+# Can't compile with these on Fedora 25:
+# --enable-luainterp=dynamic \
+# --enable-perlinterp=dynamic \
+# --enable-rubyinterp=dynamic
 
 sudo make
 sudo make install

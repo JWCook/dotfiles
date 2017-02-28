@@ -124,6 +124,9 @@ type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git
 # Misc Shortcuts
 alias devterm='terminator -mfl 6-split &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
+alias jj='jupyter notebook --port 9468 &'
+alias jl='jupyter notebook list'
+alias jq='pkill jupyter'
 alias tt='tig'
 alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
 alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
