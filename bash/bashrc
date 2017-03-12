@@ -121,6 +121,17 @@ alias vv='vim $VIM_CONF'
 alias vvv='vim -O2 $VIM_CONF_ALL'
 alias vc='vim -O2 $BASH_CONF_ALL $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF'
 
+# Append a line to crontab, excluding duplicates
+crontab-append() {
+    if ! [[ $(crontab -l) =~ "$1" ]]; then
+        (crontab -l 2>/dev/null; echo "$1") | crontab -
+        echo "Updated crontab:"
+    else
+        echo "Already in crontab:"
+    fi
+    crontab -l
+}
+
 
 #############
 # ❰❰ Git ❱❱ #
