@@ -1,10 +1,13 @@
 pip>=9.0
-ipython[all]
-python-dateutil
+argcomplete
 flake8
+ipython[all]
 pylint
 pytest
 pytest-cov
+python-dateutil
 requests[security]
+requests[socks]
+vex
 virtualenv
 virtualenvwrapper
