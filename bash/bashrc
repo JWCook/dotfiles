@@ -25,6 +25,7 @@ export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 
 # Paths
+pathadd ~/.local/bin
 pathadd ~/bin
 pathadd ~/scripts
 # export JRE_HOME=/opt/jdk1.8.0_51/jre
@@ -38,31 +39,26 @@ export WORKSPACE=~/workspace
 # ❰❰ General Aliases ❱❱ #
 #########################
 
-cpv() { rsync -WavP --human-readable --progress $1 $2; }    # Verbose copy w/progress
+bak() { cp "$1"{,.bak}; }                                   # Copy to file.bak
 alias cw='cd $WORKSPACE'
-alias df='df -khT | color-filesize'                         # Readable disk usage
-alias du='du -Sh | sort -hr | color-filesize | more'        # Recursive folder size
 fd() { find ${2:-.} -name "$1" -prune -type d; }            # Recursive search (lit, dirs)
 ff() { find ${2:-.} -name "$1" -type f; }                   # Recursive search (lit, files)
 ge() { env | grep ${1:-""}; }                               # Search environment variables
 gr() { grep -r "$1" ${2:-.}; }                              # Recursive search
-alias lu='column -ts: /etc/passwd | sort'                   # Formatted local user list
-alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'     # Currently logged on users
+hist-frequency() {                                          # Most frequently used commands
+    history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | less
+}
 alias ll='ls -Alhv --group-directories-first'
 lt() { tree $@ | color-filesize; }                          # Colored folder tree
 lt2() { tree -L 2 $@ | color-filesize; }                    # Colored folder tree (depth 2)
 md() { mkdir -p "$@" && cd "$@"; }                          # Create a dir and enter it
-alias netconn='netstat -pan --inet'
-newest() {                                                  # Most recent file w/ pattern
+newest() {                                                  # Find most recent file w/ pattern
     find ${2:-.} -type f -name $1 -print0 | xargs -0 ls -t | head -n1
 }
-alias path='echo -e ${PATH//:/\\n}  | lc-gradient --seed=8'
-alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'    # List user processes
+nullify() { "$@" >/dev/null 2>&1; }                         # Run cmd with no output
 pwd-base() { basename $(pwd); }                             # Base name of the current working dir
 alias pwd-src="pwd-base | sed 's/-/_/g'"                    # Guess name of project src dir
 alias tailf='tail -f -n 50'
-alias top='htop'
-alias tracert='traceroute'
 alias tree='tree -CAFah --du --dirsfirst --prune -I "*.sw*|.git|__pycache__"'
 wcr() { gr "$1" $2 | wc -l; }                               # Recursive word count
 
@@ -72,9 +68,8 @@ alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias jj='jupyter notebook --port 9468 &'
 alias jl='jupyter notebook list'
 alias jq='pkill jupyter'
+alias top='htop'
 alias tt='tig'
-alias my-ip='(/sbin/ifconfig em1 | awk "/inet/ { print $2 } " | sed -e s/addr://)'
-alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
 alias weather='date;curl -4 http://wttr.in'
 
 # Encryption
@@ -85,6 +80,55 @@ alias gen-rsa='ssh-keygen -t rsa -b 4096'
 s3cat() { aws s3 cp s3://$@ -; }
 s3ls() { aws s3 ls s3://$@; }
 s3rm() { aws s3 rm s3://$@; }
+
+
+#################
+# ❰❰ Network ❱❱ #
+#################
+
+alias listen='lsof -P -i -n | grcat conf.nmap'
+alias local-ip='(ifconfig | awk "/inet/ { print $2 } " | sed -e s/addr://)'
+alias public-ip='curl v4.ifconfig.co'
+alias netconn='netstat -pan --inet'
+alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
+alias tracert='traceroute'
+
+# Mount a network share (remote_share, local_mountpoint, creds_file)
+mount-share(){
+    if ! mountpoint $2 > /dev/null 2>&1; then
+        sudo mkdir -p $2
+        sudo mount -v -t cifs -o credentials=$3 $1 $2
+    else
+        echo 'Already mounted'
+    fi
+}
+
+
+#####################
+# ❰❰ System Info ❱❱ #
+#####################
+
+alias df='df -khT | color-filesize'                         # Readable disk usage
+alias du='du -Sh | sort -hr | color-filesize | more'        # Recursive folder size
+distinfo() { cat /etc/os-release; lsb_release -a; }         # Distribution info
+alias lu='column -ts: /etc/passwd | sort'                   # Formatted local user list
+alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'     # Currently logged on users
+alias path='echo -e ${PATH//:/\\n}  | lc-gradient --seed=8' # List/format items on PATH
+alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'    # List user processes
+
+# Combined system information
+sysinfo() {
+    echo -e "\n${RED}Host information:$NOCOLOR " ; uname -a | lc-gradient -S 60
+    echo -e "\n${RED}Distro information:$NOCOLOR " ; distinfo | lc-gradient -S 60
+    echo -e "\n${RED}Users logged on:$NOCOLOR " ; lu-current | lc-gradient -S 60
+    echo -e "\n${RED}Current date :$NOCOLOR " ; date | lc-gradient -S 60
+    echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lc-gradient -S 60
+    echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lc-gradient -S 60
+    echo -e "\n${RED}Diskspace :$NOCOLOR " ; df
+    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lc-gradient -S 60
+    echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
+    echo
+}
 
 
 ##################
@@ -159,7 +203,7 @@ alias gcontinue='git rebase --continue'
 alias gcstat='git shortlog --summary --numbered'
 alias gcstat-all='git rev-list --count HEAD'
 alias groot='cd $(git rev-parse --show-toplevel)'
-gadd() { git add ${1:-.}; }
+gadd() { git add ${@:-.}; }
 ggr() { git grep "$1" ${2:-.}; }
 grm(){ rm $1; git rm $1; }
 
@@ -192,9 +236,13 @@ type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git
 alias pipr='pip install -Ur requirements.txt | lc-gradient --seed=100'
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
+update-python() {
+    make -C $DOTFILES update-python | lc-gradient
+    make -C $DOTFILES_EXTRA update-python | lc-gradient
+}
 
 # Pytest shortcut, if not already defined
-type -a pt > /dev/null 2>&1 || pt(){ py-cleanup; py.test ${1:-./test}; }
+type -a pt > /dev/null 2>&1 || pt() { py-cleanup; py.test ${1:-./test}; }
 
 # New virtual environment, with paths and packages
 mkv() {
@@ -212,10 +260,10 @@ vim-cleanup() {
     find ${1:-.} -name "*.sw[mnop]" -type f -delete
 }
 
-# Run py.test with verbose output
+# Run py.test with ludicrous verbosity
 ptv(){
     py-cleanup
-    py.test -vvs -rwrs ${1:-./test}
+    py.test -vvv -rwrs --capture=no --full-trace ${1:-./test}
 }
 
 # Generate HTML py.test coverage report
@@ -252,12 +300,13 @@ wo() {
 complete -o default -o nospace -F _virtualenvs wo
 
 
-#################################
-# ❰❰ Miscellaneous Functions ❱❱ #
-#################################
+#########################
+# ❰❰ File Operations ❱❱ #
+#########################
 
-nullify() {
-    "$@" >/dev/null 2>&1;
+# Verbose copy w/progress
+cpv() {
+    rsync -WavP --human-readable --progress $1 $2;
 }
 
 # Formatted preview for CSV files
@@ -340,20 +389,6 @@ swap() {
     mv "$1" $TMPFILE
     mv "$2" "$1"
     mv $TMPFILE "$2"
-}
-
-# Print various pieces of system information
-sysinfo() {
-    echo -e "\n${RED}Host information:$NOCOLOR " ; uname -a | lc-gradient -S 60
-    echo -e "\n${RED}Distro information:$NOCOLOR " ; cat /etc/os-release | lc-gradient -S 60 ; lsb_release -a | lc-gradient -S 60
-    echo -e "\n${RED}Users logged on:$NOCOLOR " ; list-users-current | lc-gradient -S 60
-    echo -e "\n${RED}Current date :$NOCOLOR " ; date | lc-gradient -S 60
-    echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lc-gradient -S 60
-    echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lc-gradient -S 60
-    echo -e "\n${RED}Diskspace :$NOCOLOR " ; df
-    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lc-gradient -S 60
-    echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
-    echo
 }
 
 # Enable Terminator to execute startup commands and keep shell open

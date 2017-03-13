@@ -111,6 +111,7 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 |                   | sub (w/ confirmation)          | `:s/find/replace/c`
 |                   | sub (whole line)               | `:s/find/replace/g`
 |                   | sub (whole file)               | `:%s/find/replace/g`
+|                   | delete matching lines          | `%g/find/d`
 | Marks             | create mark                    | m[a-z]
 |                   | goto a line beginning          | 'a
 |                   | goto a exact location          | `a
