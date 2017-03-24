@@ -31,7 +31,7 @@ pathadd ~/scripts
 # export JRE_HOME=/opt/jdk1.8.0_51/jre
 # export JAVA_HOME=/opt/jdk1.8.0_51
 export DOTFILES=~/dotfiles
-[ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles_extra
+[ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra
 export WORKSPACE=~/workspace
 
 
@@ -58,6 +58,7 @@ newest() {                                                  # Find most recent f
 nullify() { "$@" >/dev/null 2>&1; }                         # Run cmd with no output
 pwd-base() { basename $(pwd); }                             # Base name of the current working dir
 alias pwd-src="pwd-base | sed 's/-/_/g'"                    # Guess name of project src dir
+alias ta='type -a'
 alias tailf='tail -f -n 50'
 alias tree='tree -CAFah --du --dirsfirst --prune -I "*.sw*|.git|__pycache__"'
 wcr() { gr "$1" $2 | wc -l; }                               # Recursive word count
@@ -70,7 +71,7 @@ alias jl='jupyter notebook list'
 alias jq='pkill jupyter'
 alias top='htop'
 alias tt='tig'
-alias weather='date;curl -4 http://wttr.in'
+alias weather='curl -4 http://wttr.in/~50266'
 
 # Encryption
 alias gen-aes='openssl enc -aes-256-cbc -P -md sha512'
@@ -90,8 +91,9 @@ alias listen='lsof -P -i -n | grcat conf.nmap'
 alias local-ip='(ifconfig | awk "/inet/ { print $2 } " | sed -e s/addr://)'
 alias public-ip='curl v4.ifconfig.co'
 alias netconn='netstat -pan --inet'
-alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
 alias tracert='traceroute'
+alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
+ssh-refresh() { nullify ssh -O exit $1; ssh $1; }
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)
 mount-share(){
@@ -108,6 +110,7 @@ mount-share(){
 # ❰❰ System Info ❱❱ #
 #####################
 
+alias date-update='sudo ntpdate pool.ntp.org'
 alias df='df -khT | color-filesize'                         # Readable disk usage
 alias du='du -Sh | sort -hr | color-filesize | more'        # Recursive folder size
 distinfo() { cat /etc/os-release; lsb_release -a; }         # Distribution info
@@ -164,6 +167,8 @@ alias vg='vim $GIT_CONF'
 alias vv='vim $VIM_CONF'
 alias vvv='vim -O2 $VIM_CONF_ALL'
 alias vc='vim -O2 $BASH_CONF_ALL $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF'
+alias svim='sudo -E $(which vim)'
+alias sv='svim'
 
 # Append a line to crontab, excluding duplicates
 crontab-append() {
@@ -183,6 +188,9 @@ crontab-append() {
 
 GLOG_FORMAT='%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d'
 alias gp='git pull'
+alias gpr='git stash; git pull --rebase; git stash pop'
+alias gstash='git stash'
+alias gpop='git stash pop'
 alias gs='git status'
 alias gss='git status --short'
 alias gc='git commit --verbose'
@@ -234,6 +242,7 @@ type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git
 ################
 
 alias pipr='pip install -Ur requirements.txt | lc-gradient --seed=100'
+alias pypath='python -c "import sys; print \"\n\".join(sys.path)"'
 alias in-env='python -c "import sys; sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 update-python() {
@@ -244,11 +253,11 @@ update-python() {
 # Pytest shortcut, if not already defined
 type -a pt > /dev/null 2>&1 || pt() { py-cleanup; py.test ${1:-./test}; }
 
-# New virtual environment, with paths and packages
+# New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 mkv() {
-    mkvirtualenv -a . ${1:-$(pwd-base)}
+    mkvirtualenv -p python2 -a . ${1:-$(pwd-base)}
     add2virtualenv .
-    pipr
+    [[ -f requirements.txt ]] && pipr
 }
 
 # Clean up leftover junk
@@ -310,9 +319,11 @@ cpv() {
 }
 
 # Formatted preview for CSV files
-csv-preview(){
-    sed 's/,,/, ,/g;s/,,/, ,/g' "$@" | column -s, -t | less -#2 -N -S
+csv-preview() {
+    n_rows=$((${2:-1000} + 1))
+    head -n $n_rows "$1" | sed 's/,,/, ,/g;s/,,/, ,/g' | column -s, -t | less -#2 -NSKQF
 }
+alias cv='csv-preview'
 
 # Recursive find/replace
 grepsed() {

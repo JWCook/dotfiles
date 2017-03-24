@@ -61,12 +61,12 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 |              | plugin status              | Ctrl-F12
 | Misc toggles | indent guides              | Ctrl-\
 |              | gitGutter                  | Alt-\
-| Pytest       | run current func           | pf            | `:Pytest function [verbose]`
-|              | run current file           | pt            | `:Pytest file     [verbose]`
-|              | run all in project         | pp            | `:Pytest project  [verbose]`
-|              | last session               | ps            | `:Pytest session`
-|              | last failures              | pl            | `:Pytest fails`
-|              | see test dir               | pd            | `:Pytest projecttestwd`
+| Pytest       | run current func           | \pf[v]        | `:Pytest function [verbose]`
+|              | run current file           | \pt[v]        | `:Pytest file     [verbose]`
+|              | run all in project         | \pp[v]        | `:Pytest project  [verbose]`
+|              | last session output        | \ps           | `:Pytest session`
+|              | last session failures      | \pl           | `:Pytest fails`
+|              | see test dir               | \pd           | `:Pytest projecttestwd`
 | Whitespace   | strip whitespace           | ww            | `:StripWhitespace`
 |              | toggle Markers             | wt            | `:ToggleWhitespace`
 |              | strip on save              | ws            | `:ToggleStripWhitespaceOnSave`

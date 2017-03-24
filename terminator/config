@@ -65,6 +65,7 @@
       ratio = 0.496289424861
       type = VPaned
     [[[terminal10]]]
+      command = ""
       # 5
       directory = workspace
       order = 0
@@ -74,7 +75,7 @@
       uuid = 40d30c62-0792-4548-b872-026738af05aa
     [[[terminal11]]]
       command = ""
-      directory = ""
+      directory = dotfiles
       # 6
       order = 1
       parent = child9
@@ -100,7 +101,7 @@
       uuid = bd1b33b6-ae77-40c4-b974-be93481b3607
     [[[terminal6]]]
       # 3
-      directory = workspace
+      directory = dotfiles
       order = 1
       parent = child4
       profile = default

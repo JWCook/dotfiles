@@ -220,12 +220,16 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Pytest
 let g:pytest_test_dir = 'test'
-nnoremap pf :Pytest function<CR>
-nnoremap pt :Pytest file<CR>
-nnoremap pp :Pytest project<CR>
-nnoremap ps :Pytest session<CR>
-nnoremap pl :Pytest fails<CR>
-nnoremap pd :Pytest projecttestwd<CR>
+nnoremap <leader>pf  :Pytest function<CR>
+nnoremap <leader>pt  :Pytest file<CR>
+nnoremap <leader>ptv :Pytest file verbose<CR>
+nnoremap <leader>pp  :Pytest project<CR>
+nnoremap <leader>ppv :Pytest project verbose<CR>
+nnoremap <leader>pp  :Pytest project<CR>
+nnoremap <leader>ps  :Pytest session<CR>
+nnoremap <leader>pl  :Pytest fails<CR>
+nnoremap <leader>pd  :Pytest projecttestwd<CR>
+
 
 " Syntastic
 " let g:syntastic_always_populate_loc_list=1
@@ -238,6 +242,7 @@ let g:syntastic_error_symbol='✘❱'
 let g:syntastic_style_warning_symbol='‡❱'
 let g:syntastic_style_error_symbol='‡❱'
 let g:syntastic_vim_checkers = ['vint']
+" let b:syntastic_mode='passive'
 
 " Startify
 nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
@@ -306,6 +311,7 @@ nnoremap ls !ls -Alhv --group-directories-first<CR>
 set viminfo='100,n$HOME/.vim/viminfo
 nnoremap ev :vsplit $MYVIMRC<CR>
 nnoremap sv :source $MYVIMRC<CR>
+nnoremap rr :redraw!<CR>
 
 " Sets how many lines of history VIM remembers
 set history=1000
@@ -331,6 +337,9 @@ set wildmenu
 " Add minimum screen rows/columns around cursor
 set scrolloff=1
 set sidescrolloff=5
+
+" Show partial commands during entry
+set showcmd
 
 " Darn those fat fingers
 ca W w
@@ -397,7 +406,7 @@ set shiftwidth=4
 set shiftround
 
 set backspace=indent,eol,start
-set pastetoggle=<leader>p
+set pastetoggle=<leader>pa
 
 " Tabs and non-breaking spaces are evil
 set list
@@ -506,7 +515,7 @@ nnoremap <silent> hh <C-w>s
 
 " Create/close buffers/tabs
 command! BN new
-nnoremap <silent> <Leader>q :BD<CR>
+nnoremap <silent> <leader>q :BD<CR>
 command! TD tabclose
 command! TN tabnew | vsp
 

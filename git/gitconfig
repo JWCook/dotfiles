@@ -12,6 +12,7 @@
     down = pull
     f = fetch origin master:master
     p = pull
+    pr = "!git stash; git pull --rebase; git stash pop"
     patch = add --patch
     rb = git rebase --interactive master
     s = status

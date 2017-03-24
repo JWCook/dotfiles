@@ -4,7 +4,7 @@
 # Package categories
 PKGS_APPS='chromium duplicity duply figlet fortune gedit gimp git htop inkscape keepassx nmap ntp p7zip pv shutter telnet terminator tig toilet tree tmux wget'
 PKGS_DEV='lua-devel npm php-devel ruby-devel rubygems java-1.8.0-openjdk'
-PKGS_LIBS='gcc gcc-c++ libffi-devel libxml2-devel libxslt-devel libX11-devel ncurses-devel ntfsprogs openssl-devel rpm-build redhat-rpm-config tcl-devel xdg-utils xz-libs zlib-devel bzip2-devel yum-utils'
+PKGS_LIBS='ctags gcc gcc-c++ libffi-devel libxml2-devel libxslt-devel libX11-devel ncurses-devel ntfsprogs openssl-devel rpm-build redhat-rpm-config tcl-devel xdg-utils xz-libs zlib-devel bzip2-devel yum-utils'
 PKGS_MEDIA='vlc x265 gstreamer-ffmpeg gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly'
 PKGS_PYTHON='python-devel python3-devel python3-wheel python35u-devel python36u-devel'
 PKGS_OTHER='fortune fortune-mod toilet'
