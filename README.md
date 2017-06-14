@@ -4,11 +4,11 @@
 git clone https://github.com/JWCook/dotfiles
 cd dotfiles
 
-# Install distro-specific system packages
-make install-pkgs-centos
-make install-pkgs-ubuntu
+# Install distro-specific system packages + configuration
+make install-centos
+make install-ubuntu
 
-# Install configuration
+# Install configuration only
 make install-conf
 
 # Update distro-specific packages and compiled applications

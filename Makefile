@@ -1,7 +1,13 @@
-# TODO: prompt for distro & window manager
-# Cross-platform packages & config
+# TODO: prompt for distro & window manager?
 
-install-conf: install-bash-conf \
+#############################################
+# Grouped Pakcages & Config: Cross-Platform #
+#############################################
+
+install-conf: configure-gnome \
+              configure-ntp \
+              configure-sudoers \
+              install-bash-conf \
               install-figlet-conf \
               install-git-conf \
               install-grc-conf \
@@ -23,13 +29,16 @@ update: update-python \
         update-ruby \
         update-vim
 
-# Distro-specific packages
+
+##############################################
+# Grouped Pakcages & Config: Distro-Specific #
+##############################################
 
 install-centos: install-conf \
                 install-system-packages-centos \
-                install-vim-centos\
-                install-chrome-centos \
-                install-retroterm-centos \
+                install-vim-centos \
+                install-chrome-fedora \
+                install-retroterm-fedora \
                 install-pkgs
 
 update-centos: update
@@ -37,9 +46,9 @@ update-centos: update
 
 install-fedora: install-conf \
                 install-system-packages-fedora \
-                install-vim-centos\
-                install-chrome-centos \
-                install-retroterm-centos \
+                install-vim-fedora \
+                install-chrome-fedora \
+                install-retroterm-fedora \
                 install-pkgs
 
 update-fedora: update
@@ -58,6 +67,15 @@ update-ubuntu: update
 #########################
 # Runtime Configuration #
 #########################
+
+configure-gnome:
+	scripts/configure_gnome.sh
+
+configure-ntp:
+	scripts/configure_ntp.sh
+
+configure-sudoers:
+	sudo scripts/configure_sudoers.sh
 
 install-bash-conf:
 	rm -rf ~/.bashrc
@@ -115,9 +133,9 @@ install-vim-conf:
 	ln -s `pwd`/vim/vim  ~/.vim
 
 
-#####################
-# Packages: General #
-#####################
+############################
+# Packages: Cross-Platform #
+############################
 
 install-fonts:
 	scripts/install_fonts.sh
@@ -132,7 +150,7 @@ install-js-packages:
 	scripts/install_js_packages.sh
 
 install-ruby-gems:
-	sudo gem install -g scripts/Gemfile
+	sudo gem install scripts/Gemfile
 
 install-vim:
 	scripts/install_vim.sh
@@ -140,6 +158,7 @@ install-vim:
 
 update-python:
 	sudo -H pip install -Ur scripts/requirements-global.txt
+	sudo -H pip3 install -Ur scripts/requirements-global-py3.txt
 
 update-ruby:
 	sudo gem update
@@ -154,18 +173,12 @@ update-vim:
 
 install-system-packages-centos:
 	scripts/centos/install_repos.sh
-	scripts/centos/install_system_packages.sh
+	scripts/fedora/install_system_packages.sh
 
 install-vim-centos:
 	scripts/centos/install_vim_prereqs.sh
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
-
-install-chrome-centos:
-	sudo scripts/centos/install_chrome.sh
-
-install-retroterm-centos:
-	scripts/centos/install_retroterm.sh
 
 
 ####################
@@ -174,12 +187,18 @@ install-retroterm-centos:
 
 install-system-packages-fedora:
 	scripts/fedora/install_repos.sh
-	scripts/centos/install_system_packages.sh
+	scripts/fedora/install_system_packages.sh
 
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
+
+install-chrome-fedora:
+	sudo scripts/fedora/install_chrome.sh
+
+install-retroterm-fedora:
+	scripts/fedora/install_retroterm.sh
 
 
 #####################

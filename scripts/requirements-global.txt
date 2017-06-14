@@ -1,7 +1,8 @@
+# Python 2/3-compatible packages
 pip>=9.0
 argcomplete
 flake8
-ipython[all]
+ipython[all]~=5.0
 pylint
 pytest
 pytest-cov
