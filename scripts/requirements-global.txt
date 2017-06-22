@@ -11,3 +11,4 @@ requests[socks]
 vex
 virtualenv
 virtualenvwrapper
+vim-vint

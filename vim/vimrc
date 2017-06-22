@@ -24,17 +24,17 @@ Plug 'JWCook/vim-startify'
 
 " Git
 Plug 'tpope/vim-fugitive'
-Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-git'
+Plug 'tpope/vim-rhubarb'
+Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
 " Syntax
+Plug 'w0rp/ale'
+Plug 'Valloric/YouCompleteMe', {'do': '~/.vim/plugged/YouCompleteMe/install.py'}
 Plug 'chrisbra/csv.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'davidhalter/jedi-vim'
-Plug 'ervandew/supertab'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/syntastic'
 Plug 'godlygeek/tabular'
 Plug 'Kuniwak/vint', {'do': 'sudo pip install -U vim-vint'}
 Plug 'WolfgangMehner/bash-support'
@@ -144,6 +144,19 @@ let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
 set timeoutlen=50
 
+" Ale
+let g:ale_sign_error = '✘❱'
+let g:ale_sign_warning = '‽❱'
+let g:ale_sign_info = '‡❱'
+let g:ale_sign_style_error = '❱❱'
+let g:ale_sign_style_warning = '❱❱'
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_delay = 500
+let g:ale_maximum_file_size = 1048576
+
 " Fugitive
 let g:fugitive_gitlab_domains = [ 'https://gitlab.encirca.auto.pioneer.com',
                                 \ 'https://gitlab-encirca.phibred.com']
@@ -214,10 +227,6 @@ let g:indent_guides_auto_colors=0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
-" Jedi
-" Disable docstring popup
-"autocmd FileType python setlocal completeopt-=preview
-
 " Pytest
 let g:pytest_test_dir = 'test'
 nnoremap <leader>pf  :Pytest function<CR>
@@ -229,20 +238,6 @@ nnoremap <leader>pp  :Pytest project<CR>
 nnoremap <leader>ps  :Pytest session<CR>
 nnoremap <leader>pl  :Pytest fails<CR>
 nnoremap <leader>pd  :Pytest projecttestwd<CR>
-
-
-" Syntastic
-" let g:syntastic_always_populate_loc_list=1
-" let g:syntastic_auto_loc_list=1
-" let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-" let g:syntastic_warning_symbol='⚠'
-let g:syntastic_warning_symbol='‽❱'
-let g:syntastic_error_symbol='✘❱'
-let g:syntastic_style_warning_symbol='‡❱'
-let g:syntastic_style_error_symbol='‡❱'
-let g:syntastic_vim_checkers = ['vint']
-" let b:syntastic_mode='passive'
 
 " Startify
 nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
