@@ -102,9 +102,10 @@ alias hibernate-systemd='systemctl suspend'
 
 # Debian-based
 alias update-apt='print-title "Updating system packages...";\
-                  sudo apt-get update; sudo apt-get -y\
+                  sudo apt-get update;\
+                  sudo apt-get -y --allow-unauthenticated\
                   -o Dpkg::Options::="--force-confdef"\
-                  -o Dpkg::Options::="--force-confnew\
+                  -o Dpkg::Options::="--force-confnew"\
                   dist-upgrade | lc-hgradient-delay'
 alias suspend-pm='pm-suspend'
 alias hibernate-pm='pm-hibernate'

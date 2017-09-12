@@ -57,6 +57,7 @@ update-fedora: update
 install-ubuntu: install-conf \
                 install-system-packages-ubuntu \
                 install-chrome-ubuntu \
+                install-flux-ubuntu \
                 install-vim-ubuntu \
                 install-pkgs
 
@@ -215,3 +216,6 @@ install-vim-ubuntu:
 
 install-chrome-ubuntu:
 	sudo scripts/ubuntu/install_chrome.sh
+
+install-flux-ubuntu:
+	sudo scripts/ubuntu/install_flux.sh
