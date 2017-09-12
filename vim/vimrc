@@ -229,15 +229,15 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Pytest
 let g:pytest_test_dir = 'test'
-nnoremap <leader>pf  :Pytest function<CR>
-nnoremap <leader>pt  :Pytest file<CR>
-nnoremap <leader>ptv :Pytest file verbose<CR>
-nnoremap <leader>pp  :Pytest project<CR>
-nnoremap <leader>ppv :Pytest project verbose<CR>
-nnoremap <leader>pp  :Pytest project<CR>
-nnoremap <leader>ps  :Pytest session<CR>
-nnoremap <leader>pl  :Pytest fails<CR>
-nnoremap <leader>pd  :Pytest projecttestwd<CR>
+command! PF Pytest function
+command! PFV Pytest function verbose
+command! PT  Pytest file
+command! PTV Pytest file verbose
+command! PP  Pytest project
+command! PPV Pytest project verbose
+command! PS  Pytest session
+command! PL  Pytest fails
+command! PD  Pytest projecttestwd
 
 " Startify
 nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
@@ -373,7 +373,7 @@ set background=dark
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
-  colorscheme jellybeans
+  colorscheme monokai
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE

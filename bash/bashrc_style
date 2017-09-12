@@ -6,8 +6,6 @@
 #########################
 
 # Terminal Control Characters
-function term-color() { echo -e '\['$1'\]'; }
-function pg-color() { echo -e $1; }
 export BLACK='\033[0;30;29m'
 export RED='\033[0;31;29m'
 export GREEN='\033[0;32;29m'
@@ -33,6 +31,17 @@ export DIM_MAGENTA='\033[2;35;29m'
 export DIM_CYAN='\033[2;36;29m'
 export DIM_WHITE='\033[2;37;29m'
 export NOCOLOR='\033[0m'
+
+# Color formatting functions
+term-color() { echo -e '\['$1'\]'; }
+pg-color() { echo -e $1; }
+printc() { printf "%b%b${NOCOLOR}\n" "$@"; }
+export HRULE=$(printf '═%.s' {1..80})
+print-title() {
+    printc $CYAN "$HRULE"
+    printc $BLUE "$@"
+    printc $CYAN "$HRULE"
+}
 
 
 ############################
@@ -82,7 +91,10 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Other Commands
 export LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
-alias color-filesize='sed -r "s/([0-9\.]+K)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g; s/([0-9\.]+M)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g; s/([0-9\.]+G)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
+alias color-filesize='sed -r\
+    "s/([0-9\.]+K)/$(pg-color $GREEN)\1$(pg-color $NOCOLOR)/g;\
+     s/([0-9\.]+M)/$(pg-color $CYAN)\1$(pg-color $NOCOLOR)/g;\
+     s/([0-9\.]+G)/$(pg-color $BOLD_RED)\1$(pg-color $NOCOLOR)/g"'
 
 
 ####################
@@ -104,7 +116,7 @@ export PG_PAGER
 #####################
 
 # Return the prompt symbol to use, colorized based on the return value of the previous command
-function set_prompt_symbol() {
+set_prompt_symbol() {
     if test $1 -eq 0 ; then
         PROMPT_SYMBOL="\$"
     else
@@ -113,7 +125,7 @@ function set_prompt_symbol() {
 }
 
 # Determine active Python virtualenv details (if any)
-function set_virtualenv() {
+set_virtualenv() {
     if test -z "$VIRTUAL_ENV" ; then
         PYTHON_VIRTUALENV=""
     else
@@ -122,7 +134,7 @@ function set_virtualenv() {
 }
 
 # Run after every command before prompt is displayed
-function set_bash_prompt() {
+set_bash_prompt() {
     set_prompt_symbol $?
     history -a  # Append to bash_history
     set_virtualenv
@@ -140,31 +152,37 @@ export PROMPT_COMMAND=set_bash_prompt
 alias lc-gradient='lolcat --spread=100 --freq=0.08'
 alias lc-hgradient='lolcat --spread=0.1 --freq=0.005'
 alias lc-gradient-delay='lc-gradient --animate --speed 250'
+alias lc-hgradient-delay='lc-hgradient --animate --speed 250'
 alias lc-loop='lolcat --animate --duration=99999999'
 alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
 
 # Figlet
-function fabulous() { figlet -w 270 -f ~/.figlet/alligator.flf $@ | lolcat -a -d 6; }
-function faabulous() { figlet -w 270 -f ~/.figlet/starwars.flf $@ | lolcat -a -d 2; }
-function faaabulous() { figlet -w 270 -f ~/.figlet/univers.flf $@ | lolcat -a -d 2; }
-function faaaabulous() { figlet -w 270 -f ~/.figlet/roman.flf $@ | lolcat -a -d 2; }
-function faaaaabulous() { figlet -w 270 -f ~/.figlet/contessa.flf $@ | lolcat -a -d 2; }
-function faaaaaabulous() { figlet -w 270 -f ~/.figlet/cybermedium.flf $@ | lolcat -a -d 2; }
+figlol() { figlet -w 270 -f $1 $2 | lolcat -a -d 2; }
+alias fabulous='figlol ~/.figlet/alligator.flf'
+alias faabulous='figlol ~/.figlet/starwars.flf'
+alias faaabulous='figlol ~/.figlet/univers.flf'
+alias faaaabulous='figlol ~/.figlet/roman.flf'
+alias faaaaabulous='figlol ~/.figlet/contessa.flf'
+alias faaaaaabulous='figlol ~/.figlet/cybermedium.flf'
+alias faaaaaaabulous='figlol ~/.figlet/cosmic.flf'
 
 # Misc string coloring/formatting
 alias ratelimit='pv -qL80k'
-alias randombit='shuf -i 0-1 -n 1 -z'
-alias randomchars='grep -o --binary-files=text "[[:alpha:]]" /dev/urandom | tr -d "[a-zA-Z]" | xargs -n $((($COLUMNS*80)/100)) | tr -d " "'
-function charbar() { python -c "print('$1' * $(($COLUMNS*2)))"; }
-function charbar2() { python -c "print('$1 ' * $(($COLUMNS)))"; }  # Extra spacing for wide chars
-function charbarf() { charbar $1 | lc-loop -p $2; }
-function charbarf2() { charbar2 $1 | lc-loop -p $2; }
-function color-bit() { printf "\e[$(echo $1|tr 01 20);32;29m$1\e[0m"; }
-function color-bar() { printf "\x1b[48;5;$1m\n"; }
-function color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
+alias randombit='shuf -i 0-1 -n 1 -z  | tr "\0" " "'
+alias randomchars='grep -o --binary-files=text "[[:alpha:]]" /dev/urandom |\
+                   tr -d "[a-zA-Z]" |\
+                   xargs -n $((($COLUMNS*80)/100)) |\
+                   tr -d " "'
+charbar() { python -c "print('$1' * $(($COLUMNS*2)))"; }
+charbar2() { python -c "print('$1 ' * $(($COLUMNS)))"; }  # Extra spacing for wide chars
+charbarf() { charbar $1 | lc-loop -p $2; }
+charbarf2() { charbar2 $1 | lc-loop -p $2; }
+color-bit() { printf "\e[$(echo $1|tr 01 20);32;29m$1\e[0m"; }
+color-bar() { printf "\x1b[48;5;$1m\n"; }
+color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
 
 # Print loops
-alias hexbarf='cat /dev/urandom | hexdump -C | grep "ca fe"'
+alias hexbarf='cat /dev/urandom | hexdump -C | grep "b1 05"'
 alias term-barf-0='while true; do color-bit $(randombit); done'
 alias term-barf-1='while true; do color-str •; done'
 alias term-barf-2='yes "$(seq 231 -1 16)" | while read i; do color-bar $i; sleep .02; done'

@@ -7,6 +7,7 @@
     editor = vim
 [alias]
     amend = commit --amend
+    b = branch -vv
     c = commit --verbose
     cm = commit -m
     down = pull
@@ -14,9 +15,15 @@
     p = pull
     pr = "!git stash; git pull --rebase; git stash pop"
     patch = add --patch
+    recommit = commit -c ORIG_HEAD --no-edit
     rb = git rebase --interactive master
     s = status
+    ss = status --short
+    sv = status -vv
     stat = shortlog --summary --numbered
+    stat-all = rev-list --count HEAD
+    uncommit = reset --soft HEAD~1
+    unstage = reset HEAD
     up = push
 [push]
     default = simple
@@ -35,6 +42,8 @@
     changed = cyan
     deleted = red
     untracked = magenta
+[diff]
+    tool = vimdiff
 [tig]
     vertical-split = false
     split-view-height = 80%
