@@ -76,6 +76,7 @@ alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias jj='jupyter notebook --port 9468 &'
 alias jl='jupyter notebook list'
 alias jq='pkill jupyter'
+alias lw='sudo logwatch | less'
 alias top='htop'
 alias tt='tig'
 alias weather='curl -4 http://wttr.in/~50266'
@@ -83,6 +84,7 @@ alias weather='curl -4 http://wttr.in/~50266'
 # Encryption
 alias gen-aes='openssl enc -aes-256-cbc -P -md sha512'
 alias gen-rsa='ssh-keygen -t rsa -b 4096'
+alias gen-self-cert='openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365'
 
 # AWS CLI
 s3cat() { aws s3 cp s3://$@ -; }
@@ -121,6 +123,8 @@ alias public-ip='curl v4.ifconfig.co'
 alias netconn='netstat -pan --inet'
 alias tracert='traceroute'
 alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
+alias scan-local='nmap -v -sT localhost'
+alias scan-syn='sudo nmap -v -sS localhost'
 ssh-refresh() { nullify ssh -O exit $1; ssh $1; }
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)
@@ -207,6 +211,9 @@ crontab-append() {
         echo "Already in crontab:"
     fi
     crontab -l
+}
+scrontab-append() {
+    sudo bash -c "source $HOME/.bashrc; crontab-append '$1'";
 }
 
 

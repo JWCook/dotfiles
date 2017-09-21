@@ -181,6 +181,10 @@ install-vim-centos:
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
 
+install-postgres-centos:
+	scripts/centos/install_postgres.sh
+
+
 
 ####################
 # Packages: Fedora #
@@ -189,6 +193,9 @@ install-vim-centos:
 install-system-packages-fedora:
 	scripts/fedora/install_repos.sh
 	scripts/fedora/install_system_packages.sh
+
+install-postgres-fedora:
+	scripts/fedora/install_postgres.sh
 
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh
