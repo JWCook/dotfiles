@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Package categories
-PKGS_APPS='chromium-browser figlet fortune gedit gimp git htop keepassx logwatch nmap ntp p7zip-full pv ssh shutter telnet terminator tig toilet tree tmux wget'
+PKGS_APPS='chromium-browser figlet fortune gedit gimp git htop logwatch ncdu nmap ntp p7zip-full pv silversearcher-ag ssh shutter telnet terminator tig toilet tree tmux wget'
 PKGS_DEV='npm ruby-dev'
 PKGS_LIBS='build-essential exuberant-ctags libffi-dev libgpgme11-dev libssl-dev libx11-dev libxpm-dev libxt-dev ncurses-dev'
 PKGS_MEDIA='vlc ffmpeg libdvdcss2 x265 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly'

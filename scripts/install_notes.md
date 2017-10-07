@@ -5,6 +5,7 @@
 * Virtual desktop / workspace settings
 * Printer setup
 * Browser plugins + config
+* Configure KeePassXC + KeePassHTTP + ChromeIPass
 
 
 ## GNOME
@@ -14,6 +15,7 @@
 * Dynamic workspaces off
 * Extensions: AlternateTab, RemovableDriveMenu, No Top Left HotCorner
 * Tweak tool: add startup apps,a
+* Display -> Enable Night Light (until flux and/or Reshift are updated to support Wayland)
 
 Partially scripted with `gsettings`, but double-check:
 

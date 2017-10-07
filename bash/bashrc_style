@@ -55,7 +55,6 @@ then
     alias colorize="$GRC -es --colour=auto"
     alias as='colorize as'
     alias configure='colorize ./configure'
-    alias df='colorize df'
     alias diff='colorize diff'
     alias dig='colorize dig'
     alias gas='colorize gas'

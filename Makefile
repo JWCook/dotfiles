@@ -48,6 +48,7 @@ install-fedora: install-conf \
                 install-system-packages-fedora \
                 install-vim-fedora \
                 install-chrome-fedora \
+                install-insync-fedora \
                 install-retroterm-fedora \
                 install-pkgs
 
@@ -58,6 +59,7 @@ install-ubuntu: install-conf \
                 install-system-packages-ubuntu \
                 install-chrome-ubuntu \
                 install-flux-ubuntu \
+                install-keepass-ubuntu \
                 install-vim-ubuntu \
                 install-pkgs
 
@@ -205,6 +207,9 @@ install-vim-fedora:
 install-chrome-fedora:
 	sudo scripts/fedora/install_chrome.sh
 
+install-insync-fedora:
+	sudo scripts/fedora/install_insync.sh
+
 install-retroterm-fedora:
 	scripts/fedora/install_retroterm.sh
 
@@ -223,6 +228,9 @@ install-vim-ubuntu:
 
 install-chrome-ubuntu:
 	sudo scripts/ubuntu/install_chrome.sh
+
+install-keepass-ubuntu:
+	scripts/ubuntu/install_keepassxc.sh
 
 install-flux-ubuntu:
 	sudo scripts/ubuntu/install_flux.sh
