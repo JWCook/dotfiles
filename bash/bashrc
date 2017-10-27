@@ -117,6 +117,7 @@ install-deb() {
     deb_tempfile=$(mktemp --suffix=.deb)
     wget -O $deb_tempfile $1
     sudo apt-get install -y $deb_tempfile
+    sleep 1
     rm $deb_tempfile
 }
 alias update-apt='print-title "Updating system packages...";\

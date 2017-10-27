@@ -4,10 +4,7 @@
 # Grouped Pakcages & Config: Cross-Platform #
 #############################################
 
-install-conf: configure-gnome \
-              configure-ntp \
-              configure-sudoers \
-              install-bash-conf \
+install-conf: install-bash-conf \
               install-figlet-conf \
               install-git-conf \
               install-grc-conf \
@@ -19,11 +16,15 @@ install-conf: configure-gnome \
               install-vim-conf
 
 install-pkgs: install-fonts \
-              install-haroopad \
               install-grc \
               install-ruby-gems \
               install-js-packages \
               update-python
+
+install-optional: configure-gnome \
+                  configure-ntp \
+                  configure-sudoers \
+                  install-haroopad
 
 update: update-python \
         update-ruby \
@@ -55,8 +56,8 @@ install-fedora: install-conf \
 update-fedora: update
 	sudo dnf upgrade -y
 
-install-ubuntu: install-conf \
-                install-system-packages-ubuntu \
+install-ubuntu: install-system-packages-ubuntu \
+                install-conf \
                 install-chrome-ubuntu \
                 install-flux-ubuntu \
                 install-keepass-ubuntu \
