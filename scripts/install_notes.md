@@ -55,7 +55,22 @@ GRUB_TIMEOUT=1
   Defaults        env_reset,timestamp_timeout=120
   Defaults        secure_path = ...:/usr/local/bin
   ```
-* Fedora-based: Add to `/etc/yum.conf`:
+## Fedora-specific:
+
+* Limit number of installed kernel versions:
+    * Add to `/etc/yum.conf`:
     ```
-    installonly_limit=2  # Limit number of installed kernel versions
+    installonly_limit=2
+    ```
+* Automatic updates:
+    * Edit `/etc/dnf/automatic.conf`:
+    ```
+    upgrade_type = security
+    download_updates = yes
+    apply_updates = yes
+    ```
+    * Run:
+    ```
+    systemctl enable dnf-automatic.timer && systemctl start dnf-automatic.timer
+    systemctl list-timers *dnf-*
     ```

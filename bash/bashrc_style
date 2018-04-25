@@ -181,8 +181,8 @@ color-bar() { printf "\x1b[48;5;$1m\n"; }
 color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
 
 # Print loops
-alias hexbarf='cat /dev/urandom | hexdump -C | grep "b1 05"'
-alias term-barf-0='while true; do color-bit $(randombit); done'
+alias hex-barf='cat /dev/urandom | hexdump -C | grep "b1 05"'
+alias bin-barf='while true; do color-bit $(randombit); done'
 alias term-barf-1='while true; do color-str •; done'
 alias term-barf-2='yes "$(seq 231 -1 16)" | while read i; do color-bar $i; sleep .02; done'
 alias term-barf-3='randomchars | lolcat -f | ratelimit'

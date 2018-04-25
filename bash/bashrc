@@ -266,7 +266,18 @@ alias grevise='git add --all; git commit --amend --no-edit'
 alias gpatch='git add --patch'
 alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
-alias grecommit='git commit -c ORIG_HEAD --no-edit'
+alias grecommit='git commit -c ORIG_HEAD --no-edit'a
+
+# Functions to help fix a branch from a detatched HEAD state, starting with a specified commit
+git-head-transplant-pre() {
+    git checkout -b transplant $1
+}
+git-head-transplant() {
+    git branch -f master transplant
+    git checkout master
+    git branch -d transplant
+    git push origin master
+}
 
 # Log
 export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
@@ -361,19 +372,25 @@ cmd-exists pt || pt() {
 }
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
-mkv() {
+mkv2() {
     mkvirtualenv -p python2 -a . ${1:-$(pwd-base)}
     add2virtualenv .
     pipr
 }
+mkv3() {
+    mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
+    add2virtualenv .
+    pipr
+}
+alias mkv='mkv3'
 
 # Clean up leftover junk
 py-cleanup() {
-    find ${1:-.} -name "*.pyc" -type f -delete
-    find ${1:-.} -name "__pycache__" -prune -type d -exec rm -rf '{}' \; 2> /dev/null
+    find ${1:-.} -name "*.pyc" -type f -delete -printf "%h/%f\n"
+    find ${1:-.} -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
 }
 vim-cleanup() {
-    find ${1:-.} -name "*.sw[mnop]" -type f -delete
+    find ${1:-.} -name "*.sw[mnop]" -type f -delete -printf "%h/%f\n"
 }
 
 # Run py.test with ludicrous verbosity
@@ -395,7 +412,7 @@ ptc() {
 
 # Print source path of a python module
 pyfile() {
-    python -c "import $@; print $@.__file__" | sed 's/\.pyc/\.py/'
+    python -c "import $@; print($@.__file__)" | sed 's/\.pyc/\.py/'
 }
 alias pf='pyfile'
 
@@ -426,6 +443,11 @@ wo() {
 }
 complete -o default -o nospace -F _virtualenvs wo
 
+# Misc shortcuts for python apps & scripts
+alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
+                 export FLASK_APP_ENV=LOCAL;\
+                 export FLASK_DEBUG=1;\
+                 flask run'
 
 #############
 # ❰❰ AWS ❱❱ #
