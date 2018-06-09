@@ -86,8 +86,7 @@
       uuid = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
     [[[terminal3]]]
       # 1
-      command = env TERM_START_CMD="wo data-dredge" bash
-      directory = ""
+      directory = workspace
       order = 0
       parent = child2
       profile = default+
@@ -111,8 +110,7 @@
       uuid = 0edf4d53-f175-4018-bdac-326830727489
     [[[terminal8]]]
       # 4
-      command = env TERM_START_CMD="wo alina" bash
-      directory = ""
+      directory = workspace
       order = 0
       parent = child7
       profile = default+
@@ -163,8 +161,7 @@
       type = VPaned
     [[[terminal11]]]
       # 5
-      command = env TERM_START_CMD="wo analyticonda2" bash
-      directory = ""
+      directory = workspace
       order = 0
       parent = child10
       profile = default
@@ -192,7 +189,7 @@
       type = Terminal
     [[[terminal4]]]
       # 1
-      command = env TERM_START_CMD="wo data-dredge" bash
+      directory = workspace
       order = 0
       parent = child3
       profile = default

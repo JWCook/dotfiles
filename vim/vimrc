@@ -20,7 +20,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'JWCook/vim-startify'
+Plug 'mhinz/vim-startify'
 
 " Git
 Plug 'tpope/vim-fugitive'

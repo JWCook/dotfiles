@@ -11,6 +11,7 @@ pathadd() {                                             # Append to path, withou
 cmd-exists() { type -a $@ > /dev/null 2>&1; }           # Test if a command/alias/function exists
 source-file() { [[ -f $1 ]] && source $1; }             # Source a file, if it exists
 source-bin() { cmd-exists $1 && source $(which $1); }   # Source an executable, if it exists on path
+alias ttput='tty -s && tput'                            # Safe tput, only for TTY sessions
 
 # Additional runtime config
 source-file /etc/bashrc                                 # Global bashrc
@@ -123,9 +124,13 @@ install-deb() {
 alias update-apt='print-title "Updating system packages...";\
                   sudo apt-get update;\
                   sudo apt-get -y --allow-unauthenticated\
-                  -o Dpkg::Options::="--force-confdef"\
-                  -o Dpkg::Options::="--force-confnew"\
                   dist-upgrade | lc-hgradient-delay'
+alias update-apt-unattended='print-title "Updating system packages...";\
+                             sudo apt-get update;\
+                             sudo apt-get -y --allow-unauthenticated\
+                             -o Dpkg::Options::="--force-confdef"\
+                             -o Dpkg::Options::="--force-confnew"\
+                             dist-upgrade | lc-hgradient-delay'
 alias suspend-pm='pm-suspend'
 alias hibernate-pm='pm-hibernate'
 
@@ -168,6 +173,11 @@ alias lu='column -ts: /etc/passwd | sort'                                   # Fo
 alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'                     # Currently logged on users
 alias path='echo -e ${PATH//:/\\n}  | lc-gradient --seed=8'                 # List/format items on PATH
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'                    # List user processes
+
+# Hardware
+alias cdrom-info='cat /proc/sys/dev/cdrom/info'
+alias pci-info='lspci -vnn'
+alias usb-info='lsusb -v'
 
 # Combined system information
 sysinfo() {
@@ -266,7 +276,7 @@ alias grevise='git add --all; git commit --amend --no-edit'
 alias gpatch='git add --patch'
 alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
-alias grecommit='git commit -c ORIG_HEAD --no-edit'a
+alias grecommit='git commit -c ORIG_HEAD --no-edit'
 
 # Functions to help fix a branch from a detatched HEAD state, starting with a specified commit
 git-head-transplant-pre() {

@@ -78,15 +78,15 @@ export LESS_TERMCAP_mb=$'\E[0;103m'
 export LESS_TERMCAP_md=$'\E[04;34m'
 export LESS_TERMCAP_me=$'\E[0m'
 export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$(tput bold; tput setaf 8; tput setab 3)
+export LESS_TERMCAP_so=$(ttput bold; ttput setaf 8; ttput setab 3)
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;36m'
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+export LESS_TERMCAP_mr=$(ttput rev)
+export LESS_TERMCAP_mh=$(ttput dim)
+export LESS_TERMCAP_ZN=$(ttput ssubm)
+export LESS_TERMCAP_ZV=$(ttput rsubm)
+export LESS_TERMCAP_ZO=$(ttput ssupm)
+export LESS_TERMCAP_ZW=$(ttput rsupm)
 
 # Other Commands
 export LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
@@ -178,7 +178,7 @@ charbarf() { charbar $1 | lc-loop -p $2; }
 charbarf2() { charbar2 $1 | lc-loop -p $2; }
 color-bit() { printf "\e[$(echo $1|tr 01 20);32;29m$1\e[0m"; }
 color-bar() { printf "\x1b[48;5;$1m\n"; }
-color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(tput colors)))m$1\e[0m"; }
+color-str() { printf "\e[38;5;$(($(od -d -N 2 -A n /dev/urandom)%$(ttput colors)))m$1\e[0m"; }
 
 # Print loops
 alias hex-barf='cat /dev/urandom | hexdump -C | grep "b1 05"'
