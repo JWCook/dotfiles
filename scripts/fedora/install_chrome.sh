@@ -8,4 +8,4 @@ enabled=1
 gpgcheck=1
 gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 EOF
-yum install -y google-chrome-stable
+dnf install -y google-chrome-stable

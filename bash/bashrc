@@ -108,8 +108,8 @@ install-ca-root-cert() {
 #########################
 
 # Fedora-based
-alias update-yum='print-title "Updating system packages...";\
-                  sudo yum update -y --skip-broken | lc-hgradient-delay'
+alias update-dnf='print-title "Updating system packages...";\
+                  sudo dnf update -y --skip-broken | lc-hgradient-delay'
 alias suspend-systemd='systemctl suspend'
 alias hibernate-systemd='systemctl suspend'
 
