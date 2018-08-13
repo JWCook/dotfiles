@@ -173,7 +173,7 @@ nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
 nnoremap <silent> <F3> :TComment<CR>
 inoremap <silent> <F3> <C-O>:TComment<CR>
 vnoremap <silent> <F3> :TCommentBlock<CR>
-let g:tcommentMapLeaderOp1='tc'
+let g:tcomment_opleader1='tc'
 
 " Visual Split (F4/Ctrl-F4)
 vnoremap <silent> <F4>  :VSResize<CR>
