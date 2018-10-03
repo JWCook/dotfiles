@@ -127,9 +127,10 @@ set <F23>=O1;6R   " F23 -> C-S-F3
 " ❰❰ Plugin Settings ❱❱ "
 """""""""""""""""""""""""
 
-let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.sonar$',
-                   \ '^\.tox$', '_build$', '^dist$', 'htmlcov$', '^tmp$', '^\.coverage$', '\.a$',
-                   \ '\.class$', '\.idea$', '\.o$', '\.obj$', '\.pyc$','\.sw\a$', '\.so$']
+let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.idea',
+                   \ '^\.sonar$', '^\.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
+                   \ '^tmp$', '^\.coverage$', '\.a$', '\.class$', '\.idea$', '\.o$', '\.obj$',
+                   \ '\.pyc$','\.sw\a$', '\.so$']
 
 " Enable filetype-specific plugins and indent files
 filetype plugin on

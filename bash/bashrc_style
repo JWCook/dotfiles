@@ -148,11 +148,12 @@ export PROMPT_COMMAND=set_bash_prompt
 #############################
 
 # Lolcat
-alias lc-gradient='lolcat --spread=100 --freq=0.08'
-alias lc-hgradient='lolcat --spread=0.1 --freq=0.005'
+alias lolcat-q='lolcat 2> /dev/null'
+alias lc-gradient='lolcat-q --spread=100 --freq=0.08 2> /dev/null'
+alias lc-hgradient='lolcat-q --spread=0.1 --freq=0.005 2> /dev/null'
 alias lc-gradient-delay='lc-gradient --animate --speed 250'
 alias lc-hgradient-delay='lc-hgradient --animate --speed 250'
-alias lc-loop='lolcat --animate --duration=99999999'
+alias lc-loop='lolcat-q --animate --duration=99999999'
 alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
 
 # Figlet
