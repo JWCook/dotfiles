@@ -3,7 +3,7 @@
 
 
 # Package categories
-PKGS_APPS='chromium dnf-automatic duplicity duply figlet gedit gimp git htop inkscape keepassxc nmap ntp p7zip pv telnet terminator the_silver_searcher tig tree tmux wget'
+PKGS_APPS='chromium dnf-automatic dnf-plugins-core duplicity duply figlet gedit gimp git htop inkscape keepassxc nmap ntp p7zip proxychains-ng pv telnet terminator the_silver_searcher tig tree tmux wget'
 PKGS_DEV='lua-devel npm php-devel ruby-devel rubygems java-1.8.0-openjdk'
 PKGS_LIBS='automake cmake ctags gcc gcc-c++ jq kernel-devel libffi-devel libxml2-devel libxslt-devel libX11-devel ncurses-devel ntfsprogs openssl-devel rpm-build redhat-rpm-config tcl-devel xdg-utils xz-libs zlib-devel bzip2-devel'
 PKGS_MEDIA='vlc vlc-extras x265 gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad-free gstreamer-plugins-bad-nonfree'

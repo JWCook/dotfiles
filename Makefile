@@ -47,6 +47,7 @@ update-centos: update
 
 install-fedora: install-conf \
                 install-system-packages-fedora \
+                install-docker-fedora \
                 install-vim-fedora \
                 install-chrome-fedora \
                 install-insync-fedora \
@@ -196,6 +197,9 @@ install-postgres-centos:
 install-system-packages-fedora:
 	scripts/fedora/install_repos.sh
 	scripts/fedora/install_system_packages.sh
+
+install-docker-fedora:
+	scripts/fedora/install_docker.sh
 
 install-postgres-fedora:
 	scripts/fedora/install_postgres.sh
