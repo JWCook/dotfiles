@@ -19,6 +19,7 @@
 * set system monospace font to DroidSansMono or whatever
 * Display -> Enable Night Light (until flux and/or Reshift are updated to support Wayland)
 * Privacy -> enable location services (if needed i.e. for Redshift)
+* Run `ibus-setup` -> change/disable shortcut for emoji picker
 
 Partially scripted with `gsettings`, but double-check:
 

@@ -17,7 +17,6 @@ alias ttput='tty -s && tput'                            # Safe tput, only for TT
 source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
-source-file ~/.proxy                                    # Proxy settings
 source-bin virtualenvwrapper.sh
 
 # Support bash_history across multiple terminals
@@ -101,6 +100,13 @@ install-ca-root-cert() {
     sudo mv $1 $CA_CERT_DIR
     sudo update-ca-certificates
 }
+ssh-set-permissions() {
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/config
+    chmod 644 ~/.ssh/*.pub
+    # Find and chmod private keys, assuming pubkeys are also present and named "${privkey}.pub"
+    find ~/.ssh -name "*.pub" -type f | sed 's/\.pub//g' | xargs chmod 600
+}
 
 
 #########################
@@ -108,8 +114,8 @@ install-ca-root-cert() {
 #########################
 
 # Fedora-based
-alias update-yum='print-title "Updating system packages...";\
-                  sudo yum update -y --skip-broken | lc-hgradient-delay'
+alias update-dnf='print-title "Updating system packages...";\
+                  sudo dnf update -y --skip-broken | lc-hgradient-delay'
 alias suspend-systemd='systemctl suspend'
 alias hibernate-systemd='systemctl suspend'
 
@@ -166,8 +172,8 @@ mount-share(){
 #####################
 
 alias date-update='sudo ntpdate pool.ntp.org'
-function df() { $(which df) -khT $@ | color-filesize; }                     # Readable disk usage
-function du() { $(which du) -Sh $@ | sort -hr | color-filesize | more; }    # Recursive folder size
+function df() { /usr/bin/df -khT $@ | color-filesize; }                     # Readable disk usage
+function du() { /usr/bin/du -Sh $@ | sort -hr | color-filesize | more; }    # Recursive folder size
 distinfo() { cat /etc/os-release; lsb_release -a; }                         # Distribution info
 alias lu='column -ts: /etc/passwd | sort'                                   # Formatted local user list
 alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'                     # Currently logged on users
@@ -220,7 +226,7 @@ VIM_CONF="$DOTFILES/vim/vimrc"
 VIM_CONF_ALL="$VIM_CONF $DOTFILES/vim/README.md"
 
 # Editor shortcuts
-alias sb='echo "reloading bashrc..." | lolcat; source $BASH_CONF'
+alias sb='echo "reloading bashrc..." | lolcat-q; source $BASH_CONF'
 alias vb='vim $BASH_CONF'
 alias vbb='vim -O2 $BASH_CONF_ALL'
 alias vg='vim $GIT_CONF'
@@ -440,6 +446,10 @@ cpyfile() {
 }
 alias cpf='cpyfile'
 
+# Edit virtualenv path extensions
+alias vvpathext='vim $VIRTUAL_ENV/lib/python3.6/site-packages/_virtualenv_path_extensions.pth'
+alias vvp='vvpathext'
+
 # Workon & cd/deactivate a virtualenv (with autocomplete)
 wo() {
     if [ -n "$1" ]; then
@@ -484,7 +494,7 @@ csv-preview() {
 }
 alias cv='csv-preview'
 
-# Recursive find/replace
+# Recursive find/replace (params: <find> <replace> <dir>)
 grepsed() {
     FILE_COUNT=$(wcr "$1" "$3")
     if [ $FILE_COUNT -gt 0 ]; then

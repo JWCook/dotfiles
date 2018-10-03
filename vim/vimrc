@@ -127,9 +127,10 @@ set <F23>=O1;6R   " F23 -> C-S-F3
 " ❰❰ Plugin Settings ❱❱ "
 """""""""""""""""""""""""
 
-let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.sonar$',
-                   \ '^\.tox$', '_build$', '^dist$', 'htmlcov$', '^tmp$', '^\.coverage$', '\.a$',
-                   \ '\.class$', '\.idea$', '\.o$', '\.obj$', '\.pyc$','\.sw\a$', '\.so$']
+let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.idea',
+                   \ '^\.sonar$', '^\.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
+                   \ '^tmp$', '^\.coverage$', '\.a$', '\.class$', '\.idea$', '\.o$', '\.obj$',
+                   \ '\.pyc$','\.sw\a$', '\.so$']
 
 " Enable filetype-specific plugins and indent files
 filetype plugin on
@@ -173,7 +174,7 @@ nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
 nnoremap <silent> <F3> :TComment<CR>
 inoremap <silent> <F3> <C-O>:TComment<CR>
 vnoremap <silent> <F3> :TCommentBlock<CR>
-let g:tcommentMapLeaderOp1='tc'
+let g:tcomment_opleader1='tc'
 
 " Visual Split (F4/Ctrl-F4)
 vnoremap <silent> <F4>  :VSResize<CR>
