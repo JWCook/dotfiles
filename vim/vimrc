@@ -230,12 +230,12 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Pytest
 let g:pytest_test_dir = 'test'
-command! PF Pytest function
-command! PFV Pytest function verbose
-command! PT  Pytest file
-command! PTV Pytest file verbose
-command! PP  Pytest project
-command! PPV Pytest project verbose
+command! PF w! | Pytest function
+command! PFV w! | Pytest function verbose
+command! PT  w! | Pytest file
+command! PTV w! | Pytest file verbose
+command! PP  w! | Pytest project
+command! PPV w! | Pytest project verbose
 command! PS  Pytest session
 command! PL  Pytest fails
 command! PD  Pytest projecttestwd
