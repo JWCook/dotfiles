@@ -1,2 +1,4 @@
 # Python 3-only packages
 ipython[all]
+pygments
+flake8

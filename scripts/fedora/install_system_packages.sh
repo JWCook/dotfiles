@@ -27,7 +27,8 @@ PKGS_APPS='
     tig
     tree
     tmux
-    wget'
+    wget
+    xmlstarlet'
 PKGS_DEV='
     lua-devel
     npm

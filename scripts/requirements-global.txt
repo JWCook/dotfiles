@@ -2,7 +2,7 @@
 pip>=9.0
 argcomplete
 ipython[all]~=5.0
-pygpgme
+pygments
 flake8
 pylint
 pytest

@@ -392,14 +392,17 @@ endif
 """"""""""""""""""""
 
 " 1 tab == 4 spaces
-set tabstop=4
-set softtabstop=4
-set expandtab
-set smarttab
 set autoindent
 set copyindent
-set shiftwidth=4
+set expandtab
+set smarttab
 set shiftround
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
+" YAML: 1 tab = 2 spaces
+autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set backspace=indent,eol,start
 set pastetoggle=<leader>pa

@@ -47,16 +47,12 @@ export JUPYTER_LOCAL_PORT=9468
 # ❰❰ General Functions & Aliases ❱❱ #
 #####################################
 
+# File & Directory Search & Info
 fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
 ff() { find ${2:-.} -name "$1" -type f; }               # Recursive search (lit, files)
 ge() { env | grep ${1:-""}; }                           # Search environment variables
 gr() { grep -r "$1" ${@:2}; }                           # Recursive search
 grr() { grep -r "$1" $(pwd-base) test; }                # Recursive search default src and test dirs
-hist-frequency() {                                      # Most frequently used commands
-    history |\
-    awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'\
-    | sort -rn | less
-}
 alias ll='ls -Alhv --group-directories-first'
 lt() { tree $@ | color-filesize; }                      # Colored folder tree
 lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
@@ -66,21 +62,37 @@ newest() {                                              # Find most recent file 
     find ${2:-.} -type f -name $1 -print0 |\
     xargs -0 ls -t | head -n1
 }
-nullify() { "$@" >/dev/null 2>&1; }                     # Run cmd with no output
 pwd-base() { basename $(pwd); }                         # Base name of the current working dir
 alias pwd-src="pwd-base | sed 's/-/_/g'"                # Guess name of project src dir
-alias ta='type -a'
-alias tailf='tail -f -n 50'
 tailc() { tailf $@ | grcat conf.logfile; }
 alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
+
+# Misc
+hist-frequency() {                                      # Most frequently used commands
+    history |\
+    awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'\
+    | sort -rn | less
+}
+nullify() { "$@" >/dev/null 2>&1; }                     # Run cmd with no output
+prompt-confirm() {                                      # Prompt for confirmation before continuing
+    read -p " Continue? [Y/N]" -n 1 -r CONFIRM; echo
+    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+alias tailf='tail -f -n 50'
 wcr() { gr "$1" $2 | wc -l; }                           # Recursive word count
 
-# Misc Shortcuts
+
+# Simple Command/App Aliases
 alias term-code='terminator -mfl code &'
 alias term-dev='terminator -mfl 6-split &'
 alias term-start='terminator -l start &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias lw='sudo logwatch | less'
+alias ta='type -a'
 alias top='htop'
 alias tt='tig'
 alias weather='curl -4 http://wttr.in/~50266'
@@ -146,8 +158,6 @@ mount-share(){
 #####################
 
 alias date-update='sudo ntpdate $NTP_SERVER'
-function df() { /usr/bin/df -khT $@ | color-filesize; }                     # Readable disk usage
-function du() { /usr/bin/du -Sh $@ | sort -hr | color-filesize | more; }    # Recursive folder size
 distinfo() { cat /etc/os-release; lsb_release -a; }                         # Distribution info
 alias lu='column -ts: /etc/passwd | sort'                                   # Formatted local user list
 alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'                     # Currently logged on users
@@ -172,6 +182,35 @@ sysinfo() {
     echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
     echo
 }
+
+
+############################
+# ❰❰ Disk & Device Info ❱❱ #
+############################
+
+# Readable disk usage
+df() {
+    /usr/bin/df -khT $@ | color-filesize
+}
+# Recursive folder size
+du() {
+    /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
+}
+
+# Get a single metric for a single device (or a directory's device)
+# Usage: df-single-metric device [metric]
+df-single-metric() {
+    /usr/bin/df --block-size=1 --output="$2" "${1:-.}" | /usr/bin/tail -1
+}
+
+df-device() { df-single-metric "${1:-.}" "source"; }
+df-type() { df-single-metric "${1:-.}" "fstype"; }
+df-size() { df-single-metric "${1:-.}" "size"; }
+df-used() { df-single-metric "${1:-.}" "used"; }
+df-free() { df-single-metric "${1:-.}" "avail"; }
+df-mount() { df-single-metric "${1:-.}" "targer"; }
+
+
 
 
 #########################
@@ -305,6 +344,7 @@ alias gsv='git status -vv'
 alias gss='git status --short'
 alias gf='git fetch origin master:master'
 alias groot='cd $(git rev-parse --show-toplevel)'
+alias gremote='git remote | head -n 1'
 alias gitonup='git push'
 alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
@@ -355,6 +395,8 @@ gmv-tag() {
 export GREF_FORMAT="%(align:60,left)%(color:blue)%(refname:short)%(end) \
                     %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
 alias gbranches='git branch -vv'
+alias gbranch='git rev-parse --abbrev-ref HEAD'
+# Alternative: alias gbranch="git branch | grep \\* | cut -d ' ' -f2"
 alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
@@ -363,7 +405,18 @@ alias gbrebase='gf; git rebase --interactive --preserve-merges master'
 alias gsrebase='git stash; gf; git rebase --interactive master; git stash pop'
 alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
 alias gcontinue='git rebase --continue'
+alias gskip='git rebase --skip'
 alias gscontinue='git stash; git rebase --continue; git stash pop'
+
+# Overwrite local branch with remote
+gbreset() {
+    REMOTE="$(gremote)"
+    BRANCH="$(gbranch)"
+    git fetch $REMOTE $BRANCH
+    git status
+    printf "Resetting branch to $REMOTE/$BRANCH."
+    prompt-confirm && git reset --hard $REMOTE/$BRANCH
+}
 
 # Pull if repo is alredy cloned, otherwise clone
 gpclone() {
@@ -378,8 +431,8 @@ gpclone() {
 
 # Delete local and remote branch
 grm-branch() {
-    read -p "Deleting branch $1. Continue?" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+    printf "Deleting branch $1."
+    if prompt-confirm; then
         git branch -D $1
         git push origin --delete $1
     fi
@@ -469,7 +522,13 @@ ptc() {
 pyfile() {
     python -c "import $@; print($@.__file__)" | sed 's/\.pyc/\.py/'
 }
+
+pydir() {
+    python -c "import $@; print($@.__file__)" | sed 's/__init__\.py//'
+}
+
 alias pf='pyfile'
+alias pd='pydir'
 
 # Open source file of a python module
 vpyfile() {
@@ -554,10 +613,10 @@ alias cv='csv-preview'
 grepsed() {
     FILE_COUNT=$(wcr "$1" "$3")
     if [ $FILE_COUNT -gt 0 ]; then
-       read -p "Replacing $FILE_COUNT occurances of '$1' with '$2' Continue?" -n 1 -r CONFIRM; echo
-       if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+        printf "Replacing $FILE_COUNT occurances of '$1' with '$2'."
+        if prompt-confirm; then
             grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
-       fi
+        fi
     else
         echo "No occurances of '$1' found"
     fi
@@ -566,8 +625,8 @@ grepsed() {
 # Recursive find/delete files
 rrm() {
     num_files=$(find ${2:-.} -name "$1" -type f | wc -l)
-    read -p "Deleting $num_files files. Continue?" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+    printf "Deleting $num_files files."
+    if prompt-confirm; then
         find ${2:-.} -name "$1" -type f -delete
     fi
 }
@@ -575,8 +634,8 @@ rrm() {
 # Recursive find/delete directories
 rrmdir() {
     num_dirs=$(find ${2:-.} -name "$1" -type d | wc -l)
-    read -p "Deleting $num_dirs dirs. Continue?" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+    printf "Deleting $num_dirs dirs."
+    if prompt-confirm; then
         find ${2:-.} -name "$1" -type d -exec rm -rf '{}' \;
     fi
 }
@@ -627,6 +686,16 @@ swap() {
     mv $TMPFILE "$2"
 }
 
+# Wipe root volume free space (when sfill from secure-erase is not available)
+sfill() {
+    root_device=$(df-device /)
+    free_bytes=$(df-free /)
+    out_file=/random_fill
+    printf "Wiping free space in root volume $root_device ($free_bytes bytes)."
+    if prompt-confirm; then
+        sudo sh -c "dd if=/dev/urandom | pv --size=$free_bytes | dd of=$out_file bs=1M; rm -f $out_file"
+    fi
+}
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
