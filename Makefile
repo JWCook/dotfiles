@@ -82,7 +82,10 @@ configure-ntp:
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
-install-bash-conf:
+install-bash-completion:
+	`pwd`/scripts/install_bash_completion.sh
+
+install-bash-conf: install-bash-completion
 	rm -rf ~/.bashrc
 	rm -rf ~/.bashrc_style
 	rm -rf ~/.bash_profile

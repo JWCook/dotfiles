@@ -37,6 +37,7 @@ PKGS_DEV='
     java-1.8.0-openjdk'
 PKGS_LIBS='
     automake
+    bash-completion
     cmake
     ctags
     gcc

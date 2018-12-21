@@ -17,6 +17,7 @@ alias ttput='tty -s && tput'                            # Safe tput, only for TT
 source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
+source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
 source-bin virtualenvwrapper.sh
 
 # Support bash_history across multiple terminals
@@ -383,7 +384,7 @@ grm-branch() {
         git push origin --delete $1
     fi
 }
-type -a __git_complete > /dev/null 2>&1 && __git_complete git-delete-branch _git_branch
+type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
 
 
 ################
