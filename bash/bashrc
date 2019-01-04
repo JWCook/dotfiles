@@ -43,48 +43,9 @@ export NTP_SERVER='pool.ntp.org'
 export JUPYTER_LOCAL_PORT=9468
 
 
-#####################################
-# ❰❰ General Functions & Aliases ❱❱ #
-#####################################
-
-# File & Directory Search & Info
-fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
-ff() { find ${2:-.} -name "$1" -type f; }               # Recursive search (lit, files)
-ge() { env | grep ${1:-""}; }                           # Search environment variables
-gr() { grep -r "$1" ${@:2}; }                           # Recursive search
-grr() { grep -r "$1" $(pwd-base) test; }                # Recursive search default src and test dirs
-alias ll='ls -Alhv --group-directories-first'
-lt() { tree $@ | color-filesize; }                      # Colored folder tree
-lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
-md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
-mode() { stat -c "%a %n" ${1:-*}; }                     # Get octal file permissions
-newest() {                                              # Find most recent file w/ pattern
-    find ${2:-.} -type f -name $1 -print0 |\
-    xargs -0 ls -t | head -n1
-}
-pwd-base() { basename $(pwd); }                         # Base name of the current working dir
-alias pwd-src="pwd-base | sed 's/-/_/g'"                # Guess name of project src dir
-tailc() { tailf $@ | grcat conf.logfile; }
-alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
-
-# Misc
-hist-frequency() {                                      # Most frequently used commands
-    history |\
-    awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'\
-    | sort -rn | less
-}
-nullify() { "$@" >/dev/null 2>&1; }                     # Run cmd with no output
-prompt-confirm() {                                      # Prompt for confirmation before continuing
-    read -p " Continue? [Y/N]" -n 1 -r CONFIRM; echo
-    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-alias tailf='tail -f -n 50'
-wcr() { gr "$1" $2 | wc -l; }                           # Recursive word count
-
+#########################
+# ❰❰ General Aliases ❱❱ #
+#########################
 
 # Simple Command/App Aliases
 alias term-code='terminator -mfl code &'
@@ -99,32 +60,209 @@ alias weather='curl -4 http://wttr.in/~50266'
 
 
 ####################
-# ❰❰ Encryption ❱❱ #
+# ❰❰ Misc Utils ❱❱ #
 ####################
 
-export CA_CERT_DIR=/usr/local/share/ca-certificates/extra/
-alias gen-aes='openssl enc -aes-256-cbc -P -md sha512'
-alias gen-rsa='ssh-keygen -t rsa -b 4096'
-alias gen-self-cert='openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365'
+hist-frequency() {                                      # Most frequently used commands
+    history |\
+    awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'\
+    | sort -rn | less
+}
+nullify() { "$@" >/dev/null 2>&1; }                     # Run cmd with no output
+prompt-confirm() {                                      # Prompt for confirmation before continuing
+    read -p " Continue? [Y/N]" -n 1 -r CONFIRM; echo
+    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+wcr() { gr "$1" $2 | wc -l; }                           # Recursive word count
 
-get-tls-cert() {
-    openssl s_client -starttls smtp -connect "$1":587 \
-    | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'
+
+################
+# ❰❰ Search ❱❱ #
+################
+
+fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
+ff() { find ${2:-.} -name "$1" -type f; }               # Recursive search (lit, files)
+ge() { env | grep ${1:-""}; }                           # Search environment variables
+gr() { grep -r "$1" ${@:2}; }                           # Recursive search
+grr() { grep -r "$1" $(pwd-base) test; }                # Recursive search default src and test dirs
+newest() {                                              # Find most recent file w/ pattern
+    find ${2:-.} -type f -name $1 -print0 |\
+    xargs -0 ls -t | head -n1
 }
 
-install-ca-root-cert() {
-    sudo mkdir -p $CA_CERT_DIR
-    sudo mv $1 $CA_CERT_DIR
-    sudo update-ca-certificates
+
+###############################
+# ❰❰ File & Directory Info ❱❱ #
+###############################
+
+du() {                                                  # Recursive folder size
+    /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
+}
+alias ll='ls -Alhv --group-directories-first'           # Can't live without it
+lt() { tree $@ | color-filesize; }                      # Colored folder tree
+lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
+md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
+mode() { stat -c "%a %n" ${1:-*}; }                     # Get octal file permissions
+pwd-base() { basename $(pwd); }                         # Base name of the current working dir
+alias pwd-src="pwd-base | sed 's/-/_/g'"                # Guess name of project src dir
+alias tailf='tail -f -n 50'                             # Tail defaults
+tailc() { tailf $@ | grcat conf.logfile; }              # Tail w/ generic syntax highlighting
+alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
+
+
+#########################
+# ❰❰ File Operations ❱❱ #
+#########################
+
+# Copy $file to $file.bak
+alias bak='cp -v "$1"{,.bak} 2> /dev/null'
+
+# Copy a file, also saving a backup ($file2.bak) of target file if it already exists
+# Optionally run as a different user, e.g. root
+# Usage: cp-bak source dest [user]
+cp-bak() {
+    if [ -n "$3" ]; then
+        su -c "cp -v $1{,.bak} 2> /dev/null; cp -v $1 $2" "$3"
+    else
+        bak "$1"
+        cp -v "$1" "$2"
+    fi
 }
 
-ssh-set-permissions() {
-    chmod 700 ~/.ssh
-    chmod 600 ~/.ssh/config
-    chmod 644 ~/.ssh/*.pub
-    # Find and chmod private keys, assuming pubkeys are also present and named "${privkey}.pub"
-    find ~/.ssh -name "*.pub" -type f | sed 's/\.pub//g' | xargs chmod 600
+# Verbose copy w/progress
+cpv() {
+    rsync -WavP --human-readable --progress $1 $2;
 }
+
+# Formatted preview for CSV files
+# Usage: csv-preview file [n_rows]
+csv-preview() {
+    n_rows=$((${2:-1000} + 1))
+    head -n $n_rows "$1" | sed 's/,,/, ,/g;s/,,/, ,/g' | column -s, -t | less -#2 -NSKQF
+}
+alias cv='csv-preview'
+
+# Create an archive (*.tar.gz) from given directory
+maketar() {
+    tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"
+}
+
+# Create a ZIP archive of a file or folder.
+makezip() {
+    zip -r "${1%%/}.zip" "$1"
+}
+
+# Mutli-format extract function
+extract() {
+    [ ! -f $1 ] && echo "$1 is not a valid file" && return 1
+    case $1 in
+        *.tar.bz2)   tar xvjf $1     ;;
+        *.tar.gz)    tar xvzf $1     ;;
+        *.bz2)       bunzip2 $1      ;;
+        *.rar)       unrar x $1      ;;
+        *.gz)        gunzip $1       ;;
+        *.tar)       tar xvf $1      ;;
+        *.tbz2)      tar xvjf $1     ;;
+        *.tgz)       tar xvzf $1     ;;
+        *.zip)       unzip $1        ;;
+        *.Z)         uncompress $1   ;;
+        *.7z)        7z x $1         ;;
+        *)           echo "unsupported archive format" ;;
+    esac
+}
+
+# Swap two files
+swap() {
+    # Neither file exists (or were not specified)
+    [ $# -ne 2 ] && return 1
+    [ -e $1 -o -e $2 ] || return 1
+
+    # Only one file exists
+    [ ! -e $1 ] && mv "$2" "$1" && return 0
+    [ ! -e $2 ] && mv "$1" "$2" && return 0
+
+    # Both files exist
+    local TMPFILE=tmp.$$
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+}
+
+
+######################################
+# ❰❰ File Operations: Danger Zone ❱❱ #
+######################################
+
+# Recursive find/replace
+# Usage: grepsed find replace [directory]
+grepsed() {
+    FILE_COUNT=$(wcr "$1" "$3")
+    if [ $FILE_COUNT -gt 0 ]; then
+        printf "Replacing $FILE_COUNT occurances of '$1' with '$2'."
+        if prompt-confirm; then
+            grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
+        fi
+    else
+        echo "No occurances of '$1' found"
+    fi
+}
+
+# Recursive find/delete files
+rrm() {
+    num_files=$(find ${2:-.} -name "$1" -type f | wc -l)
+    printf "Deleting $num_files files."
+    if prompt-confirm; then
+        find ${2:-.} -name "$1" -type f -delete
+    fi
+}
+
+# Recursive find/delete directories
+rrmdir() {
+    num_dirs=$(find ${2:-.} -name "$1" -type d | wc -l)
+    printf "Deleting $num_dirs dirs."
+    if prompt-confirm; then
+        find ${2:-.} -name "$1" -type d -exec rm -rf '{}' \;
+    fi
+}
+
+# Wipe root volume free space (when sfill from secure-erase is not available)
+sfill() {
+    root_device=$(df-device /)
+    free_bytes=$(df-free /)
+    out_file=/random_fill
+    printf "Wiping free space in root volume $root_device ($free_bytes bytes)."
+    if prompt-confirm; then
+        sudo sh -c "dd if=/dev/urandom | pv --size=$free_bytes | dd of=$out_file bs=1M; rm -f $out_file"
+    fi
+}
+
+
+############################
+# ❰❰ Disk & Device Info ❱❱ #
+############################
+
+# Readable disk usage
+df() {
+    /usr/bin/df -khT $@ | color-filesize
+}
+
+# Get a single metric for a single device (or a directory's device)
+# Usage: df-single-metric device [metric]
+df-single-metric() {
+    /usr/bin/df --block-size=1 --output="$2" "${1:-.}" | /usr/bin/tail -1
+}
+
+# Shortcuts for individual metrics
+df-device() { df-single-metric "${1:-.}" "source"; }
+df-type()   { df-single-metric "${1:-.}" "fstype"; }
+df-size()   { df-single-metric "${1:-.}" "size"; }
+df-used()   { df-single-metric "${1:-.}" "used"; }
+df-free()   { df-single-metric "${1:-.}" "avail"; }
+df-mount()  { df-single-metric "${1:-.}" "target"; }
 
 
 #################
@@ -184,109 +322,6 @@ sysinfo() {
 }
 
 
-############################
-# ❰❰ Disk & Device Info ❱❱ #
-############################
-
-# Readable disk usage
-df() {
-    /usr/bin/df -khT $@ | color-filesize
-}
-# Recursive folder size
-du() {
-    /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
-}
-
-# Get a single metric for a single device (or a directory's device)
-# Usage: df-single-metric device [metric]
-df-single-metric() {
-    /usr/bin/df --block-size=1 --output="$2" "${1:-.}" | /usr/bin/tail -1
-}
-
-df-device() { df-single-metric "${1:-.}" "source"; }
-df-type() { df-single-metric "${1:-.}" "fstype"; }
-df-size() { df-single-metric "${1:-.}" "size"; }
-df-used() { df-single-metric "${1:-.}" "used"; }
-df-free() { df-single-metric "${1:-.}" "avail"; }
-df-mount() { df-single-metric "${1:-.}" "targer"; }
-
-
-
-
-#########################
-# ❰❰ Distro-Specific ❱❱ #
-#########################
-
-# TODO: Separate .bashrc_$distro files, if/when needed
-
-# Fedora-based
-alias update-dnf='print-title "Updating system packages...";\
-                  sudo dnf update -y --skip-broken | lc-hgradient-delay'
-alias suspend-systemd='systemctl suspend'
-alias hibernate-systemd='systemctl suspend'
-
-# Debian-based
-alias update-apt='print-title "Updating system packages...";\
-                  sudo apt-get update;\
-                  sudo apt-get -y --allow-unauthenticated\
-                  dist-upgrade | lc-hgradient-delay'
-alias update-apt-unattended='print-title "Updating system packages...";\
-                             sudo apt-get update;\
-                             sudo apt-get -y --allow-unauthenticated\
-                             -o Dpkg::Options::="--force-confdef"\
-                             -o Dpkg::Options::="--force-confnew"\
-                             dist-upgrade | lc-hgradient-delay'
-alias suspend-pm='pm-suspend'
-alias hibernate-pm='pm-hibernate'
-
-# Install a .deb file from url
-install-deb() {
-    deb_tempfile=$(mktemp --suffix=.deb)
-    wget -O $deb_tempfile $1
-    sudo apt-get install -y $deb_tempfile
-    sleep 1
-    rm $deb_tempfile
-}
-
-
-##################
-# ❰❰ Services ❱❱ #
-##################
-
-# TODO: Add aliases for non-systemd distros, if/when needed
-# TODO: 'httpd' -> 'apache2' on Debian-based & other distros
-
-# systemd
-alias svc-start='sudo systemctl start'
-alias svc-restart='sudo systemctl restart'
-alias svc-stop='sudo systemctl stop'
-alias svc-status='systemctl status'
-
-# Apache (httpd)
-alias ap-start='svc-start httpd'
-alias ap-restart='svc-restart httpd'
-alias ap-stop='svc-stop httpd'
-alias ap-status='svc-status httpd'
-
-# Docker
-alias docker-start='svc-start docker'
-alias docker-restart='svc-restart docker'
-alias docker-stop='svc-stop docker'
-alias docker-status='svc-status docker'
-
-# Postgres
-alias pg-start='svc-start postgresql-9.6'
-alias pg-stop='svc-stop postgresql-9.6'
-alias pg-restart='svc-restart postgresql-9.6'
-alias pg-status='svc-status postgresql-9.6'
-alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
-
-# Jupyter
-alias jj='jupyter notebook --port $JUPYTER_LOCAL_PORT &'
-alias jl='jupyter notebook list'
-alias jq='pkill jupyter'
-
-
 #######################
 # ❰❰ Configuration ❱❱ #
 #######################
@@ -326,6 +361,71 @@ crontab-append() {
 # Append a line to root crontab, excluding duplicates
 scrontab-append() {
     sudo bash -c "source $HOME/.bashrc; crontab-append '$1'";
+}
+
+
+####################
+# ❰❰ Encryption ❱❱ #
+####################
+
+export CA_CERT_DIR=/usr/local/share/ca-certificates/extra/
+alias gen-aes='openssl enc -aes-256-cbc -P -md sha512'
+alias gen-rsa='ssh-keygen -t rsa -b 4096'
+alias gen-self-cert='openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365'
+
+get-tls-cert() {
+    openssl s_client -starttls smtp -connect "$1":587 \
+    | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'
+}
+
+install-ca-root-cert() {
+    sudo mkdir -p $CA_CERT_DIR
+    sudo mv $1 $CA_CERT_DIR
+    sudo update-ca-certificates
+}
+
+ssh-set-permissions() {
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/config
+    chmod 644 ~/.ssh/*.pub
+    # Find and chmod private keys, assuming pubkeys are also present and named "${privkey}.pub"
+    find ~/.ssh -name "*.pub" -type f | sed 's/\.pub//g' | xargs chmod 600
+}
+
+
+#########################
+# ❰❰ Distro-Specific ❱❱ #
+#########################
+
+# TODO: Separate .bashrc_$distro files, if/when needed
+
+# Fedora-based
+alias update-dnf='print-title "Updating system packages...";\
+                  sudo dnf update -y --skip-broken | lc-hgradient-delay'
+alias suspend-systemd='systemctl suspend'
+alias hibernate-systemd='systemctl suspend'
+
+# Debian-based
+alias update-apt='print-title "Updating system packages...";\
+                  sudo apt-get update;\
+                  sudo apt-get -y --allow-unauthenticated\
+                  dist-upgrade | lc-hgradient-delay'
+alias update-apt-unattended='print-title "Updating system packages...";\
+                             sudo apt-get update;\
+                             sudo apt-get -y --allow-unauthenticated\
+                             -o Dpkg::Options::="--force-confdef"\
+                             -o Dpkg::Options::="--force-confnew"\
+                             dist-upgrade | lc-hgradient-delay'
+alias suspend-pm='pm-suspend'
+alias hibernate-pm='pm-hibernate'
+
+# Install a .deb file from url
+install-deb() {
+    deb_tempfile=$(mktemp --suffix=.deb)
+    wget -O $deb_tempfile $1
+    sudo apt-get install -y $deb_tempfile
+    sleep 1
+    rm $deb_tempfile
 }
 
 
@@ -567,6 +667,44 @@ alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
                  export FLASK_DEBUG=1;\
                  flask run'
 
+##################
+# ❰❰ Services ❱❱ #
+##################
+
+# TODO: Add aliases for non-systemd distros, if/when needed
+# TODO: 'httpd' -> 'apache2' on Debian-based & other distros
+
+# systemd
+alias svc-start='sudo systemctl start'
+alias svc-restart='sudo systemctl restart'
+alias svc-stop='sudo systemctl stop'
+alias svc-status='systemctl status'
+
+# Apache (httpd)
+alias ap-start='svc-start httpd'
+alias ap-restart='svc-restart httpd'
+alias ap-stop='svc-stop httpd'
+alias ap-status='svc-status httpd'
+
+# Docker
+alias docker-start='svc-start docker'
+alias docker-restart='svc-restart docker'
+alias docker-stop='svc-stop docker'
+alias docker-status='svc-status docker'
+
+# Postgres
+alias pg-start='svc-start postgresql-9.6'
+alias pg-stop='svc-stop postgresql-9.6'
+alias pg-restart='svc-restart postgresql-9.6'
+alias pg-status='svc-status postgresql-9.6'
+alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
+
+# Jupyter
+alias jj='jupyter notebook --port $JUPYTER_LOCAL_PORT &'
+alias jl='jupyter notebook list'
+alias jq='pkill jupyter'
+
+
 #############
 # ❰❰ AWS ❱❱ #
 #############
@@ -575,127 +713,6 @@ s3cat() { aws s3 cp s3://$@ -; }
 s3ls() { aws s3 ls s3://$@; }
 s3rm() { aws s3 rm s3://$@; }
 
-
-#########################
-# ❰❰ File Operations ❱❱ #
-#########################
-
-# Copy $file to $file.bak
-alias bak='cp -v "$1"{,.bak} 2> /dev/null'
-
-# Copy a file, also saving a backup ($file2.bak) of target file if it already exists
-# Optionally run as another user, e.g. root
-# Usage: cp-bak source dest [user]
-cp-bak() {
-    if [ -n "$3" ]; then
-        su -c "cp -v $1{,.bak} 2> /dev/null; cp -v $1 $2" "$3"
-    else
-        bak "$1"
-        cp -v "$1" "$2"
-    fi
-}
-
-# Verbose copy w/progress
-cpv() {
-    rsync -WavP --human-readable --progress $1 $2;
-}
-
-# Formatted preview for CSV files
-# Usage: csv-preview file [n_rows]
-csv-preview() {
-    n_rows=$((${2:-1000} + 1))
-    head -n $n_rows "$1" | sed 's/,,/, ,/g;s/,,/, ,/g' | column -s, -t | less -#2 -NSKQF
-}
-alias cv='csv-preview'
-
-# Recursive find/replace
-# Usage: grepsed find replace [directory]
-grepsed() {
-    FILE_COUNT=$(wcr "$1" "$3")
-    if [ $FILE_COUNT -gt 0 ]; then
-        printf "Replacing $FILE_COUNT occurances of '$1' with '$2'."
-        if prompt-confirm; then
-            grep -rl "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
-        fi
-    else
-        echo "No occurances of '$1' found"
-    fi
-}
-
-# Recursive find/delete files
-rrm() {
-    num_files=$(find ${2:-.} -name "$1" -type f | wc -l)
-    printf "Deleting $num_files files."
-    if prompt-confirm; then
-        find ${2:-.} -name "$1" -type f -delete
-    fi
-}
-
-# Recursive find/delete directories
-rrmdir() {
-    num_dirs=$(find ${2:-.} -name "$1" -type d | wc -l)
-    printf "Deleting $num_dirs dirs."
-    if prompt-confirm; then
-        find ${2:-.} -name "$1" -type d -exec rm -rf '{}' \;
-    fi
-}
-
-# Create an archive (*.tar.gz) from given directory
-maketar() {
-    tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"
-}
-
-# Create a ZIP archive of a file or folder.
-makezip() {
-    zip -r "${1%%/}.zip" "$1"
-}
-
-# Mutli-format extract function
-extract() {
-    [ ! -f $1 ] && echo "$1 is not a valid file" && return 1
-    case $1 in
-        *.tar.bz2)   tar xvjf $1     ;;
-        *.tar.gz)    tar xvzf $1     ;;
-        *.bz2)       bunzip2 $1      ;;
-        *.rar)       unrar x $1      ;;
-        *.gz)        gunzip $1       ;;
-        *.tar)       tar xvf $1      ;;
-        *.tbz2)      tar xvjf $1     ;;
-        *.tgz)       tar xvzf $1     ;;
-        *.zip)       unzip $1        ;;
-        *.Z)         uncompress $1   ;;
-        *.7z)        7z x $1         ;;
-        *)           echo "unsupported archive format" ;;
-    esac
-}
-
-# Swap two files
-swap() {
-    # Neither file exists (or were not specified)
-    [ $# -ne 2 ] && return 1
-    [ -e $1 -o -e $2 ] || return 1
-
-    # Only one file exists
-    [ ! -e $1 ] && mv "$2" "$1" && return 0
-    [ ! -e $2 ] && mv "$1" "$2" && return 0
-
-    # Both files exist
-    local TMPFILE=tmp.$$
-    mv "$1" $TMPFILE
-    mv "$2" "$1"
-    mv $TMPFILE "$2"
-}
-
-# Wipe root volume free space (when sfill from secure-erase is not available)
-sfill() {
-    root_device=$(df-device /)
-    free_bytes=$(df-free /)
-    out_file=/random_fill
-    printf "Wiping free space in root volume $root_device ($free_bytes bytes)."
-    if prompt-confirm; then
-        sudo sh -c "dd if=/dev/urandom | pv --size=$free_bytes | dd of=$out_file bs=1M; rm -f $out_file"
-    fi
-}
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
