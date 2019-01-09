@@ -28,6 +28,7 @@ install-optional: configure-gnome \
 
 update: update-python \
         update-ruby \
+        update-grc \
         update-vim
 
 
@@ -164,6 +165,9 @@ install-vim:
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
 
+update-grc:
+	scripts/install_grc.sh
+
 update-python:
 	sudo -H pip install -Ur scripts/requirements-global.txt
 	sudo -H pip3 install -Ur scripts/requirements-global-py3.txt
@@ -190,7 +194,6 @@ install-vim-centos:
 
 install-postgres-centos:
 	scripts/centos/install_postgres.sh
-
 
 
 ####################

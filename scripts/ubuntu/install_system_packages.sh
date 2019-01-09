@@ -26,6 +26,7 @@ PKGS_APPS='
     terminator
     tig
     toilet
+    traceroute
     tree
     tmux
     wget'
@@ -34,6 +35,7 @@ PKGS_DEV='
     ruby-dev'
 PKGS_LIBS='
     build-essential
+    cmake
     exuberant-ctags
     libffi-dev
     libgpgme11-dev

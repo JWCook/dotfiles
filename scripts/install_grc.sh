@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+# Install/update Generic Colouriser
 
-# Generic Colouriser
+REPO=https://github.com/garabik/grc.git /usr/local/src/grc
+REPO_DIR=/usr/local/src/grc
 echo 'Installing generic colouriser...'
-sudo git clone https://github.com/garabik/grc.git /usr/local/src/grc
-cd /usr/local/src/grc
+sudo git -C $REPO_DIR pull || sudo git clone $REPO $REPO_DIR
+cd $REPO_DIR
 sudo ./install.sh
-
