@@ -118,10 +118,15 @@ alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
 # ❰❰ File Operations ❱❱ #
 #########################
 
-# Copy $file to $file.bak
-alias bak='cp -v "$1"{,.bak} 2> /dev/null'
+# Copy or move $file to $file.bak
+bak() {
+    cp -v "$1"{,.bak} 2> /dev/null
+}
+mv-bak() {
+    mv -v "$1"{,.bak} 2> /dev/null
+}
 
-# Copy a file, also saving a backup ($file2.bak) of target file if it already exists
+# Copy a file, also saving a backup ($file.bak) of target file if it already exists
 # Optionally run as a different user, e.g. root
 # Usage: cp-bak source dest [user]
 cp-bak() {
@@ -330,6 +335,7 @@ sysinfo() {
 BASH_CONF="$DOTFILES/bash/bashrc"
 BASH_CONF_ALL="$DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*"
 GIT_CONF="$DOTFILES/git/gitconfig"
+PIP_CONF=~/.config/pip/pip.conf
 PG_CONF="$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
 SETUP_CONF="$DOTFILES/Makefile $DOTFILES_EXTRA/Makefile"
 SSH_CONF="$DOTFILES_EXTRA/ssh/config"
@@ -435,6 +441,9 @@ install-deb() {
 
 # General
 alias gp='git pull'
+alias gpr='git pull --rebase'
+alias gpush='git push'
+alias gfpush='git push --force'
 alias gpr='git stash; git pull --rebase; git stash pop'
 alias gstash='git stash'
 alias gstlist='git stash list; git stash show'
@@ -442,7 +451,7 @@ alias gpop='git stash pop'
 alias gs='git status'
 alias gsv='git status -vv'
 alias gss='git status --short'
-alias gf='git fetch origin master:master'
+alias gf='git fetch --all'
 alias groot='cd $(git rev-parse --show-toplevel)'
 alias gremote='git remote | head -n 1'
 alias gitonup='git push'
@@ -500,9 +509,9 @@ alias gbranch='git rev-parse --abbrev-ref HEAD'
 alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
-alias grebase='gf; git rebase --interactive master'
-alias gbrebase='gf; git rebase --interactive --preserve-merges master'
-alias gsrebase='git stash; gf; git rebase --interactive master; git stash pop'
+grebase() { git rebase --interactive ${1:-master}; }
+gbrebase() { git rebase --interactive --preserve-merges ${1:-master}; }
+gsrebase() { git stash; git rebase --interactive --preserve-merges ${1:-master}; git stash pop; }
 alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
 alias gcontinue='git rebase --continue'
 alias gskip='git rebase --skip'
@@ -551,15 +560,23 @@ alias pypackages='python -c\
 alias in-env='python -c\
               "import sys;\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
+
 alias lsv='lsvirtualenv -b'
 
-# Install python requirements from file (specific file)
+# Pip install a package, temporarily disabling any extra indexes or other config
+pip-install-default() {
+    swap $PIP_CONF ${PIP_CONF}.bak
+    pip install "$@"
+    swap $PIP_CONF ${PIP_CONF}.bak
+}
+
+# Install python packages from a specific requirements files
 pip-install-req() {
     echo; print-title "Installing $1..."
     [[ -f $1 ]] && pip install -Ur $1 | lc-gradient --seed=100
 }
 
-# Install python requirements from file (all files)
+# Install python packages from all available requirements files
 pipr() {
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f
@@ -580,17 +597,16 @@ cmd-exists pt || pt() {
 }
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
+mkv() {
+    mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
+    add2virtualenv .
+    pipr
+}
 mkv2() {
     mkvirtualenv -p python2 -a . ${1:-$(pwd-base)}
     add2virtualenv .
     pipr
 }
-mkv3() {
-    mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
-    add2virtualenv .
-    pipr
-}
-alias mkv='mkv3'
 
 # Clean up leftover junk
 py-cleanup() {
@@ -712,6 +728,39 @@ alias jq='pkill jupyter'
 s3cat() { aws s3 cp s3://$@ -; }
 s3ls() { aws s3 ls s3://$@; }
 s3rm() { aws s3 rm s3://$@; }
+
+
+##########################
+# ❰❰ Proxied Commands ❱❱ #
+##########################
+
+# Proxychains executable varies by distro
+if type -a proxychains4 >/dev/null 2>&1; then
+    alias proxychains='proxychains4'
+fi
+alias px='proxychains'
+
+# Git
+alias gp-px='proxychains git pull'
+alias gfpush-px='proxychains git push --force'
+alias gpush-px='proxychains git push'
+alias gf-px='proxychains git fetch --all'
+
+# Python
+alias pip-install-px='proxychains pip install'
+pipr-px() {
+    for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
+        echo; print-title "Installing $f..."
+        proxychains pip install -Ur $f | lc-gradient --seed=100
+    done
+}
+mkv-px() {
+    swap $PIP_CONF ${PIP_CONF}.bak
+    mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
+    swap $PIP_CONF ${PIP_CONF}.bak
+    add2virtualenv .
+    pipr-px
+}
 
 
 # Enable Terminator to execute startup commands and keep shell open
