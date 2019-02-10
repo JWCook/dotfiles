@@ -1,4 +1,14 @@
 # Python 3-only packages
-ipython[all]
-pygments
+argcomplete
 flake8
+ipython[all]
+pip
+pygments
+pytest
+python-dateutil
+requests[security]
+requests[socks]
+setuptools
+virtualenv
+virtualenvwrapper
+vim-vint

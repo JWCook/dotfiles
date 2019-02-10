@@ -18,6 +18,7 @@ source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
+export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
 
 # Support bash_history across multiple terminals
@@ -195,6 +196,13 @@ swap() {
     mv "$1" $TMPFILE
     mv "$2" "$1"
     mv $TMPFILE "$2"
+}
+
+# Usage: chownr [user] [group]
+chownr() {
+    # sudo chown -R ${1:-$USER}:${1:-$USER}
+    chown_user=${1:-$USER}
+    echo $chown_user:${2:-$chown_user}
 }
 
 
@@ -405,11 +413,36 @@ ssh-set-permissions() {
 
 # TODO: Separate .bashrc_$distro files, if/when needed
 
+# Tests
+system-is-rpm() {
+    /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
+}
+system-is-debian() { [ -f "/etc/debian_version" ]; }
+
 # Fedora-based
 alias update-dnf='print-title "Updating system packages...";\
                   sudo dnf update -y --skip-broken | lc-hgradient-delay'
 alias suspend-systemd='systemctl suspend'
 alias hibernate-systemd='systemctl suspend'
+
+# Kernel utils
+ls-kernels-all() {
+    print-title "All installed kernels:"
+    rpm -qa kernel\* |sort -V
+}
+ls-kernels-old() {
+    n_keep=${1:-2}
+    print-title "Current kernel packages (latest $n_keep versions):"
+    dnf repoquery --installonly --latest-limit=$n_keep -q
+    print-title "Older kernel packages:"
+    dnf repoquery --installonly --latest-limit=-$n_keep -q
+}
+rm-old-kernels() {
+    n_keep=${1:-2}
+    ls-kernels-old $n_keep
+    echo
+    sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
+}
 
 # Debian-based
 alias update-apt='print-title "Updating system packages...";\
@@ -549,6 +582,18 @@ grm-branch() {
 type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
 
 
+##############
+# ❰❰ Tmux ❱❱ #
+##############
+
+alias tls='tmux ls'
+alias trm='tmux kill-session -t'
+ # Create new session, or attach if it already exists
+tnew() {
+    tmux new-session -A -s $1 -c ${2:-~}
+}
+
+
 ################
 # ❰❰ Python ❱❱ #
 ################
@@ -683,24 +728,67 @@ alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
                  export FLASK_DEBUG=1;\
                  flask run'
 
+
+################
+# ❰❰ Sphinx ❱❱ #
+################
+
+sphinx-build-current() {
+    pushd docs
+    make clean
+    make html | lc-gradient --seed=26
+    popd
+}
+
+sphinx-build-project() {
+    workon $1
+    pushd $WORKSPACE/$1/docs
+    make clean
+    make html | lc-gradient --seed=26
+    popd
+}
+
+sphinx-autobuild-current() {
+    sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z $(pwd-src)
+}
+
+sphinx-autobuild-project() {
+    wo $1
+    sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z ${1/-/_}
+}
+
+alias sphinx-open-docs='xdg-open docs/_build/html/index.html'
+alias sp-open='sphinx-open-docs'
+alias sp-doc='sphinx-build-current'
+alias sp-autodoc='sphinx-autobuild-current'
+
+
 ##################
 # ❰❰ Services ❱❱ #
 ##################
 
 # TODO: Add aliases for non-systemd distros, if/when needed
-# TODO: 'httpd' -> 'apache2' on Debian-based & other distros
 
 # systemd
 alias svc-start='sudo systemctl start'
 alias svc-restart='sudo systemctl restart'
 alias svc-stop='sudo systemctl stop'
 alias svc-status='systemctl status'
+alias svc-reload='sudo systemctl reload'
+alias svc-reload-all='sudo systemctl daemon-reload'
+alias svc-log='journalctl -xe'
 
-# Apache (httpd)
-alias ap-start='svc-start httpd'
-alias ap-restart='svc-restart httpd'
-alias ap-stop='svc-stop httpd'
-alias ap-status='svc-status httpd'
+# Apache
+if system-is-debian; then
+    export APACHE_SVC_NAME=apache2
+else
+    APACHE_SVC_NAME=httpd
+fi
+alias ap-start='svc-start $APACHE_SVC_NAME'
+alias ap-restart='svc-restart $APACHE_SVC_NAME'
+alias ap-stop='svc-stop $APACHE_SVC_NAME'
+alias ap-status='svc-status $APACHE_SVC_NAME'
+alias ap-reload='svc-reload $APACHE_SVC_NAME'
 
 # Docker
 alias docker-start='svc-start docker'
@@ -708,12 +796,24 @@ alias docker-restart='svc-restart docker'
 alias docker-stop='svc-stop docker'
 alias docker-status='svc-status docker'
 
+# MariaDB
+alias mdb-start='svc-start mariadb'
+alias mdb-restart='svc-restart mariadb'
+alias mdb-stop='svc-stop mariadb'
+alias mdb-status='svc-status mariadb'
+
 # Postgres
-alias pg-start='svc-start postgresql-9.6'
-alias pg-stop='svc-stop postgresql-9.6'
-alias pg-restart='svc-restart postgresql-9.6'
-alias pg-status='svc-status postgresql-9.6'
+alias pg-start='svc-start postgresql'
+alias pg-stop='svc-stop postgresql'
+alias pg-restart='svc-restart postgresql'
+alias pg-status='svc-status postgresql'
 alias psql='PAGER=$PG_PAGER LESS=$PG_LESS psql'
+
+# SSHD
+alias sshd-start='svc-start sshd'
+alias sshd-stop='svc-stop sshd'
+alias sshd-restart='svc-restart sshd'
+alias sshd-status='svc-status sshd'
 
 # Jupyter
 alias jj='jupyter notebook --port $JUPYTER_LOCAL_PORT &'

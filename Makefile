@@ -169,7 +169,7 @@ update-grc:
 	scripts/install_grc.sh
 
 update-python:
-	sudo -H pip install -Ur scripts/requirements-global.txt
+	sudo -H pip2 install -Ur scripts/requirements-global-py2.txt
 	sudo -H pip3 install -Ur scripts/requirements-global-py3.txt
 
 update-ruby:
