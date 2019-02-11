@@ -1,0 +1,14 @@
+[Unit]
+Description=ZoneMinder Virtual Partition
+After=network.target
+
+[Service]
+User=root
+Type=oneshot
+RemainAfterExit=True
+Environment="VPART_MOUNT=/media/zoneminder"
+ExecStart=/usr/local/bin/virtual_partition_manager
+ExecStop=/usr/bin/umount ${VPART_MOUNT}
+
+[Install]
+WantedBy=multi-user.target
