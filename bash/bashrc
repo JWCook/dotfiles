@@ -64,13 +64,18 @@ alias weather='curl -4 http://wttr.in/~50266'
 # ❰❰ Misc Utils ❱❱ #
 ####################
 
-hist-frequency() {                                      # Most frequently used commands
+# Most frequently used commands
+hist-frequency() {
     history |\
     awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'\
     | sort -rn | less
 }
-nullify() { "$@" >/dev/null 2>&1; }                     # Run cmd with no output
-prompt-confirm() {                                      # Prompt for confirmation before continuing
+
+# Run cmd with no output
+nullify() { "$@" >/dev/null 2>&1; }
+
+# Prompt for confirmation before continuing
+prompt-confirm() {
     read -p " Continue? [Y/N]" -n 1 -r CONFIRM; echo
     if [[ $CONFIRM =~ ^[Yy]$ ]]; then
         return 0
@@ -78,7 +83,9 @@ prompt-confirm() {                                      # Prompt for confirmatio
         return 1
     fi
 }
-wcr() { gr "$1" $2 | wc -l; }                           # Recursive word count
+
+# Recursive word count
+wcr() { gr "$1" $2 | wc -l; }
 
 
 ################
@@ -200,7 +207,6 @@ swap() {
 
 # Usage: chownr [user] [group]
 chownr() {
-    # sudo chown -R ${1:-$USER}:${1:-$USER}
     chown_user=${1:-$USER}
     echo $chown_user:${2:-$chown_user}
 }
@@ -401,6 +407,8 @@ install-ca-root-cert() {
 ssh-set-permissions() {
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/config
+    chmod 644 ~/.ssh/authorized_keys
+    chmod 644 ~/.ssh/known_hosts
     chmod 644 ~/.ssh/*.pub
     # Find and chmod private keys, assuming pubkeys are also present and named "${privkey}.pub"
     find ~/.ssh -name "*.pub" -type f | sed 's/\.pub//g' | xargs chmod 600
@@ -838,20 +846,20 @@ s3rm() { aws s3 rm s3://$@; }
 if type -a proxychains4 >/dev/null 2>&1; then
     alias proxychains='proxychains4'
 fi
-alias px='proxychains'
+alias px='proxychains -q'
 
 # Git
-alias gp-px='proxychains git pull'
-alias gfpush-px='proxychains git push --force'
-alias gpush-px='proxychains git push'
-alias gf-px='proxychains git fetch --all'
+alias gp-px='px git pull'
+alias gfpush-px='px git push --force'
+alias gpush-px='px git push'
+alias gf-px='px git fetch --all'
 
 # Python
-alias pip-install-px='proxychains pip install'
+alias pip-install-px='px pip install'
 pipr-px() {
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         echo; print-title "Installing $f..."
-        proxychains pip install -Ur $f | lc-gradient --seed=100
+        px pip install -Ur $f | lc-gradient --seed=100
     done
 }
 mkv-px() {
