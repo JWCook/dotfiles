@@ -15,6 +15,7 @@ let vim_header = [
 """""""""""""""""
 
 call plug#begin('~/.vim/plugged')
+let g:plug_timeout=120
 
 " UI
 Plug 'bling/vim-airline'
@@ -31,6 +32,8 @@ Plug 'airblade/vim-gitgutter'
 
 " Syntax
 Plug 'w0rp/ale'
+" If YCM fails:
+" git -C ~/.vim/plugged/YouCompleteMe submodule update --init --recursive
 Plug 'Valloric/YouCompleteMe', {'do': '~/.vim/plugged/YouCompleteMe/install.py'}
 Plug 'chrisbra/csv.vim'
 Plug 'pangloss/vim-javascript'
@@ -207,6 +210,22 @@ let g:tagbar_compact=1
 let g:tagbar_zoomwidth=0 " Zoom to longest tag length
 let g:tagbar_sort=0      " Sort tags by file order instead of by name
 
+let g:tagbar_type_make = {
+    \ 'kinds':[
+        \ 'm:macros',
+        \ 't:targets'
+    \ ]
+\}
+
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:Heading_L1',
+        \ 'i:Heading_L2',
+        \ 'k:Heading_L3'
+    \ ]
+\ }
+
 " Flake8
 autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR>
 autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
@@ -230,12 +249,12 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Pytest
 let g:pytest_test_dir = 'test'
-command! PF Pytest function
-command! PFV Pytest function verbose
-command! PT  Pytest file
-command! PTV Pytest file verbose
-command! PP  Pytest project
-command! PPV Pytest project verbose
+command! PF w! | Pytest function
+command! PFV w! | Pytest function verbose
+command! PT  w! | Pytest file
+command! PTV w! | Pytest file verbose
+command! PP  w! | Pytest project
+command! PPV w! | Pytest project verbose
 command! PS  Pytest session
 command! PL  Pytest fails
 command! PD  Pytest projecttestwd
@@ -392,14 +411,17 @@ endif
 """"""""""""""""""""
 
 " 1 tab == 4 spaces
-set tabstop=4
-set softtabstop=4
-set expandtab
-set smarttab
 set autoindent
 set copyindent
-set shiftwidth=4
+set expandtab
+set smarttab
 set shiftround
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
+" YAML: 1 tab = 2 spaces
+autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set backspace=indent,eol,start
 set pastetoggle=<leader>pa

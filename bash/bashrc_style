@@ -1,5 +1,7 @@
 # .bashrc_style
 
+alias ttput='tty -s && tput'
+
 
 #########################
 # ❰❰ Terminal Colors ❱❱ #

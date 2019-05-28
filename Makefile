@@ -28,6 +28,7 @@ install-optional: configure-gnome \
 
 update: update-python \
         update-ruby \
+        update-grc \
         update-vim
 
 
@@ -82,7 +83,10 @@ configure-ntp:
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
-install-bash-conf:
+install-bash-completion:
+	`pwd`/scripts/install_bash_completion.sh
+
+install-bash-conf: install-bash-completion
 	rm -rf ~/.bashrc
 	rm -rf ~/.bashrc_style
 	rm -rf ~/.bash_profile
@@ -161,8 +165,11 @@ install-vim:
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
 
+update-grc:
+	scripts/install_grc.sh
+
 update-python:
-	sudo -H pip install -Ur scripts/requirements-global.txt
+	sudo -H pip2 install -Ur scripts/requirements-global-py2.txt
 	sudo -H pip3 install -Ur scripts/requirements-global-py3.txt
 
 update-ruby:
@@ -187,7 +194,6 @@ install-vim-centos:
 
 install-postgres-centos:
 	scripts/centos/install_postgres.sh
-
 
 
 ####################
