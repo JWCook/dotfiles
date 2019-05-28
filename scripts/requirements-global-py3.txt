@@ -1,7 +1,11 @@
 # Python 3-only packages
 argcomplete
+awscli
 flake8
 ipython[all]
+numpy
+pandas
+pbr
 pip
 pygments
 pytest
@@ -12,3 +16,9 @@ setuptools
 virtualenv
 virtualenvwrapper
 vim-vint
+# matplotlib
+# scipy
+# scikit-learn
+# seaborn
+# visidata
+# xgboost
