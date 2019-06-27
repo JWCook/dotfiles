@@ -51,7 +51,6 @@ install-fedora: install-conf \
                 install-docker-fedora \
                 install-vim-fedora \
                 install-chrome-fedora \
-                install-insync-fedora \
                 install-retroterm-fedora \
                 install-pkgs
 
@@ -206,9 +205,6 @@ install-system-packages-fedora:
 
 install-docker-fedora:
 	scripts/fedora/install_docker.sh
-
-install-postgres-fedora:
-	scripts/fedora/install_postgres.sh
 
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Package categories
 PKGS_APPS='
     chromium
@@ -67,6 +66,12 @@ PKGS_MEDIA='
     gstreamer-plugins-good
     gstreamer-plugins-bad-free
     gstreamer-plugins-bad-nonfree'
+PKGS_POSTGRES='
+    postgresql10-devel
+    postgresql10-server
+    postgis30_10-devel
+    freetds-devel
+    unixODBC-devel'
 PKGS_PYTHON='
     python-devel
     python3-devel
@@ -95,14 +100,17 @@ PKGS_GNOME_EXTRAS='
     f25-backgrounds-extras-gnome
     f26-backgrounds-extras-gnome
     f27-backgrounds-extras-gnome
-    f28-backgrounds-extras-gnome'
+    f28-backgrounds-extras-gnome
+    f29-backgrounds-extras-gnome
+    f30-backgrounds-extras-gnome'
 
 
 # Install packages
 sudo dnf update -y
 sudo dnf install -y $PKGS_APPS $PKGS_PYTHON $PKGS_DEV $PKGS_LIBS
 sudo dnf install -y $PKGS_MEDIA
-sudo dnf install -y $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
+# Optional packages
+# sudo dnf install -y $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
 
 # Ensure pip is installed for all python interpreters. Some base repo versions (like python3.5-pip) may be broken.
 curl https://bootstrap.pypa.io/get-pip.py | sudo python

@@ -21,9 +21,6 @@ source-file ~/.git-completion.bash                      # Git bash completion (f
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
 
-# Former aliases that were turned into to functions
-unalias bak; unalias grebase; unalias gbrebase; unalias gsrebase
-
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000
 export HISTSIZE=10000

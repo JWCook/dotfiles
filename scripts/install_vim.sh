@@ -10,11 +10,12 @@
 # PYTHON3_CONFIG_DIR=/usr/lib64/python3.6/config/
 # Fedora
 PYTHON_CONFIG_DIR=/usr/lib64/python2.7/config/
-PYTHON3_CONFIG_DIR=/usr/lib64/python3.6/config-3.6m-x86_64-linux-gnu/
+PYTHON3_CONFIG_DIR=/usr/lib64/python3.7/config-3.7m-x86_64-linux-gnu/
 
 REPO=https://github.com/vim/vim
 REPO_DIR=/usr/local/src/vim
 
+# Clone to a new directory if installing for the first time, or otherwise pull if it's already cloned
 sudo mkdir -p $REPO_DIR
 sudo git -C $REPO_DIR pull || sudo git clone $REPO $REPO_DIR
 cd $REPO_DIR
@@ -34,7 +35,7 @@ sudo ./configure \
 --enable-gui=auto \
 --with-compiledby=jordan.cook
 #--with-vim-name=vim8  # To keep separate from base repo vim
-# Can't compile with these on Fedora 25:
+# Can't compile with these on Fedora 30:
 # --enable-luainterp=dynamic \
 # --enable-perlinterp=dynamic \
 # --enable-rubyinterp=dynamic
