@@ -335,7 +335,8 @@ sysinfo() {
     echo -e "\n${RED}Machine stats :$NOCOLOR " ; uptime | lc-gradient -S 60
     echo -e "\n${RED}Memory stats :$NOCOLOR " ; free | lc-gradient -S 60
     echo -e "\n${RED}Diskspace :$NOCOLOR " ; df
-    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; my-ip | lc-gradient -S 60
+    echo -e "\n${RED}Local IP Address :$NOCOLOR" ; local-ip | lc-gradient -S 60
+    echo -e "\n${RED}Public IP Address :$NOCOLOR" ; public-ip | lc-gradient -S 60
     echo -e "\n${RED}Open connections :$NOCOLOR "; netconn;
     echo
 }
@@ -629,7 +630,7 @@ pip-install-default() {
     swap $PIP_CONF ${PIP_CONF}.bak
 }
 
-# Install python packages from a specific requirements files
+# Install python packages from a specific requirements file
 pip-install-req() {
     echo; print-title "Installing $1..."
     [[ -f $1 ]] && pip install -Ur $1 | lc-gradient --seed=100
