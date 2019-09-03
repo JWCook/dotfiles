@@ -97,25 +97,19 @@ nnoremap <silent> <C-F12> :PlugStatus<CR>
 """"""""""""""""""""""""
 " ❰❰ Terminal Codes ❱❱ "
 """"""""""""""""""""""""
+" Make vim work with some non-ASCII terminal codes by mapping them to vim keycodes
 
-" Make vim work with some non-ASCII terminal codes by mapping them to vim keycodes.
-" Only tested in gnome-terminal.
-set <F13>=O1;5Q   " F13 -> C-F2
-set <F14>=O1;5R   " F14 -> C-F3
-set <F15>=O1;5S   " F15 -> C-F4
-set <F16>=O1;2P   " F16 -> S-F1
-set <F17>=O1;2Q   " F17 -> S-F2
-set <F18>=O1;2R   " F18 -> S-F3
-set <F19>=O1;2S   " F19 -> S-F4
-set <F21>=O1;6P   " F21 -> C-S-F1
-set <F22>=O1;6Q   " F22 -> C-S-F2
-set <F23>=O1;6R   " F23 -> C-S-F3
+" Reference links
+" ---------------
+" * https://vim.fandom.com/wiki/Mapping_fast_keycodes_in_terminal_Vim
+" * https://invisible-island.net/xterm/xterm-function-keys.html
 
 " Available vim keycodes: <F13-F37>, <S-F13>-<S-F37>
-" Available function key mappings:
+" Available function key mappings
+" -------------------------------
 "           S-F1  C-S-F1
 " F2  C-F2  S-F2  C-S-F2
-"           S-F3  C-S-F3
+"                 C-S-F3
 "           S-F4  C-S-F4
 " F5  C-F5  S-F5  C-S-F5
 "           S-F6  S-S-F6
@@ -124,6 +118,32 @@ set <F23>=O1;6R   " F23 -> C-S-F3
 " F9  C-F9  S-F9  C-S-F9
 "                 C-S-F10
 "           S-F12 C-S-F12
+
+" gnome-terminal
+" --------------
+" set <F13>=O1;5Q   " F13 -> C-F2
+" set <F14>=O1;5R   " F14 -> C-F3
+" set <F15>=O1;5S   " F15 -> C-F4
+" set <F16>=O1;2P   " F16 -> S-F1
+" set <F17>=O1;2Q   " F17 -> S-F2
+" set <F18>=O1;2R   " F18 -> S-F3
+" set <F19>=O1;2S   " F19 -> S-F4
+" set <F21>=O1;6P   " F21 -> C-S-F1
+" set <F22>=O1;6Q   " F22 -> C-S-F2
+" set <F23>=O1;6R   " F23 -> C-S-F3
+
+" xterm
+" -----
+set <F13>=[1;5Q   " F13 -> C-F2
+set <F14>=[1;5R   " F14 -> C-F3
+set <F15>=[1;5S   " F15 -> C-F4
+set <F16>=[1;2P   " F16 -> S-F1
+set <F17>=[1;2Q   " F17 -> S-F2
+set <F18>=[1;2R   " F18 -> S-F3
+set <F19>=[1;2S   " F19 -> S-F4
+set <F21>=[1;6P   " F21 -> C-S-F1
+set <F22>=[1;6Q   " F22 -> C-S-F2
+set <F23>=[1;6R   " F23 -> C-S-F3
 
 
 """""""""""""""""""""""""

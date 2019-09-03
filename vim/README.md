@@ -139,6 +139,7 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 |                   | move tab to last position      | `:tabm`
 | Visual Mode       | charwise/linewise/blockwise    | v, V, Ctrl-v
 |                   | last visual selection          | gv
+|                   | reformat paragraph             | gq
 |                   | upper/lower/toggle case        | U , u, ~
 |                   | indent/unindent                | > , <
 |                   | format lines                   | Shift-F3
@@ -148,3 +149,4 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | Other ex commands | run external command           | `:![command]`
 |                   | insert output of command       | `:r ![command]`
 |                   | show non-default options       | `:set`
+|                   | reload `.vimrc`                | `:so ~/.vimrc`

@@ -8,6 +8,8 @@ PKGS_APPS='
     duplicity
     duply
     figlet
+    firefox
+    firefox-wayland
     gedit
     gimp
     git
