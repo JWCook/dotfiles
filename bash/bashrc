@@ -860,6 +860,15 @@ alias gp-px='px git pull'
 alias gfpush-px='px git push --force'
 alias gpush-px='px git push'
 alias gf-px='px git fetch --all'
+gbreset-px() {
+    REMOTE="$(gremote)"
+    BRANCH="$(gbranch)"
+    px git fetch $REMOTE $BRANCH
+    px git status
+    printf "Resetting branch to $REMOTE/$BRANCH."
+    px prompt-confirm && git reset --hard $REMOTE/$BRANCH
+}
+
 
 # Python
 alias pip-install-px='px pip install'
@@ -876,7 +885,11 @@ mkv-px() {
     add2virtualenv .
     pipr-px
 }
-
+mkv-basic-px() {
+    swap $PIP_CONF ${PIP_CONF}.bak
+    mkvirtualenv -p python3 ${1:-$(pwd-base)}
+    swap $PIP_CONF ${PIP_CONF}.bak
+}
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
