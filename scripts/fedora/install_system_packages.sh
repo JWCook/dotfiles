@@ -22,6 +22,7 @@ PKGS_APPS='
     p7zip
     proxychains-ng
     pv
+    rpmconf
     telnet
     terminator
     the_silver_searcher
@@ -85,15 +86,12 @@ PKGS_OTHER='
 # Desktop environment-specific packages
 PKGS_GNOME='
     alacarte
-    shutter
     dconf-editor
     gnome-tweak-tool
-    gnome-shell-browser-plugin
     gnome-shell-extension-user-theme
     gnome-shell-extension-workspace-indicator
     gnome-shell-extension-screenshot-window-sizer
-    gnome-shell-extension-auto-move-windows
-    gnome-shell-extension-drive-menu'
+    gnome-shell-extension-auto-move-windows'
 PKGS_GNOME_EXTRAS='
     f21-backgrounds-extras-gnome
     f22-backgrounds-extras-gnome

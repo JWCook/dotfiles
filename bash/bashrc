@@ -749,17 +749,18 @@ alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
 ################
 
 sphinx-build-current() {
-    pushd docs
-    make clean
-    make html | lc-gradient --seed=26
-    popd
+    # Use 'all' target, if it exists
+    make -C docs all | lc-gradient --seed=26
+    # If it doesn't exist (make error code 2), use 'html' target
+    if [ $PIPESTATUS -eq 2 ]; then
+        make -C docs clean html | lc-gradient --seed=26
+    fi
 }
 
 sphinx-build-project() {
     workon $1
-    pushd $WORKSPACE/$1/docs
-    make clean
-    make html | lc-gradient --seed=26
+    pushd $WORKSPACE/$1
+    sphinx-build-current
     popd
 }
 
@@ -775,6 +776,7 @@ sphinx-autobuild-project() {
 alias sphinx-open-docs='xdg-open docs/_build/html/index.html'
 alias sp-open='sphinx-open-docs'
 alias sp-doc='sphinx-build-current'
+alias spdo='sphinx-build-current && sphinx-open-docs'
 alias sp-autodoc='sphinx-autobuild-current'
 
 

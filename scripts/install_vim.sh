@@ -27,15 +27,14 @@ sudo ./configure \
 --with-features=huge \
 --enable-fail-if-missing \
 --with-tlib=ncurses \
---enable-pythoninterp=dynamic \
---with-python-config-dir=$PYTHON_CONFIG_DIR \
 --enable-python3interp=dynamic \
 --with-python3-config-dir=$PYTHON3_CONFIG_DIR \
 --with-x \
 --enable-gui=auto \
 --with-compiledby=jordan.cook
 #--with-vim-name=vim8  # To keep separate from base repo vim
-# Can't compile with these on Fedora 30:
+# --enable-pythoninterp=dynamic \
+# --with-python-config-dir=$PYTHON_CONFIG_DIR \
 # --enable-luainterp=dynamic \
 # --enable-perlinterp=dynamic \
 # --enable-rubyinterp=dynamic
