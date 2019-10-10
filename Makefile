@@ -29,6 +29,7 @@ install-optional: configure-gnome \
 update: update-python \
         update-ruby \
         update-grc \
+        update-ycm \
         update-vim
 
 
@@ -173,6 +174,9 @@ update-python:
 
 update-ruby:
 	sudo gem update
+
+update-ycm:
+	scripts/update_ycm.sh
 
 update-vim:
 	scripts/install_vim.sh

@@ -32,9 +32,7 @@ Plug 'airblade/vim-gitgutter'
 
 " Syntax
 Plug 'w0rp/ale'
-" If YCM fails:
-" git -C ~/.vim/plugged/YouCompleteMe submodule update --init --recursive
-Plug 'Valloric/YouCompleteMe', {'do': '~/.vim/plugged/YouCompleteMe/install.py'}
+Plug 'Valloric/YouCompleteMe', {'do': 'make -C ~/dotfiles update-ycm'}
 Plug 'chrisbra/csv.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-surround'
