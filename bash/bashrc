@@ -54,7 +54,7 @@ alias term-dev='terminator -mfl 6-split &'
 alias term-start='terminator -l start &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias lw='sudo logwatch | less'
-alias ta='type -a'
+alias ta='type -a'; complete -c ta
 alias top='htop'
 alias tt='tig'
 alias weather='curl -4 http://wttr.in/~50266'
@@ -613,14 +613,17 @@ tnew() {
 ################
 
 alias bb='black --target-version py36 --line-length 100 --skip-string-normalization'
+# Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
-alias pypackages='python -c\
-                  "from distutils.sysconfig import get_python_lib;\
-                   print(get_python_lib())"'
+# Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
+alias py-site-packages='
+    python -c\
+    "from distutils.sysconfig import get_python_lib;\
+    print(get_python_lib())"'
+# Determine if we are running in a virtualenv
 alias in-env='python -c\
               "import sys;\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
-
 alias lsv='lsvirtualenv -b'
 
 # Pip install a package, temporarily disabling any extra indexes or other config
@@ -721,8 +724,9 @@ cpyfile() {
 alias cpf='cpyfile'
 
 # Edit virtualenv path extensions
-alias vvpathext='vim $VIRTUAL_ENV/lib/python3.6/site-packages/_virtualenv_path_extensions.pth'
+alias vvpathext='vim $(py-site-packages)/_virtualenv_path_extensions.pth'
 alias vvp='vvpathext'
+alias vsp='py-site-packages'
 
 # Workon & cd/deactivate a virtualenv (with autocomplete)
 wo() {
