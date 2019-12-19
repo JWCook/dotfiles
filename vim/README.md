@@ -70,12 +70,13 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | Whitespace   | strip whitespace           | ww            | `:StripWhitespace`
 |              | toggle Markers             | wt            | `:ToggleWhitespace`
 |              | strip on save              | ws            | `:ToggleStripWhitespaceOnSave`
-| Unite        | file search                | Ctrl-P
+| Denite       | file search                | Ctrl-P        | `:DeniteProjectDir -start-filter file/rec`
 |              | buffer search              | Ctrl-B
-|              | content search             | Ctrl-F
-|              | git Content search         | Ctrl-G
-|              | yank hist search           | Ctrl-Y
+|              | content search (`ag`)      | Ctrl-F
+|              | `git` search               | Ctrl-G
+|              | yank history search        | Ctrl-Y
 |              | refresh cache              | Ctrl-L
+|              | command history search         | Ctrl-Shift-R
 | Virtualenvs  | list                       | vl            | `:VirtualEnvList`
 |              | deactivate                 | vd            | `:VirtualEnvDeactivate`
 |              | activate                   |               | `:VirtualEnvActivate [name/tab-complete]`

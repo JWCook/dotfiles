@@ -4,7 +4,7 @@
 [github]
     user = JWCook
 [core]
-    editor = vim
+    editor = nvim
 [alias]
     amend = commit --amend
     b = branch -vv
@@ -43,7 +43,7 @@
     deleted = red
     untracked = magenta
 [diff]
-    tool = vimdiff
+    tool = nvim -d
 [tig]
     vertical-split = false
     split-view-height = 80%

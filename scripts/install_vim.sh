@@ -31,8 +31,8 @@ sudo ./configure \
 --with-python3-config-dir=$PYTHON3_CONFIG_DIR \
 --with-x \
 --enable-gui=auto \
---with-compiledby=jordan.cook
-#--with-vim-name=vim8  # To keep separate from base repo vim
+--with-compiledby=jordan.cook \
+--with-vim-name=vim8  # To keep separate from main vim
 # --enable-pythoninterp=dynamic \
 # --with-python-config-dir=$PYTHON_CONFIG_DIR \
 # --enable-luainterp=dynamic \

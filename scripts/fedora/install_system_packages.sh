@@ -30,6 +30,7 @@ PKGS_APPS='
     tree
     tmux
     wget
+    wl-clipboard
     xmlstarlet'
 PKGS_DEV='
     lua-devel
