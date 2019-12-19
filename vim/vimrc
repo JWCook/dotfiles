@@ -39,6 +39,7 @@ Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'Kuniwak/vint', {'do': 'sudo pip install -U vim-vint'}
 Plug 'WolfgangMehner/bash-support'
+Plug 'frazrepo/vim-rainbow'
 
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
@@ -74,14 +75,14 @@ Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
 Plug 'atelierbram/Base2Tone-vim'
-Plug 'antlypls/vim-colors-codeschool'
+" Plug 'antlypls/vim-colors-codeschool'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'aereal/vim-colors-japanesque'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'sickill/vim-monokai'
-Plug 'CruizeMissile/Revolution.vim'
-Plug 'ninja/sky'
+" Plug 'CruizeMissile/Revolution.vim'
+" Plug 'ninja/sky'
 Plug 'rakr/vim-two-firewatch'
 Plug 'Donearm/Ubaryd'
 
@@ -324,6 +325,9 @@ nnoremap ww :StripWhitespace<CR>
 nnoremap wt :ToggleWhitespace<CR>
 nnoremap ws :ToggleStripWhitespaceOnSave<CR>
 
+" Other
+let g:rainbow_active = 1
+
 
 """"""""""""""""""""""
 " ❰❰ Bash Aliases ❱❱ "
@@ -345,6 +349,8 @@ set viminfo='100,n$HOME/.vim/viminfo
 nnoremap ev :vsplit $MYVIMRC<CR>
 nnoremap sv :source $MYVIMRC<CR>
 nnoremap rr :redraw!<CR>
+
+set clipboard+=unnamed
 
 " Sets how many lines of history VIM remembers
 set history=1000
@@ -391,6 +397,11 @@ vnoremap ; :
 map q: <nop>
 nnoremap Q <nop>
 
+" Enable persistent undo
+set undodir=~/.vim/undo
+set undofile
+au BufWritePre /tmp/* setlocal noundofile
+
 
 """"""""""""""""""""""""""
 " ❰❰ Colors and Fonts ❱❱ "
@@ -411,7 +422,7 @@ set background=dark
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
-  colorscheme monokai
+  colorscheme ubaryd "jellybeans monokai solarized
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
