@@ -62,7 +62,6 @@ install-ubuntu: install-system-packages-ubuntu \
                 install-conf \
                 install-chrome-ubuntu \
                 install-flux-ubuntu \
-                install-keepass-ubuntu \
                 install-vim-ubuntu \
                 install-pkgs
 
@@ -239,9 +238,6 @@ install-vim-ubuntu:
 
 install-chrome-ubuntu:
 	sudo scripts/ubuntu/install_chrome.sh
-
-install-keepass-ubuntu:
-	scripts/ubuntu/install_keepassxc.sh
 
 install-flux-ubuntu:
 	sudo scripts/ubuntu/install_flux.sh
