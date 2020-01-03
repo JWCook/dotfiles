@@ -157,7 +157,14 @@ alias lc-loop='lolcat-q --animate --duration=99999999'
 alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
 
 # Figlet
-figlol() { figlet -w 270 -f $1 $2 | lolcat -a -d 2; }
+figlol() { figlet -w 270 -f $1 $2 | lolcat -a -d 1; }
+function figlet-all() {
+    fonts=$(ls ~/.figlet/*.flf)
+    for font in $fonts; do
+        basename $font
+        figlol $font $@
+    done
+}
 alias fabulous='figlol ~/.figlet/alligator.flf'
 alias faabulous='figlol ~/.figlet/starwars.flf'
 alias faaabulous='figlol ~/.figlet/univers.flf'

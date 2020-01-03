@@ -5,6 +5,7 @@
 #############################################
 
 install-conf: install-bash-conf \
+              install-fish-conf \
               install-figlet-conf \
               install-git-conf \
               install-grc-conf \
@@ -95,6 +96,15 @@ install-bash-conf: install-bash-completion
 	ln -s `pwd`/bash/bash_profile ~/.bash_profile
 	ln -s `pwd`/bash/bash_logout  ~/.bash_logout
 
+install-fish-conf:
+	mkdir -p ~/.config/fish/
+	rm -rf ~/.config/fish/config.fish
+	rm -rf ~/.config/fish/functions
+	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
+	ln -s `pwd`/fish/functions ~/.config/fish/functions
+	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
+	fish -c 'fundle install'
+
 install-figlet-conf:
 	rm -rf ~/.figlet
 	ln -s `pwd`/figlet ~/.figlet
@@ -171,8 +181,7 @@ update-grc:
 	scripts/install_grc.sh
 
 update-python:
-	sudo -H pip2 install -Ur scripts/requirements-global-py2.txt
-	sudo -H pip3 install -Ur scripts/requirements-global-py3.txt
+	pip3 install --user -Ur scripts/requirements-user.txt
 
 update-ruby:
 	sudo gem update
@@ -232,6 +241,7 @@ install-retroterm-fedora:
 #####################
 
 install-system-packages-ubuntu:
+	scripts/ubuntu/install_repos.sh
 	scripts/ubuntu/install_system_packages.sh
 
 install-vim-ubuntu:

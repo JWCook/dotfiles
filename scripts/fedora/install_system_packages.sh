@@ -10,7 +10,8 @@ PKGS_APPS='
     figlet
     firefox
     firefox-wayland
-    gedit
+    fish
+    fzf
     gimp
     git
     htop
@@ -112,9 +113,5 @@ sudo dnf install -y $PKGS_APPS $PKGS_PYTHON $PKGS_DEV $PKGS_LIBS
 sudo dnf install -y $PKGS_MEDIA
 # Optional packages
 # sudo dnf install -y $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
-
-# Ensure pip is installed for all python interpreters. Some base repo versions (like python3.5-pip) may be broken.
-curl https://bootstrap.pypa.io/get-pip.py | sudo python
-curl https://bootstrap.pypa.io/get-pip.py | sudo python3
 
 sudo activate-global-python-argcomplete
