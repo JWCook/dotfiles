@@ -62,6 +62,7 @@ endif
 " Syntax
 Plug 'w0rp/ale'
 Plug 'chrisbra/csv.vim'
+Plug 'dag/vim-fish'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -474,6 +475,8 @@ nnoremap Q <nop>
 set undodir=~/.vim/undo
 set undofile
 au BufWritePre /tmp/* setlocal noundofile
+
+autocmd FileType fish compiler fish
 
 
 """"""""""""""""""""""""""

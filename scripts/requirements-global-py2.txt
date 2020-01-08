@@ -1,4 +1,0 @@
-# Python 2/3-compatible packages
-pip>=9.0
-pygments
-vex

@@ -18,8 +18,6 @@ source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-source-bin virtualenvwrapper.sh
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
 
@@ -40,6 +38,11 @@ export DOTFILES=~/dotfiles
 [ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra
 export WORKSPACE=~/workspace
 alias cw='cd $WORKSPACE'
+
+# Python
+export PYTHONPATH=~/.local/lib/python3.7/site-packages
+export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+source-bin virtualenvwrapper.sh
 
 # Misc application-specific settings
 export NTP_SERVER='pool.ntp.org'
@@ -494,6 +497,7 @@ install-deb() {
 #############
 
 # General
+alias gf='git fetch --all'
 alias gp='git pull'
 alias gpr='git pull --rebase'
 alias gpush='git push'
@@ -505,11 +509,8 @@ alias gpop='git stash pop'
 alias gs='git status'
 alias gsv='git status -vv'
 alias gss='git status --short'
-alias gf='git fetch --all'
 alias groot='cd $(git rev-parse --show-toplevel)'
 alias gremote='git remote | head -n 1'
-alias gitonup='git push'
-alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
 grm(){ rm $1; git rm $1; }
 ggr() { git grep "$1" ${@:2}; }
@@ -623,8 +624,7 @@ alias bb='black --target-version py36 --line-length 100 --skip-string-normalizat
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
 # Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
-alias py-site-packages='
-    python -c\
+alias py-site-packages='python -c\
     "from distutils.sysconfig import get_python_lib;\
     print(get_python_lib())"'
 # Determine if we are running in a virtualenv
@@ -902,24 +902,6 @@ mkv-basic-px() {
     swap $PIP_CONF ${PIP_CONF}.bak
     mkvirtualenv -p python3 ${1:-$(pwd-base)}
     swap $PIP_CONF ${PIP_CONF}.bak
-}
-
-
-# WIP: Download and symlink an AppImage
-APPIMAGE_DIR=/usr/appimage
-APP_BIN_DIR=/usr/bin
-install-appimage() {
-    url=$1
-    dest_path=${APPIMAGE_DIR}/$(basename $url)
-    symlink_path=${APP_BIN_DIR}/$(basename $url .appimage)
-
-    sudo mkdir -p $APPIMAGE_DIR
-    sudo curl -L $url -o $dest_path
-    sudo chmod +x $dest_path
-
-    # Symlink to binary dir; backup file if it already exists
-    [ -f $symlink_path ] && sudo mv -v $symlink_path $symlink_path.old
-    sudo ln -sv $dest_path $symlink_path
 }
 
 

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-
 # Package categories
 PKGS_APPS='
     chromium-browser
     curl
     figlet
-    fortune
-    gedit
+    fish
+    fzf
     gimp
     git
     htop
@@ -25,7 +24,6 @@ PKGS_APPS='
     tree
     tmux
     wget'
-    #shutter'
 PKGS_SERVER='
     logwatch
     ncdu
@@ -60,14 +58,15 @@ PKGS_PYTHON='
     #python3-pip
     #python3-setuptools'
 
-
 # Desktop environment-specific packages
 PKGS_GNOME='
     gnome-tweak-tool
     gconf-editor'
 PKGS_UNITY='ubuntu-tweak'
 
+# Install packages
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_PYTHON
+# Optional packages
 # sudo apt-get install -y $PKGS_DEV $PKGS_GNOME $PKGS_UNITY
