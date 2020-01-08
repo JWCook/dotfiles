@@ -137,8 +137,11 @@ install-terminator-conf:
 install-vim-conf:
 	rm -rf ~/.vim
 	rm -rf ~/.vimrc
+	rm -rf ~/.config/nvim/init.vim
 	ln -s `pwd`/vim/vimrc  ~/.vimrc
 	ln -s `pwd`/vim/vim  ~/.vim
+	mkdir -p ~/.config/nvim
+	ln -s `pwd`/vim/vimrc ~/.config/nvim/init.vim
 
 
 ############################

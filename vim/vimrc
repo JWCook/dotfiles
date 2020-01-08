@@ -1,12 +1,12 @@
 let vim_header = [
-    \ '                 88                           ad88888ba',
-    \ '                 ^^                          d8^     ^8b',
-    \ '                                             Y8a     a8P',
-    \ '  8b       d8    88    88.dPYba..adPYba.      ^Y8aaa8P^',
-    \ '  `8b     d8`    88    88P`   ^88^    ^8a     .d8^^^8b.',
-    \ '   `8b   d8`     88    88      88      88    d8^     ^8b',
-    \ '    `8b.d8`      88    88      88      88    Y8a     a8P',
-    \ '      ^8^        88    88      88      88     ^Y88888P^',
+    \ '                 88                      ',
+    \ '                 ^^                      ',
+    \ '                                         ',
+    \ '  8b       d8    88    88.dPYba..adPYba. ',
+    \ '  `8b     d8`    88    88P`   ^88^    ^8a',
+    \ '   `8b   d8`     88    88      88      88',
+    \ '    `8b.d8`      88    88      88      88',
+    \ '      ^8^        88    88      88      88',
     \ ]
 
 
@@ -14,7 +14,13 @@ let vim_header = [
 " ❰❰ Plugins ❱❱ "
 """""""""""""""""
 
-call plug#begin('~/.vim/plugged')
+if has('nvim')
+  call plug#begin('~/.local/share/nvim/plugged')
+else
+  call plug#begin('~/.vim/plugged')
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 let g:plug_timeout=120
 
 " UI
@@ -30,23 +36,46 @@ Plug 'tpope/vim-rhubarb'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
+" Autocomplete
+" Plug 'Valloric/YouCompleteMe', {'do': 'make -C ~/dotfiles update-ycm'}
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+else
+  Plug 'Shougo/deoplete.nvim'
+endif
+Plug 'deoplete-plugins/deoplete-jedi'
+let g:deoplete#enable_at_startup = 1
+let g:python_host_prog = $HOME.'/.virtualenvs/nvim/bin/python3'
+let g:python3_host_prog = $HOME.'/.virtualenvs/nvim/bin/python3'
+" Plug 'deoplete-plugins/deoplete-clang', {'do': 'pip install -U --user pynvim'}
+" let g:deoplete#sources#clang#libclang_path = ''
+" let g:deoplete#sources#clang#clang_header = ''
+
+" Search
+" , {'do': 'pip install -U --user pynvim'}
+if has('nvim')
+  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/denite.nvim'
+endif
+
 " Syntax
 Plug 'w0rp/ale'
-Plug 'Valloric/YouCompleteMe', {'do': 'make -C ~/dotfiles update-ycm'}
 Plug 'chrisbra/csv.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'Kuniwak/vint', {'do': 'sudo pip install -U vim-vint'}
+Plug 'Kuniwak/vint', {'do': 'pip install -U --user vim-vint'}
 Plug 'WolfgangMehner/bash-support'
 Plug 'frazrepo/vim-rainbow'
+let g:rainbow_active = 1
 
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'suan/vim-instant-markdown'
 " Plug 'Rykka/riv.vim'
-" Plug 'Rykka/InstantRst', {'do': 'sudo pip install -U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
+" Plug 'Rykka/InstantRst', {'do': 'pip install -U --user https://github.com/Rykka/instant-rst.py/archive/master.zip'}
 
 " Python
 Plug 'MicahChambers/vim-flake8'
@@ -66,7 +95,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Plug 'jistr/vim-nerdtree-tabs'
 Plug 'majutsushi/tagbar'
-Plug 'Shougo/unite.vim'
 Plug 'Shougo/neoyank.vim'
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 
@@ -75,16 +103,16 @@ Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
 Plug 'atelierbram/Base2Tone-vim'
-" Plug 'antlypls/vim-colors-codeschool'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'aereal/vim-colors-japanesque'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'sickill/vim-monokai'
-" Plug 'CruizeMissile/Revolution.vim'
-" Plug 'ninja/sky'
 Plug 'rakr/vim-two-firewatch'
 Plug 'Donearm/Ubaryd'
+" Plug 'antlypls/vim-colors-codeschool'
+" Plug 'CruizeMissile/Revolution.vim'
+" Plug 'ninja/sky'
 
 call plug#end()
 
@@ -154,10 +182,6 @@ let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$'
                    \ '^tmp$', '^\.coverage$', '\.a$', '\.class$', '\.idea$', '\.o$', '\.obj$',
                    \ '\.pyc$','\.sw\a$', '\.so$']
 
-" Enable filetype-specific plugins and indent files
-filetype plugin on
-filetype indent on
-
 " Airline
 " let g:airline_theme='ubaryd'
 let g:airline_theme='deep_space'
@@ -165,7 +189,6 @@ let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
-set timeoutlen=50
 
 " Ale
 let g:ale_sign_error = '✘❱'
@@ -181,8 +204,7 @@ let g:ale_lint_delay = 500
 let g:ale_maximum_file_size = 1048576
 
 " Fugitive
-let g:fugitive_gitlab_domains = [ 'https://gitlab.encirca.auto.pioneer.com',
-                                \ 'https://gitlab-encirca.phibred.com']
+let g:fugitive_gitlab_domains = [ 'dsigitlab.research.auto.pioneer.com' ]
 nnoremap <silent> gf :Gdiff<CR>
 nnoremap <silent> gs :Gstatus<CR>
 nnoremap <silent> gp :Gpull<CR>
@@ -296,23 +318,6 @@ let g:startify_session_before_save=['silent! NERDTreeClose']
 autocmd User Startified setlocal buftype=
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 
-" Unite
-let g:unite_source_history_yank_enable=1
-nnoremap <C-P> :Unite -start-insert file_rec/async<CR>
-inoremap <C-P> <ESC>:Unite -start-insert file_rec/async<CR>
-nnoremap <C-B> :Unite -start-insert buffer<CR>
-inoremap <C-B> <ESC>:Unite -start-insert buffer<CR>
-nnoremap <C-F> :Unite grep:/home/cookjo/workspace<CR>
-inoremap <C-F> :<ESC>Unite grep:/home/cookjo/workspace<CR>
-nnoremap <C-G> :Unite grep/git<CR>
-inoremap <C-G> <ESC>:Unite grep/git<CR>
-nnoremap <C-Y> :Unite history/yank<CR>
-inoremap <C-Y> <ESC>:Unite history/yank<CR>
-nnoremap <C-L> <Plug>(unite_redraw)
-inoremap <C-L> <ESC><Plug>(unite_redraw)
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-                        \ 'ignore_pattern', join(ignore_files, '\|'))
-
 " Virtualenvs
 let g:virtualenv_auto_activate=1
 let g:virtualenv_stl_format='⦗%n⦘'
@@ -325,8 +330,87 @@ nnoremap ww :StripWhitespace<CR>
 nnoremap wt :ToggleWhitespace<CR>
 nnoremap ws :ToggleStripWhitespaceOnSave<CR>
 
-" Other
-let g:rainbow_active = 1
+
+""""""""""""""""""""""""
+" ❰❰ Plugin: Denite ❱❱ "
+""""""""""""""""""""""""
+
+augroup user_plugin_denite
+  autocmd!
+  autocmd FileType denite call s:denite_settings()
+  autocmd VimResized * call s:denite_resize()
+  autocmd WinEnter * if &filetype =~# '^denite' | highlight! link CursorLine WildMenu | endif
+  autocmd WinLeave * if &filetype ==# 'denite'  |  highlight! link CursorLine NONE | endif
+augroup END
+
+" Mappings
+nnoremap <C-B> :DeniteProjectDir -start-filter buffer<CR>
+inoremap <C-B> <ESC>:DeniteProjectDir -start-filter buffer<CR>
+nnoremap <C-F> :Denite grep:/home/cookjo/workspace<CR>
+inoremap <C-F> <ESC>:Denite grep:/home/cookjo/workspace<CR>
+nnoremap <C-G> :DeniteProjectDir -buffer-name=git -direction=top file/rec/git<CR>
+inoremap <C-G> <ESC> :DeniteProjectDir -buffer-name=git -direction=top file/rec/git<CR>
+nnoremap <C-P> :DeniteProjectDir -start-filter file/rec<CR>
+inoremap <C-P> <ESC>:DeniteProjectDir -start-filter file/rec<CR>
+" nnoremap <C-R> :DeniteProjectDir -start-filter command_history<CR>
+nnoremap <C-S> :DeniteProjectDir source<CR>
+nnoremap <C-Y> :Denite neoyank<CR>
+inoremap <C-Y> <ESC>:Denite neoyank<CR>
+
+" Actions within Denite window
+function! s:denite_settings() abort
+  nnoremap <silent><buffer><expr> <CR>  denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> <Esc> denite#do_map('quit')
+  inoremap <silent><buffer><expr> <Esc> denite#do_map('quit')
+  nnoremap <silent><buffer><expr> <Tab> denite#do_map('choose_action')
+  nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
+  nnoremap <silent><buffer><expr> dd denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> yy denite#do_map('do_action', 'yank')
+  nnoremap <silent><buffer><expr> vv denite#do_map('do_action', 'vsplit')
+  nnoremap <silent><buffer><expr> hh denite#do_map('do_action', 'split')
+  nnoremap <silent><buffer><expr> i  denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> p  denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q  denite#do_map('quit')
+  nnoremap <silent><buffer><expr> r   denite#do_map('redraw')
+endfunction
+
+" Window position
+function! s:denite_resize()
+    call denite#custom#option('_', {
+    \ 'winwidth': (&columns / 2) - 1,
+    \ 'winheight': &lines / 3,
+    \ 'wincol': 0,
+    \ 'winrow': 1,
+    \ })
+endfunction
+call s:denite_resize()
+
+if has('nvim')
+    call denite#custom#option('_', { 'split': 'floating', 'statusline': 0 })
+endif
+
+" Denite + Git file search
+call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+call denite#custom#var('file/rec/git', 'command',
+      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+" Denite + Silver Searcher
+call denite#custom#var('file/rec', 'command',
+    \ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#var('grep', 'default_opts', [ '--vimgrep', '--hidden' ])
+
+" denite content search
+map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
+
+" Ignore patterns; use .gitignore and/or ag .ignore instead
+" let dignore=&wildignore . ',*.pyc,.git,.hg,.svn'
+" call denite#custom#var('file/rec', 'command',
+"     \ ['scantree.py', '--path', ':directory', '--ignore', dignore])
 
 
 """"""""""""""""""""""
@@ -350,13 +434,7 @@ nnoremap ev :vsplit $MYVIMRC<CR>
 nnoremap sv :source $MYVIMRC<CR>
 nnoremap rr :redraw!<CR>
 
-set clipboard+=unnamed
-
-" Sets how many lines of history VIM remembers
-set history=1000
-
-" Prevents VIM from being nerfed into acting like VI
-set nocompatible
+" set clipboard+=unnamedplus
 
 " Disable (slow) saving backup of current buffer on write
 set nobackup
@@ -365,20 +443,15 @@ set nobackup
 set ssop-=options
 set ssop-=folds
 
-" Mapped commands will timeout after 100ms
-set ttimeout
-set ttimeoutlen=100
+set timeoutlen=200  " Mapped sequence timeout
+set ttimeoutlen=200 " Key code sequence timeout
 
 " Ignore these files when completing names
-set wildignore=*.o,*.a,*~,*.pyc,*.class,*.mo,*.la,*.so,*.obj,*.swo,*.swp,*.jpg,*.png,*.xpm,*.gif
-set wildmenu
+set wildignore=*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm
 
 " Add minimum screen rows/columns around cursor
 set scrolloff=1
 set sidescrolloff=5
-
-" Show partial commands during entry
-set showcmd
 
 " Darn those fat fingers
 ca W w
@@ -407,18 +480,11 @@ au BufWritePre /tmp/* setlocal noundofile
 " ❰❰ Colors and Fonts ❱❱ "
 """"""""""""""""""""""""""
 
-set encoding=utf-8
-
-" Enable syntax highlighting
-syntax on
-
 " Extra Highlighting Rules
 au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead *.less set filetype=css
 
 " Color scheme
-set t_Co=256
-set background=dark
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
@@ -427,11 +493,12 @@ endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
+set background=dark
 
-" Add color columns at 80, 100, and 120
+" Add color columns
 if exists('+colorcolumn')
-    let &colorcolumn="80,100,120"
-    highlight ColorColumn ctermbg=235
+  let &colorcolumn="80,100,120"
+  highlight ColorColumn ctermbg=235
 endif
 
 
@@ -440,20 +507,17 @@ endif
 """"""""""""""""""""
 
 " 1 tab == 4 spaces
-set autoindent
 set copyindent
 set expandtab
-set smarttab
 set shiftround
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-" YAML: 1 tab = 2 spaces
-autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
+" YAML, vimscript: 1 tab = 2 spaces
+autocmd FileType yaml,vim  setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
-set backspace=indent,eol,start
-set pastetoggle=<leader>pa
+set pastetoggle=<leader>p
 
 " Tabs and non-breaking spaces are evil
 set list
@@ -487,8 +551,6 @@ vnoremap <silent> <F23> :sort u<CR>
 
 set ignorecase " Ignore case when searching
 set smartcase  " Except when uppercase is used in search
-set hlsearch   " Highlight search results
-set incsearch  " Search while typing
 
 " Clear search highligts
 nnoremap <leader>b :nohlsearch<CR>
@@ -511,12 +573,6 @@ inoremap <silent> <F4> <C-O>za
 " Show match for brackets under cursor
 set showmatch
 set mat=2
-
-" No sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
 
 " Command bar
 "set cmdheight=2
@@ -597,4 +653,30 @@ if !exists("auto_commands_loaded")
   augroup LargeFile
     autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
     augroup END
-  endif
+endif
+
+
+"""""""""""""""""""""""""""""""
+" ❰❰ (Legacy) Vim-Specific ❱❱ "
+"""""""""""""""""""""""""""""""
+
+" Settings that are already defaults in nvim
+if !has('nvim')
+  set encoding=utf-8
+  syntax on  " Enable syntax highlighting
+  set history=1000
+  filetype plugin indent on  " Enable filetype-specific plugins and indent files
+  set nocompatible  " Prevents VIM from being nerfed into acting like VI
+  set wildmenu
+  set showcmd  " Show partial commands during entry
+  set t_Co=256
+  set autoindent
+  set smarttab
+  set backspace=indent,eol,start
+  set hlsearch   " Highlight search results
+  set incsearch  " Search while typing
+  set noerrorbells
+  set novisualbell
+  set t_vb=
+  set ttimeout
+endif

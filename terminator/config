@@ -11,9 +11,9 @@
   go_right = <Shift><Alt>Right
   go_up = <Shift><Alt>Up
   help = None
+  reset = <Primary><Alt>r
   resize_left = None
   resize_right = None
-
 [layouts]
   [[default]]
     [[[child1]]]
@@ -23,7 +23,6 @@
     [[[window0]]]
       parent = ""
       type = Window
-
   [[6-split]]
     [[[child0]]]
       fullscreen = True
@@ -116,7 +115,6 @@
       profile = default+
       type = Terminal
       uuid = f48f73d0-cb4d-47da-a701-2efb823e370d
-
   [[8-split]]
     [[[child0]]]
       order = 0
@@ -215,7 +213,6 @@
       parent = child6
       profile = default
       type = Terminal
-
   [[code]]
     [[[child0]]]
       fullscreen = True
@@ -252,7 +249,6 @@
       profile = default
       type = Terminal
       uuid = 4cec0bf2-9fd1-4ca9-8af4-3b5f2daff493
-
   [[start]]
     [[[child0]]]
       fullscreen = False
@@ -272,9 +268,7 @@
       profile = default
       type = Terminal
       uuid = 8765ccd7-a7fd-4c00-a064-55f0c17d9da4
-
 [plugins]
-
 [profiles]
   [[default]]
     background_color = "#002b36"

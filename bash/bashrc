@@ -22,6 +22,7 @@ export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
+
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000
 export HISTSIZE=10000
@@ -49,6 +50,8 @@ export JUPYTER_LOCAL_PORT=9468
 # ❰❰ General Aliases ❱❱ #
 #########################
 
+export EDITOR=/usr/bin/nvim
+
 # Simple Command/App Aliases
 alias term-code='terminator -mfl code &'
 alias term-dev='terminator -mfl 6-split &'
@@ -58,6 +61,8 @@ alias lw='sudo logwatch | less'
 alias ta='type -a'; complete -c ta
 alias top='htop'
 alias tt='tig'
+alias vim='nvim'
+alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
 
@@ -350,6 +355,7 @@ sysinfo() {
 # Commonly used config files
 BASH_CONF="$DOTFILES/bash/bashrc"
 BASH_CONF_ALL="$DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*"
+FISH_CONF=$DOTFILES/fish/config.fish
 GIT_CONF="$DOTFILES/git/gitconfig"
 PIP_CONF=~/.config/pip/pip.conf
 PG_CONF="$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
@@ -360,13 +366,13 @@ VIM_CONF_ALL="$VIM_CONF $DOTFILES/vim/README.md"
 
 # Editor shortcuts
 alias sb='echo "reloading bashrc..." | lolcat-q; source $BASH_CONF'
-alias vb='vim $BASH_CONF'
-alias vbb='vim -O2 $BASH_CONF_ALL'
-alias vg='vim $GIT_CONF'
-alias vv='vim $VIM_CONF'
-alias vvv='vim -O2 $VIM_CONF_ALL'
-alias vc='vim -O2 $BASH_CONF_ALL $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF'
-alias svim='sudo -E $(which vim)'
+alias vb='$EDITOR $BASH_CONF'
+alias vbb='$EDITOR -O2 $BASH_CONF_ALL'
+alias vg='$EDITOR $GIT_CONF'
+alias vv='$EDITOR $VIM_CONF'
+alias vvv='$EDITOR -O2 $VIM_CONF_ALL'
+alias vc='$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF'
+alias svim="sudo -E $EDITOR"
 alias sv='svim'
 
 # Append a line to user crontab, excluding duplicates
@@ -713,7 +719,7 @@ alias pd='pydir'
 # Open source file of a python module
 vpyfile() {
     pf_path=$(pyfile $@)
-    [[ -f $pf_path ]] && vim $pf_path
+    [[ -f $pf_path ]] && $EDITOR $pf_path
 }
 alias vpf='vpyfile'
 
@@ -725,7 +731,7 @@ cpyfile() {
 alias cpf='cpyfile'
 
 # Edit virtualenv path extensions
-alias vvpathext='vim $(py-site-packages)/_virtualenv_path_extensions.pth'
+alias vvpathext='$EDITOR $(py-site-packages)/_virtualenv_path_extensions.pth'
 alias vvp='vvpathext'
 alias vsp='py-site-packages'
 
@@ -897,6 +903,25 @@ mkv-basic-px() {
     mkvirtualenv -p python3 ${1:-$(pwd-base)}
     swap $PIP_CONF ${PIP_CONF}.bak
 }
+
+
+# WIP: Download and symlink an AppImage
+APPIMAGE_DIR=/usr/appimage
+APP_BIN_DIR=/usr/bin
+install-appimage() {
+    url=$1
+    dest_path=${APPIMAGE_DIR}/$(basename $url)
+    symlink_path=${APP_BIN_DIR}/$(basename $url .appimage)
+
+    sudo mkdir -p $APPIMAGE_DIR
+    sudo curl -L $url -o $dest_path
+    sudo chmod +x $dest_path
+
+    # Symlink to binary dir; backup file if it already exists
+    [ -f $symlink_path ] && sudo mv -v $symlink_path $symlink_path.old
+    sudo ln -sv $dest_path $symlink_path
+}
+
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
