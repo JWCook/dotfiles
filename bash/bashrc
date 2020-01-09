@@ -157,7 +157,7 @@ cp-bak() {
 
 # Verbose copy w/progress
 cpv() {
-    rsync -WavP --human-readable --progress $1 $2;
+    rsync --whole-file --archive --human-readable --progress --verbose $1 $2;
 }
 
 # Formatted preview for CSV files
@@ -310,9 +310,9 @@ ssh-refresh() { nullify ssh -O exit $1; ssh $1; }
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)
 mount-share(){
-    if ! mountpoint $2 > /dev/null 2>&1; then
-        sudo mkdir -p $2
-        sudo mount -v -t cifs -o credentials=$3 $1 $2
+    if ! mountpoint "$2" > /dev/null 2>&1; then
+        sudo mkdir -p "$2"
+        sudo mount -v -t cifs -o credentials="$3" "$1" "$2"
     else
         echo 'Already mounted'
     fi
@@ -497,7 +497,6 @@ install-deb() {
 #############
 
 # General
-alias gf='git fetch --all'
 alias gp='git pull'
 alias gpr='git pull --rebase'
 alias gpush='git push'
@@ -509,8 +508,11 @@ alias gpop='git stash pop'
 alias gs='git status'
 alias gsv='git status -vv'
 alias gss='git status --short'
+alias gf='git fetch --all'
 alias groot='cd $(git rev-parse --show-toplevel)'
 alias gremote='git remote | head -n 1'
+alias gitonup='git push'
+alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
 grm(){ rm $1; git rm $1; }
 ggr() { git grep "$1" ${@:2}; }
@@ -620,7 +622,7 @@ tnew() {
 # ❰❰ Python ❱❱ #
 ################
 
-alias bb='black --target-version py36 --line-length 100 --skip-string-normalization'
+alias bb='black --target-version py37 --line-length 100 --skip-string-normalization'
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
 # Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
@@ -672,11 +674,6 @@ mkv() {
     add2virtualenv .
     pipr
 }
-mkv2() {
-    mkvirtualenv -p python2 -a . ${1:-$(pwd-base)}
-    add2virtualenv .
-    pipr
-}
 
 # Clean up leftover junk
 py-cleanup() {
@@ -710,7 +707,7 @@ pyfile() {
 }
 
 pydir() {
-    python -c "import $@; print($@.__file__)" | sed 's/__init__\.py//'
+    python -c "import $@; print($@.__file__)" | xargs dirname
 }
 
 alias pf='pyfile'

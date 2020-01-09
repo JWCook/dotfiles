@@ -24,6 +24,17 @@ function coalesce
     return -1
 end
 
+# Set and argument to current dir if not specified
+function default-pwd
+    coalesce $argv[1] '.'
+end
+
+# Set and argument to current dir if not specified
+function default-pwd-base
+    set _pwd (pwd-base)
+    coalesce $argv[1] "$_pwd"
+end
+
 # Test if a command/alias/function exists
 function cmd-exists
     type -a $argv > /dev/null 2>&1
@@ -57,6 +68,7 @@ end
 # Safe tput, only for TTY sessions
 alias ttput='tty -s && tput'
 
+
 #####################
 # ❰❰ Environment ❱❱ #
 #####################
@@ -67,14 +79,13 @@ pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
-set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
 set -x WORKSPACE ~/workspace
 alias cw='cd $WORKSPACE'
 
-# Python
 set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages
+set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 
 #########################
@@ -84,12 +95,13 @@ set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
-abbr -a term-code terminator -mfl code &
-abbr -a term-dev terminator -mfl 6-split &
-abbr -a term-start terminator -l start &
-abbr -a retroterm /usr/local/src/retro-term/cool-retro-term &
-alias lw='sudo logwatch | less'
-abbr -a ta type -a; complete -c ta
+abbr -a term-code terminator -mfl code \&
+abbr -a term-dev terminator -mfl 6-split \&
+abbr -a term-start terminator -l start \&
+abbr -a retroterm /usr/local/src/retro-term/cool-retro-term \&
+abbr -a lw sudo logwatch \| less
+abbr -a ta type -a
+complete -c ta -w type
 abbr -a top htop
 abbr -a tt tig
 abbr -a vim nvim
@@ -116,19 +128,18 @@ abbr -a weather curl -4 http://wttr.in/~50266
 # ❰❰ File & Directory Info ❱❱ #
 ###############################
 
-# du() {                                                  # Recursive folder size
-#     /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
-# }
-alias ll='ls -Alhv --group-directories-first'           # Can't live without it
+# Recursive folder size
+abbr -a du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
+abbr -a ll ls -Alhv --group-directories-first           # Can't live without it
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 # md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
-# mode() { stat -c "%a %n" {$argv:-*}; }                     # Get octal file permissions
-# pwd-base() { basename $(pwd); }                         # Base name of the current working dir
-alias pwd-src="pwd-base | sed 's/-/_/g'"                # Guess name of project src dir
-alias tailf='tail -f -n 50'                             # Tail defaults
-# tailc() { tailf $@ | grcat conf.logfile; }              # Tail w/ generic syntax highlighting
-alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
+# mode() { stat -c "%a %n" {$argv:-*}; }                  # Get octal file permissions
+abbr -a pwd-base basename \(pwd\)                       # Base name of the current working dir
+abbr -a pwd-src basename \(pwd\) \| sed 's/-/_/g'       # Guess name of project src dir
+abbr -a tailf tail -f -n 50                             # Tail -f w/ defaults
+abbr -a tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
+abbr -a tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
 
 
 ############################
@@ -136,63 +147,62 @@ alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
 ############################
 
 # Readable disk usage
-# df() {
-#     /usr/bin/df -khT $@ | color-filesize
-# }
-#
-# # Get a single metric for a single device (or a directory's device)
-# # Usage: df-single-metric device [metric]
-# df-single-metric() {
-#     /usr/bin/df --block-size=1 --output="$2" "${1:-.}" | /usr/bin/tail -1
-# }
-#
-# # Shortcuts for individual metrics
-# df-device() { df-single-metric "${1:-.}" "source"; }
-# df-type()   { df-single-metric "${1:-.}" "fstype"; }
-# df-size()   { df-single-metric "${1:-.}" "size"; }
-# df-used()   { df-single-metric "${1:-.}" "used"; }
-# df-free()   { df-single-metric "${1:-.}" "avail"; }
-# df-mount()  { df-single-metric "${1:-.}" "target"; }
+function df
+    # /usr/bin/df -khT $argv | color-filesize
+    /usr/bin/df -khT $argv | less
+end
+
+# Get a single metric for a single device (or a directory's device)
+# Usage: df-single-metric device [metric]
+function df-single-metric
+    set _dir (default-pwd $argv)
+    /usr/bin/df --block-size=1 --output="$argv[2]" "$_dir" | /usr/bin/tail -1
+end
+
+# Shortcuts for individual metrics
+function df-device; df-single-metric "$argv[1]" "source"; end
+function df-type;   df-single-metric "$argv[1]" "fstype"; end
+function df-size;   df-single-metric "$argv[1]" "size"; end
+function df-use;    df-single-metric "$argv[1]" "used"; end
+function df-free;   df-single-metric "$argv[1]" "avail"; end
+function df-mount;  df-single-metric "$argv[1]" "target"; end
 
 
 #################
 # ❰❰ Network ❱❱ #
 #################
 
-alias listen='lsof -P -i -n | grcat conf.nmap'
+abbr -a listen lsof -P -i -n \| grcat conf.nmap
 function local-ip
-    ifconfig | awk "/inet/ { print $2 } " | sed -e s/addr://
+    ifconfig | awk "/inet/ { print $argv[2] } " | sed -e s/addr://
 end
-alias public-ip='curl v4.ifconfig.co'
-alias netconn='netstat -pan --inet'
-alias tracert='traceroute'
-alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
-alias scan-local='nmap -v -sT localhost'
-alias scan-syn='sudo nmap -v -sS localhost'
-alias ssh-exit='ssh -O exit'
-function ssh-refresh
-    nullify ssh -O exit $argv
-    ssh $argv
-end
+abbr -a public-ip curl v4.ifconfig.co
+abbr -a netconn netstat -pan --inet
+abbr -a tracert traceroute
+abbr -a unproxy unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY
+abbr -a scan-local nmap -v -sT localhost
+abbr -a scan-syn sudo nmap -v -sS localhost
+abbr -a ssh-exit ssh -O exit
+abbr -a ssh-refresh nullify ssh -O exit $argv \; ssh $argv
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)
-# mount-share(){
-#     if ! mountpoint $2 > /dev/null 2>&1; then
-#         sudo mkdir -p $2
-#         sudo mount -v -t cifs -o credentials=$3 $1 $2
-#     else
-#         echo 'Already mounted'
-#     fi
-# }
+function mount-share
+    if not mountpoint "$argv[2]" > /dev/null 2>&1
+        sudo mkdir -p "$argv[2]"
+        sudo mount -v -t cifs -o credentials="$argv[3]" "$argv[1]" "$argv[2]"
+    else
+        echo 'Already mounted'
+    end
+end
 
 
 #####################
 # ❰❰ System Info ❱❱ #
 #####################
 
-alias date-update='sudo ntpdate $NTP_SERVER'
-alias lu='column -ts: /etc/passwd | sort'                                   # Formatted local user list
-alias lu-current='w -hs | cut -d " " -f1 | sort | uniq'                     # Currently logged on users
+abbr -a date-update sudo ntpdate $NTP_SERVER
+abbr -a lu column -ts: /etc/passwd \| sort                                  # Formatted local user list
+abbr -a lu-current w -hs \| cut -d \" \" -f1 \| sort \| uniq                  # Currently logged on users
 alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'                 # List/format items on PATH
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'                    # List user processes
 function distinfo                                                           # Distribution info
@@ -282,19 +292,16 @@ abbr -a gpush git push
 abbr -a gfpush git push --force
 abbr -a gstash git stash
 abbr -a gpop git stash pop
+abbr -a gremote git remote \| head -n 1
+abbr -a groot cd \(git rev-parse --show-toplevel\)
 abbr -a gs git status
 abbr -a gsv git status -vv
 abbr -a gss git status --short
-alias gstlist='git stash list; git stash show'
-alias groot="cd '(git rev-parse --show-toplevel)'"
-alias gremote='git remote | head -n 1'
+abbr -a gstlist git stash list \; git stash show
 
 function gadd
-    if set -q $argv
-        git add .
-    else
-        git add $argv
-    end
+    set _paths (default-pwd $argv)
+    git add "$_paths"
 end
 
 function gpr
@@ -304,21 +311,21 @@ function gpr
 end
 
 function grm
-    rm $argv
-    git rm $argv
+    rm "$argv"
+    git rm "$argv"
 end
 
 # Commits
 abbr -a gc git commit --verbose
 abbr -a gcm git commit -m
+abbr -a gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
 abbr -a gmend git commit --amend
 abbr -a gmendc git commit --amend --no-edit
 abbr -a gpatch git add --patch
 abbr -a gunstage git reset HEAD
-abbr -a guncommit git reset --soft HEAD~1
+abbr -a grevise git add --all \; git commit --amend --no-edit
 abbr -a grecommit git commit -c ORIG_HEAD --no-edit
-alias gfirst="git rev-parse --short '(git rev-list --max-parents=0 HEAD)'"
-alias grevise='git add --all; git commit --amend --no-edit'
+abbr -a guncommit git reset --soft HEAD~1
 
 # Fix a branch from a detatched HEAD state, starting with a specified commit
 function git-head-transplant
@@ -330,13 +337,13 @@ function git-head-transplant
 end
 
 # Log
-export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
-alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
-alias glog-branch='glog master..HEAD'
-alias glog-remote='gf; glog HEAD..origin/master'
-alias glol='glog | lc-gradient-delay'
-alias gcstat='git shortlog --summary --numbered'
-alias gcstat-all='git rev-list --count HEAD'
+export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
+abbr -a glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
+abbr -a glog-branch glog master..HEAD
+abbr -a glog-remote git fetch \; glog HEAD..origin/master
+abbr -a glol glog \| lc-gradient-delay
+abbr -a gcstat git shortlog --summary --numbered
+abbr -a gcstat-all git rev-list --count HEAD
 
 # Tags
 function gmv-tag
@@ -347,17 +354,17 @@ function gmv-tag
 end
 
 # Branches
-export GREF_FORMAT="%(align:60,left)%(color:blue)%(refname:short)%(end) \
+set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
-alias gbranches='git branch -vv'
-alias gbranch='git rev-parse --abbrev-ref HEAD'
-alias gbmv='git branch -m'
-alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
-alias gbprune='git fetch --prune'
-alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
-alias gcontinue='git rebase --continue'
-alias gskip='git rebase --skip'
-alias gscontinue='git stash; git rebase --continue; git stash pop'
+abbr -a gbranches git branch -vv
+abbr -a gbranch git rev-parse --abbrev-ref HEAD
+abbr -a gbmv git branch -m
+abbr -a gball git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
+abbr -a gbprune git fetch --prune
+abbr -a grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
+abbr -a gcontinue git rebase --continue
+abbr -a gskip git rebase --skip
+abbr -a gscontinue git stash \; git rebase --continue \; git stash pop
 
 # Overwrite local branch with remote
 function gbreset
@@ -407,22 +414,28 @@ alias trm='tmux kill-session -t'
 # ❰❰ Python ❱❱ #
 ################
 
-alias bb='black --target-version py36 --line-length 100 --skip-string-normalization'
+abbr -a bb black --target-version py37 --line-length 100 --skip-string-normalization
+abbr -a lsv lsvirtualenv -b
+
 # Get all directories currently on the python site path
-alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
+function pypath
+    python -c "import sys; print('\n'.join(sys.path))"
+end
+
 # Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
 function py-site-packages
     python -c\
     "from distutils.sysconfig import get_python_lib;\
     print(get_python_lib())"
 end
+abbr -a vsp py-site-packages
+
 # Determine if we are running in a virtualenv
 function in-env
     python -c\
     "import sys;\
     sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"
 end
-alias lsv='lsvirtualenv -b'
 
 # Pip install a package, temporarily disabling any extra indexes or other config
 # pip-install-default() {
@@ -458,25 +471,23 @@ end
 # }
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
-# mkv() {
-#     mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
-#     add2virtualenv .
-#     pipr
-# }
-# mkv2() {
-#     mkvirtualenv -p python2 -a . ${1:-$(pwd-base)}
-#     add2virtualenv .
-#     pipr
-# }
+function mkv
+    set _dir (default-pwd-base $argv)
+    mkvirtualenv -p python3 -a . "$_dir"
+    add2virtualenv .
+    pipr
+end
 
 # Clean up leftover junk
-# py-cleanup() {
-#     find ${1:-.} -name "*.pyc" -type f -delete -printf "%h/%f\n"
-#     find ${1:-.} -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
-# }
-# vim-cleanup() {
-#     find ${1:-.} -name "*.sw[mnop]" -type f -delete -printf "%h/%f\n"
-# }
+function py-cleanup
+    set _dir (default-pwd $argv)
+    find $_dir -name "*.pyc" -type f -delete -printf "%h/%f\n"
+    find $_dir -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
+end
+function vim-cleanup
+    set _dir (default-pwd $argv)
+    find $_dir -name "*.sw[a-z]" -type f -delete -printf "%h/%f\n"
+end
 
 # Run py.test with ludicrous verbosity
 # ptv(){
@@ -495,24 +506,34 @@ end
 #     [[ -f htmlcov/index.html ]] && xdg-open htmlcov/index.html &
 # }
 
-# Print source path of a python module
-# pyfile() {
-#     python -c "import $@; print($@.__file__)" | sed 's/\.pyc/\.py/'
-# }
-#
-# pydir() {
-#     python -c "import $@; print($@.__file__)" | sed 's/__init__\.py//'
-# }
-#
-# alias pf='pyfile'
-# alias pd='pydir'
+function _pyc_file
+    python -c "import $argv[1]; print($argv[1].__file__)"
+end
 
-# Open source file of a python module
-# vpyfile() {
-#     pf_path=$(pyfile $@)
-#     [[ -f $pf_path ]] && nvim $pf_path
-# }
-# alias vpf='vpyfile'
+# Print source path of python module(s)
+function pyfile
+    for _module in $argv
+        _pyc_file $_module | sed 's/\.pyc/\.py/'
+    end
+end
+abbr -a pf pyfile
+
+# Print source dir of python module(s)
+function pydir
+    for _module in $argv
+        _pyc_file $_module | xargs dirname
+    end
+end
+abbr -a pd pydir
+
+# Open source file of python module(s)
+function vpyfile
+    set _paths (pyfile $argv)
+    if test -n $_paths[1]
+        $EDITOR $_paths
+    end
+end
+abbr -a vpf vpyfile
 
 # Cat source file of a python module
 # cpyfile() {
@@ -522,22 +543,23 @@ end
 # alias cpf='cpyfile'
 
 # Edit virtualenv path extensions
-# alias vvpathext='nvim $(py-site-packages)/_virtualenv_path_extensions.pth'
-# alias vvp='vvpathext'
-# alias vsp='py-site-packages'
+function vvpathext
+    $EDITOR (py-site-packages)/_virtualenv_path_extensions.pth
+end
+abbr -a vvp vvpathext
 
 # Workon & cd/deactivate a virtualenv (with autocomplete)
-# wo() {
-#     if [ -n "$1" ]; then
-#         workon $1
-#         export _VIRT_ENV_PREV_PWD=$PWD
-#         cd $WORKSPACE/$1
-#     else
-#         deactivate
-#         cd $_VIRT_ENV_PREV_PWD
-#     fi
-# }
-# complete -o default -o nospace -F _virtualenvs wo
+function wo
+    if test -n $argv
+        workon $argv
+        set -x _VIRT_ENV_PREV_PWD $PWD
+        cd $WORKSPACE/$argv
+    else
+        deactivate
+        cd $_VIRT_ENV_PREV_PWD
+    end
+end
+complete -c wo --wraps=workon
 
 # Misc shortcuts for python apps & scripts
 # alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
