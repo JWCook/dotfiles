@@ -7,6 +7,8 @@ fundle init
 
 eval (python -m virtualfish compat_aliases)
 
+source ~/.config/fish/style.fish
+
 
 ##########################
 # ❰❰ Helper Functions ❱❱ #
@@ -130,7 +132,7 @@ abbr -a weather curl -4 http://wttr.in/~50266
 
 # Recursive folder size
 abbr -a du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
-abbr -a ll ls -Alhv --group-directories-first           # Can't live without it
+alias ll 'ls -Alhv --group-directories-first'
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 # md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
@@ -445,17 +447,17 @@ end
 # }
 
 # Install python packages from a specific requirements file
-# pip-install-req() {
-#     echo; print-title "Installing $1..."
-#     [[ -f $1 ]] && pip install -Ur $1 | lc-gradient --seed=100
-# }
+function pip-install-req
+    echo; print-title "Installing $argv[1]..."
+    test -e $argv[1] && pip install -Ur $argv[1] | lc-gradient --seed=100
+end
 
 # Install python packages from all available requirements files
-# pipr() {
-#     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
-#         pip-install-req $f
-#     done
-# }
+function pipr
+    for _file in (ls requirements*.txt 2> /dev/null | sort -V)
+        pip-install-req $_file
+    end
+end
 
 # Install/update global python packages, if specified in dotfiles
 function update-python
@@ -536,11 +538,11 @@ end
 abbr -a vpf vpyfile
 
 # Cat source file of a python module
-# cpyfile() {
-#     pf_path=$(pyfile $@)
-#     [[ -f $pf_path ]] && cat $pf_path
-# }
-# alias cpf='cpyfile'
+function catpyfile
+    set pf_path (pyfile $argv)
+    test -e $pf_path && cat $pf_path
+end
+abbr -a cpf cpyfile
 
 # Edit virtualenv path extensions
 function vvpathext

@@ -35,9 +35,10 @@ export NOCOLOR='\033[0m'
 # Color formatting functions
 term-color() { echo -e '\['$1'\]'; }
 pg-color() { echo -e $1; }
+repeat-str() { printf "$1%.s" $(seq $2); }
 printc() { printf "%b%b${NOCOLOR}\n" "$@"; }
-export HRULE=$(printf '═%.s' {1..80})
 print-title() {
+    HRULE=$(repeat-str '=' $COLUMNS)
     printc $CYAN "$HRULE"
     printc $BLUE "$@"
     printc $CYAN "$HRULE"
@@ -49,7 +50,7 @@ print-title() {
 ############################
 
 # Bash commands using GRC
-GRC=`which grc`
+GRC=$(which grc)
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]
 then
     alias colorize="$GRC -es --colour=auto"
@@ -128,7 +129,7 @@ set_virtualenv() {
     if test -z "$VIRTUAL_ENV" ; then
         PYTHON_VIRTUALENV=""
     else
-        PYTHON_VIRTUALENV="$(term-color $BLUE)⦗`basename \"$VIRTUAL_ENV\"`⦘$(term-color $NOCOLOR) "
+        PYTHON_VIRTUALENV="$(term-color $BLUE)⦗`basename \"$VIRTUAL_ENV\"`⦘"
     fi
 }
 
@@ -137,7 +138,7 @@ set_bash_prompt() {
     set_prompt_symbol $?
     history -a  # Append to bash_history
     set_virtualenv
-    PS1="$PYTHON_VIRTUALENV$(term-color $CYAN)❰\u$(term-color $NOCOLOR)@$(term-color $CYAN)\h \W❱$(term-color $NOCOLOR) $PROMPT_SYMBOL "
+    PS1="$(term-color $GREEN)\u$(term-color $NOCOLOR)@$(term-color $GREEN)\h \W $PYTHON_VIRTUALENV$(term-color $NOCOLOR) $PROMPT_SYMBOL "
 }
 
 export PROMPT_COMMAND=set_bash_prompt
@@ -157,12 +158,14 @@ alias lc-loop='lolcat-q --animate --duration=99999999'
 alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
 
 # Figlet
-figlol() { figlet -w 270 -f $1 $2 | lolcat -a -d 1; }
+function figlol() {
+    figlet -w 270 -f $1 "$2" | lolcat -a -d 1
+}
 function figlet-all() {
     fonts=$(ls ~/.figlet/*.flf)
     for font in $fonts; do
         basename $font
-        figlol $font $@
+        figlol $font "$@"
     done
 }
 alias fabulous='figlol ~/.figlet/alligator.flf'

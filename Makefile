@@ -99,8 +99,10 @@ install-bash-conf: install-bash-completion
 install-fish-conf:
 	mkdir -p ~/.config/fish/
 	rm -rf ~/.config/fish/config.fish
+	rm -rf ~/.config/fish/style.fish
 	rm -rf ~/.config/fish/functions
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
+	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
 	fish -c 'fundle install'
