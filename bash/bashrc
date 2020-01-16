@@ -279,18 +279,18 @@ df() {
 }
 
 # Get a single metric for a single device (or a directory's device)
-# Usage: df-single-metric device [metric]
+# Usage: df-single-metric metric [device]
 df-single-metric() {
-    /usr/bin/df --block-size=1 --output="$2" "${1:-.}" | /usr/bin/tail -1
+    /usr/bin/df --block-size=1 --output="$1" "${2:-.}" | /usr/bin/tail -1
 }
 
 # Shortcuts for individual metrics
-df-device() { df-single-metric "${1:-.}" "source"; }
-df-type()   { df-single-metric "${1:-.}" "fstype"; }
-df-size()   { df-single-metric "${1:-.}" "size"; }
-df-used()   { df-single-metric "${1:-.}" "used"; }
-df-free()   { df-single-metric "${1:-.}" "avail"; }
-df-mount()  { df-single-metric "${1:-.}" "target"; }
+df-device() { df-single-metric "source" "$1"; }
+df-type()   { df-single-metric "fstype" "$1"; }
+df-size()   { df-single-metric "size"   "$1"; }
+df-used()   { df-single-metric "used"   "$1"; }
+df-free()   { df-single-metric "avail"  "$1"; }
+df-mount()  { df-single-metric "target" "$1"; }
 
 
 #################

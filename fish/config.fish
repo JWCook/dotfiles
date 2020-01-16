@@ -28,13 +28,12 @@ end
 
 # Set and argument to current dir if not specified
 function default-pwd
-    coalesce $argv[1] '.'
+    coalesce "$argv" '.'
 end
 
 # Set and argument to current dir if not specified
 function default-pwd-base
-    set _pwd (pwd-base)
-    coalesce $argv[1] "$_pwd"
+    coalesce "$argv" (pwd-base)
 end
 
 # Test if a command/alias/function exists
@@ -97,18 +96,18 @@ set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
-abbr -a term-code terminator -mfl code \&
-abbr -a term-dev terminator -mfl 6-split \&
-abbr -a term-start terminator -l start \&
-abbr -a retroterm /usr/local/src/retro-term/cool-retro-term \&
-abbr -a lw sudo logwatch \| less
-abbr -a ta type -a
+abbr term-code terminator -mfl code \&
+abbr term-dev terminator -mfl 6-split \&
+abbr term-start terminator -l start \&
+abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
+abbr lw sudo logwatch \| less
+abbr ta type -a
 complete -c ta -w type
-abbr -a top htop
-abbr -a tt tig
-abbr -a vim nvim
-abbr -a vimdiff nvim -d
-abbr -a weather curl -4 http://wttr.in/~50266
+abbr top htop
+abbr tt tig
+abbr vim nvim
+abbr vimdiff nvim -d
+abbr weather curl -4 http://wttr.in/~50266
 
 
 ################
@@ -131,17 +130,17 @@ abbr -a weather curl -4 http://wttr.in/~50266
 ###############################
 
 # Recursive folder size
-abbr -a du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
+abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
 alias ll 'ls -Alhv --group-directories-first'
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 # md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
 # mode() { stat -c "%a %n" {$argv:-*}; }                  # Get octal file permissions
-abbr -a pwd-base basename \(pwd\)                       # Base name of the current working dir
-abbr -a pwd-src basename \(pwd\) \| sed 's/-/_/g'       # Guess name of project src dir
-abbr -a tailf tail -f -n 50                             # Tail -f w/ defaults
-abbr -a tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
-abbr -a tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
+abbr pwd-base basename \(pwd\)                       # Base name of the current working dir
+abbr pwd-src basename \(pwd\) \| sed 's/-/_/g'       # Guess name of project src dir
+abbr tailf tail -f -n 50                             # Tail -f w/ defaults
+abbr tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
+abbr tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
 
 
 ############################
@@ -149,49 +148,48 @@ abbr -a tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERN
 ############################
 
 # Readable disk usage
-function df
+function df -w /usr/bin/df
     # /usr/bin/df -khT $argv | color-filesize
-    /usr/bin/df -khT $argv | less
+    /usr/bin/df -khT $argv
 end
 
 # Get a single metric for a single device (or a directory's device)
-# Usage: df-single-metric device [metric]
-function df-single-metric
-    set _dir (default-pwd $argv)
-    /usr/bin/df --block-size=1 --output="$argv[2]" "$_dir" | /usr/bin/tail -1
+function df-single-metric -a metric device
+    set device (default-pwd $device)
+    /usr/bin/df --block-size=1 --output="$metric" "$device" | /usr/bin/tail -1
 end
 
 # Shortcuts for individual metrics
-function df-device; df-single-metric "$argv[1]" "source"; end
-function df-type;   df-single-metric "$argv[1]" "fstype"; end
-function df-size;   df-single-metric "$argv[1]" "size"; end
-function df-use;    df-single-metric "$argv[1]" "used"; end
-function df-free;   df-single-metric "$argv[1]" "avail"; end
-function df-mount;  df-single-metric "$argv[1]" "target"; end
+function df-device; df-single-metric "source" "$argv"; end
+function df-type;   df-single-metric "fstype" "$argv"; end
+function df-size;   df-single-metric "size"   "$argv"; end
+function df-use;    df-single-metric "used"   "$argv"; end
+function df-free;   df-single-metric "avail"  "$argv"; end
+function df-mount;  df-single-metric "target" "$argv"; end
 
 
 #################
 # ❰❰ Network ❱❱ #
 #################
 
-abbr -a listen lsof -P -i -n \| grcat conf.nmap
+abbr listen lsof -P -i -n \| grcat conf.nmap
 function local-ip
     ifconfig | awk "/inet/ { print $argv[2] } " | sed -e s/addr://
 end
-abbr -a public-ip curl v4.ifconfig.co
-abbr -a netconn netstat -pan --inet
-abbr -a tracert traceroute
-abbr -a unproxy unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY
-abbr -a scan-local nmap -v -sT localhost
-abbr -a scan-syn sudo nmap -v -sS localhost
-abbr -a ssh-exit ssh -O exit
-abbr -a ssh-refresh nullify ssh -O exit $argv \; ssh $argv
+abbr public-ip curl v4.ifconfig.co
+abbr netconn netstat -pan --inet
+abbr tracert traceroute
+abbr unproxy unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY
+abbr scan-local nmap -v -sT localhost
+abbr scan-syn sudo nmap -v -sS localhost
+abbr ssh-exit ssh -O exit
+abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
 
-# Mount a network share (remote_share, local_mountpoint, creds_file)
-function mount-share
-    if not mountpoint "$argv[2]" > /dev/null 2>&1
-        sudo mkdir -p "$argv[2]"
-        sudo mount -v -t cifs -o credentials="$argv[3]" "$argv[1]" "$argv[2]"
+# Mount a network share
+function mount-share -a remote_share local_mountpoint creds_file
+    if not mountpoint "$local_mountpoint" > /dev/null 2>&1
+        sudo mkdir -p "$local_mountpoint"
+        sudo mount -v -t cifs -o credentials="$creds_file" "$remote_share" "$local_mountpoint"
     else
         echo 'Already mounted'
     end
@@ -202,9 +200,9 @@ end
 # ❰❰ System Info ❱❱ #
 #####################
 
-abbr -a date-update sudo ntpdate $NTP_SERVER
-abbr -a lu column -ts: /etc/passwd \| sort                                  # Formatted local user list
-abbr -a lu-current w -hs \| cut -d \" \" -f1 \| sort \| uniq                  # Currently logged on users
+abbr date-update sudo ntpdate $NTP_SERVER
+abbr lu column -ts: /etc/passwd \| sort                                  # Formatted local user list
+abbr lu-current w -hs \| cut -d \" \" -f1 \| sort \| uniq                  # Currently logged on users
 alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'                 # List/format items on PATH
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'                    # List user processes
 function distinfo                                                           # Distribution info
@@ -251,13 +249,13 @@ end
 
 # Editor shortcuts
 function sb; echo "reloading fish config..."; source $FISH_CONF; end
-abbr -a vb "$EDITOR $BASH_CONF"
-abbr -a vbb "$EDITOR -O2 $BASH_CONF_ALL"
-abbr -a vg "$EDITOR $GIT_CONF"
-abbr -a vv "$EDITOR $VIM_CONF"
-abbr -a vvv "$EDITOR -O2 $VIM_CONF_ALL"
-abbr -a vc "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $FISH_FUNCS $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF"
-abbr -a svim "sudo -E $EDITOR"
+abbr vb "$EDITOR $BASH_CONF"
+abbr vbb "$EDITOR -O2 $BASH_CONF_ALL"
+abbr vg "$EDITOR $GIT_CONF"
+abbr vv "$EDITOR $VIM_CONF"
+abbr vvv "$EDITOR -O2 $VIM_CONF_ALL"
+abbr vc "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $FISH_FUNCS $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF"
+abbr svim "sudo -E $EDITOR"
 
 # Append a line to user crontab, excluding duplicates
 # crontab-append() {
@@ -286,24 +284,24 @@ abbr -a svim "sudo -E $EDITOR"
 #############
 
 # General
-abbr -a gf git fetch --all
-abbr -a ggr git grep
-abbr -a gp git pull
-abbr -a gpr git pull --rebase
-abbr -a gpush git push
-abbr -a gfpush git push --force
-abbr -a gstash git stash
-abbr -a gpop git stash pop
-abbr -a gremote git remote \| head -n 1
-abbr -a groot cd \(git rev-parse --show-toplevel\)
-abbr -a gs git status
-abbr -a gsv git status -vv
-abbr -a gss git status --short
-abbr -a gstlist git stash list \; git stash show
+abbr gf git fetch --all
+abbr ggr git grep
+abbr gp git pull
+abbr gpr git pull --rebase
+abbr gpush git push
+abbr gfpush git push --force
+abbr gstash git stash
+abbr gpop git stash pop
+abbr gremote git remote \| head -n 1
+abbr groot cd \(git rev-parse --show-toplevel\)
+abbr gs git status
+abbr gsv git status -vv
+abbr gss git status --short
+abbr gstlist git stash list \; git stash show
 
 function gadd
-    set _paths (default-pwd $argv)
-    git add "$_paths"
+    git add (default-pwd $argv)
+    git status --short --branch
 end
 
 function gpr
@@ -315,19 +313,20 @@ end
 function grm
     rm "$argv"
     git rm "$argv"
+    git status
 end
 
 # Commits
-abbr -a gc git commit --verbose
-abbr -a gcm git commit -m
-abbr -a gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
-abbr -a gmend git commit --amend
-abbr -a gmendc git commit --amend --no-edit
-abbr -a gpatch git add --patch
-abbr -a gunstage git reset HEAD
-abbr -a grevise git add --all \; git commit --amend --no-edit
-abbr -a grecommit git commit -c ORIG_HEAD --no-edit
-abbr -a guncommit git reset --soft HEAD~1
+abbr gc git commit --verbose
+abbr gcm git commit -m
+abbr gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
+abbr gmend git commit --amend
+abbr gmendc git commit --amend --no-edit
+abbr gpatch git add --patch
+abbr gunstage git reset HEAD
+abbr grevise git add --all \; git commit --amend --no-edit
+abbr grecommit git commit -c ORIG_HEAD --no-edit
+abbr guncommit git reset --soft HEAD~1
 
 # Fix a branch from a detatched HEAD state, starting with a specified commit
 function git-head-transplant
@@ -339,13 +338,13 @@ function git-head-transplant
 end
 
 # Log
-export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
-abbr -a glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
-abbr -a glog-branch glog master..HEAD
-abbr -a glog-remote git fetch \; glog HEAD..origin/master
-abbr -a glol glog \| lc-gradient-delay
-abbr -a gcstat git shortlog --summary --numbered
-abbr -a gcstat-all git rev-list --count HEAD
+set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
+abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
+abbr glog-branch glog master..HEAD
+abbr glog-remote git fetch \; glog HEAD..origin/master
+abbr glol glog \| lc-gradient-delay
+abbr gcstat git shortlog --summary --numbered
+abbr gcstat-all git rev-list --count HEAD
 
 # Tags
 function gmv-tag
@@ -358,15 +357,15 @@ end
 # Branches
 set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
-abbr -a gbranches git branch -vv
-abbr -a gbranch git rev-parse --abbrev-ref HEAD
-abbr -a gbmv git branch -m
-abbr -a gball git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
-abbr -a gbprune git fetch --prune
-abbr -a grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
-abbr -a gcontinue git rebase --continue
-abbr -a gskip git rebase --skip
-abbr -a gscontinue git stash \; git rebase --continue \; git stash pop
+abbr gbranches git branch -vv
+abbr gbranch git rev-parse --abbrev-ref HEAD
+abbr gbmv git branch -m
+abbr gball git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
+abbr gbprune git fetch --prune
+abbr grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
+abbr gcontinue git rebase --continue
+abbr gskip git rebase --skip
+abbr gscontinue git stash \; git rebase --continue \; git stash pop
 
 # Overwrite local branch with remote
 function gbreset
@@ -404,20 +403,21 @@ end
 # ❰❰ Tmux ❱❱ #
 ##############
 
-alias tls='tmux ls'
-alias trm='tmux kill-session -t'
+abbr tls tmux ls
+abbr trm tmux kill-session -t
+
 # Create new session, or attach if it already exists
-# function tnew
-#     tmux new-session -A -s $1 -c ${2:-~}
-# end
+function tnew -a session_name start_dir
+    tmux new-session -A -s session_name -c (coalesce $start_dir ~)
+end
 
 
 ################
 # ❰❰ Python ❱❱ #
 ################
 
-abbr -a bb black --target-version py37 --line-length 100 --skip-string-normalization
-abbr -a lsv lsvirtualenv -b
+abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
+abbr lsv lsvirtualenv -b
 
 # Get all directories currently on the python site path
 function pypath
@@ -430,7 +430,7 @@ function py-site-packages
     "from distutils.sysconfig import get_python_lib;\
     print(get_python_lib())"
 end
-abbr -a vsp py-site-packages
+abbr vsp py-site-packages
 
 # Determine if we are running in a virtualenv
 function in-env
@@ -447,9 +447,9 @@ end
 # }
 
 # Install python packages from a specific requirements file
-function pip-install-req
-    echo; print-title "Installing $argv[1]..."
-    test -e $argv[1] && pip install -Ur $argv[1] | lc-gradient --seed=100
+function pip-install-req -a req_file
+    echo; print-title "Installing $req_file..."
+    test -e $req_file && pip install -Ur $req_file | lc-gradient --seed=100
 end
 
 # Install python packages from all available requirements files
@@ -462,8 +462,8 @@ end
 # Install/update global python packages, if specified in dotfiles
 function update-python
     echo; print-title "Updating python packages..."
-    make -C $DOTFILES update-python #| lc-gradient-delay
-    make -C $DOTFILES_EXTRA update-python #| lc-gradient-delay
+    make -C $DOTFILES update-python | lc-gradient-delay
+    make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
 end
 
 # Pytest shortcut, if not already defined
@@ -473,9 +473,8 @@ end
 # }
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
-function mkv
-    set _dir (default-pwd-base $argv)
-    mkvirtualenv -p python3 -a . "$_dir"
+function mkv -a env_name
+    mkvirtualenv -p python3 -a . (default-pwd-base $env_name)
     add2virtualenv .
     pipr
 end
@@ -492,24 +491,28 @@ function vim-cleanup
 end
 
 # Run py.test with ludicrous verbosity
-# ptv(){
-#     py-cleanup
-#     vim-cleanup
-#     py.test -vvv -rwrs --capture=no --full-trace ${1:-./test}
-# }
+function ptv -a path
+    set path (coalesce $path ./test)
+    py-cleanup
+    vim-cleanup
+    py.test -vvv -rwrs --capture=no --full-trace $path
+end
 
 # Generate HTML py.test coverage report
-# ptc() {
-#     py-cleanup
-#     vim-cleanup
-#     py.test --junit-xml=test-reports/py.test-latest.xml\
-#             --cov ${1:-$(pwd-src)}\
-#             --cov-report html ./test
-#     [[ -f htmlcov/index.html ]] && xdg-open htmlcov/index.html &
-# }
+function ptc -a test_path src_path
+    set test_path (coalesce $test_path ./test)
+    set src_path (coalesce $src_path (pwd-src))
+    py-cleanup
+    vim-cleanup
+    py.test --junit-xml=test-reports/py.test-latest.xml\
+            --cov $src_path\
+            --cov-report html $test_path
+    set idx_file htmlcov/index.html
+    test -e $idx_file && xdg-open $idx_file &
+end
 
-function _pyc_file
-    python -c "import $argv[1]; print($argv[1].__file__)"
+function _pyc_file -a module
+    python -c "import $module; print($module.__file__)"
 end
 
 # Print source path of python module(s)
@@ -518,7 +521,7 @@ function pyfile
         _pyc_file $_module | sed 's/\.pyc/\.py/'
     end
 end
-abbr -a pf pyfile
+abbr pf pyfile
 
 # Print source dir of python module(s)
 function pydir
@@ -526,7 +529,7 @@ function pydir
         _pyc_file $_module | xargs dirname
     end
 end
-abbr -a pd pydir
+abbr pd pydir
 
 # Open source file of python module(s)
 function vpyfile
@@ -535,27 +538,27 @@ function vpyfile
         $EDITOR $_paths
     end
 end
-abbr -a vpf vpyfile
+abbr vpf vpyfile
 
 # Cat source file of a python module
 function catpyfile
     set pf_path (pyfile $argv)
     test -e $pf_path && cat $pf_path
 end
-abbr -a cpf cpyfile
+abbr cpf cpyfile
 
 # Edit virtualenv path extensions
 function vvpathext
     $EDITOR (py-site-packages)/_virtualenv_path_extensions.pth
 end
-abbr -a vvp vvpathext
+abbr vvp vvpathext
 
 # Workon & cd/deactivate a virtualenv (with autocomplete)
-function wo
-    if test -n $argv
-        workon $argv
+function wo -a env_name
+    if test -n $env_name
+        workon $env_name
         set -x _VIRT_ENV_PREV_PWD $PWD
-        cd $WORKSPACE/$argv
+        cd $WORKSPACE/$env_name
     else
         deactivate
         cd $_VIRT_ENV_PREV_PWD
@@ -564,32 +567,34 @@ end
 complete -c wo --wraps=workon
 
 # Misc shortcuts for python apps & scripts
-# alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
-#                  export FLASK_APP_ENV=LOCAL;\
-#                  export FLASK_DEBUG=1;\
-#                  flask run'
-#
+function flask-run
+    export FLASK_APP=(pwd-src)/runserver.py
+    export FLASK_APP_ENV=LOCAL
+    export FLASK_DEBUG=1
+    flask run
+end
+
 
 ################
 # ❰❰ Sphinx ❱❱ #
 ################
 
-# sphinx-build-current() {
-#     # Use 'all' target, if it exists
-#     make -C docs all | lc-gradient --seed=26
-#     # If it doesn't exist (make error code 2), use 'html' target
-#     if [ $PIPESTATUS -eq 2 ]; then
-#         make -C docs clean html | lc-gradient --seed=26
-#     fi
-# }
-#
-# sphinx-build-project() {
-#     workon $1
-#     pushd $WORKSPACE/$1
-#     sphinx-build-current
-#     popd
-# }
-#
+function sphinx-build-current
+    # Use 'all' target, if it exists
+    make -C docs all | lc-gradient --seed=26
+    # If it doesn't exist (make error code 2), use 'html' target
+    if [ $PIPESTATUS -eq 2 ]; then
+        make -C docs clean html | lc-gradient --seed=26
+    end
+end
+
+function sphinx-build-project -a env_name
+    workon $env_name
+    pushd $WORKSPACE/$env_name
+    sphinx-build-current
+    popd
+end
+
 # sphinx-autobuild-current() {
 #     sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z $(pwd-src)
 # }

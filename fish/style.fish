@@ -29,13 +29,18 @@ set -xg DIM_CYAN '\033[2;36;29m'
 set -xg DIM_WHITE '\033[2;37;29m'
 set -xg NOCOLOR '\033[0m'
 
-# Repeat a character n times (default to terminal width)
-function repeat-str -a char -a length
-    set length (coalesce $length $COLUMNS)
-    printf "$char%.s" (seq $length)
+# Determine how many times a string can fit in the current terminal width
+function string-fit -a text
+    math --scale=0 $COLUMNS / (string length $text)
 end
 
-function printc -a color -a text
+# Repeat a string n times (defaults to fit terminal)
+function repeat-str -a text length
+    set length (coalesce $length (string-fit $text))
+    printf "$text%.s" (seq $length)
+end
+
+function printc -a color text
     printf "%b%b$NOCOLOR\n" "$color" "$text"
 end
 
@@ -128,9 +133,9 @@ alias lc-loop='lolcat-q --animate --duration=99999999'
 alias lc-flash='lc-loop --speed=50 --spread=1 --freq=1'
 
 # Print text in rainbow ASCII art
-function figlol
-    set _font (coalesce $argv[2] ~/.figlet/univers.flf)
-    figlet -w 270 -f $_font "$argv[1]" | lolcat -a -d 1
+function figlol -a text font
+    set font (coalesce $font ~/.figlet/univers.flf)
+    figlet -w 270 -f $font "$text" | lolcat -a -d 1
 end
 
 # Print text in rainbow ASCII art for each font available
@@ -150,12 +155,16 @@ end
 # alias faaaaaaabulous='figlol ~/.figlet/cosmic.flf'
 
 # Misc string coloring/formatting
-# alias ratelimit='pv -qL80k'
-# alias randombit='shuf -i 0-1 -n 1 -z  | tr "\0" " "'
-# alias randomchars='grep -o --binary-files=text "[[:alpha:]]" /dev/urandom |\
-#                    tr -d "[a-zA-Z]" |\
-#                    xargs -n $((($COLUMNS*80)/100)) |\
-#                    tr -d " "'
+alias ratelimit 'pv -qL80k'
+function randombit
+    shuf -i 0-1 -n 1 -z  | tr "\0" " "
+end
+# function randomchars
+#     grep -o --binary-files=text "[[:alpha:]]" /dev/urandom |\
+#         tr -d "[a-zA-Z]" |\
+#         xargs -n ((($COLUMNS*80)/100)) |\
+#         tr -d " "
+# end
 # function charbar
 #     python -c "print('$argv[1]' * $(($COLUMNS*2)))"
 # end
