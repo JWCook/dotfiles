@@ -414,9 +414,9 @@ map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:
 "     \ ['scantree.py', '--path', ':directory', '--ignore', dignore])
 
 
-""""""""""""""""""""""
-" ❰❰ Bash Aliases ❱❱ "
-""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""
+" ❰❰ External Command Aliases ❱❱ "
+""""""""""""""""""""""""""""""""""
 
 " Launch a subshell command without prompt
 command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
@@ -424,6 +424,8 @@ command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'
 nnoremap <silent> tt :Gcd / \| :Silent tig<CR>
 nnoremap <silent> th :Gcd / \| :Silent tig %<CR>
 nnoremap ls !ls -Alhv --group-directories-first<CR>
+" Format current JSON file using jq
+command! Jsonify %!jq .
 
 
 """""""""""""""""
@@ -445,7 +447,7 @@ set ssop-=options
 set ssop-=folds
 
 set timeoutlen=200  " Mapped sequence timeout
-set ttimeoutlen=200 " Key code sequence timeout
+set ttimeoutlen=50 " Key code sequence timeout
 
 " Ignore these files when completing names
 set wildignore=*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm
