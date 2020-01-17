@@ -1,4 +1,3 @@
-# Defined in - @ line 2
 function fish_prompt
     set last_cmd_status $status
     set -U fish_color_cwd 00cc66
@@ -8,14 +7,19 @@ function fish_prompt
     set -U fish_color_venv 7171da
     set -U fish_prompt_pwd_dir_length 3
 
-    echo -n (_get_user) (_get_cwd) (_get_branch) (_get_virtualenv)
+    echo -n (_get_user)"@"(_get_hostname) (_get_cwd) (_get_branch) (_get_virtualenv)
     echo (_get_prompt_symbol $last_cmd_status)
 end
 
-# Format current user and hostname
+# Format current user
 function _get_user
-    echo -n -s (set_color $fish_color_user) "$USER" (set_color normal) @
-    echo -n -s (set_color $fish_color_user) (prompt_hostname)
+    echo -n -s (set_color $fish_color_user) "$USER" (set_color normal)
+end
+
+# Format current hostname
+function _get_hostname
+    set _hostname (string replace "localhost" "🏠" (prompt_hostname))
+    echo -n -s (set_color $fish_color_user) "$_hostname"
 end
 
 # Format current working directory
@@ -34,7 +38,7 @@ end
 function _get_branch
     set branch (git_branch_name)
     if test -n "$branch"
-        echo -n -s (set_color $fish_color_branch) "❰$branch❱"
+        echo -n -s (set_color $fish_color_branch) "❰⎇ $branch❱"
     end
 end
 
