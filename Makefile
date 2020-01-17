@@ -13,8 +13,8 @@ install-conf: install-bash-conf \
               install-ipython-conf \
               install-pep8-conf \
               install-postgres-conf \
-              install-terminator-conf \
-              install-vim-conf
+              install-terminator-conf
+              # install-vim-conf
 
 install-pkgs: install-fonts \
               install-grc \
@@ -29,9 +29,9 @@ install-optional: configure-gnome \
 
 update: update-python \
         update-ruby \
-        update-grc \
-        update-ycm \
-        update-vim
+        update-grc
+        # update-vim
+        # update-ycm
 
 
 ##############################################
@@ -51,10 +51,10 @@ update-centos: update
 install-fedora: install-conf \
                 install-system-packages-fedora \
                 install-docker-fedora \
-                install-vim-fedora \
                 install-chrome-fedora \
                 install-retroterm-fedora \
                 install-pkgs
+                # install-vim-fedora
 
 update-fedora: update
 	sudo dnf upgrade -y
@@ -63,8 +63,8 @@ install-ubuntu: install-system-packages-ubuntu \
                 install-conf \
                 install-chrome-ubuntu \
                 install-flux-ubuntu \
-                install-vim-ubuntu \
                 install-pkgs
+                # install-vim-ubuntu \
 
 update-ubuntu: update
 	sudo apt-get update && sudo apt-get upgrade -y
