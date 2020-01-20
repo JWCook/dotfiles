@@ -10,6 +10,7 @@
 # PYTHON3_CONFIG_DIR=/usr/lib64/python3.6/config/
 # Fedora
 # PYTHON_CONFIG_DIR=/usr/lib64/python2.7/config/
+# PYTHON3_CONFIG_DIR=/usr/lib/python3.6/config-3.6m-x86_64-linux-gnu/
 PYTHON3_CONFIG_DIR=/usr/lib64/python3.7/config-3.7m-x86_64-linux-gnu/
 
 REPO=https://github.com/vim/vim

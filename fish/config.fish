@@ -5,7 +5,7 @@
 fundle plugin 'fishpkg/fish-git-util'
 fundle init
 
-eval (python -m virtualfish compat_aliases)
+eval (python3 -m virtualfish compat_aliases)
 
 source ~/.config/fish/style.fish
 
@@ -85,7 +85,8 @@ set -x DOTFILES ~/dotfiles
 set -x WORKSPACE ~/workspace
 alias cw='cd $WORKSPACE'
 
-set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages
+set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages:~/.local/lib/python3.6/site-packages
+
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 
