@@ -361,12 +361,16 @@ set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 abbr gbranches git branch -vv
 abbr gbranch git rev-parse --abbrev-ref HEAD
 abbr gbmv git branch -m
-abbr gball git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
 abbr gbprune git fetch --prune
 abbr grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
 abbr gcontinue git rebase --continue
 abbr gskip git rebase --skip
 abbr gscontinue git stash \; git rebase --continue \; git stash pop
+
+# List all remote branches
+function gball
+    git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
+end
 
 # Overwrite local branch with remote
 function gbreset
@@ -409,7 +413,7 @@ abbr trm tmux kill-session -t
 
 # Create new session, or attach if it already exists
 function tnew -a session_name start_dir
-    tmux new-session -A -s session_name -c (coalesce $start_dir ~)
+    tmux new-session -A -s $session_name -c (coalesce $start_dir ~)
 end
 
 

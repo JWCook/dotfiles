@@ -1,19 +1,24 @@
 function fish_prompt
     set last_cmd_status $status
+    set -U fish_prompt_bg_1 3d5c5c
+    set -U fish_prompt_bg_2 527a7a
+    set -U fish_prompt_bg_3 669999
     set -U fish_color_cwd 00cc66
     set -U fish_color_cwd_root red
     set -U fish_color_user 99e600
-    set -U fish_color_branch cyan
-    set -U fish_color_venv 7171da
+    set -U fish_color_branch 4d4dff
+    set -U fish_color_venv 5200cc
     set -U fish_prompt_pwd_dir_length 3
 
-    echo -n (_get_user)"@"(_get_hostname) (_get_cwd) (_get_branch) (_get_virtualenv)
+    echo -n -s (set_color -b $fish_prompt_bg_1) (_get_user)"@"(_get_hostname) (set_color -b $fish_prompt_bg_2 $fish_prompt_bg_1)
+    echo -n -s (_get_cwd) (set_color -b $fish_prompt_bg_3 $fish_prompt_bg_2)
+    echo -n (_get_branch) (_get_virtualenv)(set_color -b black $fish_prompt_bg_3)
     echo (_get_prompt_symbol $last_cmd_status)
 end
 
 # Format current user
 function _get_user
-    echo -n -s (set_color $fish_color_user) "$USER" (set_color normal)
+    echo -n -s (set_color $fish_color_user) "$USER"
 end
 
 # Format current hostname
@@ -38,7 +43,7 @@ end
 function _get_branch
     set branch (git_branch_name)
     if test -n "$branch"
-        echo -n -s (set_color $fish_color_branch) "❰⎇ $branch❱"
+        echo -n -s (set_color $fish_color_branch) "$branch"
     end
 end
 
@@ -46,7 +51,7 @@ end
 function _get_virtualenv
     if set -q VIRTUAL_ENV
         set venv_name (basename "$VIRTUAL_ENV")
-        echo -n -s (set_color $fish_color_venv) "⦗$venv_name⦘"
+        echo -n -s (set_color $fish_color_venv) " $venv_name"
     end
 end
 
