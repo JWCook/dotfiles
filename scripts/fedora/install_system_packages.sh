@@ -28,18 +28,26 @@ PKGS_APPS='
     terminator
     the_silver_searcher
     tig
+    tldr
     tree
     tmux
     wget
     wl-clipboard
-    xmlstarlet'
+    xclip
+    xsel
+    xmlstarlet
+'
 PKGS_DEV='
     lua-devel
     npm
     php-devel
+    python-devel
+    python3-devel
+    python3-wheel
     ruby-devel
     rubygems
-    java-1.8.0-openjdk'
+    java-1.8.0-openjdk
+'
 PKGS_LIBS='
     automake
     bash-completion
@@ -62,7 +70,8 @@ PKGS_LIBS='
     xdg-utils
     xz-libs
     zlib-devel
-    bzip2-devel'
+    bzip2-devel
+'
 PKGS_MEDIA='
     vlc
     vlc-extras
@@ -70,21 +79,26 @@ PKGS_MEDIA='
     gstreamer-plugins-base
     gstreamer-plugins-good
     gstreamer-plugins-bad-free
-    gstreamer-plugins-bad-nonfree'
+    gstreamer-plugins-bad-nonfree
+'
 PKGS_POSTGRES='
     postgresql10-devel
     postgresql10-server
     postgis30_10-devel
     freetds-devel
-    unixODBC-devel'
-PKGS_PYTHON='
-    python-devel
-    python3-devel
-    python3-wheel'
+    unixODBC-devel
+'
 PKGS_OTHER='
     fortune-mod
-    toilet'
-
+    toilet
+'
+# Image processing packages
+PKGS_IMG='
+    exempi
+    exiv2
+    exiv2-devel
+    perl-Image-ExifTool
+'
 # Desktop environment-specific packages
 PKGS_GNOME='
     alacarte
@@ -93,7 +107,8 @@ PKGS_GNOME='
     gnome-shell-extension-user-theme
     gnome-shell-extension-workspace-indicator
     gnome-shell-extension-screenshot-window-sizer
-    gnome-shell-extension-auto-move-windows'
+    gnome-shell-extension-auto-move-windows
+'
 PKGS_GNOME_EXTRAS='
     f21-backgrounds-extras-gnome
     f22-backgrounds-extras-gnome
@@ -104,14 +119,15 @@ PKGS_GNOME_EXTRAS='
     f27-backgrounds-extras-gnome
     f28-backgrounds-extras-gnome
     f29-backgrounds-extras-gnome
-    f30-backgrounds-extras-gnome'
+    f30-backgrounds-extras-gnome
+'
 
 
 # Install packages
 sudo dnf update -y
-sudo dnf install -y $PKGS_APPS $PKGS_PYTHON $PKGS_DEV $PKGS_LIBS
+sudo dnf install -y $PKGS_APPS $PKGS_DEV $PKGS_LIBS
 sudo dnf install -y $PKGS_MEDIA
 # Optional packages
-# sudo dnf install -y $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
+# sudo dnf install -y $PKGS_IMG $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
 
 sudo activate-global-python-argcomplete
