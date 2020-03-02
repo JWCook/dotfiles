@@ -29,10 +29,12 @@ shopt -s histappend
 
 # Paths
 pathadd ~/.local/bin
+pathadd ~/.poetry/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
 [ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra

@@ -76,10 +76,12 @@ alias ttput='tty -s && tput'
 
 # Paths
 pathadd ~/.local/bin
+pathadd ~/.poetry/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
 set -x WORKSPACE ~/workspace
