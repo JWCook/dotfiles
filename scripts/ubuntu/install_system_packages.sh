@@ -28,6 +28,9 @@ PKGS_APPS='
     xsel
 '
 PKGS_SERVER='
+    containerd.io
+    docker-ce
+    docker-ce-cli
     logwatch
     ncdu
     net-tools
