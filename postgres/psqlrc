@@ -9,6 +9,7 @@
 \set HISTCONTROL ignoredups
 \set COMP_KEYWORD_CASE upper
 
+\set seqs 'SELECT * FROM information_schema.sequences;'
 \set ext 'SELECT * FROM pg_available_extensions ORDER BY name;'
 \set kill_idle 'SELECT pid, pg_terminate_backend(pid) FROM pg_stat_activity WHERE state LIKE \'idle%\';'
 \set kill_api 'SELECT pid, pg_terminate_backend(pid) FROM pg_stat_activity WHERE usename = \'api_user\';'

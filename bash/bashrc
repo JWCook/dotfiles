@@ -29,10 +29,12 @@ shopt -s histappend
 
 # Paths
 pathadd ~/.local/bin
+pathadd ~/.poetry/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
 [ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra
@@ -431,67 +433,6 @@ ssh-set-permissions() {
 }
 
 
-#########################
-# ❰❰ Distro-Specific ❱❱ #
-#########################
-
-# TODO: Separate .bashrc_$distro files, if/when needed
-
-# Tests
-system-is-rpm() {
-    /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
-}
-system-is-debian() { [ -f "/etc/debian_version" ]; }
-
-# Fedora-based
-alias update-dnf='print-title "Updating system packages...";\
-                  sudo dnf update -y --skip-broken | lc-hgradient-delay'
-alias suspend-systemd='systemctl suspend'
-alias hibernate-systemd='systemctl suspend'
-
-# Kernel utils
-ls-kernels-all() {
-    print-title "All installed kernels:"
-    rpm -qa kernel\* |sort -V
-}
-ls-kernels-old() {
-    n_keep=${1:-2}
-    print-title "Current kernel packages (latest $n_keep versions):"
-    dnf repoquery --installonly --latest-limit=$n_keep -q
-    print-title "Older kernel packages:"
-    dnf repoquery --installonly --latest-limit=-$n_keep -q
-}
-rm-old-kernels() {
-    n_keep=${1:-2}
-    ls-kernels-old $n_keep
-    echo
-    sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
-}
-
-# Debian-based
-alias update-apt='print-title "Updating system packages...";\
-                  sudo apt-get update;\
-                  sudo apt-get -y --allow-unauthenticated\
-                  dist-upgrade | lc-hgradient-delay'
-alias update-apt-unattended='print-title "Updating system packages...";\
-                             sudo apt-get update;\
-                             sudo apt-get -y --allow-unauthenticated\
-                             -o Dpkg::Options::="--force-confdef"\
-                             -o Dpkg::Options::="--force-confnew"\
-                             dist-upgrade | lc-hgradient-delay'
-alias suspend-pm='pm-suspend'
-alias hibernate-pm='pm-hibernate'
-
-# Install a .deb file from url
-install-deb() {
-    deb_tempfile=$(mktemp --suffix=.deb)
-    wget -O $deb_tempfile $1
-    sudo apt-get install -y $deb_tempfile
-    sleep 1
-    rm $deb_tempfile
-}
-
-
 #############
 # ❰❰ Git ❱❱ #
 #############
@@ -788,6 +729,70 @@ alias spdo='sphinx-build-current && sphinx-open-docs'
 alias sp-autodoc='sphinx-autobuild-current'
 
 
+#########################
+# ❰❰ Distro-Specific ❱❱ #
+#########################
+
+# TODO: Separate .bashrc_$distro files, if/when needed
+
+# Tests
+system-is-rpm() {
+    /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
+}
+system-is-debian() { [ -f "/etc/debian_version" ]; }
+
+# Fedora-based
+function update-dnf() {
+    print-title "Updating system packages..."
+    sudo dnf update -y --skip-broken | lc-hgradient-delay
+}
+alias suspend-systemd='systemctl suspend'
+alias hibernate-systemd='systemctl hibernate'
+
+# Kernel utils
+ls-kernels() {
+    print-title "All installed kernels:"
+    rpm -qa kernel\* | sort -V
+}
+alias lsk='ls-kernels'
+ls-old-kernels() {
+    n_keep=${1:-2}
+    print-title "Current kernel packages (latest $n_keep versions):"
+    dnf repoquery --installonly --latest-limit=$n_keep -q
+    print-title "Older kernel packages:"
+    dnf repoquery --installonly --latest-limit=-$n_keep -q
+}
+rm-old-kernels() {
+    n_keep=${1:-2}
+    ls-kernels-old $n_keep
+    echo
+    sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
+}
+
+# Debian-based
+alias update-apt='print-title "Updating system packages...";\
+                  sudo apt-get update;\
+                  sudo apt-get -y --allow-unauthenticated\
+                  dist-upgrade | lc-hgradient-delay'
+alias update-apt-unattended='print-title "Updating system packages...";\
+                             sudo apt-get update;\
+                             sudo apt-get -y --allow-unauthenticated\
+                             -o Dpkg::Options::="--force-confdef"\
+                             -o Dpkg::Options::="--force-confnew"\
+                             dist-upgrade | lc-hgradient-delay'
+alias suspend-pm='pm-suspend'
+alias hibernate-pm='pm-hibernate'
+
+# Install a .deb file from url
+install-deb() {
+    deb_tempfile=$(mktemp --suffix=.deb)
+    wget -O $deb_tempfile $1
+    sudo apt-get install -y $deb_tempfile
+    sleep 1
+    rm $deb_tempfile
+}
+
+
 ##################
 # ❰❰ Services ❱❱ #
 ##################
@@ -843,7 +848,7 @@ alias sshd-status='svc-status sshd'
 # Jupyter
 alias jj='jupyter notebook --port $JUPYTER_LOCAL_PORT &'
 alias jl='jupyter notebook list'
-alias jq='pkill jupyter'
+alias jk='pkill jupyter'
 
 
 #############
@@ -864,6 +869,7 @@ if type -a proxychains4 >/dev/null 2>&1; then
     alias proxychains='proxychains4'
 fi
 alias px='proxychains -q'
+alias pxs='sudo proxychains -f ~/.proxychains/proxychains.conf'
 
 # Git
 alias gp-px='px git pull'

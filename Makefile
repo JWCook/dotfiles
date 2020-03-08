@@ -21,6 +21,7 @@ install-pkgs: install-fonts \
               install-ruby-gems \
               install-js-packages \
               update-python
+              # install-poetry
 
 install-optional: configure-gnome \
                   configure-ntp \
@@ -104,6 +105,7 @@ install-fish-conf:
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
 	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
+	ln -s `pwd`/fish/completions ~/.config/fish/completions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
 	fish -c 'fundle install'
 
@@ -154,6 +156,8 @@ install-vim-conf:
 	ln -s `pwd`/vim/vim  ~/.vim
 	mkdir -p ~/.config/nvim
 	ln -s `pwd`/vim/vimrc ~/.config/nvim/init.vim
+	# Sync vim sessions, if sync folder exists
+	[ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
 
 
 ############################
@@ -172,6 +176,9 @@ install-grc:
 install-js-packages:
 	scripts/install_js_packages.sh
 
+install-poetry:
+	scripts/install_poetry.sh
+
 install-ruby-gems:
 	sudo gem install scripts/Gemfile
 
@@ -184,6 +191,7 @@ update-grc:
 
 update-python:
 	pip3 install --user -Ur scripts/requirements-user.txt
+	which poetry && poetry self update
 
 update-ruby:
 	sudo gem update

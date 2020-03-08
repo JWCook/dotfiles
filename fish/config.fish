@@ -76,10 +76,12 @@ alias ttput='tty -s && tput'
 
 # Paths
 pathadd ~/.local/bin
+pathadd ~/.poetry/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
 set -x WORKSPACE ~/workspace
@@ -361,12 +363,16 @@ set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 abbr gbranches git branch -vv
 abbr gbranch git rev-parse --abbrev-ref HEAD
 abbr gbmv git branch -m
-abbr gball git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
 abbr gbprune git fetch --prune
 abbr grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
 abbr gcontinue git rebase --continue
 abbr gskip git rebase --skip
 abbr gscontinue git stash \; git rebase --continue \; git stash pop
+
+# List all remote branches
+function gball
+    git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
+end
 
 # Overwrite local branch with remote
 function gbreset
@@ -390,13 +396,13 @@ end
 # }
 
 # Delete local and remote branch
-# grm-branch() {
-#     printf "Deleting branch $1."
-#     if prompt-confirm; then
-#         git branch -D $1
-#         git push origin --delete $1
-#     fi
-# }
+function grm-branch -a branch -w git-branch
+    printf "Deleting local and remote branch $branch."
+    if prompt-confirm
+        git branch -D $branch
+        git push origin --delete $branch
+    end
+end
 # type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
 
 
@@ -409,7 +415,7 @@ abbr trm tmux kill-session -t
 
 # Create new session, or attach if it already exists
 function tnew -a session_name start_dir
-    tmux new-session -A -s session_name -c (coalesce $start_dir ~)
+    tmux new-session -A -s $session_name -c (coalesce $start_dir ~)
 end
 
 
@@ -610,3 +616,125 @@ end
 # alias sp-doc='sphinx-build-current'
 # alias spdo='sphinx-build-current && sphinx-open-docs'
 # alias sp-autodoc='sphinx-autobuild-current'
+
+
+##########################
+# ❰❰ Distro-Specific ❱❱ #
+#########################
+
+# TODO: Separate .bashrc_$distro files, if/when needed
+
+# Tests
+# system-is-rpm() {
+#     /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
+# }
+# system-is-debian() { [ -f "/etc/debian_version" ]; }
+
+# Fedora-based
+function update-dnf
+    print-title "Updating system packages..."
+    sudo dnf check
+    sudo dnf update -y --skip-broken | lc-hgradient-delay
+end
+abbr suspend-systemd systemctl suspend
+abbr hibernate-systemd systemctl hibernate
+
+# Kernel utils
+function ls-kernels
+    print-title "All installed kernels:"
+    rpm -qa kernel\* | sort -V
+end
+abbr lsk ls-kernels
+
+function ls-old-kernels -a n_keep
+    set n_keep (coalesce $n_keep 2)
+    print-title "Current kernel packages (latest $n_keep versions):"
+    dnf repoquery --installonly --latest-limit=$n_keep -q
+    print-title "Older kernel packages:"
+    dnf repoquery --installonly --latest-limit=-$n_keep -q
+end
+abbr lsko ls-old-kernels
+
+# rm-old-kernels() {
+#     n_keep=${1:-2}
+#     ls-kernels-old $n_keep
+#     echo
+#     sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
+# }
+
+# Debian-based
+function update-apt
+    print-title "Updating system packages..."
+    sudo apt-get update
+    sudo apt-get -y --allow-unauthenticated\
+        dist-upgrade | lc-hgradient-delay
+end
+
+function update-apt-unattended
+    print-title "Updating system packages..."
+    sudo apt-get update
+    sudo apt-get -y --allow-unauthenticated\
+        -o Dpkg::Options::="--force-confdef"\
+        -o Dpkg::Options::="--force-confnew"\
+        dist-upgrade | lc-hgradient-delay
+end
+
+abbr suspend-pm pm-suspend
+abbr hibernate-pm pm-hibernate
+
+# Install a .deb file from url
+# install-deb() {
+#     deb_tempfile=$(mktemp --suffix=.deb)
+#     wget -O $deb_tempfile $1
+#     sudo apt-get install -y $deb_tempfile
+#     sleep 1
+#     rm $deb_tempfile
+# }
+
+
+##########################
+# ❰❰ Proxied Commands ❱❱ #
+##########################
+
+# Proxychains executable varies by distro
+if type -a proxychains4 >/dev/null 2>&1
+    alias proxychains='proxychains4'
+end
+alias px 'proxychains -q'
+abbr -a pxs sudo proxychains -q -f ~/.proxychains/proxychains.conf
+
+# Git
+alias gp-px='px git pull'
+alias gfpush-px='px git push --force'
+alias gpush-px='px git push'
+alias gf-px='px git fetch --all'
+# gbreset-px() {
+#     REMOTE="$(gremote)"
+#     BRANCH="$(gbranch)"
+#     px git fetch $REMOTE $BRANCH
+#     px git status
+#     printf "Resetting branch to $REMOTE/$BRANCH."
+#     px prompt-confirm && git reset --hard $REMOTE/$BRANCH
+# }
+
+
+# Python
+abbr pip-install-px proxychains pip install
+# pipr-px() {
+#     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
+#         echo; print-title "Installing $f..."
+#         px pip install -Ur $f | lc-gradient --seed=100
+#     done
+# }
+# mkv-px() {
+#     swap $PIP_CONF ${PIP_CONF}.bak
+#     mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
+#     swap $PIP_CONF ${PIP_CONF}.bak
+#     add2virtualenv .
+#     pipr-px
+# }
+# function mkv-basic-px
+#     swap $PIP_CONF ${PIP_CONF}.bak
+#     mkvirtualenv -p python3 ${1:-$(pwd-base)}
+#     swap $PIP_CONF ${PIP_CONF}.bak
+# end

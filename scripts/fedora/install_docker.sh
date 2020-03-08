@@ -9,3 +9,6 @@ sudo systemctl start docker
 # Add group + membership, if not already set up; must logout and back in to take effect
 sudo groupadd docker
 sudo usermod -aG docker $USER
+
+# Disable cgroupsv2
+sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
