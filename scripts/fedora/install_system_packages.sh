@@ -131,3 +131,9 @@ sudo dnf install -y $PKGS_MEDIA
 # sudo dnf install -y $PKGS_IMG $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
 
 sudo activate-global-python-argcomplete
+
+# https://github.com/docker/cli/issues/297#issuecomment-547022631
+# @ThaSami current version of Fedora 31 switched to using cgroupsV2 by default, which is not yet supported by the
+# container runtimes (and kubernetes); work is in progress on this, but not yet complete, and not yet production ready.
+# To disable v2 cgroups, run this and restart your machine afterward:
+sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
