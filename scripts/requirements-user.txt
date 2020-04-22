@@ -15,6 +15,7 @@ setuptools
 virtualenvwrapper
 virtualfish
 vim-vint
+yamllint
 
 # numpy
 # pandas

@@ -58,9 +58,10 @@ export JUPYTER_LOCAL_PORT=9468
 export EDITOR=/usr/bin/nvim
 
 # Simple Command/App Aliases
-alias term-code='terminator -mfl code &'
-alias term-dev='terminator -mfl 6-split &'
-alias term-start='terminator -l start &'
+alias termy='PYTHONPATH= terminator'
+alias term-code='termy -mfl code &'
+alias term-dev='termy -mfl 6-split &'
+alias term-start='termy -l start &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
 alias lw='sudo logwatch | less'
 alias ta='type -a'; complete -c ta

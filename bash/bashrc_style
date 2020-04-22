@@ -138,7 +138,7 @@ set_bash_prompt() {
     set_prompt_symbol $?
     history -a  # Append to bash_history
     set_virtualenv
-    PS1="$(term-color $GREEN)\u$(term-color $NOCOLOR)@$(term-color $GREEN)\h \W $PYTHON_VIRTUALENV$(term-color $NOCOLOR) $PROMPT_SYMBOL "
+    PS1="$(term-color $GREEN)\u$(term-color $NOCOLOR)@$(term-color $GREEN)\h $(term-color $BOLD_GREEN)\W $PYTHON_VIRTUALENV$(term-color $NOCOLOR) $PROMPT_SYMBOL "
 }
 
 export PROMPT_COMMAND=set_bash_prompt

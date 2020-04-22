@@ -4,10 +4,8 @@
 
 fundle plugin 'fishpkg/fish-git-util'
 fundle init
-
-eval (python3 -m virtualfish compat_aliases)
-
 source ~/.config/fish/style.fish
+# vf install compat_aliases
 
 
 ##########################
@@ -253,7 +251,7 @@ end
 # Editor shortcuts
 function sb; echo "reloading fish config..."; source $FISH_CONF; end
 abbr vb "$EDITOR $BASH_CONF"
-abbr vbb "$EDITOR -O2 $BASH_CONF_ALL"
+abbr vbb "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF"
 abbr vg "$EDITOR $GIT_CONF"
 abbr vv "$EDITOR $VIM_CONF"
 abbr vvv "$EDITOR -O2 $VIM_CONF_ALL"
