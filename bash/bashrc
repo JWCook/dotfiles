@@ -17,6 +17,7 @@ alias ttput='tty -s && tput'                            # Safe tput, only for TT
 source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
+source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
@@ -68,6 +69,7 @@ alias ta='type -a'; complete -c ta
 alias top='htop'
 alias tt='tig'
 alias vim='nvim'
+alias vim8='$(which vim)'
 alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
@@ -564,6 +566,7 @@ tnew() {
 # ❰❰ Python ❱❱ #
 ################
 
+alias pip='pip3'
 alias bb='black --target-version py37 --line-length 100 --skip-string-normalization'
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'

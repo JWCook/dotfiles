@@ -1,0 +1,4 @@
+
+alias termxfce='DISPLAY=:0 xfce4-terminal &'
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/github_rsa

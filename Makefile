@@ -13,14 +13,15 @@ install-conf: install-bash-conf \
               install-ipython-conf \
               install-pep8-conf \
               install-postgres-conf \
-              install-terminator-conf
-              # install-vim-conf
+              install-terminator-conf \
+              install-vim-conf
 
 install-pkgs: install-fonts \
               install-grc \
-              install-ruby-gems \
-              install-js-packages \
+              install-neovim \
               update-python
+              # install-ruby-gems \
+              # install-js-packages \
               # install-poetry
 
 install-optional: configure-gnome \
@@ -39,16 +40,6 @@ update: update-python \
 # Grouped Pakcages & Config: Distro-Specific #
 ##############################################
 
-install-centos: install-conf \
-                install-system-packages-centos \
-                install-vim-centos \
-                install-chrome-fedora \
-                install-retroterm-fedora \
-                install-pkgs
-
-update-centos: update
-	sudo yum upgrade -y
-
 install-fedora: install-conf \
                 install-system-packages-fedora \
                 install-docker-fedora \
@@ -66,6 +57,16 @@ install-ubuntu: install-system-packages-ubuntu \
                 install-flux-ubuntu \
                 install-pkgs
                 # install-vim-ubuntu \
+
+install-ubuntu-wsl: install-system-packages-ubuntu \
+                install-conf \
+                install-pkgs \
+                configure-sudoers
+	rm ~/.bashrc_wsl
+	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
+	# scripts/ubuntu/configure_wsl.sh
+	sudo apt-get install -y xfce4-terminal
+	source bash/bashrc && ssh-set-permissions
 
 update-ubuntu: update
 	sudo apt-get update && sudo apt-get upgrade -y
@@ -105,7 +106,7 @@ install-fish-conf:
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
 	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
-	ln -s `pwd`/fish/completions ~/.config/fish/completions
+	[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
 	fish -c 'fundle install'
 
@@ -176,6 +177,9 @@ install-grc:
 install-js-packages:
 	scripts/install_js_packages.sh
 
+install-neovim:
+	scripts/install_neovim.sh
+
 install-poetry:
 	scripts/install_poetry.sh
 
@@ -201,23 +205,6 @@ update-ycm:
 
 update-vim:
 	scripts/install_vim.sh
-
-
-####################
-# Packages: CentOS #
-####################
-
-install-system-packages-centos:
-	scripts/centos/install_repos.sh
-	scripts/fedora/install_system_packages.sh
-
-install-vim-centos:
-	scripts/centos/install_vim_prereqs.sh
-	scripts/install_vim.sh
-	scripts/install_vim_plug.sh
-
-install-postgres-centos:
-	scripts/centos/install_postgres.sh
 
 
 ####################
@@ -251,7 +238,6 @@ install-retroterm-fedora:
 #####################
 
 install-system-packages-ubuntu:
-	scripts/ubuntu/install_repos.sh
 	scripts/ubuntu/install_system_packages.sh
 
 install-vim-ubuntu:

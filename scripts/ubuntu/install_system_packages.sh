@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
 
+# Additional repos for fish shell and docker CE
+sudo apt-add-repository ppa:fish-shell/release-3
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
 # Package categories
+# fzf
 PKGS_APPS='
-    chromium-browser
     curl
     figlet
     fish
-    fzf
-    gimp
     git
     htop
-    keepassxc
+    nmap
     ntp
     ntpdate
     p7zip-full
     pv
     silversearcher-ag
     ssh
-    terminator
     tig
     toilet
     traceroute
@@ -27,20 +30,29 @@ PKGS_APPS='
     xclip
     xsel
 '
+PKGS_GUI_APPS='
+    chromium-browser
+    gimp
+    keepassxc
+    terminator
+'
 PKGS_SERVER='
     containerd.io
     docker-ce
     docker-ce-cli
-    logwatch
     ncdu
     net-tools
-    nmap
     telnet
 '
+PKGS_ADMIN='
+    logwatch
+'
+# ruby-dev
+# npm
 PKGS_DEV='
-    npm
     python3-dev
-    ruby-dev
+    python3-pip
+    python3-venv
 '
 PKGS_LIBS='
     build-essential
@@ -82,7 +94,6 @@ PKGS_SNAP='ffmpeg'
 # Install packages
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA
-# Optional packages
-# sudo apt-get install -y $PKGS_DEV $PKGS_IMG $PKGS_GNOME $PKGS_UNITY
-sudo snap install $PKGS_SNAP
+sudo apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_DEV $PKGS_IMG
+# sudo apt-get install -y $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_ADMIN $PKGS_GNOME $PKGS_UNITY
+# sudo snap install $PKGS_SNAP
