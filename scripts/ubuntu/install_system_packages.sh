@@ -47,12 +47,12 @@ PKGS_SERVER='
 PKGS_ADMIN='
     logwatch
 '
-# ruby-dev
-# npm
 PKGS_DEV='
     python3-dev
     python3-pip
     python3-venv
+    npm
+    ruby-dev
 '
 PKGS_LIBS='
     build-essential

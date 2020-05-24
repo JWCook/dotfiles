@@ -563,10 +563,12 @@ function wo -a env_name
     if test -n $env_name
         workon $env_name
         set -x _VIRT_ENV_PREV_PWD $PWD
+        set -e PYTHONPATH
         cd $WORKSPACE/$env_name
     else
         deactivate
         cd $_VIRT_ENV_PREV_PWD
+        source $FISH_CONF
     end
 end
 complete -c wo --wraps=workon

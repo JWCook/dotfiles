@@ -43,6 +43,7 @@ export WORKSPACE=~/workspace
 alias cw='cd $WORKSPACE'
 
 # Python
+# export PYTHONPATH=~/.local/lib/python3.6/site-packages
 export PYTHONPATH=~/.local/lib/python3.7/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
@@ -495,11 +496,12 @@ alias gcstat-all='git rev-list --count HEAD'
 
 # Tags
 gmv-tag() {
-    git tag $2 $1
     git tag -d $1
     git push origin :refs/tags/$1
+    git tag $1 $2
     git push --tags
 }
+
 
 # Branches
 export GREF_FORMAT="%(align:60,left)%(color:blue)%(refname:short)%(end) \
@@ -682,10 +684,12 @@ wo() {
     if [ -n "$1" ]; then
         workon $1
         export _VIRT_ENV_PREV_PWD=$PWD
+        unset PYTHONPATH
         cd $WORKSPACE/$1
     else
         deactivate
         cd $_VIRT_ENV_PREV_PWD
+        source $BASH_CONF
     fi
 }
 complete -o default -o nospace -F _virtualenvs wo
@@ -914,3 +918,9 @@ mkv-basic-px() {
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# added by travis gem
+[ ! -s /home/jcook/.travis/travis.sh ] || source /home/jcook/.travis/travis.sh

@@ -19,10 +19,10 @@ install-conf: install-bash-conf \
 install-pkgs: install-fonts \
               install-grc \
               install-neovim \
+              install-ruby-gems \
+              install-poetry \
               update-python
-              # install-ruby-gems \
               # install-js-packages \
-              # install-poetry
 
 install-optional: configure-gnome \
                   configure-ntp \
@@ -175,7 +175,7 @@ install-grc:
 	scripts/install_grc.sh
 
 install-js-packages:
-	scripts/install_js_packages.sh
+	scripts/install_npm_packages.sh
 
 install-neovim:
 	scripts/install_neovim.sh
@@ -184,7 +184,8 @@ install-poetry:
 	scripts/install_poetry.sh
 
 install-ruby-gems:
-	sudo gem install scripts/Gemfile
+	# scripts/install_rvm.sh
+	gem install -g scripts/Gemfile
 
 install-vim:
 	scripts/install_vim.sh
