@@ -5,7 +5,7 @@
 fundle plugin 'fishpkg/fish-git-util'
 fundle init
 source ~/.config/fish/style.fish
-# vf install compat_aliases
+vf install compat_aliases
 
 
 ##########################

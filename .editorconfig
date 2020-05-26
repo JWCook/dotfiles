@@ -1,0 +1,16 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+max_line_length = 120
+
+[*.{yml,yaml,php}]
+indent_size = 2
+
+# Tab indentation
+[Makefile]
+indent_style = tab

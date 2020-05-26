@@ -584,6 +584,7 @@ alias lsv='lsvirtualenv -b'
 
 # Pip install a package, temporarily disabling any extra indexes or other config
 pip-install-default() {
+    # pip install --index-url=https://pypi.org/simple/ --extra-index-url=https://pypi.org/simple/ "$@"
     swap $PIP_CONF ${PIP_CONF}.bak
     pip install "$@"
     swap $PIP_CONF ${PIP_CONF}.bak

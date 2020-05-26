@@ -1,11 +1,11 @@
-build
-dist
+build/
+dist/
+.idea/
 *~
+*.sw*
 *.lock
 *.log
 *.pyc
-*.swp
-*.swo
 _build.py
 .cache
 vim/vim/autoload
