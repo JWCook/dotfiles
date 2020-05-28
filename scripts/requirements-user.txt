@@ -1,4 +1,4 @@
-# Python 3-only packages
+# Python 3 packages to install in ~/.local/lib
 argcomplete
 awscli
 flake8
@@ -7,14 +7,12 @@ jedi
 # pbr
 pip
 pygments
-pynvim
 python-dateutil
 requests[security]
 requests[socks]
 setuptools
 virtualenvwrapper
 virtualfish
-vim-vint
 yamllint
 
 # numpy

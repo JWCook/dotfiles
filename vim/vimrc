@@ -10,6 +10,17 @@ let vim_header = [
     \ ]
 
 
+""""""""""""""""
+" ❰❰ Python ❱❱ "
+""""""""""""""""
+
+let g:venv_dir = $HOME.'/.virtualenvs/nvim'
+let g:python_host_prog = venv_dir.'/bin/python3'
+let g:python3_host_prog = venv_dir.'/bin/python3'
+let g:python_activate = 'source '.venv_dir.'/bin/activate;'
+let g:pip_update = python_activate.' pip install -U '
+
+
 """""""""""""""""
 " ❰❰ Plugins ❱❱ "
 """""""""""""""""
@@ -45,16 +56,13 @@ else
 endif
 Plug 'deoplete-plugins/deoplete-jedi'
 let g:deoplete#enable_at_startup = 1
-let g:python_host_prog = $HOME.'/.virtualenvs/nvim/bin/python3'
-let g:python3_host_prog = $HOME.'/.virtualenvs/nvim/bin/python3'
-" Plug 'deoplete-plugins/deoplete-clang', {'do': 'pip install -U --user pynvim'}
+" Plug 'deoplete-plugins/deoplete-clang', {'do': pip_update.'pynvim'}
 " let g:deoplete#sources#clang#libclang_path = ''
 " let g:deoplete#sources#clang#clang_header = ''
 
 " Search
-" , {'do': 'pip install -U --user pynvim'}
 if has('nvim')
-  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/denite.nvim', {'do': pip_update.'pynvim'} ", {'do': ':UpdateRemotePlugins'}
 else
   Plug 'Shougo/denite.nvim'
 endif
@@ -66,7 +74,7 @@ Plug 'dag/vim-fish'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'Kuniwak/vint', {'do': 'pip install -U --user vim-vint'}
+Plug 'Kuniwak/vint', {'do': pip_update.'vim-vint'}
 Plug 'WolfgangMehner/bash-support'
 Plug 'frazrepo/vim-rainbow'
 let g:rainbow_active = 1
@@ -76,7 +84,7 @@ Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'suan/vim-instant-markdown'
 " Plug 'Rykka/riv.vim'
-" Plug 'Rykka/InstantRst', {'do': 'pip install -U --user https://github.com/Rykka/instant-rst.py/archive/master.zip'}
+" Plug 'Rykka/InstantRst', {'do': pip_update.'U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
 
 " Python
 Plug 'MicahChambers/vim-flake8'
@@ -110,7 +118,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'sickill/vim-monokai'
 Plug 'rakr/vim-two-firewatch'
-Plug 'Donearm/Ubaryd'
+" Plug 'Donearm/Ubaryd'
 " Plug 'antlypls/vim-colors-codeschool'
 " Plug 'CruizeMissile/Revolution.vim'
 " Plug 'ninja/sky'
@@ -337,6 +345,7 @@ nnoremap ws :ToggleStripWhitespaceOnSave<CR>
 " ❰❰ Plugin: Denite ❱❱ "
 """"""""""""""""""""""""
 
+" if exists('denite')
 augroup user_plugin_denite
   autocmd!
   autocmd FileType denite call s:denite_settings()
@@ -394,7 +403,7 @@ endif
 " Denite + Git file search
 call denite#custom#alias('source', 'file/rec/git', 'file/rec')
 call denite#custom#var('file/rec/git', 'command',
-      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+    \ ['git', 'ls-files', '-co', '--exclude-standard'])
 
 " Denite + Silver Searcher
 call denite#custom#var('file/rec', 'command',
@@ -413,6 +422,7 @@ map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:
 " let dignore=&wildignore . ',*.pyc,.git,.hg,.svn'
 " call denite#custom#var('file/rec', 'command',
 "     \ ['scantree.py', '--path', ':directory', '--ignore', dignore])
+" endif
 
 
 """"""""""""""""""""""""""""""""""
