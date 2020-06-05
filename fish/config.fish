@@ -480,7 +480,11 @@ end
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 function mkv -a env_name
     mkvirtualenv -p python3 -a . (default-pwd-base $env_name)
+    set -e PYTHONPATH
     add2virtualenv .
+    py-cleanup
+    pip install -U pip setuptools wheel
+    pip install -Ue '.[all]'
     pipr
 end
 

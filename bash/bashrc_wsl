@@ -1,3 +1,4 @@
+export NATURTAG_DIR='/mnt/c/Users/JCook/AppData/Local/Naturtag'
 
 alias termxfce='DISPLAY=:0 xfce4-terminal &'
 eval $(ssh-agent -s)

@@ -619,7 +619,11 @@ cmd-exists pt || pt() {
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 mkv() {
     mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
+    unset PYTHONPATH
     add2virtualenv .
+    py-cleanup
+    pip install -U pip setuptools wheel
+    pip install -Ue '.[all]'
     pipr
 }
 

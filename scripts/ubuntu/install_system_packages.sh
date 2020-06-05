@@ -14,6 +14,7 @@ PKGS_APPS='
     fish
     git
     htop
+    jq
     nmap
     ntp
     ntpdate
@@ -22,10 +23,10 @@ PKGS_APPS='
     silversearcher-ag
     ssh
     tig
+    tmux
     toilet
     traceroute
     tree
-    tmux
     wget
     xclip
     xsel
