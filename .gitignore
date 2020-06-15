@@ -8,6 +8,7 @@ dist/
 *.pyc
 _build.py
 .cache
+viminfo.tmp*
 vim/vim/autoload
 vim/vim/session
 plugged
