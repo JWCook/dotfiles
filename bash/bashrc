@@ -132,8 +132,9 @@ md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter
 mode() { stat -c "%a %n" ${1:-*}; }                     # Get octal file permissions
 pwd-base() { basename $(pwd); }                         # Base name of the current working dir
 alias pwd-src="pwd-base | sed 's/-/_/g'"                # Guess name of project src dir
-alias tailf='tail -f -n 50'                             # Tail defaults
-tailc() { tailf $@ | grcat conf.logfile; }              # Tail w/ generic syntax highlighting
+alias tailf='tail -f -n 50'                             # Tail -f w/ defaults
+alias tailn='tail -n 100'                               # Tail w/ defaults
+tailc() { tailf $@ | grcat conf.logfile; }              # Tail -f w/ generic syntax highlighting
 alias tree='tree -CAFah --du --dirsfirst --prune -I "$IGNORE_PATTERNS"'
 
 
@@ -582,18 +583,20 @@ alias in-env='python -c\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 
-# Pip install a package, temporarily disabling any extra indexes or other config
+# Pip install a package, temporarily overriding any custom index URLs
 pip-install-default() {
-    # pip install --index-url=https://pypi.org/simple/ --extra-index-url=https://pypi.org/simple/ "$@"
-    swap $PIP_CONF ${PIP_CONF}.bak
-    pip install "$@"
-    swap $PIP_CONF ${PIP_CONF}.bak
+    pip install -U --index-url=https://pypi.org/simple/ --extra-index-url=https://pypi.org/simple/ "$@"
 }
 
 # Install python packages from a specific requirements file
 pip-install-req() {
     echo; print-title "Installing $1..."
     [[ -f $1 ]] && pip install -Ur $1 | lc-gradient --seed=100
+}
+
+# Get all available versions of a package by specifying an invalid version
+pip-versions() {
+    pip install $1==999
 }
 
 # Install python packages from all available requirements files
@@ -901,6 +904,9 @@ gbreset-px() {
 
 # Python
 alias pip-install-px='px pip install'
+pip-versions-px() {
+    px pip install $1==999
+}
 pipr-px() {
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         echo; print-title "Installing $f..."
@@ -929,3 +935,19 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # added by travis gem
 [ ! -s /home/jcook/.travis/travis.sh ] || source /home/jcook/.travis/travis.sh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/cookjo/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/cookjo/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/cookjo/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/cookjo/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

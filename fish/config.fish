@@ -140,6 +140,7 @@ alias ll 'ls -Alhv --group-directories-first'
 abbr pwd-base basename \(pwd\)                       # Base name of the current working dir
 abbr pwd-src basename \(pwd\) \| sed 's/-/_/g'       # Guess name of project src dir
 abbr tailf tail -f -n 50                             # Tail -f w/ defaults
+abbr tailn tail -n 100                               # Tail -f w/ defaults
 abbr tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
 abbr tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
 
@@ -457,6 +458,11 @@ function pip-install-req -a req_file
     test -e $req_file && pip install -Ur $req_file | lc-gradient --seed=100
 end
 
+# Get all available versions of a package by specifying an invalid version
+function pip-versions -a package_name
+    pip install $package_name==999
+end
+
 # Install python packages from all available requirements files
 function pipr
     for _file in (ls requirements*.txt 2> /dev/null | sort -V)
@@ -724,6 +730,11 @@ alias gf-px='px git fetch --all'
 
 # Python
 abbr pip-install-px proxychains pip install
+
+function pip-versions-px -a package_name
+    proxychains pip install $package_name==999
+end
+
 # pipr-px() {
 #     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
 #         echo; print-title "Installing $f..."
@@ -742,3 +753,9 @@ abbr pip-install-px proxychains pip install
 #     mkvirtualenv -p python3 ${1:-$(pwd-base)}
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /home/cookjo/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+

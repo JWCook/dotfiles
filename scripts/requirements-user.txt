@@ -6,6 +6,7 @@ ipython[all]
 jedi
 # pbr
 pip
+py-spy
 pygments
 python-dateutil
 requests[security]

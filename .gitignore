@@ -16,3 +16,4 @@ viminfo
 plug.vim.old
 .netrwhist
 fundle.fish
+fish/completions/local_*.fish
