@@ -76,10 +76,10 @@ PKGS_MEDIA='
     vlc
     vlc-extras
     x265
-    gstreamer-plugins-base
-    gstreamer-plugins-good
-    gstreamer-plugins-bad-free
-    gstreamer-plugins-bad-nonfree
+    gstreamer1
+    gstreamer1-plugins-good
+    gstreamer1-plugins-good-extras
+    gstreamer1-plugins-bad-free
 '
 PKGS_POSTGRES='
     postgresql10-devel
@@ -120,6 +120,8 @@ PKGS_GNOME_EXTRAS='
     f28-backgrounds-extras-gnome
     f29-backgrounds-extras-gnome
     f30-backgrounds-extras-gnome
+    f31-backgrounds-extras-gnome
+    f32-backgrounds-extras-gnome
 '
 
 
