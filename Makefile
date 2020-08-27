@@ -21,6 +21,7 @@ install-pkgs: install-fonts \
               install-neovim \
               install-ruby-gems \
               install-poetry \
+              install-pyenv \
               update-python
               # install-js-packages \
 
@@ -182,6 +183,12 @@ install-neovim:
 
 install-poetry:
 	scripts/install_poetry.sh
+
+install-pyenv:
+	curl https://pyenv.run | bash
+	pyenv install 3.6.12
+	pyenv install 3.7.9
+	pyenv install 3.9.0rc1
 
 install-ruby-gems:
 	# scripts/install_rvm.sh

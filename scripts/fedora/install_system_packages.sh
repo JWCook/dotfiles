@@ -29,13 +29,13 @@ PKGS_APPS='
     the_silver_searcher
     tig
     tldr
-    tree
     tmux
+    tree
     wget
     wl-clipboard
     xclip
-    xsel
     xmlstarlet
+    xsel
 '
 PKGS_DEV='
     lua-devel
@@ -51,35 +51,37 @@ PKGS_DEV='
 PKGS_LIBS='
     automake
     bash-completion
+    bzip2-devel
     cmake
     ctags
     gcc
     gcc-c++
     jq
     kernel-devel
+    libX11-devel
     libffi-devel
     libxml2-devel
     libxslt-devel
-    libX11-devel
     ncurses-devel
     ntfsprogs
     openssl-devel
-    rpm-build
+    readline-devel
     redhat-rpm-config
+    rpm-build
+    sqlite-devel
     tcl-devel
     xdg-utils
     xz-libs
     zlib-devel
-    bzip2-devel
 '
 PKGS_MEDIA='
+    gstreamer1
+    gstreamer1-plugins-bad-free
+    gstreamer1-plugins-good
+    gstreamer1-plugins-good-extras
     vlc
     vlc-extras
     x265
-    gstreamer1
-    gstreamer1-plugins-good
-    gstreamer1-plugins-good-extras
-    gstreamer1-plugins-bad-free
 '
 PKGS_POSTGRES='
     postgresql10-devel
@@ -103,6 +105,9 @@ PKGS_IMG='
 PKGS_GNOME='
     alacarte
     dconf-editor
+    gpaste
+    gnome-shell-extension-gpaste
+    gnome-shell-extension-gsconnect
     gnome-tweak-tool
     gnome-shell-extension-user-theme
     gnome-shell-extension-workspace-indicator
@@ -139,3 +144,6 @@ sudo activate-global-python-argcomplete
 # container runtimes (and kubernetes); work is in progress on this, but not yet complete, and not yet production ready.
 # To disable v2 cgroups, run this and restart your machine afterward:
 sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+
+# Enable automatic updates; edit /etc/dnf/automatic.conf for settings
+sudo systemctl enable --now dnf-automatic.timer

@@ -31,10 +31,14 @@ shopt -s histappend
 # Paths
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
+pathadd ~/.pyenv/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
