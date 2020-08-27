@@ -1,0 +1,2 @@
+'atom-workspace atom-text-editor':
+  'f3': 'editor:toggle-line-comments'

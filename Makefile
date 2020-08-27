@@ -4,7 +4,8 @@
 # Grouped Pakcages & Config: Cross-Platform #
 #############################################
 
-install-conf: install-bash-conf \
+install-conf: install-atom-conf \
+              install-bash-conf \
               install-fish-conf \
               install-figlet-conf \
               install-git-conf \
@@ -28,7 +29,6 @@ install-pkgs: install-fonts \
 install-optional: configure-gnome \
                   configure-ntp \
                   configure-sudoers \
-                  install-haroopad
 
 update: update-python \
         update-ruby \
@@ -86,6 +86,20 @@ configure-ntp:
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
+install-atom-conf:
+	rm -rf ~/.atom/config.cson
+	rm -rf ~/.atom/keymap.cson
+	rm -rf ~/.atom/packages.cson
+	rm -rf ~/.atom/snippets.cson
+	rm -rf ~/.atom/init.coffee
+	rm -rf ~/.atom/styles.less
+	ln -s `pwd`/atom/config.cson    ~/.atom/config.cson
+	ln -s `pwd`/atom/keymap.cson    ~/.atom/keymap.cson
+	ln -s `pwd`/atom/packages.cson  ~/.atom/packages.cson
+	ln -s `pwd`/atom/snippets.cson  ~/.atom/snippets.cson
+	ln -s `pwd`/atom/init.coffee    ~/.atom/init.coffee
+	ln -s `pwd`/atom/styles.less    ~/.atom/styles.less
+
 install-bash-completion:
 	`pwd`/scripts/install_bash_completion.sh
 
@@ -94,10 +108,10 @@ install-bash-conf: install-bash-completion
 	rm -rf ~/.bashrc_style
 	rm -rf ~/.bash_profile
 	rm -rf ~/.bash_logout
-	ln -s `pwd`/bash/bashrc       ~/.bashrc
-	ln -s `pwd`/bash/bashrc_style ~/.bashrc_style
-	ln -s `pwd`/bash/bash_profile ~/.bash_profile
-	ln -s `pwd`/bash/bash_logout  ~/.bash_logout
+	ln -s `pwd`/bash/bashrc         ~/.bashrc
+	ln -s `pwd`/bash/bashrc_style   ~/.bashrc_style
+	ln -s `pwd`/bash/bash_profile   ~/.bash_profile
+	ln -s `pwd`/bash/bash_logout    ~/.bash_logout
 
 install-fish-conf:
 	mkdir -p ~/.config/fish/
@@ -168,9 +182,6 @@ install-vim-conf:
 
 install-fonts:
 	scripts/install_fonts.sh
-
-install-haroopad:
-	scripts/install_haroopad.sh
 
 install-grc:
 	scripts/install_grc.sh

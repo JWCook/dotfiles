@@ -1,0 +1,14 @@
+packages: [
+  "atom-material-syntax"
+  "atom-material-ui"
+  "autocomplete-python"
+  "Hydrogen"
+  "ide-python"
+  "markdown-pdf"
+  "markdown-writer"
+  "package-sync"
+  "python-black"
+  "python-indent"
+  "python-tools"
+  "teletype"
+]

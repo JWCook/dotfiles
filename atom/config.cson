@@ -1,0 +1,16 @@
+"*":
+  "autocomplete-python":
+    useKite: false
+  core:
+    telemetryConsent: "limited"
+  editor:
+    fontSize: 19
+  "exception-reporting":
+    userId: "77506dbe-036a-40a4-ac66-251833854b4e"
+  "markdown-writer":
+    fileExtension: ".md"
+  "package-sync":
+    createOnChange: true
+    forceOverwrite: true
+  welcome:
+    showOnStartup: false
