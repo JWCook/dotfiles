@@ -377,7 +377,7 @@ VIM_CONF_ALL="$VIM_CONF $DOTFILES/vim/README.md"
 # Editor shortcuts
 alias sb='echo "reloading bashrc..." | lolcat-q; source $BASH_CONF'
 alias vb='$EDITOR $BASH_CONF'
-alias vbb='$EDITOR -O2 $BASH_CONF_ALL'
+alias vbb='$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF'
 alias vg='$EDITOR $GIT_CONF'
 alias vv='$EDITOR $VIM_CONF'
 alias vvv='$EDITOR -O2 $VIM_CONF_ALL'

@@ -97,9 +97,10 @@ set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
-abbr term-code terminator -mfl code \&
-abbr term-dev terminator -mfl 6-split \&
-abbr term-start terminator -l start \&
+abbr termy PYTHONPATH= terminator -mf
+abbr term-code PYTHONPATH= terminator -mfl code \&
+abbr term-dev PYTHONPATH= terminator -mfl 6-split \&
+abbr term-start PYTHONPATH= terminator -mfl start \&
 abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
 abbr lw sudo logwatch \| less
 abbr ta type -a
@@ -445,12 +446,10 @@ function in-env
     sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"
 end
 
-# Pip install a package, temporarily disabling any extra indexes or other config
-# pip-install-default() {
-#     swap $PIP_CONF ${PIP_CONF}.bak
-#     pip install "$@"
-#     swap $PIP_CONF ${PIP_CONF}.bak
-# }
+# Pip install a package, temporarily overriding any custom index URLs
+function pip-install-default -a package_name
+    pip install -U --index-url=https://pypi.org/simple/ --extra-index-url=https://pypi.org/simple/ $package_name
+end
 
 # Install python packages from a specific requirements file
 function pip-install-req -a req_file
@@ -621,8 +620,8 @@ end
 #     sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z ${1/-/_}
 # }
 #
-# alias sphinx-open-docs='xdg-open docs/_build/html/index.html'
-# alias sp-open='sphinx-open-docs'
+abbr sphinx-open-docs xdg-open docs/_build/html/index.html
+abbr sp-open xdg-open docs/_build/html/index.html
 # alias sp-doc='sphinx-build-current'
 # alias spdo='sphinx-build-current && sphinx-open-docs'
 # alias sp-autodoc='sphinx-autobuild-current'
