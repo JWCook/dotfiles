@@ -447,6 +447,7 @@ ssh-set-permissions() {
 #############
 
 # General
+# ------------------------------
 alias gp='git pull'
 alias gpr='git pull --rebase'
 alias gpush='git push'
@@ -468,6 +469,7 @@ grm(){ rm $1; git rm $1; }
 ggr() { git grep "$1" ${@:2}; }
 
 # Commits
+# ------------------------------
 alias gc='git commit --verbose'
 alias gcm='git commit -m'
 alias gfirst='git rev-parse --short $(git rev-list --max-parents=0 HEAD)'
@@ -491,6 +493,7 @@ git-head-transplant() {
 }
 
 # Log
+# ------------------------------
 export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
 alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
 alias glog-branch='glog master..HEAD'
@@ -500,6 +503,7 @@ alias gcstat='git shortlog --summary --numbered'
 alias gcstat-all='git rev-list --count HEAD'
 
 # Tags
+# ------------------------------
 gmv-tag() {
     git tag -d $1
     git push origin :refs/tags/$1
@@ -509,6 +513,8 @@ gmv-tag() {
 
 
 # Branches
+# ------------------------------
+
 export GREF_FORMAT="%(align:60,left)%(color:blue)%(refname:short)%(end) \
                     %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
 alias gbranches='git branch -vv'
@@ -518,10 +524,18 @@ alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
 grebase() { git rebase --interactive ${1:-master}; }
-gbrebase() { git rebase --interactive --preserve-merges ${1:-master}; }
-gsrebase() { git stash; git rebase --interactive --preserve-merges ${1:-master}; git stash pop; }
-alias grebase-upstream='git fetch upstream; git rebase --interactive upstream/master'
+gbrebase() { git rebase --interactive --rebase-merges ${1:-master}; }
+gsrebase() {
+    git stash
+    git rebase --interactive --rebase-merges ${1:-master}
+    git stash pop
+}
+grebase-upstream() {
+    git fetch upstream
+    git rebase --interactive --rebase-merges upstream/${1:-master}
+}
 alias gcontinue='git rebase --continue'
+alias gabort='git rebase --abort || git merge --abort'
 alias gskip='git rebase --skip'
 alias gscontinue='git stash; git rebase --continue; git stash pop'
 
@@ -537,8 +551,8 @@ gbreset() {
 
 # Pull if repo is alredy cloned, otherwise clone
 gpclone() {
+    # If only a repo URL is provided, use the basename of that as the dir name
     repo_dir=${2:-$(basename $1)}
-    echo $repo_dir
     if [ -d "$repo_dir" ]; then
         git -C $repo_dir pull
     else
@@ -555,6 +569,23 @@ grm-branch() {
     fi
 }
 type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
+
+# GitHub
+# ------------------------------
+
+# Get latest version info from a project's GitHub Releases
+git-releases() {
+    curl --silent "https://api.github.com/repos/$1/releases/latest"
+}
+git-latest-release() {
+    git-releases $1 | jq -r .tag_name
+}
+git-latest-release-link() {
+    git-releases $1 | jq -r '.assets[0].browser_download_url'
+}
+git-latest-release-rpm() {
+    git-releases $1 | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
+}
 
 
 ##############
@@ -759,7 +790,7 @@ alias sp-autodoc='sphinx-autobuild-current'
 system-is-rpm() {
     /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
 }
-system-is-debian() { [ -f "/etc/debian_version" ]; }
+system-is-deb() { [ -f "/etc/debian_version" ]; }
 
 # Fedora-based
 function update-dnf() {

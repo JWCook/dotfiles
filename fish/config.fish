@@ -5,7 +5,7 @@
 fundle plugin 'fishpkg/fish-git-util'
 fundle init
 source ~/.config/fish/style.fish
-vf install compat_aliases
+vf install compat_aliases > /dev/null
 
 
 ##########################
@@ -24,12 +24,12 @@ function coalesce
     return -1
 end
 
-# Set and argument to current dir if not specified
+# Set an argument to current dir if not specified
 function default-pwd
     coalesce "$argv" '.'
 end
 
-# Set and argument to current dir if not specified
+# Set an argument to current dir if not specified
 function default-pwd-base
     coalesce "$argv" (pwd-base)
 end
@@ -287,6 +287,7 @@ abbr svim "sudo -E $EDITOR"
 #############
 
 # General
+# ------------------------------
 abbr gf git fetch --all
 abbr ggr git grep
 abbr gp git pull
@@ -303,7 +304,8 @@ abbr gss git status --short
 abbr gstlist git stash list \; git stash show
 
 function gadd
-    git add (default-pwd $argv)
+    set paths (string split ' ' (default-pwd $argv))
+    git add $paths
     git status --short --branch
 end
 
@@ -320,6 +322,7 @@ function grm
 end
 
 # Commits
+# ------------------------------
 abbr gc git commit --verbose
 abbr gcm git commit -m
 abbr gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
@@ -341,6 +344,7 @@ function git-head-transplant
 end
 
 # Log
+# ------------------------------
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
 abbr glog-branch glog master..HEAD
@@ -350,6 +354,7 @@ abbr gcstat git shortlog --summary --numbered
 abbr gcstat-all git rev-list --count HEAD
 
 # Tags
+# ------------------------------
 function gmv-tag
     git tag $2 $1
     git tag -d $1
@@ -358,13 +363,36 @@ function gmv-tag
 end
 
 # Branches
+# ------------------------------
+
 set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
 abbr gbranches git branch -vv
 abbr gbranch git rev-parse --abbrev-ref HEAD
 abbr gbmv git branch -m
 abbr gbprune git fetch --prune
-abbr grebase-upstream git fetch upstream \; git rebase --interactive upstream/master
+
+function grebase -a branch
+    git rebase --interactive (coalesce $branch 'master')
+end
+
+function gbrebase -a branch
+    git rebase --interactive --rebase-merges (coalesce $branch 'master')
+end
+
+function gsrebase -a branch
+    git stash
+    git rebase --interactive --rebase-merges (coalesce $branch 'master')
+    git stash pop
+end
+
+function grebase-upstream -a branch
+    set branch (coalesce $branch 'master')
+    git fetch upstream
+    git rebase --interactive --rebase-merges upstream/$branch
+end
+
+abbr gabort git rebase --abort || git merge --abort
 abbr gcontinue git rebase --continue
 abbr gskip git rebase --skip
 abbr gscontinue git stash \; git rebase --continue \; git stash pop
@@ -385,15 +413,15 @@ function gbreset
 end
 
 # Pull if repo is alredy cloned, otherwise clone
-# gpclone() {
-#     repo_dir=${2:-$(basename $1)}
-#     echo $repo_dir
-#     if [ -d "$repo_dir" ]; then
-#         git -C $repo_dir pull
-#     else
-#         git clone $1 $repo_dir
-#     fi
-# }
+function gpclone -a repo_url repo_dir
+    # If only a repo URL is provided, use the basename of that as the dir name
+    set repo_dir (coalesce $repo_dir (basename $repo_url))
+    if test -d "$repo_dir"
+        git -C $repo_dir pull
+    else
+        git clone $repo_url $repo_dir
+    end
+end
 
 # Delete local and remote branch
 function grm-branch -a branch -w git-branch
@@ -403,7 +431,24 @@ function grm-branch -a branch -w git-branch
         git push origin --delete $branch
     end
 end
-# type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
+
+
+# GitHub
+# ------------------------------
+
+# Get latest version info from a project's GitHub Releases
+function git-releases -a repo
+    curl --silent "https://api.github.com/repos/$repo/releases/latest"
+end
+function git-latest-release -a repo
+    git-releases $repo | jq -r .tag_name
+end
+function git-latest-release-link -a repo
+    git-releases $repo | jq -r '.assets[0].browser_download_url'
+end
+function git-latest-release-rpm -a repo
+    git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
+end
 
 
 ##############
@@ -634,10 +679,12 @@ abbr sp-open xdg-open docs/_build/html/index.html
 # TODO: Separate .bashrc_$distro files, if/when needed
 
 # Tests
-# system-is-rpm() {
-#     /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
-# }
-# system-is-debian() { [ -f "/etc/debian_version" ]; }
+function system-is-rpm
+    /usr/bin/rpm -q -f /usr/bin/rpm > /dev/null 2>&1
+end
+function system-is-deb
+    test -f /etc/debian_version
+end
 
 # Fedora-based
 function update-dnf
