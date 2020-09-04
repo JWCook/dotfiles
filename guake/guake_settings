@@ -1,0 +1,46 @@
+[general]
+abbreviate-tab-names=false
+compat-delete='delete-sequence'
+default-shell='/usr/bin/fish'
+display-n=0
+gtk-prefer-dark-theme=false
+history-size=50000
+infinite-history=false
+max-tab-name-length=100
+mouse-display=true
+open-tab-cwd=false
+prompt-on-quit=false
+quick-open-command-line='nvim +%(line_number)s %(file_path)s'
+quick-open-enable=true
+quick-open-in-current-terminal=true
+restore-tabs-notify=true
+restore-tabs-startup=true
+save-tabs-when-changed=true
+scroll-keystroke=true
+start-at-login=true
+use-default-font=false
+use-popup=false
+use-scrollbar=true
+use-trayicon=false
+window-halignment=0
+window-height=50
+window-losefocus=true
+window-refocus=false
+window-tabbar=true
+window-width=100
+
+# Compatibility with Wayland: set shortcut for F12 = guake-toggle in system keyboard shortcuts
+[keybindings/global]
+show-hide='disabled'
+
+[keybindings/local]
+quit='disabled'
+
+[style/background]
+transparency=80
+
+[style/font]
+allow-bold=true
+palette='#070736364141:#EBEB60606B6B:#C3C3E8E88D8D:#F7F7EBEB9595:#8080CBCBC3C3:#FFFF24249090:#AEAEDDDDFFFF:#FFFFFFFFFFFF:#00002B2B3636:#EBEB60606B6B:#C3C3E8E88D8D:#F7F7EBEB9595:#7D7DC6C6BFBF:#6C6C7171C3C3:#343443434D4D:#FFFFFFFFFFFF:#C3C3C7C7D1D1:#1E1E28282C2C'
+palette-name='Material'
+style='DroidSansMonoForPowerline Nerd Font 14'

@@ -14,6 +14,7 @@ PKGS_APPS='
     fzf
     gimp
     git
+    guake
     htop
     inkscape
     keepassxc

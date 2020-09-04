@@ -10,6 +10,8 @@ install-conf: install-atom-conf \
               install-figlet-conf \
               install-git-conf \
               install-grc-conf \
+              install-gnome-terminal-conf \
+              install-guake-conf \
               install-htop-conf \
               install-ipython-conf \
               install-pep8-conf \
@@ -136,6 +138,17 @@ install-git-conf:
 install-grc-conf:
 	rm -rf ~/.grc
 	ln -s `pwd`/grc ~/.grc
+
+install-gnome-terminal-conf:
+	dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
+	# To export settings:
+	#dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
+
+
+install-guake-conf:
+	guake --restore-preferences guake/guake_settings
+	# To export settings:
+	# guake --save-preferences ~/dotfiles/guake/guake_settings
 
 install-htop-conf:
 	mkdir -p ~/.config

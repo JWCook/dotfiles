@@ -13,6 +13,7 @@ PKGS_APPS='
     figlet
     fish
     git
+    guake
     htop
     jq
     nmap
