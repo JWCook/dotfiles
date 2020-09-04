@@ -39,6 +39,7 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'mhinz/vim-startify'
+Plug 'roman/golden-ratio'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -50,7 +51,7 @@ Plug 'airblade/vim-gitgutter'
 " Autocomplete
 " Plug 'Valloric/YouCompleteMe', {'do': 'make -C ~/dotfiles update-ycm'}
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+  Plug 'Shougo/deoplete.nvim', {'do': pip_update.'jedi'} ", {'do': ':UpdateRemotePlugins'}
 else
   Plug 'Shougo/deoplete.nvim'
 endif
@@ -126,7 +127,8 @@ Plug 'rakr/vim-two-firewatch'
 call plug#end()
 
 " Plugin updates (including snapshot, help tags, and vim-plug itself)
-nnoremap <silent> <F12> :PlugSnapshot! ~/.vim/plug-snapshot \| :q \| PlugClean! \| :PlugUpdate \| :PlugUpgrade<CR>
+" Super+F12 works with global F12 shortcut; Ctrl+F12 doesn't
+nnoremap <silent> <S-F12> :PlugSnapshot! ~/.vim/plug-snapshot \| :q \| PlugClean! \| :PlugUpdate \| :PlugUpgrade<CR>
 nnoremap <silent> <C-F12> :PlugStatus<CR>
 
 
@@ -626,6 +628,13 @@ inoremap <silent> -    <C-O>:wincmd -<CR>
 nnoremap <silent> =    :wincmd =<CR>
 inoremap <silent> =    <C-O>:wincmd =<CR>
 
+" Enlarge (but not fully maximize) current window
+" Aliasing to Ctrl-Shift-X to match Terminator 'maximize terminal (split)' shortcut
+nnoremap <silent> <C-x> :resize 45 \| :vertical resize 100<CR>
+inoremap <silent> <C-x> <C-O>:resize 45 \| :vertical resize 100<CR>
+nnoremap <silent> <C-S-x> :resize 45 \| :vertical resize 100<CR>
+inoremap <silent> <C-S-x> <C-O>:resize 45 \| :vertical resize 100<CR>
+
 " Windows splits
 set splitbelow
 set splitright
@@ -644,7 +653,7 @@ inoremap <silent> <S-Left>  <C-O>:tabp<CR>
 nnoremap <silent> <S-Right> :tabn<CR>
 inoremap <silent> <S-Right> <C-O>:tabn<CR>
 
-" Ctrl-Shift-Left/Right to move tabs
+" Ctrl-Shift-Left/Right to reorder tabs
 nnoremap <silent> <C-S-Left>   :tabm -1<CR>
 nnoremap <silent> <C-S-Right>  :tabm +1<CR>
 
