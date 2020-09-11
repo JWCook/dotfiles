@@ -38,17 +38,6 @@ PKGS_APPS='
     xmlstarlet
     xsel
 '
-PKGS_DEV='
-    lua-devel
-    npm
-    php-devel
-    python-devel
-    python3-devel
-    python3-wheel
-    ruby-devel
-    rubygems
-    java-1.8.0-openjdk
-'
 PKGS_LIBS='
     automake
     bash-completion
@@ -57,18 +46,27 @@ PKGS_LIBS='
     ctags
     gcc
     gcc-c++
+    java-latest-openjdk
     jq
     kernel-devel
     libX11-devel
     libffi-devel
     libxml2-devel
     libxslt-devel
+    lua-devel
     ncurses-devel
+    npm
     ntfsprogs
     openssl-devel
+    perl-devel
+    php-devel
+    python3-devel
+    python3-wheel
     readline-devel
     redhat-rpm-config
     rpm-build
+    ruby-devel
+    rubygems
     sqlite-devel
     tcl-devel
     xdg-utils
@@ -88,8 +86,6 @@ PKGS_POSTGRES='
     postgresql10-devel
     postgresql10-server
     postgis30_10-devel
-    freetds-devel
-    unixODBC-devel
 '
 PKGS_OTHER='
     fortune-mod
@@ -114,8 +110,6 @@ PKGS_GNOME='
     gnome-shell-extension-workspace-indicator
     gnome-shell-extension-screenshot-window-sizer
     gnome-shell-extension-auto-move-windows
-'
-PKGS_GNOME_EXTRAS='
     f21-backgrounds-extras-gnome
     f22-backgrounds-extras-gnome
     f23-backgrounds-extras-gnome
@@ -129,14 +123,17 @@ PKGS_GNOME_EXTRAS='
     f31-backgrounds-extras-gnome
     f32-backgrounds-extras-gnome
 '
-
+PKGS_XFCE='
+    albert
+    xfce4-hardware-monitor-plugin
+    xfce4-whiskermenu-plugin
+'
 
 # Install packages
 sudo dnf update -y
-sudo dnf install -y $PKGS_APPS $PKGS_DEV $PKGS_LIBS
-sudo dnf install -y $PKGS_MEDIA
+sudo dnf install -y $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA
 # Optional packages
-# sudo dnf install -y $PKGS_IMG $PKGS_POSTGRES $PKGS_GNOME $PKGS_GNOME_EXTRAS $PKGS_OTHER
+# sudo dnf install -y $PKGS_IMG $PKGS_POSTGRES $PKGS_GNOME $PKGS_XFCE $PKGS_OTHER
 
 sudo activate-global-python-argcomplete
 
@@ -148,3 +145,5 @@ sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
 
 # Enable automatic updates; edit /etc/dnf/automatic.conf for settings
 sudo systemctl enable --now dnf-automatic.timer
+sudo systemctl start dnf-automatic.timer
+sudo systemctl list-timers *dnf-*

@@ -1,11 +1,11 @@
-# (Currently) Unscripted setup steps
+# Unscripted setup steps
 
 # Misc
 
 * Virtual desktop / workspace settings
 * Printer setup
 * Browser plugins + config
-* Configure KeePassXC + KeePassHTTP + ChromeIPass
+* Configure KeePassXC
 
 
 ## GNOME
@@ -50,28 +50,22 @@ GRUB_TIMEOUT=1
 
 ## Misc System Config
 
-* `sudo update-alternatives --config editor` -> select `vim`
+* `sudo update-alternatives --config editor` -> select `nvim`
 * `sudo visudo` -> add/edit lines:
   ```
   Defaults        env_reset,timestamp_timeout=120
   Defaults        secure_path = ...:/usr/local/bin
   ```
+
 ## Fedora-specific:
 
-* Limit number of installed kernel versions:
-    * Add to `/etc/yum.conf`:
+* Limit number of installed kernel versions: Add to `/etc/yum.conf`:
     ```
     installonly_limit=2
     ```
-* Automatic updates:
-    * Edit `/etc/dnf/automatic.conf`:
+* Automatic updates: Edit `/etc/dnf/automatic.conf`:
     ```
     upgrade_type = security
     download_updates = yes
     apply_updates = yes
-    ```
-    * Run:
-    ```
-    systemctl enable dnf-automatic.timer && systemctl start dnf-automatic.timer
-    systemctl list-timers *dnf-*
     ```
