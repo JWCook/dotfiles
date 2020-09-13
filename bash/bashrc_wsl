@@ -4,16 +4,26 @@ eval $(ssh-agent -s)
 ssh-add ~/.ssh/github_rsa
 
 function termxfce() {
-    export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+    # This command doesn't work when a custom DNS is set
+    # export DISPLAY=$(grep -oP "(?<=nameserver ).+" /etc/resolv.conf):0.0
+    export DISPLAY=127.0.0.1:0
     xfce4-terminal &
 }
 
+function get-host() {
+    ip address show dev eth0 \
+        | awk -F '[ /]+' '/inet / { print $3 }' \
+        | head -qn 1
+}
+
 function start-xhost() {
-    HOST=$(ip address show dev eth0 | awk -F '[ /]+' '/inet / { print $3 }')
     export DISPLAY=127.0.0.1:0
-    WSLENV="$WSLENV:DISPLAY"
-    powershell.exe -Command '& "C:\Program Files\VcXsrv\vcxsrv.exe" -multiwindow -wgl'
-    powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '+$HOST
+    WSLENV="$WSLENV:$DISPLAY"
+    echo 'Host: ' $HOST 'WSL env: ' $WSLENV
+    powershell.exe -Command '& "C:\Program Files\VcXsrv\vcxsrv.exe" -ac -multiwindow -wgl'
+    # Not currently working with access restrictions; temporarily disabling
+    # powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '+$(get-host)
+    powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '+
 }
 
 function startme() {

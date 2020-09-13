@@ -37,9 +37,6 @@ pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
 [ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra
@@ -51,6 +48,12 @@ alias cw='cd $WORKSPACE'
 export PYTHONPATH=~/.local/lib/python3.7/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
+
+# Init pyenv, if installed
+if cmd-exists pyenv; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 # Misc application-specific settings
 export NTP_SERVER='pool.ntp.org'
@@ -368,15 +371,21 @@ sysinfo() {
 
 # Commonly used config files
 BASH_CONF="$DOTFILES/bash/bashrc"
-BASH_CONF_ALL="$DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*"
+BASH_CONF_ALL="$DOTFILES/bash/bashrc*"
 FISH_CONF=$DOTFILES/fish/config.fish
 GIT_CONF="$DOTFILES/git/gitconfig"
 PIP_CONF=~/.config/pip/pip.conf
 PG_CONF="$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
-SETUP_CONF="$DOTFILES/Makefile $DOTFILES_EXTRA/Makefile"
+SETUP_CONF="$DOTFILES/Makefile"
 SSH_CONF="$DOTFILES_EXTRA/ssh/config"
 VIM_CONF="$DOTFILES/vim/vimrc"
 VIM_CONF_ALL="$VIM_CONF $DOTFILES/vim/README.md"
+
+# Add config from extra dotfiles repo, if it exists
+if [ -d $DOTFILES_EXTRA ]; then
+    BASH_CONF_ALL="$BASH_CONF_ALL $DOTFILES_EXTRA/bash/bashrc*"
+    SETUP_CONF="$SETUP_CONF $DOTFILES_EXTRA/Makefile"
+fi
 
 # Editor shortcuts
 alias sb='echo "reloading bashrc..." | lolcat-q; source $BASH_CONF'
@@ -405,7 +414,7 @@ scrontab-append() {
     sudo bash -c "source $HOME/.bashrc; crontab-append '$1'";
 }
 
-# Append a line to arbitrary user's, excluding duplicates
+# Append a line to arbitrary user's crontab, excluding duplicates
 crontab-append-user() {
     sudo -u $2 bash -c "source $HOME/.bashrc; crontab-append '$1'";
 }
@@ -860,7 +869,7 @@ alias svc-reload-all='sudo systemctl daemon-reload'
 alias svc-log='journalctl -xe'
 
 # Apache
-if system-is-debian; then
+if system-is-deb; then
     export APACHE_SVC_NAME=apache2
 else
     APACHE_SVC_NAME=httpd
