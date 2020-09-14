@@ -1,4 +1,3 @@
-# Note: After editing, open Preferences in Terminator to refresh layouts
 [global_config]
   focus = system
   inactive_color_offset = 0.9
@@ -11,6 +10,8 @@
   go_left = <Shift><Alt>Left
   go_right = <Shift><Alt>Right
   go_up = <Shift><Alt>Up
+  group_all = None
+  group_tab = None
   help = None
   reset = <Primary><Alt>r
   resize_left = None

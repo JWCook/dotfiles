@@ -77,7 +77,7 @@ alias ta='type -a'; complete -c ta
 alias top='htop'
 alias tt='tig'
 alias vim='nvim'
-alias vim8='$(which vim)'
+alias vim8='/usr/bin/vim'
 alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
