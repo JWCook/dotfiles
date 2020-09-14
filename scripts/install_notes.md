@@ -29,6 +29,9 @@ Partially scripted with `gsettings`, but double-check:
     * Expand Folders
     * Add minimize & mazimize buttons
 
+Keyring:
+* Edit `/etc/xdg/autostart/gnome-keyring-ssh.desktop`, comment out `X-GNOME-Autostart-Phase` line
+
 
 ## Enable Hibernate (Fedora)
 
@@ -45,8 +48,11 @@ Partially scripted with `gsettings`, but double-check:
 ```ini
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=1
+# Optional
+# GRUB_THEME="/usr/share/grub/themes/<theme name>/theme.txt"
 ```
-* `sudo update-grub`
+* `sudo update-grub` OR `sudo grub2-mkconfig -o /boot/grub2/grub.cfg`
+
 
 ## Misc System Config
 

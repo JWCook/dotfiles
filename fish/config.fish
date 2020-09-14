@@ -99,7 +99,7 @@ set -gx EDITOR /usr/bin/nvim
 # Simple Command/App Aliases
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
-abbr term-dev PYTHONPATH= terminator -mfl 6-split \&
+abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
 abbr term-start PYTHONPATH= terminator -mfl start \&
 abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
 abbr lw sudo logwatch \| less
@@ -134,6 +134,7 @@ abbr weather curl -4 http://wttr.in/~50266
 # Recursive folder size
 abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
 alias ll 'ls -Alhv --group-directories-first'
+alias sll 'sudo -E ls -Alhv --group-directories-first'
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 # md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
@@ -687,6 +688,7 @@ function system-is-deb
 end
 
 # Fedora-based
+# ------------------------------
 function update-dnf
     print-title "Updating system packages..."
     sudo dnf check
@@ -718,7 +720,10 @@ abbr lsko ls-old-kernels
 #     sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
 # }
 
+cmd-exists update-grub || abbr update-grub sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+
 # Debian-based
+# ------------------------------
 function update-apt
     print-title "Updating system packages..."
     sudo apt-get update
@@ -802,6 +807,6 @@ end
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval /home/cookjo/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+eval ~/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 

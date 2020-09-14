@@ -16,6 +16,34 @@
   reset = <Primary><Alt>r
   resize_left = None
   resize_right = None
+[profiles]
+  [[default]]
+    background_color = "#002b36"
+    cursor_color = "#eee8d5"
+    font = DroidSansMonoForPowerline Nerd Font 14
+    foreground_color = "#839496"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[default+]]
+    background_color = "#002b36"
+    cursor_color = "#eee8d5"
+    font = DroidSansMonoForPowerline Nerd Font 16
+    foreground_color = "#839496"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[solarized-light]]
+    background_color = "#eee8d5"
+    cursor_color = "#002b36"
+    foreground_color = "#002b36"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_lines = 5000
+    scrollbar_position = hidden
 [layouts]
   [[default]]
     [[[child1]]]
@@ -25,16 +53,76 @@
     [[[window0]]]
       parent = ""
       type = Window
+  [[4-split]]
+    [[[child0]]]
+      type = Window
+      parent = ""
+      order = 0
+      position = 1919:603
+      maximised = False
+      fullscreen = False
+      size = 1600, 1000
+      title = /bin/bash
+      last_active_term = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
+      last_active_window = True
+    [[[child1]]]
+      type = HPaned
+      parent = child0
+      order = 0
+      position = 438
+      ratio = 0.49942987457240595
+    [[[child2]]]
+      type = VPaned
+      parent = child1
+      order = 0
+      position = 284
+      ratio = 0.5
+    [[[terminal3]]]
+      type = Terminal
+      parent = child2
+      order = 0
+      profile = default+
+      uuid = 0f3bfe8e-aff8-4b5d-b1cb-0d1d824c9bb2
+      command = exec fish
+      directory = workspace
+    [[[terminal4]]]
+      type = Terminal
+      parent = child2
+      order = 1
+      profile = default
+      uuid = 0edf4d53-f175-4018-bdac-326830727489
+    [[[child5]]]
+      type = VPaned
+      parent = child1
+      order = 1
+      position = 284
+      ratio = 0.5
+    [[[terminal6]]]
+      type = Terminal
+      parent = child5
+      order = 0
+      profile = default+
+      uuid = f48f73d0-cb4d-47da-a701-2efb823e370d
+      command = exec fish
+      directory = workspace
+    [[[terminal7]]]
+      type = Terminal
+      parent = child5
+      order = 1
+      profile = default
+      uuid = 876488dd-bd1d-43e9-b489-af7a1b01c3b4
+      command = exec fish
+      directory = dotfiles
   [[6-split]]
     [[[child0]]]
-      fullscreen = True
       last_active_term = f48f73d0-cb4d-47da-a701-2efb823e370d
       last_active_window = True
-      maximised = False
       order = 0
       parent = ""
       position = 0:0
-      size = 1920, 1080
+      size = 1600, 1000
+      fullscreen = False
+      maximised = False
       title = /bin/bash
       type = Window
     [[[child1]]]
@@ -126,7 +214,9 @@
       order = 0
       parent = ""
       position = 0:0
-      size = 1920, 1080
+      size = 1600, 1000
+      fullscreen = False
+      maximised = False
       type = Window
     [[[child1]]]
       order = 0
@@ -275,31 +365,3 @@
       type = Terminal
       uuid = 8765ccd7-a7fd-4c00-a064-55f0c17d9da4
 [plugins]
-[profiles]
-  [[default]]
-    background_color = "#002b36"
-    cursor_color = "#eee8d5"
-    font = DroidSansMonoForPowerline Nerd Font 14
-    foreground_color = "#839496"
-    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
-    scrollback_lines = 5000
-    scrollbar_position = hidden
-    show_titlebar = False
-    use_system_font = False
-  [[default+]]
-    background_color = "#002b36"
-    cursor_color = "#eee8d5"
-    font = DroidSansMonoForPowerline Nerd Font 16
-    foreground_color = "#839496"
-    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
-    scrollback_lines = 5000
-    scrollbar_position = hidden
-    show_titlebar = False
-    use_system_font = False
-  [[solarized-light]]
-    background_color = "#eee8d5"
-    cursor_color = "#002b36"
-    foreground_color = "#002b36"
-    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
-    scrollback_lines = 5000
-    scrollbar_position = hidden

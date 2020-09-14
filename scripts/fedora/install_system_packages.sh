@@ -126,6 +126,7 @@ PKGS_GNOME='
 PKGS_XFCE='
     albert
     kde-connect
+    redshift-gtk
     xfce4-hardware-monitor-plugin
     xfce4-whiskermenu-plugin
 '

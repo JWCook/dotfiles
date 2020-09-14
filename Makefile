@@ -4,7 +4,8 @@
 # Grouped Pakcages & Config: Cross-Platform #
 #############################################
 
-install-conf: install-atom-conf \
+install-conf: install-albert-conf \
+              install-atom-conf \
               install-bash-conf \
               install-fish-conf \
               install-figlet-conf \
@@ -88,6 +89,11 @@ configure-ntp:
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
+install-albert-conf:
+	rm -rf ~/.config/albert/albert.conf
+	mkdir -p ~/.config/albert
+	ln -s `pwd`/albert/albert.conf ~/.config/albert/albert.conf
+
 install-atom-conf:
 	rm -rf ~/.atom/config.cson
 	rm -rf ~/.atom/keymap.cson
@@ -151,8 +157,8 @@ install-guake-conf:
 	# guake --save-preferences ~/dotfiles/guake/guake_settings
 
 install-htop-conf:
-	mkdir -p ~/.config
 	rm -rf ~/.config/htop
+	mkdir -p ~/.config/htop
 	ln -s `pwd`/htop ~/.config/htop
 
 install-ipython-conf:
