@@ -75,3 +75,9 @@ GRUB_TIMEOUT=1
     download_updates = yes
     apply_updates = yes
     ```
+
+## WSL2
+
+* Copy over SSH keys
+* Add git SSH config
+* Clone & install dotfiles

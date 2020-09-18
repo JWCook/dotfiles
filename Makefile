@@ -22,11 +22,12 @@ install-conf: install-albert-conf \
 
 install-pkgs: install-fonts \
               install-grc \
-              install-neovim \
-              install-ruby-gems \
+              install-neovim-venv \
+              install-miniconda \
+              install-python-packages \
               install-poetry \
               install-pyenv \
-              update-python
+              install-ruby-gems \
               # install-js-packages \
 
 install-optional: configure-gnome \
@@ -48,6 +49,7 @@ install-fedora: install-conf \
                 install-system-packages-fedora \
                 install-docker-fedora \
                 install-chrome-fedora \
+                install-neovim-fedora \
                 install-retroterm-fedora \
                 install-pkgs
                 # install-vim-fedora
@@ -56,20 +58,22 @@ update-fedora: update
 	sudo dnf upgrade -y
 
 install-ubuntu: install-system-packages-ubuntu \
+                install-pkgs \
                 install-conf \
                 install-chrome-ubuntu \
                 install-flux-ubuntu \
-                install-pkgs
-                # install-vim-ubuntu \
+                install-vim-ubuntu
 
 install-ubuntu-wsl: install-system-packages-ubuntu \
-                install-conf \
                 install-pkgs \
+                install-conf \
                 configure-sudoers
 	rm ~/.bashrc_wsl
 	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
 	# scripts/ubuntu/configure_wsl.sh
 	sudo apt-get install -y xfce4-terminal
+	mkdir -p ~/.ssh
+	cp ssh/config ~/.ssh/
 	source bash/bashrc && ssh-set-permissions
 
 update-ubuntu: update
@@ -101,6 +105,7 @@ install-atom-conf:
 	rm -rf ~/.atom/snippets.cson
 	rm -rf ~/.atom/init.coffee
 	rm -rf ~/.atom/styles.less
+	mkdir -p ~/.atom
 	ln -s `pwd`/atom/config.cson    ~/.atom/config.cson
 	ln -s `pwd`/atom/keymap.cson    ~/.atom/keymap.cson
 	ln -s `pwd`/atom/packages.cson  ~/.atom/packages.cson
@@ -129,7 +134,7 @@ install-fish-conf:
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
 	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
-	[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
+	#[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
 	fish -c 'fundle install'
 
@@ -145,14 +150,15 @@ install-grc-conf:
 	rm -rf ~/.grc
 	ln -s `pwd`/grc ~/.grc
 
+# TODO: fix check
 install-gnome-terminal-conf:
-	dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
+	type -a dconf > /dev/null 2>&1 && dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
 	# To export settings:
 	#dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
 
 
 install-guake-conf:
-	guake --restore-preferences guake/guake_settings
+	type -a guake && guake --restore-preferences guake/guake_settings
 	# To export settings:
 	# guake --save-preferences ~/dotfiles/guake/guake_settings
 
@@ -208,17 +214,22 @@ install-grc:
 install-js-packages:
 	scripts/install_npm_packages.sh
 
-install-neovim:
-	scripts/install_neovim.sh
+install-miniconda:
+	scripts/install_miniconda.sh
+
+install-neovim-venv:
+	scripts/install_neovim_venv.sh
 
 install-poetry:
 	scripts/install_poetry.sh
 
 install-pyenv:
-	curl https://pyenv.run | bash
-	pyenv install 3.6.12
-	pyenv install 3.7.9
-	pyenv install 3.9.0rc1
+	scripts/install_pyenv.sh
+
+install-python-packages:
+	pip3 install --user -U pip setuptools wheel
+	pip3 install --user -Ur scripts/requirements-user.txt
+	which poetry && poetry self update
 
 install-ruby-gems:
 	# scripts/install_rvm.sh
@@ -231,9 +242,7 @@ install-vim:
 update-grc:
 	scripts/install_grc.sh
 
-update-python:
-	pip3 install --user -Ur scripts/requirements-user.txt
-	which poetry && poetry self update
+update-python: install-python-packages
 
 update-ruby:
 	sudo gem update
@@ -256,6 +265,9 @@ install-system-packages-fedora:
 install-docker-fedora:
 	scripts/fedora/install_docker.sh
 
+install-neovim-fedora:
+	scripts/fedora/install_neovim.sh
+
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh
 	scripts/install_vim.sh
@@ -263,9 +275,6 @@ install-vim-fedora:
 
 install-chrome-fedora:
 	sudo scripts/fedora/install_chrome.sh
-
-install-insync-fedora:
-	sudo scripts/fedora/install_insync.sh
 
 install-retroterm-fedora:
 	scripts/fedora/install_retroterm.sh

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Additional repos for fish shell and docker CE
+# Additional repos for fish shell, neovim, and docker CE
 sudo apt-add-repository ppa:fish-shell/release-3
+sudo apt-add-repository ppa:neovim-ppa/stable
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -13,9 +14,9 @@ PKGS_APPS='
     figlet
     fish
     git
-    guake
     htop
     jq
+    neovim
     nmap
     ntp
     ntpdate
@@ -35,6 +36,7 @@ PKGS_APPS='
 PKGS_GUI_APPS='
     chromium-browser
     gimp
+    guake
     keepassxc
     terminator
 '
@@ -49,13 +51,6 @@ PKGS_SERVER='
 PKGS_ADMIN='
     logwatch
 '
-PKGS_DEV='
-    python3-dev
-    python3-pip
-    python3-venv
-    npm
-    ruby-dev
-'
 PKGS_LIBS='
     build-essential
     cmake
@@ -67,6 +62,11 @@ PKGS_LIBS='
     libxpm-dev
     libxt-dev
     ncurses-dev
+    npm
+    python3-dev
+    python3-pip
+    python3-venv
+    ruby-dev
 '
 PKGS_MEDIA='
     vlc
@@ -90,7 +90,6 @@ PKGS_GNOME='
     gnome-tweak-tool
     gconf-editor
 '
-PKGS_UNITY='ubuntu-tweak'
 PKGS_SNAP='ffmpeg'
 
 # Install packages

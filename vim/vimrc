@@ -511,7 +511,7 @@ au BufNewFile,BufRead *.less set filetype=css
 try
   " let g:solarized_termcolors=256
   " let g:deepspace_italics=1
-  colorscheme solarized "peachpuff jellybeans ubaryd monokai
+  colorscheme jellybeans "peachpuff ubaryd solarized monokai
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
