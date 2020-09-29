@@ -405,8 +405,8 @@ end
 
 # Overwrite local branch with remote
 function gbreset
-    set _remote (gremote)
-    set _branch (gbranch)
+    set _remote (git remote \| head -n 1)
+    set _branch (git rev-parse --abbrev-ref HEAD)
     git fetch $_remote $_branch
     git status
     printf "Resetting branch to $_remote/$_branch."
@@ -490,6 +490,25 @@ function in-env
     python -c\
     "import sys;\
     sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"
+end
+
+# Show a bunch of relevant python environment info
+function py-debug
+    printf "PATH:\n"
+    path
+    printf "\nPYTHONPATH: $PYTHONPATH\n\n"
+    printf "sys.path:"
+    pypath
+    printf "\nsite-packages:"
+    py-site-packages
+    printf "In a virtualenv?"
+    in-env && echo 'Yes' || echo 'No'
+
+    printf "\nExecutables:\n"
+    which python && python --version
+    which python3 && python3 --version
+    which pip && pip --version
+    which pip3 && pip3 --version
 end
 
 # Pip install a package, temporarily overriding any custom index URLs
@@ -809,4 +828,3 @@ end
 # !! Contents within this block are managed by 'conda init' !!
 eval ~/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
-

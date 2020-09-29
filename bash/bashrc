@@ -19,6 +19,7 @@ source-file ~/.bashrc_style                             # Prompt & command color
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
+source-file ~/.travis/travis.sh                         # Travis CI utils
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
 
@@ -36,6 +37,7 @@ pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+pathadd ~/.rvm/bin
 
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
@@ -67,17 +69,18 @@ export JUPYTER_LOCAL_PORT=9468
 export EDITOR=/usr/bin/nvim
 
 # Simple Command/App Aliases
-alias termy='PYTHONPATH= terminator'
+alias lw='sudo logwatch | less'
+alias pycharm='~/.local/pycharm/bin/pycharm.sh &'
+alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
+alias ta='type -a'; complete -c ta
 alias term-code='termy -mfl code &'
 alias term-dev='termy -mfl 4-split &'
 alias term-start='termy -l start &'
-alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
-alias lw='sudo logwatch | less'
-alias ta='type -a'; complete -c ta
+alias termy='PYTHONPATH= terminator'
 alias top='htop'
 alias tt='tig'
-alias vim='nvim'
 alias vim8='/usr/bin/vim'
+alias vim='nvim'
 alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
@@ -628,6 +631,25 @@ alias in-env='python -c\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 
+# Show a bunch of relevant python environment info
+py-debug() {
+    printf "PATH:\n"
+    path
+    printf "\nPYTHONPATH: $PYTHONPATH\n\n"
+    printf "sys.path:"
+    pypath
+    printf "\nsite-packages:"
+    py-site-packages
+    printf "In a virtualenv?"
+    in-env && echo 'Yes' || echo 'No'
+
+    printf "\nExecutables:\n"
+    which python && python --version
+    which python3 && python3 --version
+    which pip && pip --version
+    which pip3 && pip3 --version
+}
+
 # Pip install a package, temporarily overriding any custom index URLs
 pip-install-default() {
     pip install -U --index-url=https://pypi.org/simple/ --extra-index-url=https://pypi.org/simple/ "$@"
@@ -978,15 +1000,6 @@ mkv-basic-px() {
 }
 
 
-# Enable Terminator to execute startup commands and keep shell open
-[[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# added by travis gem
-[ ! -s /home/jcook/.travis/travis.sh ] || source /home/jcook/.travis/travis.sh
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/cookjo/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -996,9 +1009,11 @@ else
     if [ -f "/home/cookjo/miniconda3/etc/profile.d/conda.sh" ]; then
         . "/home/cookjo/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/cookjo/miniconda3/bin:$PATH"
+        pathadd "/home/cookjo/miniconda3/bin"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# Enable Terminator to execute startup commands and keep shell open
+[[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
