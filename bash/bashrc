@@ -601,6 +601,30 @@ git-latest-release-rpm() {
 }
 
 
+################
+# ❰❰ Docker ❱❱ #
+################
+
+alias dps='docker ps -a'
+alias dcu='docker-compose up -d'
+alias dcps='docker-compose ps'
+
+function dbash() {
+    docker exec -ti $1 /bin/bash
+}
+
+function dkill() {
+    docker kill $1 && docker rm $1
+}
+
+function dc-update() {
+    docker-compose pull
+    docker-compose up -d
+    docker image prune
+    docker volume prune
+}
+
+
 ##############
 # ❰❰ Tmux ❱❱ #
 ##############
