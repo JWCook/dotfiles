@@ -672,6 +672,13 @@ set hidden
 " inoremap <C-V><A-l> <right>
 
 
+"""""""""""""""
+" ❰❰ NetRW ❱❱ "
+"""""""""""""""
+
+let g:netrw_keepdir=0
+
+
 """""""""""""""""""""""""""""
 " ❰❰ Misc. Auto Commands ❱❱ "
 """""""""""""""""""""""""""""
