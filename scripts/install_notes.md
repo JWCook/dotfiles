@@ -33,6 +33,10 @@ Keyring:
 * Edit `/etc/xdg/autostart/gnome-keyring-ssh.desktop`, comment out `X-GNOME-Autostart-Phase` line
 
 
+## XFCE
+
+* Edit `/etc/pulse/default.pa`, add `load-module module-switch-on-connect`
+
 ## Enable Hibernate (Fedora)
 
 * Find swap partition: `swapon -s`
