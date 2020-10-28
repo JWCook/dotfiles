@@ -5,7 +5,7 @@ ln -s $WORKSPACE ~/workspace
 sudo apt-get install -y xfce4-terminal
 
 
-echo 'Configuring SSH for git"
+echo 'Configuring SSH for git'
 cat << EOF >> ~/.ssh/config
 
 Host github
