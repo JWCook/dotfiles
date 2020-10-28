@@ -293,7 +293,7 @@ sfill() {
 
 # Readable disk usage
 df() {
-    /usr/bin/df -khT $@ | color-filesize
+    /bin/df -khT $@ | color-filesize
 }
 
 # Get a single metric for a single device (or a directory's device)
@@ -608,7 +608,11 @@ git-latest-release-rpm() {
 
 alias dps='docker ps -a'
 alias dcu='docker-compose up -d'
+alias dcd='docker-compose down'
+alias dcr='docker-compose restart'
 alias dcps='docker-compose ps'
+alias dlog='docker logs -f'
+alias dstat='docker stats'
 
 function dbash() {
     docker exec -ti $1 /bin/bash
