@@ -33,11 +33,16 @@ shopt -s histappend
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
+pathadd ~/.pyenv/versions/3.6.12/bin
+pathadd ~/.pyenv/versions/3.7.9/bin
+pathadd ~/.pyenv/versions/3.8.6/bin
+pathadd ~/.pyenv/versions/3.9.0/bin
+pathadd ~/.rvm/bin
+pathadd ~/.serverless/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
-pathadd ~/.rvm/bin
 
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles

@@ -75,6 +75,13 @@ alias ttput='tty -s && tput'
 # Paths
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
+pathadd ~/.pyenv/bin
+pathadd ~/.pyenv/versions/3.6.12/bin
+pathadd ~/.pyenv/versions/3.7.9/bin
+pathadd ~/.pyenv/versions/3.8.6/bin
+pathadd ~/.pyenv/versions/3.9.0/bin
+pathadd ~/.rvm/bin
+pathadd ~/.serverless/bin
 pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
