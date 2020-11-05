@@ -5,7 +5,6 @@
 fundle plugin 'fishpkg/fish-git-util'
 fundle init
 source ~/.config/fish/style.fish
-vf install compat_aliases > /dev/null
 
 
 ##########################
@@ -90,11 +89,13 @@ pathadd /usr/local/sbin
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
 set -x WORKSPACE ~/workspace
-alias cw='cd $WORKSPACE'
+abbr cw cd $WORKSPACE
 
 set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages:~/.local/lib/python3.6/site-packages
-
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
+
+# Configure Virtualfish, if installed
+# cmd-exists vf && vf install compat_aliases > /dev/null
 
 
 #########################
@@ -457,6 +458,51 @@ end
 function git-latest-release-rpm -a repo
     git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
 end
+
+
+################
+# ❰❰ Docker ❱❱ #
+################
+
+# Vanilla Docker
+# ------------------------------
+
+abbr dps docker ps -a
+abbr dlog docker logs -f
+abbr dstat docker stats
+
+function dbash -a container
+    docker exec -ti $container /bin/bash
+end
+
+function dkill -a container
+    docker kill $container && docker rm $container
+end
+
+# Docker-Compose
+# ------------------------------
+
+# Optionally invoke docker-compose with config specified in an environment variable
+function dco
+    if test -f "$DOCKER_COMPOSE_FILE"
+        docker-compose -f $DOCKER_COMPOSE_FILE "$argv"
+    else
+        docker-compose
+    end
+end
+
+function dc-update
+    dco pull
+    dco build --pull
+    dco up -d
+    docker image prune -f
+    docker volume prune -f
+end
+
+abbr dcu dco up -d
+abbr dcd dco down
+abbr dcr dco restart
+abbr dcps dco ps
 
 
 ##############

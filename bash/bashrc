@@ -611,11 +611,10 @@ git-latest-release-rpm() {
 # ❰❰ Docker ❱❱ #
 ################
 
+# Vanilla Docker
+# ------------------------------
+
 alias dps='docker ps -a'
-alias dcu='docker-compose up -d'
-alias dcd='docker-compose down'
-alias dcr='docker-compose restart'
-alias dcps='docker-compose ps'
 alias dlog='docker logs -f'
 alias dstat='docker stats'
 
@@ -627,12 +626,30 @@ function dkill() {
     docker kill $1 && docker rm $1
 }
 
-function dc-update() {
-    docker-compose pull
-    docker-compose up -d
-    docker image prune
-    docker volume prune
+# Docker-Compose
+# ------------------------------
+
+# Optionally invoke docker-compose with config specified in an environment variable
+function dco() {
+    if [[ -f "$DOCKER_COMPOSE_FILE" ]]; then
+        docker-compose -f $DOCKER_COMPOSE_FILE "$@"
+    else
+        docker-compose
+    fi
 }
+
+function dc-update() {
+    dco pull
+    dco build --pull
+    dco up -d
+    docker image prune -f
+    docker volume prune -f
+}
+
+alias dcu='dco up -d'
+alias dcd='dco down'
+alias dcr='dco restart'
+alias dcps='dco ps'
 
 
 ##############
