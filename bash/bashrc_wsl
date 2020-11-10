@@ -23,7 +23,7 @@ function start-xhost() {
     powershell.exe -Command '& "C:\Program Files\VcXsrv\vcxsrv.exe" -ac -multiwindow -wgl'
     # Not currently working with access restrictions; temporarily disabling
     # powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '+$(get-host)
-    powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '+
+    powershell.exe -Command '& "C:\Program Files\VcXsrv\xhost.exe" '
 }
 
 function startme() {
