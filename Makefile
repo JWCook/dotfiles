@@ -51,7 +51,8 @@ install-fedora: install-system-packages-fedora \
                 install-duplicati-fedora \
                 install-chrome-fedora \
                 install-neovim-fedora \
-                install-retroterm-fedora
+                install-retroterm-fedora \
+                install-ssh-agent-systemd
                 # install-vim-fedora
 
 update-fedora: update
@@ -231,6 +232,9 @@ install-python-packages:
 install-ruby-gems:
 	# scripts/install_rvm.sh
 	gem install -g scripts/Gemfile
+
+install-ssh-agent-systemd:
+	scripts/install_ssh_agent_systemd.sh
 
 install-vim:
 	scripts/install_vim.sh

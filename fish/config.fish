@@ -91,6 +91,12 @@ set -x DOTFILES ~/dotfiles
 set -x WORKSPACE ~/workspace
 abbr cw cd $WORKSPACE
 
+# Set ssh-agent socket, if it's set up as a systemd service
+set DEFAULT_SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+if test -S $DEFAULT_SSH_AUTH_SOCK
+    set -gx SSH_AUTH_SOCK $DEFAULT_SSH_AUTH_SOCK
+end
+
 set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages:~/.local/lib/python3.6/site-packages
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
