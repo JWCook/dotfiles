@@ -25,6 +25,7 @@ PKGS_APPS='
     ntpdate
     p7zip-full
     pv
+    qpdf
     silversearcher-ag
     ssh
     tig

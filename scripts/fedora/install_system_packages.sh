@@ -40,6 +40,7 @@ PKGS_APPS='
     p7zip
     proxychains-ng
     pv
+    qpdf
     rpmconf
     telnet
     terminator

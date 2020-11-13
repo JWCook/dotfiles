@@ -1051,6 +1051,22 @@ mkv-basic-px() {
 }
 
 
+
+# Split a PDF document into multiple documents by arbitrary page ranges
+# Usage: pdf-split-page-ranges $source_file 1-12,13-17,18-40
+pdf-split-page-ranges() {
+    SOURCE_FILE=$1
+    PAGE_RANGES=$(echo $2 | tr ',' ' ')
+    BASE_NAME=$(basename -s .pdf $SOURCE_FILE)
+    echo $SOURCE_FILE
+    echo $BASE_NAME
+
+    for range in $PAGE_RANGES; do
+        qpdf $SOURCE_FILE ${BASE_NAME}_${range}.pdf --pages $SOURCE_FILE $range --
+    done
+}
+
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/jcook/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
