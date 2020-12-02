@@ -57,6 +57,7 @@ PKGS_LIBS='
     exuberant-ctags
     libffi-dev
     libgpgme11-dev
+    libsqlite3-dev
     libssl-dev
     libx11-dev
     libxpm-dev
