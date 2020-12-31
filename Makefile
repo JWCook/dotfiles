@@ -285,7 +285,7 @@ install-retroterm-fedora:
 #####################
 
 install-system-packages-ubuntu:
-	scripts/ubuntu/install_system_packages.sh
+	sudo scripts/ubuntu/install_system_packages.sh
 
 install-vim-ubuntu:
 	scripts/ubuntu/install_vim_prereqs.sh

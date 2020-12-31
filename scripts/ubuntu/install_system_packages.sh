@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
 # Additional repos for fish shell, neovim, and docker CE
-sudo apt-add-repository ppa:fish-shell/release-3
-sudo apt-add-repository ppa:neovim-ppa/stable
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
+apt-add-repository ppa:fish-shell/release-3
+apt-add-repository ppa:neovim-ppa/stable
+add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+add-apt-repository \
+    "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
 
 # Package categories
 # fzf
@@ -34,6 +37,7 @@ PKGS_APPS='
     xsel
 '
 PKGS_GUI_APPS='
+    atom
     chromium-browser
     gimp
     guake
@@ -94,8 +98,9 @@ PKGS_GNOME='
 PKGS_SNAP='ffmpeg'
 
 # Install packages
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_DEV $PKGS_IMG
-# sudo apt-get install -y $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_ADMIN $PKGS_GNOME $PKGS_UNITY
-# sudo snap install $PKGS_SNAP
+apt-get update
+apt-get upgrade -y
+apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_DEV $PKGS_IMG \
+  $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_GNOME
+# apt-get install -y $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_ADMIN $PKGS_GNOME
+# snap install $PKGS_SNAP
