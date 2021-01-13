@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+
+# Additional repos
+RELEASEVER=$(rpm -E %fedora)
+read -d '' REPO_RPMS << EOF
+    https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASEVER}.noarch.rpm
+    https://rpmfind.net/linux/fedora/linux/releases/${RELEASEVER}/Everything/x86_64/os/Packages/g/gdouros-symbola-fonts-10.24-4.fc${RELEASEVER}.noarch.rpm
+    https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASEVER}.noarch.rpm
+    https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASEVER}.noarch.rpm
+    https://download.postgresql.org/pub/repos/yum/reporpms/F-${RELEASEVER}-x86_64/pgdg-fedora-repo-latest.noarch.rpm
+EOF
+# Repo for Albert application launcher
+RPM_KEYS='https://build.opensuse.org/projects/home:manuelschneid3r/public_key'
+REPO_CONFIG='https://download.opensuse.org/repositories/home:manuelschneid3r/Fedora_${RELEASEVER}/home:manuelschneid3r.repo'
+
+
 # Package categories
 PKGS_APPS='
     chromium
@@ -18,6 +33,7 @@ PKGS_APPS='
     htop
     inkscape
     keepassxc
+    nextcloud-client
     nmap
     ntp
     ntpdate
@@ -122,6 +138,7 @@ PKGS_GNOME='
     f30-backgrounds-extras-gnome
     f31-backgrounds-extras-gnome
     f32-backgrounds-extras-gnome
+    f33-backgrounds-extras-gnome
 '
 PKGS_XFCE='
     albert
@@ -131,11 +148,16 @@ PKGS_XFCE='
     xfce4-whiskermenu-plugin
 '
 
+# Install repos
+sudo dnf install -y $REPO_RPMS
+sudo rpm --import $RPM_KEYS
+sudo dnf config-manager --add-repo $REPO_CONFIG
+
 # Install packages
 sudo dnf update -y
-sudo dnf install -y $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA
+sudo dnf install -y $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_IMG $PKGS_XFCE
 # Optional packages
-# sudo dnf install -y $PKGS_IMG $PKGS_POSTGRES $PKGS_GNOME $PKGS_XFCE $PKGS_OTHER
+# sudo dnf install -y $PKGS_POSTGRES $PKGS_GNOME $PKGS_OTHER
 
 sudo activate-global-python-argcomplete
 

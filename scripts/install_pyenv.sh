@@ -2,12 +2,7 @@
 
 source bash/bashrc
 
-if cmd-exists pyenv; then
-    echo hi
-else
-    type -a pyenv || curl https://pyenv.run | bash
-fi
-
+type -a pyenv || curl https://pyenv.run | bash
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 

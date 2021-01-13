@@ -51,8 +51,8 @@ export WORKSPACE=~/workspace
 alias cw='cd $WORKSPACE'
 
 # Python
-# export PYTHONPATH=~/.local/lib/python3.6/site-packages
-export PYTHONPATH=~/.local/lib/python3.7/site-packages
+# export PYTHONPATH=~/.local/lib/python3.7/site-packages
+export PYTHONPATH=~/.local/lib/python3.8/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 source-bin virtualenvwrapper.sh
 
@@ -1053,14 +1053,14 @@ mkv-basic-px() {
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/cookjo/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/jcook/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/cookjo/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/cookjo/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/jcook/miniconda/etc/profile.d/conda.sh" ]; then
+        . "/home/jcook/miniconda/etc/profile.d/conda.sh"
     else
-        pathadd "/home/cookjo/miniconda3/bin"
+        pathadd "/home/jcook/miniconda/bin"
     fi
 fi
 unset __conda_setup

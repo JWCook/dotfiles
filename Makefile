@@ -22,13 +22,12 @@ install-conf: install-albert-conf \
 
 install-pkgs: install-fonts \
               install-grc \
-              install-neovim-venv \
               install-miniconda \
               install-python-packages \
               install-poetry \
               install-pyenv \
               install-ruby-gems \
-              # install-js-packages \
+              # install-npm-packages \
 
 install-optional: configure-gnome \
                   configure-ntp \
@@ -45,13 +44,14 @@ update: update-python \
 # Grouped Pakcages & Config: Distro-Specific #
 ##############################################
 
-install-fedora: install-conf \
-                install-system-packages-fedora \
+install-fedora: install-system-packages-fedora \
+                install-pkgs \
+                install-conf \
                 install-docker-fedora \
+                install-duplicati-fedora \
                 install-chrome-fedora \
                 install-neovim-fedora \
-                install-retroterm-fedora \
-                install-pkgs
+                install-retroterm-fedora
                 # install-vim-fedora
 
 update-fedora: update
@@ -134,7 +134,7 @@ install-fish-conf:
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
 	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
-	#[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
+	[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
 	fish -c 'fundle install'
 
@@ -211,14 +211,11 @@ install-fonts:
 install-grc:
 	scripts/install_grc.sh
 
-install-js-packages:
+install-npm-packages:
 	scripts/install_npm_packages.sh
 
 install-miniconda:
 	scripts/install_miniconda.sh
-
-install-neovim-venv:
-	scripts/install_neovim_venv.sh
 
 install-poetry:
 	scripts/install_poetry.sh
@@ -265,8 +262,13 @@ install-system-packages-fedora:
 install-docker-fedora:
 	scripts/fedora/install_docker.sh
 
+install-duplicati-fedora:
+	scripts/fedora/install_duplicati.sh
+
 install-neovim-fedora:
 	scripts/fedora/install_neovim.sh
+	scripts/install_vim_plug.sh
+	scripts/install_neovim_venv.sh
 
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh

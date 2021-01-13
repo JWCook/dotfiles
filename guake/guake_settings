@@ -1,5 +1,5 @@
 [general]
-abbreviate-tab-names=false
+abbreviate-tab-names=true
 compat-delete='delete-sequence'
 default-shell='/usr/bin/fish'
 display-n=0
@@ -22,11 +22,12 @@ use-default-font=false
 use-popup=false
 use-scrollbar=true
 use-trayicon=false
-window-halignment=0
+window-halignment=1
 window-height=50
 window-losefocus=true
 window-refocus=false
 window-tabbar=true
+window-vertical-displacement=0
 window-width=100
 
 # Compatibility with Wayland: set shortcut for F12 = guake-toggle in system keyboard shortcuts
@@ -43,4 +44,4 @@ transparency=80
 allow-bold=true
 palette='#070736364141:#EBEB60606B6B:#C3C3E8E88D8D:#F7F7EBEB9595:#8080CBCBC3C3:#FFFF24249090:#AEAEDDDDFFFF:#FFFFFFFFFFFF:#00002B2B3636:#EBEB60606B6B:#C3C3E8E88D8D:#F7F7EBEB9595:#7D7DC6C6BFBF:#6C6C7171C3C3:#343443434D4D:#FFFFFFFFFFFF:#C3C3C7C7D1D1:#1E1E28282C2C'
 palette-name='Material'
-style='DroidSansMonoForPowerline Nerd Font 14'
+style='JetBrainsMono Nerd Font 14'
