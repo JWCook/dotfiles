@@ -48,6 +48,7 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | Gundo        | toggle (left vsplit)       | Ctrl-F6
 | Tagbar       | toggle (right vsplit)      | F7
 |              | zoom                       | x
+| Bash Support | Check bash syntax          | F8
 | Pep8         | check                      | F8
 |              | clear markers              | Ctrl-F8
 | Startify     | quicksave                  | F10           | `:SSave ~quicksave`

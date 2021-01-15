@@ -219,6 +219,11 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_delay = 500
 let g:ale_maximum_file_size = 1048576
 
+" Bash Support
+let g:BASH_InsertFileHeader = 'yes'
+autocmd FileType sh nnoremap <silent> <buffer> <F8> :BashCheck<CR>
+autocmd FileType sh nnoremap <silent> <buffer> <F9> :Bash<CR>
+
 " Fugitive
 let g:fugitive_gitlab_domains = [ 'dsigitlab.research.auto.pioneer.com' ]
 nnoremap <silent> gf :Gdiff<CR>
@@ -315,6 +320,9 @@ command! PPV w! | Pytest project verbose
 command! PS  Pytest session
 command! PL  Pytest fails
 command! PD  Pytest projecttestwd
+
+" Python (misc)
+autocmd FileType python nnoremap <silent> <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
 
 " Startify
 nnoremap <silent> <F10>   :SSave! ~quicksave<CR>
