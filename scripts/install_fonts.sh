@@ -1,14 +1,36 @@
 #!/usr/bin/env bash
-FONT_REPO='https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts'
-echo 'Installing patched fonts...'
-mkdir -p ~/.fonts
-mkfontdir ~/.fonts
 
-wget -NP ~/.fonts ${FONT_REPO}/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20Nerd%20Font%20Complete.ttf
-# wget -P ~/.fonts ${FONT_REPO}/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20Nerd%20Font%20Complete%20Windows%20Compatible.ttf
-wget -NP ~/.fonts ${FONT_REPO}/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
-# wget -NP ~/.fonts ${FONT_REPO}/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Windows%20Compatible.otf
-xset +fp ~/.fonts
-fc-cache -vf ~/.fonts
-echo 'Done. Set terminal font to DejaVuSansMono'
+FONT_NAMES='
+    3270
+    DejaVuSansMono
+    DroidSansMono
+    FiraCode
+    HeavyData
+    Hermit
+    InconsolataLGC
+    Iosevka
+    JetBrainsMono
+    Mononoki
+    OpenDyslexic
+    ProggyClean
+    Terminus
+'
+RELEASE_VER='v2.1.0'
+RELEASE_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${RELEASE_VER}"
+FONT_DIR='~/.local/share/fonts/NerdFonts'
+DOWNLOAD_DIR='~/.local/share/fonts/Downloads'
 
+echo 'Downloading patched fonts...'
+
+mkdir -p  $DOWNLOAD_DIR $FONT_DIR
+for font_name in $FONT_NAMES; do
+    filename=${font_name}.zip
+    if ! test -f ${DOWNLOAD_DIR}/${filename}; then
+        wget -NP $DOWNLOAD_DIR ${RELEASE_BASE_URL}/${filename}
+    fi
+done
+
+
+echo 'Installing fonts...'
+unzip "${DOWNLOAD_DIR}/*.zip" -d $FONT_DIR
+fc-cache -vf $FONT_DIR
