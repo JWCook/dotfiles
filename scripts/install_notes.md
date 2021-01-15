@@ -31,6 +31,9 @@ Partially scripted with `gsettings`, but double-check:
 
 Keyring:
 * Edit `/etc/xdg/autostart/gnome-keyring-ssh.desktop`, comment out `X-GNOME-Autostart-Phase` line
+    * Or: `sudo chmod -x /usr/bin/gnome-keyring`
+* Enable Secret Service Integration and SSH Agent in KeepassXC
+* `echo $SSH_AUTH_SOCK` and set that in KeepassXC
 
 
 ## XFCE

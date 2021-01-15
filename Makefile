@@ -47,8 +47,6 @@ update: update-python \
 install-fedora: install-system-packages-fedora \
                 install-pkgs \
                 install-conf \
-                install-docker-fedora \
-                install-duplicati-fedora \
                 install-chrome-fedora \
                 install-neovim-fedora \
                 install-retroterm-fedora \
@@ -262,12 +260,6 @@ update-vim:
 install-system-packages-fedora:
 	scripts/fedora/install_repos.sh
 	scripts/fedora/install_system_packages.sh
-
-install-docker-fedora:
-	scripts/fedora/install_docker.sh
-
-install-duplicati-fedora:
-	scripts/fedora/install_duplicati.sh
 
 install-neovim-fedora:
 	scripts/fedora/install_neovim.sh

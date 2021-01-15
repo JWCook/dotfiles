@@ -51,3 +51,5 @@
     line-graphics = utf-8
 [credential]
     helper = cache --timeout=3600
+[pull]
+	rebase = true

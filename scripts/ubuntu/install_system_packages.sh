@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Additional repos for fish shell, neovim, and docker CE
+# Additional repos for atom, fish shell, neovim, and docker CE
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
 apt-add-repository ppa:fish-shell/release-3
