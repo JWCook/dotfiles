@@ -134,9 +134,9 @@ install-fish-conf:
 	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
 	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
 	ln -s `pwd`/fish/functions ~/.config/fish/functions
-	[ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
 	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
-	fish -c 'fundle install'
+	- fish -c 'fundle install'
+	- [ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
 
 install-figlet-conf:
 	rm -rf ~/.figlet
@@ -152,13 +152,13 @@ install-grc-conf:
 
 # TODO: fix check
 install-gnome-terminal-conf:
-	type -a dconf > /dev/null 2>&1 && dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
+	- dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
 	# To export settings:
 	#dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
 
 
 install-guake-conf:
-	type -a guake && guake --restore-preferences guake/guake_settings
+	- guake --restore-preferences guake/guake_settings
 	# To export settings:
 	# guake --save-preferences ~/dotfiles/guake/guake_settings
 
@@ -198,7 +198,7 @@ install-vim-conf:
 	mkdir -p ~/.config/nvim
 	ln -s `pwd`/vim/vimrc ~/.config/nvim/init.vim
 	# Sync vim sessions, if sync folder exists
-	[ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
+	- [ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
 
 
 ############################
