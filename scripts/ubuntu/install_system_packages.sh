@@ -11,11 +11,11 @@ add-apt-repository \
     "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
 
 # Package categories
-# fzf
 PKGS_APPS='
     curl
     figlet
     fish
+    fzf
     git
     htop
     jq

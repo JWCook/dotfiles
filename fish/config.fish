@@ -1,9 +1,3 @@
-#################
-# ❰❰ Plugins ❱❱ #
-#################
-
-fundle plugin 'fishpkg/fish-git-util'
-fundle init
 source ~/.config/fish/style.fish
 
 
@@ -75,10 +69,7 @@ alias ttput='tty -s && tput'
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
-pathadd ~/.pyenv/versions/3.6.12/bin
-pathadd ~/.pyenv/versions/3.7.9/bin
-pathadd ~/.pyenv/versions/3.8.6/bin
-pathadd ~/.pyenv/versions/3.9.0/bin
+pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
 pathadd ~/bin
@@ -586,8 +577,11 @@ function pip-versions -a package_name
     pip install $package_name==999
 end
 
-# Install python packages from all available requirements files
+# Install python packages from all available requirements files and/or setup.py
 function pipr
+    pip install -U pip setuptools wheel
+    pip install -U --editable '.[dev]' '.[all]'
+
     for _file in (ls requirements*.txt 2> /dev/null | sort -V)
         pip-install-req $_file
     end
@@ -612,8 +606,6 @@ function mkv -a env_name
     set -e PYTHONPATH
     add2virtualenv .
     py-cleanup
-    pip install -U pip setuptools wheel
-    pip install -Ue '.[all]'
     pipr
 end
 
@@ -842,21 +834,6 @@ end
 alias px 'proxychains -q'
 abbr -a pxs sudo proxychains -q -f ~/.proxychains/proxychains.conf
 
-# Git
-alias gp-px='px git pull'
-alias gfpush-px='px git push --force'
-alias gpush-px='px git push'
-alias gf-px='px git fetch --all'
-# gbreset-px() {
-#     REMOTE="$(gremote)"
-#     BRANCH="$(gbranch)"
-#     px git fetch $REMOTE $BRANCH
-#     px git status
-#     printf "Resetting branch to $REMOTE/$BRANCH."
-#     px prompt-confirm && git reset --hard $REMOTE/$BRANCH
-# }
-
-
 # Python
 abbr pip-install-px proxychains pip install
 
@@ -884,6 +861,5 @@ end
 # end
 
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
 cmd-exists conda && eval ~/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<

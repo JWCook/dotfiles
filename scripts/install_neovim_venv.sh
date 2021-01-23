@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install neovim python dependencies in their own virtualenv
 
-python3 -m venv ~/.virtualenvs/nvim
-source ~/.virtualenvs/nvim/bin/activate
+source ~/.bashrc
+mkvirtualenv nvim
 pip install -U pip jedi pynvim vim-vint
 deactivate

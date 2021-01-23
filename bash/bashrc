@@ -33,10 +33,7 @@ shopt -s histappend
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
-pathadd ~/.pyenv/versions/3.6.12/bin
-pathadd ~/.pyenv/versions/3.7.9/bin
-pathadd ~/.pyenv/versions/3.8.6/bin
-pathadd ~/.pyenv/versions/3.9.0/bin
+pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
 pathadd ~/bin
@@ -59,7 +56,7 @@ fi
 # Python
 # export PYTHONPATH=~/.local/lib/python3.7/site-packages
 export PYTHONPATH=~/.local/lib/python3.8/site-packages
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+export VIRTUALENVWRAPPER_PYTHON=$(which python)
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
@@ -653,6 +650,7 @@ function dc-update() {
 }
 
 alias dcu='dco up -d'
+alias dcub='dco up -d --build'
 alias dcd='dco down'
 alias dcr='dco restart'
 alias dcps='dco ps'
@@ -674,7 +672,6 @@ tnew() {
 # ❰❰ Python ❱❱ #
 ################
 
-alias pip='pip3'
 alias bb='black --target-version py37 --line-length 100 --skip-string-normalization'
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
@@ -719,12 +716,16 @@ pip-install-req() {
 }
 
 # Get all available versions of a package by specifying an invalid version
+# TODO: Broken as of pip 21
 pip-versions() {
     pip install $1==999
 }
 
-# Install python packages from all available requirements files
+# Install python packages from all available requirements files and/or setup.py
 pipr() {
+    pip install -U pip setuptools wheel
+    pip install -U --editable '.[dev]' '.[all]'
+
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f
     done
@@ -749,8 +750,6 @@ mkv() {
     unset PYTHONPATH
     add2virtualenv .
     py-cleanup
-    pip install -U pip setuptools wheel
-    pip install -Ue '.[all]'
     pipr
 }
 
@@ -1017,32 +1016,25 @@ fi
 alias px='proxychains -q'
 alias pxs='sudo proxychains -f ~/.proxychains/proxychains.conf'
 
-# Git
-alias gp-px='px git pull'
-alias gfpush-px='px git push --force'
-alias gpush-px='px git push'
-alias gf-px='px git fetch --all'
-gbreset-px() {
-    REMOTE="$(gremote)"
-    BRANCH="$(gbranch)"
-    px git fetch $REMOTE $BRANCH
-    px git status
-    printf "Resetting branch to $REMOTE/$BRANCH."
-    px prompt-confirm && git reset --hard $REMOTE/$BRANCH
-}
-
 
 # Python
 alias pip-install-px='px pip install'
+
 pip-versions-px() {
     px pip install $1==999
 }
+
 pipr-px() {
+    px pip install -U pip setuptools wheel
+    px pip install -U --editable '.[dev]' '.[all]'
+
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         echo; print-title "Installing $f..."
         px pip install -Ur $f | lc-gradient --seed=100
     done
 }
+
+# TODO: make this less ugly
 mkv-px() {
     swap $PIP_CONF ${PIP_CONF}.bak
     mkvirtualenv -p python3 -a . ${1:-$(pwd-base)}
@@ -1050,6 +1042,7 @@ mkv-px() {
     add2virtualenv .
     pipr-px
 }
+
 mkv-basic-px() {
     swap $PIP_CONF ${PIP_CONF}.bak
     mkvirtualenv -p python3 ${1:-$(pwd-base)}
@@ -1074,15 +1067,14 @@ pdf-split-page-ranges() {
 
 
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/jcook/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('~/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/jcook/miniconda/etc/profile.d/conda.sh" ]; then
-        . "/home/jcook/miniconda/etc/profile.d/conda.sh"
+    if [ -f "~/miniconda/etc/profile.d/conda.sh" ]; then
+        source "~/miniconda/etc/profile.d/conda.sh"
     else
-        pathadd "/home/jcook/miniconda/bin"
+        pathadd "~/miniconda/bin"
     fi
 fi
 unset __conda_setup

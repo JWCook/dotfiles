@@ -112,10 +112,7 @@ install-atom-conf:
 	ln -s `pwd`/atom/init.coffee    ~/.atom/init.coffee
 	ln -s `pwd`/atom/styles.less    ~/.atom/styles.less
 
-install-bash-completion:
-	`pwd`/scripts/install_bash_completion.sh
-
-install-bash-conf: install-bash-completion
+install-bash-conf:
 	rm -rf ~/.bashrc
 	rm -rf ~/.bashrc_style
 	rm -rf ~/.bash_profile
@@ -124,18 +121,10 @@ install-bash-conf: install-bash-completion
 	ln -s `pwd`/bash/bashrc_style   ~/.bashrc_style
 	ln -s `pwd`/bash/bash_profile   ~/.bash_profile
 	ln -s `pwd`/bash/bash_logout    ~/.bash_logout
+	scripts/install_bash_completion.sh
 
 install-fish-conf:
-	mkdir -p ~/.config/fish/
-	rm -rf ~/.config/fish/config.fish
-	rm -rf ~/.config/fish/style.fish
-	rm -rf ~/.config/fish/functions
-	ln -s `pwd`/fish/config.fish ~/.config/fish/config.fish
-	ln -s `pwd`/fish/style.fish ~/.config/fish/style.fish
-	ln -s `pwd`/fish/functions ~/.config/fish/functions
-	wget https://git.io/fundle -O `pwd`/fish/functions/fundle.fish
-	- fish -c 'fundle install'
-	- [ ! -e  ~/.config/fish/completions ] && ln -sf `pwd`/fish/completions ~/.config/fish/completions
+	scripts/install_fish_tackle.fish
 
 install-figlet-conf:
 	rm -rf ~/.figlet
@@ -149,7 +138,6 @@ install-grc-conf:
 	rm -rf ~/.grc
 	ln -s `pwd`/grc ~/.grc
 
-# TODO: fix check
 install-gnome-terminal-conf:
 	- dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
 	# To export settings:

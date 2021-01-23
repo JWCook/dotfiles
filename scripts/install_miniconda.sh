@@ -3,3 +3,4 @@ wget -O miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-
 bash miniconda.sh -b -p ~/miniconda
 rm miniconda.sh
 ~/miniconda/bin/conda update --yes conda python
+~/miniconda/bin/conda install -y conda-build
