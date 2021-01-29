@@ -37,6 +37,32 @@ PKGS_APPS='
     xclip
     xsel
 '
+PKGS_LIBS='
+    build-essential
+    cmake
+    exuberant-ctags
+    libffi-dev
+    libgpgme11-dev
+    libsqlite3-dev
+    libssl-dev
+    libx11-dev
+    libxpm-dev
+    libxt-dev
+    ncurses-dev
+    npm
+    python3-dev
+    python3-pip
+    python3-venv
+    ruby-dev
+'
+# Image processing packages
+PKGS_IMG='
+    exempi
+    exiv2
+    libexiv2-dev
+    libexiv2-doc
+    libimage-exiftool-perl
+'
 PKGS_GUI_APPS='
     atom
     chromium-browser
@@ -56,40 +82,12 @@ PKGS_SERVER='
 PKGS_ADMIN='
     logwatch
 '
-PKGS_LIBS='
-    build-essential
-    cmake
-    exuberant-ctags
-    libffi-dev
-    libgpgme11-dev
-    libsqlite3-dev
-    libssl-dev
-    libx11-dev
-    libxpm-dev
-    libxt-dev
-    ncurses-dev
-    npm
-    python3-dev
-    python3-pip
-    python3-venv
-    ruby-dev
-'
 PKGS_MEDIA='
     vlc
     libdvdcss2
     x265
     gstreamer1.0-plugins-base
     gstreamer1.0-plugins-good
-    gstreamer1.0-plugins-bad
-    gstreamer1.0-plugins-ugly
-'
-# Image processing packages
-PKGS_IMG='
-    exempi
-    exiv2
-    libexiv2-dev
-    libexiv2-doc
-    libimage-exiftool-perl
 '
 # Desktop environment-specific packages
 PKGS_GNOME='
@@ -101,7 +99,6 @@ PKGS_SNAP='ffmpeg'
 # Install packages
 apt-get update
 apt-get upgrade -y
-apt-get install -y $PKGS_APPS $PKGS_LIBS $PKGS_DEV $PKGS_IMG \
-  $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_GNOME
-# apt-get install -y $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_ADMIN $PKGS_GNOME
-# snap install $PKGS_SNAP
+apt-get install -y $PKGS_APPS $PKGS_DEV $PKGS_LIBS $PKGS_IMG
+# apt-get install -y  $PKGS_MEDIA $PKGS_GUI_APPS $PKGS_ADMIN $PKGS_SERVER $PKGS_GNOME
+snap install $PKGS_SNAP

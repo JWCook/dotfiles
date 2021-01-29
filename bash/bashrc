@@ -15,6 +15,7 @@ alias ttput='tty -s && tput'                            # Safe tput, only for TT
 
 # Additional runtime config
 source-file /etc/bashrc                                 # Global bashrc
+source-file ~/.bash_completion                          # Additional shell completion scripts
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.bashrc_wsl                               # Additional config for WSL
