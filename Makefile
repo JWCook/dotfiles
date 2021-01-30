@@ -93,17 +93,17 @@ configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
 install-albert-conf:
-	rm -rf ~/.config/albert/albert.conf
+	rm -f ~/.config/albert/albert.conf
 	mkdir -p ~/.config/albert
 	ln -s `pwd`/albert/albert.conf ~/.config/albert/albert.conf
 
 install-atom-conf:
-	rm -rf ~/.atom/config.cson
-	rm -rf ~/.atom/keymap.cson
-	rm -rf ~/.atom/packages.cson
-	rm -rf ~/.atom/snippets.cson
-	rm -rf ~/.atom/init.coffee
-	rm -rf ~/.atom/styles.less
+	rm -f ~/.atom/config.cson
+	rm -f ~/.atom/keymap.cson
+	rm -f ~/.atom/packages.cson
+	rm -f ~/.atom/snippets.cson
+	rm -f ~/.atom/init.coffee
+	rm -f ~/.atom/styles.less
 	mkdir -p ~/.atom
 	ln -s `pwd`/atom/config.cson    ~/.atom/config.cson
 	ln -s `pwd`/atom/keymap.cson    ~/.atom/keymap.cson
@@ -111,12 +111,12 @@ install-atom-conf:
 	ln -s `pwd`/atom/snippets.cson  ~/.atom/snippets.cson
 	ln -s `pwd`/atom/init.coffee    ~/.atom/init.coffee
 	ln -s `pwd`/atom/styles.less    ~/.atom/styles.less
+	- apm install package-sync
 
-install-bash-conf:
-	rm -rf ~/.bashrc
-	rm -rf ~/.bashrc_style
-	rm -rf ~/.bash_profile
-	rm -rf ~/.bash_logout
+	rm -f ~/.bashrc
+	rm -f ~/.bashrc_style
+	rm -f ~/.bash_profile
+	rm -f ~/.bash_logout
 	ln -s `pwd`/bash/bashrc         ~/.bashrc
 	ln -s `pwd`/bash/bashrc_style   ~/.bashrc_style
 	ln -s `pwd`/bash/bash_profile   ~/.bash_profile
@@ -131,7 +131,7 @@ install-figlet-conf:
 	ln -s `pwd`/figlet ~/.figlet
 
 install-git-conf:
-	rm -rf ~/.gitconfig
+	rm -f ~/.gitconfig
 	ln -s `pwd`/git/gitconfig ~/.gitconfig
 
 install-grc-conf:
@@ -156,7 +156,7 @@ install-htop-conf:
 
 install-ipython-conf:
 	mkdir -p ~/.ipython/profile_default
-	rm -rf ~/.ipython/profile_default/ipython_config.py
+	rm -f ~/.ipython/profile_default/ipython_config.py
 	rm -rf ~/.ipython/profile_default/startup
 	ln -s `pwd`/ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
 	ln -s `pwd`/ipython/profile_default/startup           ~/.ipython/profile_default/startup
@@ -179,7 +179,7 @@ install-terminator-conf:
 install-vim-conf:
 	rm -rf ~/.vim
 	rm -rf ~/.vimrc
-	rm -rf ~/.config/nvim/init.vim
+	rm -f ~/.config/nvim/init.vim
 	ln -s `pwd`/vim/vimrc  ~/.vimrc
 	ln -s `pwd`/vim/vim  ~/.vim
 	mkdir -p ~/.config/nvim

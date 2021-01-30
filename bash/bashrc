@@ -716,16 +716,20 @@ pip-install-req() {
     [[ -f $1 ]] && pip install -Ur $1 | lc-gradient --seed=100
 }
 
-# Get all available versions of a package by specifying an invalid version
-# TODO: Broken as of pip 21
+# Get all available versions of a package
+# Note: Output is broken with 2020 resolver, so this uses the legacy version; see https://github.com/pypa/pip/issues/9139
 pip-versions() {
-    pip install $1==999
+    pip install --use-deprecated=legacy-resolver "$1==none" 2>&1 \
+        | head -n 1 \
+        | sed 's/.*(from versions: \(.*\))/\1/' \
+        | sed 's/\, /\n/g'
 }
 
 # Install python packages from all available requirements files and/or setup.py
 pipr() {
-    pip install -U pip setuptools wheel
-    pip install -U --editable '.[dev]' '.[all]'
+    unset PYTHONPATH
+    pip install -U ipython pip setuptools wheel
+    pip install -Ue  '.[all,dev]'
 
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f

@@ -88,11 +88,11 @@ if test -S $DEFAULT_SSH_AUTH_SOCK
     set -gx SSH_AUTH_SOCK $DEFAULT_SSH_AUTH_SOCK
 end
 
-set -gx PYTHONPATH ~/.local/lib/python3.7/site-packages:~/.local/lib/python3.6/site-packages
+set -gx PYTHONPATH ~/.local/lib/python3.8/site-packages
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 # Configure Virtualfish, if installed
-# cmd-exists vf && vf install compat_aliases > /dev/null
+cmd-exists vf && vf install compat_aliases > /dev/null
 
 
 #########################
@@ -572,17 +572,39 @@ function pip-install-req -a req_file
     test -e $req_file && pip install -Ur $req_file | lc-gradient --seed=100
 end
 
-# Get all available versions of a package by specifying an invalid version
+# Get all available versions of a package as a formatted list
 function pip-versions -a package_name
-    pip install $package_name==999
+    set version_list (\
+        pip install --use-deprecated=legacy-resolver "$package_name==none" 2>&1 \
+        | head -n 1 \
+        | sed 's/.*(from versions: \(.*\))/\1/'\
+    )
+
+    format-version-list $version_list
+end
+
+# Highlight and indent major (x.0.0) and minor (x.x.0) versions
+# in a comma-separated list of version numbers
+function format-version-list -a version_list
+    set major (set_color -o cyan)
+    set minor (set_color -o white)
+    set nocolor (set_color normal)
+
+    echo $version_list \
+        | sed 's/\, /\n/g' \
+        | sed -e "s/^\([0-9]\+\.0\.0\)/$major\1$nocolor/g" \
+        | sed -e "s/^\([0-9]\+\.[0-9]\+\.0\)/$minor \1$nocolor/g" \
+        | sed -e "s/^\([0-9]\+\.[0-9]\+\.[0-9]\+\)/  \1/g"
 end
 
 # Install python packages from all available requirements files and/or setup.py
 function pipr
-    pip install -U pip setuptools wheel
-    pip install -U --editable '.[dev]' '.[all]'
+    set -e PYTHONPATH
+    pip install -U ipython pip setuptools wheel
+    pip install -Ue  '.[all,dev]'
 
-    for _file in (ls requirements*.txt 2> /dev/null | sort -V)
+    set req_files requirements*.txt
+    for _file in  $req_files
         pip-install-req $_file
     end
 end
@@ -602,7 +624,8 @@ end
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 function mkv -a env_name
-    mkvirtualenv -p python3 -a . (default-pwd-base $env_name)
+    set env_name (coalesce $env_name (basename (pwd)))
+    mkvirtualenv $env_name
     set -e PYTHONPATH
     add2virtualenv .
     py-cleanup
@@ -861,5 +884,5 @@ end
 # end
 
 # >>> conda initialize >>>
-cmd-exists conda && eval ~/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+cmd-exists conda && eval ~/miniconda/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<

@@ -28,9 +28,7 @@ end
 
 # Format current hostname
 function _get_hostname
-    # Some unicode glyphs not currently working due to incorrectly reported character width
-    # set _hostname (string replace "localhost" "🏠" (prompt_hostname))
-    set _hostname (string replace "localhost" "home" (prompt_hostname))
+    set _hostname (string replace "localhost" "🏠" (prompt_hostname))
     echo -n -s (set_color $fish_color_user) "$_hostname"
 end
 
