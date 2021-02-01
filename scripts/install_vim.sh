@@ -2,16 +2,10 @@
 # TODO: manage multiple versions with alternatives
 # TODO: distro-specific python config dirs
 
-# Centos
-# PYTHON_CONFIG_DIR=/usr/lib/python2.7/config-x86_64-linux-gnu/
-# PYTHON3_CONFIG_DIR=/usr/lib/python3.6/config-3.6m-x86_64-linux-gnu/
 # Ubuntu
-# PYTHON_CONFIG_DIR=/usr/lib64/python2.7/config/
-# PYTHON3_CONFIG_DIR=/usr/lib64/python3.6/config/
+PYTHON3_CONFIG_DIR=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/
 # Fedora
-# PYTHON_CONFIG_DIR=/usr/lib64/python2.7/config/
-# PYTHON3_CONFIG_DIR=/usr/lib/python3.6/config-3.6m-x86_64-linux-gnu/
-PYTHON3_CONFIG_DIR=/usr/lib64/python3.7/config-3.7m-x86_64-linux-gnu/
+# PYTHON3_CONFIG_DIR=/usr/lib64/python3.8/config-3.8m-x86_64-linux-gnu/
 
 REPO=https://github.com/vim/vim
 REPO_DIR=/usr/local/src/vim

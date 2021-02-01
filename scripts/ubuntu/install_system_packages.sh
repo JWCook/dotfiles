@@ -50,6 +50,7 @@ PKGS_APPS='
     ssh
     telnet
     tig
+    tldr
     tmux
     toilet
     traceroute
@@ -72,8 +73,10 @@ PKGS_LIBS='
     build-essential
     cmake
     exuberant-ctags
+    libbz2-dev
     libffi-dev
     libgpgme11-dev
+    libreadline-dev
     libsqlite3-dev
     libssl-dev
     libx11-dev

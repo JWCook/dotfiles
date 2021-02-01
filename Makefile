@@ -222,7 +222,7 @@ install-pyenv:
 install-python-packages:
 	pip3 install --user -U pip setuptools wheel
 	pip3 install --user -Ur scripts/requirements-user.txt
-	which poetry && poetry self update
+	- poetry self update
 
 install-ruby-gems:
 	# scripts/install_rvm.sh
