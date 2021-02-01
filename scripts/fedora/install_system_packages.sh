@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
+set -o nounset
 
-# Additional repos
+# Options:
+# -r: Install dnf repositories
+# -g: Install graphical applications
+# -n: Install packages for Gnome
+# -x: Install packages for Xfce
+
+
+# Repositories
+# --------------------
+
+# Repos for some additional applications not in the base repo(s)
+# (or newer versions than base repo versions)
 RELEASEVER=$(rpm -E %fedora)
 REPO_RPM_URIS="
     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASEVER}.noarch.rpm
@@ -18,31 +30,34 @@ RPM_KEYS='
     https://packagecloud.io/AtomEditor/atom/gpgkey
 '
 
-# RPMs not contained in a repo
+function install_repos() {
+    sudo dnf install -y $REPO_RPM_URIS
+    sudo rpm --import $RPM_KEYS
+    for uri in $REPO_CONFIG_URIS; do
+        sudo dnf config-manager --add-repo $uri
+    done
+}
+
+
+# Package categories
+# --------------------
+
+# RPMs not contained in a repo (or newer versions than base repo versions)
 RPM_URIS="
     https://github.com/duplicati/duplicati/releases/download/v2.0.5.1-2.0.5.1_beta_2020-01-18/duplicati-2.0.5.1-2.0.5.1_beta_20200118.noarch.rpm
     https://zoom.us/client/latest/zoom_x86_64.rpm
 "
-
-# Package categories
+# Terminal applications
 PKGS_APPS='
-    atom
-    chromium
-    docker-ce
     dnf-automatic
     dnf-plugins-core
+    docker-ce
     figlet
-    firefox
-    firefox-wayland
     fish
     fzf
-    gimp
     git
-    guake
     htop
     inkscape
-    keepassxc
-    nextcloud-client
     nmap
     ntp
     ntpdate
@@ -52,7 +67,6 @@ PKGS_APPS='
     qpdf
     rpmconf
     telnet
-    terminator
     the_silver_searcher
     tig
     tldr
@@ -65,6 +79,19 @@ PKGS_APPS='
     xmlstarlet
     xsel
 '
+# Graphical applications
+PKGS_GUI_APPS='
+    atom
+    chromium
+    firefox
+    firefox-wayland
+    gimp
+    guake
+    keepassxc
+    nextcloud-client
+    terminator
+'
+# Libraries, mostly needed for compiling other applications
 PKGS_LIBS='
     automake
     bash-completion
@@ -111,11 +138,6 @@ PKGS_MEDIA='
     vlc-extras
     x265
 '
-PKGS_POSTGRES='
-    postgresql10-devel
-    postgresql10-server
-    postgis30_10-devel
-'
 PKGS_OTHER='
     fortune-mod
     toilet
@@ -127,7 +149,7 @@ PKGS_IMG='
     exiv2-devel
     perl-Image-ExifTool
 '
-# Desktop environment-specific packages
+# Packages for Gnome desktop environment
 PKGS_GNOME='
     alacarte
     dconf-editor
@@ -153,6 +175,7 @@ PKGS_GNOME='
     f32-backgrounds-extras-gnome
     f33-backgrounds-extras-gnome
 '
+# Packages for Xfce desktop environment
 PKGS_XFCE='
     @xfce-desktop-environment
     albert
@@ -162,18 +185,24 @@ PKGS_XFCE='
     xfce4-whiskermenu-plugin
 '
 
-# Install repos
-sudo dnf install -y $REPO_RPM_URIS
-sudo rpm --import $RPM_KEYS
-for uri in $REPO_CONFIG_URIS; do
-    sudo dnf config-manager --add-repo $uri
+
+# Installation
+# --------------------
+
+# Determine packages to install based on shell arguments
+PACKAGES_TO_INSTALL="$RPM_URIS $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_IMG"
+while getopts "rgn" option; do
+    case "${option}" in
+        r) install_repos;;
+        g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA";;
+        n) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GNOME";;
+        x) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_XFCE";;
+    esac
 done
 
 # Install packages
 sudo dnf update -y
-sudo dnf install -y $RPM_URIS $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_IMG $PKGS_XFCE
-# Optional packages
-# sudo dnf install -y $PKGS_POSTGRES $PKGS_GNOME $PKGS_OTHER
+sudo dnf install -y $PACKAGES_TO_INSTALL
 
 sudo activate-global-python-argcomplete
 

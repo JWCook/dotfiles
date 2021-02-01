@@ -4,76 +4,76 @@
 # Grouped Pakcages & Config: Cross-Platform #
 #############################################
 
-install-conf: install-albert-conf \
-              install-atom-conf \
-              install-bash-conf \
-              install-fish-conf \
-              install-figlet-conf \
-              install-git-conf \
-              install-grc-conf \
-              install-gnome-terminal-conf \
-              install-guake-conf \
-              install-htop-conf \
-              install-ipython-conf \
-              install-pep8-conf \
-              install-postgres-conf \
-              install-terminator-conf \
-              install-vim-conf
+install-conf: \
+    install-albert-conf \
+    install-atom-conf \
+    install-bash-conf \
+    install-fish-conf \
+    install-figlet-conf \
+    install-git-conf \
+    install-grc-conf \
+    install-gnome-terminal-conf \
+    install-guake-conf \
+    install-htop-conf \
+    install-ipython-conf \
+    install-pep8-conf \
+    install-postgres-conf \
+    install-terminator-conf \
+    install-vim-conf
 
-install-pkgs: install-fonts \
-              install-grc \
-              install-miniconda \
-              install-python-packages \
-              install-poetry \
-              install-pyenv \
-              install-ruby-gems \
-              # install-npm-packages \
+install-portable-packages: \
+    install-fonts \
+    install-grc \
+    install-miniconda \
+    install-python-packages \
+    install-poetry \
+    install-pyenv \
+    install-ruby-gems \
+    # install-npm-packages \
 
-install-optional: configure-gnome \
-                  configure-ntp \
-                  configure-sudoers \
-
-update: update-python \
-        update-ruby \
-        update-grc
-        # update-vim
-        # update-ycm
+update: \
+    update-python \
+    update-ruby \
+    update-grc
+    # update-vim
 
 
 ##############################################
 # Grouped Pakcages & Config: Distro-Specific #
 ##############################################
 
-install-fedora: install-system-packages-fedora \
-                install-pkgs \
-                install-conf \
-                install-chrome-fedora \
-                install-neovim-fedora \
-                install-retroterm-fedora \
-                install-ssh-agent-systemd
-                # install-vim-fedora
+install-fedora: \
+    install-system-packages-fedora-xfce \
+    install-portable-packages \
+    install-conf \
+    install-chrome-fedora \
+    install-neovim-fedora \
+    install-retroterm-fedora \
+    install-ssh-agent-systemd
+    # install-vim-fedora
 
 update-fedora: update
 	sudo dnf upgrade -y
 
-install-ubuntu: install-system-packages-ubuntu \
-                install-pkgs \
-                install-conf \
-                install-chrome-ubuntu \
-                install-flux-ubuntu \
-                install-vim-ubuntu
+install-ubuntu: \
+    install-system-packages-ubuntu \
+    install-portable-packages \
+    install-conf \
+    install-chrome-ubuntu \
+    install-flux-ubuntu \
+    install-vim-ubuntu
 
-install-ubuntu-wsl: install-system-packages-ubuntu \
-                install-pkgs \
-                install-conf \
-                configure-sudoers
-	rm ~/.bashrc_wsl
+install-ubuntu-wsl: \
+    install-system-packages-ubuntu-headless \
+    install-portable-packages \
+    install-conf \
+    init-ssh-conf \
+    configure-fonts-wsl \
+    configure-sudoers
+	rm -f ~/.bashrc_wsl
 	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
-	# scripts/ubuntu/configure_wsl.sh
+	ln -s /mnt/d/Workspace ~/workspace
 	sudo apt-get install -y xfce4-terminal
-	mkdir -p ~/.ssh
-	cp ssh/config ~/.ssh/
-	source bash/bashrc && ssh-set-permissions
 
 update-ubuntu: update
 	sudo apt-get update && sudo apt-get upgrade -y
@@ -83,6 +83,9 @@ update-ubuntu: update
 # Runtime Configuration #
 #########################
 
+configure-fonts-wsl:
+	scripts/configure_fonts_wsl.sh
+
 configure-gnome:
 	scripts/configure_gnome.sh
 
@@ -91,6 +94,12 @@ configure-ntp:
 
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
+
+# WIP
+init-ssh-conf:
+	mkdir -p ~/.ssh
+	cp ssh/config ~/.ssh/
+	source bash/bashrc && ssh-set-permissions
 
 install-albert-conf:
 	rm -f ~/.config/albert/albert.conf
@@ -113,6 +122,7 @@ install-atom-conf:
 	ln -s `pwd`/atom/styles.less    ~/.atom/styles.less
 	- apm install package-sync
 
+install-bash-conf:
 	rm -f ~/.bashrc
 	rm -f ~/.bashrc_style
 	rm -f ~/.bash_profile
@@ -142,7 +152,6 @@ install-gnome-terminal-conf:
 	- dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
 	# To export settings:
 	#dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
-
 
 install-guake-conf:
 	- guake --restore-preferences guake/guake_settings
@@ -234,9 +243,6 @@ update-python: install-python-packages
 update-ruby:
 	sudo gem update
 
-update-ycm:
-	scripts/update_ycm.sh
-
 update-vim:
 	scripts/install_vim.sh
 
@@ -245,8 +251,16 @@ update-vim:
 # Packages: Fedora #
 ####################
 
-install-system-packages-fedora:
-	scripts/fedora/install_repos.sh
+install-system-packages-fedora-gnome:
+	scripts/fedora/install_system_packages.sh -r -g -n
+
+install-system-packages-fedora-xfce:
+	scripts/fedora/install_system_packages.sh -r -g -x
+
+install-system-packages-fedora-headless:
+	scripts/fedora/install_system_packages.sh -r
+
+reinstall-system-packages-fedora:
 	scripts/fedora/install_system_packages.sh
 
 install-neovim-fedora:
@@ -271,6 +285,12 @@ install-retroterm-fedora:
 #####################
 
 install-system-packages-ubuntu:
+	sudo scripts/ubuntu/install_system_packages.sh -r -g
+
+install-system-packages-ubuntu-headless:
+	sudo scripts/ubuntu/install_system_packages.sh -r
+
+reinstall-system-packages-ubuntu:
 	sudo scripts/ubuntu/install_system_packages.sh
 
 install-vim-ubuntu:
