@@ -1,5 +1,6 @@
 # Python 3 packages to install in ~/.local/lib
 argcomplete
+asciinema
 awscli
 flake8
 ipython[all]
@@ -7,12 +8,12 @@ jedi
 py-spy
 pygments
 python-dateutil
-requests[security]
-requests[socks]
+requests[security,socks]
 virtualenvwrapper
 virtualfish
 yamllint
 
+# altair
 # numpy
 # pandas
 # matplotlib

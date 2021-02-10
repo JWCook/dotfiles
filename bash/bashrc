@@ -21,6 +21,8 @@ source-file ~/.bashrc_extra                             # Machine-specific confi
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
 source-file ~/.travis/travis.sh                         # Travis CI utils
+source-file ~/.local/share/icons-in-terminal/icons_bash.sh
+
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
 
@@ -145,7 +147,13 @@ newest() {                                              # Find most recent file 
 du() {                                                  # Recursive folder size
     /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
 }
-alias ll='ls -Alhv --group-directories-first'           # Can't live without it
+if cmd-exists colorls; then
+    alias ls='colorls -A --group-directories-first'
+    alias ll='colorls -AGl --group-directories-first'
+else
+    alias ll='ls -Alhv --group-directories-first'
+fi
+
 alias sll='sudo -E ls -Alhv --group-directories-first'
 lt() { tree $@ | color-filesize; }                      # Colored folder tree
 lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)

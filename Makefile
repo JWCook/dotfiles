@@ -226,7 +226,7 @@ install-python-packages:
 
 install-ruby-gems:
 	# scripts/install_rvm.sh
-	gem install -g scripts/Gemfile
+	sudo gem install -g scripts/Gemfile
 
 install-ssh-agent-systemd:
 	scripts/install_ssh_agent_systemd.sh

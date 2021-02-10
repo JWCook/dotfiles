@@ -29,7 +29,7 @@ end
 
 # Test if a command/alias/function exists
 function cmd-exists
-    type -a $argv > /dev/null 2>&1
+    type -a $argv &> /dev/null
 end
 
 # Append to path, without duplicates
@@ -76,6 +76,8 @@ pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+
+source ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
@@ -138,7 +140,14 @@ abbr weather curl -4 http://wttr.in/~50266
 
 # Recursive folder size
 abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
-alias ll 'ls -Alhv --group-directories-first'
+
+if cmd-exists colorls
+    alias ls 'colorls -A --group-directories-first'
+    alias ll 'colorls -AGl --group-directories-first'
+else
+    alias ll 'ls -Alhv --group-directories-first'
+end
+
 alias sll 'sudo -E ls -Alhv --group-directories-first'
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
@@ -196,7 +205,7 @@ abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
 
 # Mount a network share
 function mount-share -a remote_share local_mountpoint creds_file
-    if not mountpoint "$local_mountpoint" > /dev/null 2>&1
+    if not mountpoint "$local_mountpoint" &> /dev/null
         sudo mkdir -p "$local_mountpoint"
         sudo mount -v -t cifs -o credentials="$creds_file" "$remote_share" "$local_mountpoint"
     else
@@ -774,7 +783,7 @@ abbr sp-open xdg-open docs/_build/html/index.html
 
 # Tests
 function system-is-rpm
-    /usr/bin/rpm -q -f /usr/bin/rpm > /dev/null 2>&1
+    /usr/bin/rpm -q -f /usr/bin/rpm &> /dev/null
 end
 function system-is-deb
     test -f /etc/debian_version
@@ -851,7 +860,7 @@ abbr hibernate-pm pm-hibernate
 ##########################
 
 # Proxychains executable varies by distro
-if type -a proxychains4 >/dev/null 2>&1
+if type -a proxychains4 &> /dev/null
     alias proxychains='proxychains4'
 end
 alias px 'proxychains -q'
