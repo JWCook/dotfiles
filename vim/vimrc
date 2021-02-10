@@ -112,17 +112,18 @@ Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
-Plug 'atelierbram/Base2Tone-vim'
+" Plug 'atelierbram/Base2Tone-vim'
+Plug 'ayu-theme/ayu-vim'
 Plug 'tyrannicaltoucan/vim-deep-space'
-Plug 'aereal/vim-colors-japanesque'
-Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
-Plug 'sickill/vim-monokai'
+Plug 'arcticicestudio/nord-vim'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'lifepillar/vim-solarized8'
+Plug 'chlorm/vim-monokai-truecolor'
+Plug 'jacoborus/tender.vim'
 Plug 'rakr/vim-two-firewatch'
-" Plug 'Donearm/Ubaryd'
-" Plug 'antlypls/vim-colors-codeschool'
-" Plug 'CruizeMissile/Revolution.vim'
-" Plug 'ninja/sky'
+Plug 'Donearm/Ubaryd'
 
 call plug#end()
 
@@ -516,10 +517,12 @@ au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead *.less set filetype=css
 
 " Color scheme
+set termguicolors
 try
-  " let g:solarized_termcolors=256
-  " let g:deepspace_italics=1
-  colorscheme jellybeans "peachpuff ubaryd solarized monokai
+  colorscheme gruvbox
+  "Favorites -
+  "  ayu deep-space gruvbox jellybeans monokai nord palenight
+  "  solarized8_high tender two-firewatch ubaryd
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
@@ -714,7 +717,6 @@ if !has('nvim')
   set nocompatible  " Prevents VIM from being nerfed into acting like VI
   set wildmenu
   set showcmd  " Show partial commands during entry
-  set t_Co=256
   set autoindent
   set smarttab
   set backspace=indent,eol,start

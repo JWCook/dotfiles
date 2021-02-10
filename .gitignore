@@ -11,6 +11,7 @@ _build.py
 viminfo.tmp*
 vim/vim/autoload
 vim/vim/session
+vim/vim/plug-snapshot
 plugged
 viminfo
 plug.vim.old
