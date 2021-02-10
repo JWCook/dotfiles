@@ -6,6 +6,7 @@ set -o nounset
 # -g: Install graphical applications
 # -n: Install packages for Gnome
 # -w: Install packages for WSL
+# -x: Install packages for Xfce (not yet added)
 
 
 # Repositories
@@ -112,10 +113,13 @@ PKGS_MEDIA='
     vlc
     x265
 '
-# Desktop environment-specific packages
+# Packages for Gnome desktop environment
 PKGS_GNOME='
     gnome-tweak-tool
     gconf-editor
+'
+# Packages for Xfce desktop environment
+PKGS_XFCE='
 '
 PKGS_SNAP='ffmpeg'
 # Additional packages for WSL
@@ -132,12 +136,13 @@ PKGS_WSL='
 
 # Determine packages to install based on shell arguments
 PACKAGES_TO_INSTALL="$PKGS_APPS $PKGS_SERVER $PKGS_LIBS $PKGS_IMG"
-while getopts "rgnw" option; do
+while getopts "rgnwx" option; do
     case "${option}" in
         r) install_repos;;
         g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA";;
         n) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GNOME";;
         w) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_WSL";;
+        x) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_XFCE";;
     esac
 done
 

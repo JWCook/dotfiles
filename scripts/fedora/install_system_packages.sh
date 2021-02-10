@@ -31,10 +31,10 @@ RPM_KEYS='
 '
 
 function install_repos() {
-    sudo dnf install -y $REPO_RPM_URIS
-    sudo rpm --import $RPM_KEYS
+    dnf install -y $REPO_RPM_URIS
+    rpm --import $RPM_KEYS
     for uri in $REPO_CONFIG_URIS; do
-        sudo dnf config-manager --add-repo $uri
+        dnf config-manager --add-repo $uri
     done
 }
 
@@ -58,7 +58,6 @@ PKGS_APPS='
     fzf
     git
     htop
-    inkscape
     nmap
     ntp
     ntpdate
@@ -72,6 +71,7 @@ PKGS_APPS='
     tig
     tldr
     tmux
+    toilet
     tree
     vim-enhanced
     wget
@@ -88,9 +88,11 @@ PKGS_GUI_APPS='
     firefox-wayland
     gimp
     guake
+    inkscape
     keepassxc
     nextcloud-client
     terminator
+    xfce4-terminal
 '
 # Libraries, mostly needed for compiling other applications
 PKGS_LIBS='
@@ -109,6 +111,8 @@ PKGS_LIBS='
     libffi-devel
     libxml2-devel
     libxslt-devel
+    libX11-devel
+    libXtst-devel
     lua-devel
     mono-devel
     ncurses-devel
@@ -138,10 +142,6 @@ PKGS_MEDIA='
     vlc
     vlc-extras
     x265
-'
-PKGS_OTHER='
-    fortune-mod
-    toilet
 '
 # Image processing packages
 PKGS_IMG='
@@ -192,7 +192,7 @@ PKGS_XFCE='
 
 # Determine packages to install based on shell arguments
 PACKAGES_TO_INSTALL="$RPM_URIS $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_IMG"
-while getopts "rgn" option; do
+while getopts "rgnx" option; do
     case "${option}" in
         r) install_repos;;
         g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA";;
@@ -202,23 +202,23 @@ while getopts "rgn" option; do
 done
 
 # Install packages
-sudo dnf update -y
-sudo dnf install -y $PACKAGES_TO_INSTALL
+dnf update -y
+dnf install -y $PACKAGES_TO_INSTALL
 
-sudo activate-global-python-argcomplete
+activate-global-python-argcomplete
 
 # Disable cgroupsv2; see https://github.com/docker/cli/issues/297#issuecomment-547022631
-sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
 
 # Enable docker service
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo groupadd docker
-sudo usermod -aG docker $USER
+systemctl enable docker
+systemctl start docker
+groupadd docker
+usermod -aG docker $USER
 
 # Enable automatic updates; edit /etc/dnf/automatic.conf for settings
-sudo systemctl enable --now dnf-automatic.timer
-sudo systemctl start dnf-automatic.timer
-sudo systemctl list-timers *dnf-*
+systemctl enable --now dnf-automatic.timer
+systemctl start dnf-automatic.timer
+systemctl list-timers *dnf-*
 
 echo 'Done. System restart required.'

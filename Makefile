@@ -19,7 +19,8 @@ install-conf: \
     install-pep8-conf \
     install-postgres-conf \
     install-terminator-conf \
-    install-vim-conf
+    install-vim-conf \
+    install-xfce-conf
 
 install-portable-packages: \
     install-fonts \
@@ -202,6 +203,12 @@ install-vim-conf:
 	# Sync vim sessions, if sync folder exists
 	- [ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
 
+install-xfce-conf:
+	rm -rf ~/.config/xfce4/terminal
+	mkdir -p ~/.config/xfce4/terminal
+	ln -s `pwd`/xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
+	ln -s `pwd`/xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+
 
 ############################
 # Packages: Cross-Platform #
@@ -258,16 +265,16 @@ update-vim:
 ####################
 
 install-system-packages-fedora-gnome:
-	scripts/fedora/install_system_packages.sh -r -g -n
+	sudo scripts/fedora/install_system_packages.sh -r -g -n
 
 install-system-packages-fedora-xfce:
-	scripts/fedora/install_system_packages.sh -r -g -x
+	sudo scripts/fedora/install_system_packages.sh -r -g -x
 
 install-system-packages-fedora-headless:
-	scripts/fedora/install_system_packages.sh -r
+	sudo scripts/fedora/install_system_packages.sh -r
 
 reinstall-system-packages-fedora:
-	scripts/fedora/install_system_packages.sh
+	sudo scripts/fedora/install_system_packages.sh
 
 install-neovim-fedora:
 	scripts/fedora/install_neovim.sh
