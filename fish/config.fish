@@ -104,6 +104,7 @@ cmd-exists vf && vf install compat_aliases > /dev/null
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
+abbr open-ps powershell.exe /c start
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&

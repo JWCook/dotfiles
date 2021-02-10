@@ -17,8 +17,8 @@ FONT_NAMES='
 '
 RELEASE_VER='v2.1.0'
 RELEASE_BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${RELEASE_VER}"
-FONT_DIR='~/.local/share/fonts/NerdFonts'
-DOWNLOAD_DIR='~/.local/share/fonts/Downloads'
+FONT_DIR=~/.local/share/fonts/NerdFonts
+DOWNLOAD_DIR=~/.local/share/fonts/Downloads
 
 echo 'Downloading patched fonts...'
 

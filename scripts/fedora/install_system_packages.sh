@@ -49,6 +49,7 @@ RPM_URIS="
 "
 # Terminal applications
 PKGS_APPS='
+    bat
     dnf-automatic
     dnf-plugins-core
     docker-ce

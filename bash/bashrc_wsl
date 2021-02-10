@@ -1,9 +1,22 @@
+# :set filetype=bash
+
 export NATURTAG_DIR='/mnt/c/Users/JCook/AppData/Local/Naturtag'
 
-eval $(ssh-agent -s)
-ssh-add ~/.ssh/github_rsa
+alias open-ps='powershell.exe /c start'
 
-function termxfce() {
+# TODO: Don't add duplicate keys
+# eval $(ssh-agent -s)
+# ssh-add ~/.ssh/github_rsa
+
+# Launch gnome-keyring if it's not already started, and set keyring-related environment variables
+function init-keyring() {
+    eval $(dbus-launch --sh-syntax)
+    pgrep gnome-keyring &> /dev/null || eval $(gnome-keyring-daemon)
+    export DBUS_SESSION_BUS_ADDRESS GNOME_KEYRING_CONTROL
+    export SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+}
+
+function start-xfce-term() {
     # This command doesn't work when a custom DNS is set
     # export DISPLAY=$(grep -oP "(?<=nameserver ).+" /etc/resolv.conf):0.0
     export DISPLAY=127.0.0.1:0
@@ -28,6 +41,10 @@ function start-xhost() {
 
 function startme() {
     start-xhost
-    termxfce
-    termxfce
+    start-xfce-term
+    start-xfce-term
 }
+
+
+init-keyring
+ssh-add ~/.ssh/github_rsa

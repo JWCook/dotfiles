@@ -5,6 +5,7 @@ set -o nounset
 # -r: Install apt repositories
 # -g: Install graphical applications
 # -n: Install packages for Gnome
+# -w: Install packages for WSL
 
 
 # Repositories
@@ -30,6 +31,7 @@ function install_repos() {
 
 # Terminal applications
 PKGS_APPS='
+    bat
     curl
     figlet
     fish
@@ -70,6 +72,7 @@ PKGS_GUI_APPS='
 '
 # Libraries, mostly needed for compiling other applications
 PKGS_LIBS='
+    bash-completion
     build-essential
     cmake
     exuberant-ctags
@@ -115,6 +118,13 @@ PKGS_GNOME='
     gconf-editor
 '
 PKGS_SNAP='ffmpeg'
+# Additional packages for WSL
+PKGS_WSL='
+    dbus-x11
+    gnome-keyring
+    keepassxc
+    xfce4-terminal
+'
 
 
 # Installation
@@ -122,11 +132,12 @@ PKGS_SNAP='ffmpeg'
 
 # Determine packages to install based on shell arguments
 PACKAGES_TO_INSTALL="$PKGS_APPS $PKGS_SERVER $PKGS_LIBS $PKGS_IMG"
-while getopts "rg" option; do
+while getopts "rgnw" option; do
     case "${option}" in
         r) install_repos;;
         g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA";;
         n) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GNOME";;
+        w) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_WSL";;
     esac
 done
 

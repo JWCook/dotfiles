@@ -64,7 +64,7 @@ install-ubuntu: \
     install-vim-ubuntu
 
 install-ubuntu-wsl: \
-    install-system-packages-ubuntu-headless \
+    install-system-packages-ubuntu-wsl \
     install-portable-packages \
     install-conf \
     init-ssh-conf \
@@ -72,8 +72,14 @@ install-ubuntu-wsl: \
     configure-sudoers
 	rm -f ~/.bashrc_wsl
 	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
-	ln -s /mnt/d/Workspace ~/workspace
-	sudo apt-get install -y xfce4-terminal
+	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
+	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
+	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/
+	scripts/init_gnome_keyring.sh
+	# See: https://github.com/dnschneid/crouton/wiki/Fix-error-while-loading-shared-libraries:-libQt5Core.so.5
+	sudo strip --remove-section=.note.ABI-tag  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+	# WIP: Set up host Firefox to allow opening browser from links in WSL
+	# sudo update-alternatives --install "/bin/host_firefox" "firefox" '/mnt/c/Program Files/Mozilla Firefox/firefox.exe' 1
 
 update-ubuntu: update
 	sudo apt-get update && sudo apt-get upgrade -y
@@ -287,8 +293,8 @@ install-retroterm-fedora:
 install-system-packages-ubuntu:
 	sudo scripts/ubuntu/install_system_packages.sh -r -g
 
-install-system-packages-ubuntu-headless:
-	sudo scripts/ubuntu/install_system_packages.sh -r
+install-system-packages-ubuntu-wsl:
+	sudo scripts/ubuntu/install_system_packages.sh -r -w
 
 reinstall-system-packages-ubuntu:
 	sudo scripts/ubuntu/install_system_packages.sh

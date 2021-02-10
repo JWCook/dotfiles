@@ -8,7 +8,7 @@ pathadd() {                                             # Append to path, withou
     [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]] &&\
     export PATH="${PATH:+"$PATH:"}$1"
 }
-cmd-exists() { type -a $@ > /dev/null 2>&1; }           # Test if a command/alias/function exists
+cmd-exists() { type -a $@ &> /dev/null; }           # Test if a command/alias/function exists
 source-file() { [[ -f $1 ]] && source $1; }             # Source a file, if it exists
 source-bin() { cmd-exists $1 && source $(which $1); }   # Source an executable, if it exists on path
 alias ttput='tty -s && tput'                            # Safe tput, only for TTY sessions
@@ -57,7 +57,6 @@ if  [ -S $DEFAULT_SSH_AUTH_SOCK ] ; then
 fi
 
 # Python
-# export PYTHONPATH=~/.local/lib/python3.7/site-packages
 export PYTHONPATH=~/.local/lib/python3.8/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
 export PYTHON_DEFAULT_PACKAGES='ipython ipdb rich pip setuptools wheel'
@@ -109,7 +108,7 @@ hist-frequency() {
 }
 
 # Run cmd with no output
-nullify() { "$@" >/dev/null 2>&1; }
+nullify() { "$@" &> /dev/null; }
 
 # Prompt for confirmation before continuing
 prompt-confirm() {
@@ -346,7 +345,7 @@ ssh-refresh() { nullify ssh -O exit $1; ssh $1; }
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)
 mount-share(){
-    if ! mountpoint "$2" > /dev/null 2>&1; then
+    if ! mountpoint "$2" &> /dev/null; then
         sudo mkdir -p "$2"
         sudo mount -v -t cifs -o credentials="$3" "$1" "$2"
     else
@@ -600,7 +599,7 @@ grm-branch() {
         git push origin --delete $1
     fi
 }
-type -a __git_complete > /dev/null 2>&1 && __git_complete grm-branch _git_branch
+cmd-exists __git_complete && __git_complete grm-branch _git_branch
 
 # GitHub
 # ------------------------------
@@ -890,7 +889,7 @@ alias sp-autodoc='sphinx-autobuild-current'
 
 # Tests
 system-is-rpm() {
-    /usr/bin/rpm -q -f /usr/bin/rpm >/dev/null 2>&1
+    /usr/bin/rpm -q -f /usr/bin/rpm &> /dev/null
 }
 system-is-deb() { [ -f "/etc/debian_version" ]; }
 
@@ -1024,7 +1023,7 @@ s3rm() { aws s3 rm s3://$@; }
 ##########################
 
 # Proxychains executable varies by distro
-if type -a proxychains4 >/dev/null 2>&1; then
+if cmd-exists proxychains4; then
     alias proxychains='proxychains4'
 fi
 alias px='proxychains -q'
