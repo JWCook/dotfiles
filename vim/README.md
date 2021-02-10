@@ -71,13 +71,14 @@ Reference for vim commands, including custom commands, mappings, plugins, etc.
 | Whitespace   | strip whitespace           | ww            | `:StripWhitespace`
 |              | toggle Markers             | wt            | `:ToggleWhitespace`
 |              | strip on save              | ws            | `:ToggleStripWhitespaceOnSave`
-| Denite       | file search                | Ctrl-P        | `:DeniteProjectDir -start-filter file/rec`
-|              | buffer search              | Ctrl-B
-|              | content search (`ag`)      | Ctrl-F
-|              | `git` search               | Ctrl-G
+| Fzf          | buffer search              | Ctrl-B
+|              | line search                | Ctrl-F
+|              | `git` file search          | Ctrl-G
+|              | `git` actions              | Ctrl-Alt-G
+|              | command history search     | Ctrl-M
+|              | project file search        | Ctrl-P
+|              | `git status`               | Ctrl-S
 |              | yank history search        | Ctrl-Y
-|              | refresh cache              | Ctrl-L
-|              | command history search         | Ctrl-Shift-R
 | Virtualenvs  | list                       | vl            | `:VirtualEnvList`
 |              | deactivate                 | vd            | `:VirtualEnvDeactivate`
 |              | activate                   |               | `:VirtualEnvActivate [name/tab-complete]`

@@ -119,6 +119,14 @@ abbr vim nvim
 abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
 
+if cmd-exists batcat
+    # bat executable is installed as 'batcat' on Ubuntu due to name collision
+    alias bat='batcat'
+    alias cat='batcat'
+else if cmd-exists bat
+    alias cat='bat'
+end
+
 
 ################
 # ❰❰ Search ❱❱ #

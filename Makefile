@@ -197,10 +197,12 @@ install-vim-conf:
 	rm -rf ~/.vim
 	rm -rf ~/.vimrc
 	rm -f ~/.config/nvim/init.vim
+	rm -f ~/.config/nvim/coc-settings.json
+	mkdir -p ~/.config/nvim
 	ln -s `pwd`/vim/vimrc  ~/.vimrc
 	ln -s `pwd`/vim/vim  ~/.vim
-	mkdir -p ~/.config/nvim
 	ln -s `pwd`/vim/vimrc ~/.config/nvim/init.vim
+	ln -s `pwd`/vim/coc-settings.json ~/.config/nvim/coc-settings.json
 	# Sync vim sessions, if sync folder exists
 	- [ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
 

@@ -95,6 +95,14 @@ alias vim='nvim'
 alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
+if cmd-exists batcat; then
+    # bat executable is installed as 'batcat' on Ubuntu due to name collision
+    alias bat='batcat'
+    alias cat='batcat'
+elif cmd-exists bat; then
+    alias cat='bat'
+fi
+
 
 ####################
 # ❰❰ Misc Utils ❱❱ #

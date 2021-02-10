@@ -49,17 +49,21 @@ Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
 " Autocomplete
-" Plug 'Valloric/YouCompleteMe', {'do': 'make -C ~/dotfiles update-ycm'}
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'do': pip_update.'jedi'} ", {'do': ':UpdateRemotePlugins'}
-else
-  Plug 'Shougo/deoplete.nvim'
-endif
-Plug 'deoplete-plugins/deoplete-jedi'
-let g:deoplete#enable_at_startup = 1
-" Plug 'deoplete-plugins/deoplete-clang', {'do': pip_update.'pynvim'}
-" let g:deoplete#sources#clang#libclang_path = ''
-" let g:deoplete#sources#clang#clang_header = ''
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'LeafCage/yankround.vim'
+let g:coc_global_extensions = [
+  \ 'coc-fzf-preview',
+  \ 'coc-git',
+  \ 'coc-json',
+  \ 'coc-prettier',
+  \ 'coc-pyright',
+  \ 'coc-python',
+  \ 'coc-sh',
+  \ 'coc-sql',
+  \ 'coc-toml',
+  \ 'coc-yaml'
+\]
 
 " Search
 if has('nvim')
@@ -194,10 +198,12 @@ set <F37>=[1;6P   " F37 -> C-S-F1
 " ❰❰ Plugin Settings ❱❱ "
 """""""""""""""""""""""""
 
-let ignore_files = [ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.idea',
-                   \ '^\.sonar$', '^\.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
-                   \ '^tmp$', '^\.coverage$', '\.a$', '\.class$', '\.idea$', '\.o$', '\.obj$',
-                   \ '\.pyc$','\.sw\a$', '\.so$']
+let ignore_files = [
+  \ '__pycache__', '\~$', '\.egg-info$', '^\.cache$', '^\.git$', '^\.idea',
+  \ '^\.sonar$', '^\.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
+  \ '^tmp$', '^\.coverage$', '\.a$', '\.class$', '\.idea$', '\.o$', '\.obj$',
+  \ '\.pyc$','\.sw\a$', '\.so$'
+  \]
 
 " Airline
 " let g:airline_theme='ubaryd'
@@ -235,6 +241,26 @@ nnoremap <silent> gb :Gbrowse<CR>
 nnoremap <silent> gl :Gblame<CR>
 nnoremap <silent> gc :execute ':Gcommit' \| :startinsert<CR>
 nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
+
+" Fzf
+nnoremap <C-B>        :CocCommand fzf-preview.Buffers<CR>
+inoremap <C-B><ESC>   :CocCommand fzf-preview.Buffers<CR>
+nnoremap <C-G>        :CocCommand fzf-preview.GitFiles<CR>
+inoremap <C-G><ESC>   :CocCommand fzf-preview.GitFiles<CR>
+nnoremap <C-A-G>      :CocCommand fzf-preview.GitActions<CR>
+inoremap <C-A-G><ESC> :CocCommand fzf-preview.GitActions<CR>
+nnoremap <C-F>        :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+inoremap <C-F><ESC>   :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <C-M>        :CocCommand fzf-preview.CommandPalette<CR>
+inoremap <C-M><ESC>   :CocCommand fzf-preview.CommandPalette<CR>
+nnoremap <C-P>        :CocCommand fzf-preview.ProjectFiles<CR>
+inoremap <C-P><ESC>   :CocCommand fzf-preview.ProjectFiles<CR>
+nnoremap <C-S>        :CocCommand fzf-preview.GitStatus<CR>
+inoremap <C-S><ESC>   :CocCommand fzf-preview.GitStatus<CR>
+nnoremap <C-Y>        :CocCommand fzf-preview.Yankround<CR>
+inoremap <C-Y><ESC>   :CocCommand fzf-preview.Yankround<CR>
+
+let g:fzf_preview_command = 'bat --color=always --plain {-1}'
 
 " tComment
 nnoremap <silent> <F3> :TComment<CR>
@@ -355,90 +381,6 @@ nnoremap <silent> vd :VirtualEnvDeactivate<CR>
 nnoremap ww :StripWhitespace<CR>
 nnoremap wt :ToggleWhitespace<CR>
 nnoremap ws :ToggleStripWhitespaceOnSave<CR>
-
-
-""""""""""""""""""""""""
-" ❰❰ Plugin: Denite ❱❱ "
-""""""""""""""""""""""""
-
-" if exists('denite')
-augroup user_plugin_denite
-  autocmd!
-  autocmd FileType denite call s:denite_settings()
-  autocmd VimResized * call s:denite_resize()
-  autocmd WinEnter * if &filetype =~# '^denite' | highlight! link CursorLine WildMenu | endif
-  autocmd WinLeave * if &filetype ==# 'denite'  |  highlight! link CursorLine NONE | endif
-augroup END
-
-" Mappings
-nnoremap <C-B> :DeniteProjectDir -start-filter buffer<CR>
-inoremap <C-B> <ESC>:DeniteProjectDir -start-filter buffer<CR>
-nnoremap <C-F> :Denite grep:/home/cookjo/workspace<CR>
-inoremap <C-F> <ESC>:Denite grep:/home/cookjo/workspace<CR>
-nnoremap <C-G> :DeniteProjectDir -buffer-name=git -direction=top file/rec/git<CR>
-inoremap <C-G> <ESC> :DeniteProjectDir -buffer-name=git -direction=top file/rec/git<CR>
-nnoremap <C-P> :DeniteProjectDir -start-filter file/rec<CR>
-inoremap <C-P> <ESC>:DeniteProjectDir -start-filter file/rec<CR>
-" nnoremap <C-R> :DeniteProjectDir -start-filter command_history<CR>
-nnoremap <C-S> :DeniteProjectDir source<CR>
-nnoremap <C-Y> :Denite neoyank<CR>
-inoremap <C-Y> <ESC>:Denite neoyank<CR>
-
-" Actions within Denite window
-function! s:denite_settings() abort
-  nnoremap <silent><buffer><expr> <CR>  denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> <Esc> denite#do_map('quit')
-  inoremap <silent><buffer><expr> <Esc> denite#do_map('quit')
-  nnoremap <silent><buffer><expr> <Tab> denite#do_map('choose_action')
-  nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
-  nnoremap <silent><buffer><expr> dd denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> yy denite#do_map('do_action', 'yank')
-  nnoremap <silent><buffer><expr> vv denite#do_map('do_action', 'vsplit')
-  nnoremap <silent><buffer><expr> hh denite#do_map('do_action', 'split')
-  nnoremap <silent><buffer><expr> i  denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> p  denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q  denite#do_map('quit')
-  nnoremap <silent><buffer><expr> r   denite#do_map('redraw')
-endfunction
-
-" Window position
-function! s:denite_resize()
-    call denite#custom#option('_', {
-    \ 'winwidth': (&columns / 2) - 1,
-    \ 'winheight': &lines / 3,
-    \ 'wincol': 0,
-    \ 'winrow': 1,
-    \ })
-endfunction
-call s:denite_resize()
-
-if has('nvim')
-    call denite#custom#option('_', { 'split': 'floating', 'statusline': 0 })
-endif
-
-" Denite + Git file search
-call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-call denite#custom#var('file/rec/git', 'command',
-    \ ['git', 'ls-files', '-co', '--exclude-standard'])
-
-" Denite + Silver Searcher
-call denite#custom#var('file/rec', 'command',
-    \ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#var('grep', 'default_opts', [ '--vimgrep', '--hidden' ])
-
-" denite content search
-map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
-
-" Ignore patterns; use .gitignore and/or ag .ignore instead
-" let dignore=&wildignore . ',*.pyc,.git,.hg,.svn'
-" call denite#custom#var('file/rec', 'command',
-"     \ ['scantree.py', '--path', ':directory', '--ignore', dignore])
-" endif
 
 
 """"""""""""""""""""""""""""""""""
