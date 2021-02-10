@@ -58,6 +58,7 @@ fi
 # export PYTHONPATH=~/.local/lib/python3.7/site-packages
 export PYTHONPATH=~/.local/lib/python3.8/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
+export PYTHON_DEFAULT_PACKAGES='ipython ipdb rich pip setuptools wheel'
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
@@ -728,7 +729,7 @@ pip-versions() {
 # Install python packages from all available requirements files and/or setup.py
 pipr() {
     unset PYTHONPATH
-    pip install -U ipython pip setuptools wheel
+    pip install -U $PYTHON_DEFAULT_PACKAGES
     pip install -Ue  '.[all,dev]'
 
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
