@@ -8,11 +8,11 @@ install-conf: \
     install-albert-conf \
     install-atom-conf \
     install-bash-conf \
-    install-fish-conf \
     install-figlet-conf \
+    install-fish-conf \
     install-git-conf \
-    install-grc-conf \
     install-gnome-terminal-conf \
+    install-grc-conf \
     install-guake-conf \
     install-htop-conf \
     install-ipython-conf \
@@ -26,13 +26,14 @@ install-portable-packages: \
     install-fonts \
     install-grc \
     install-miniconda \
-    install-python-packages \
+    install-npm-packages \
     install-poetry \
     install-pyenv \
-    install-ruby-gems \
-    # install-npm-packages \
+    install-python-packages \
+    install-ruby-gems
 
 update: \
+    update-npm \
     update-python \
     update-ruby \
     update-grc
@@ -233,8 +234,8 @@ install-pyenv:
 	scripts/install_pyenv.sh
 
 install-python-packages:
-	pip3 install --user -U pip setuptools wheel
-	pip3 install --user -Ur scripts/requirements-user.txt
+	pip install --user -U pip setuptools wheel
+	pip install --user -Ur scripts/requirements-user.txt
 	- poetry self update
 
 install-ruby-gems:
@@ -248,8 +249,9 @@ install-vim:
 	scripts/install_vim.sh
 	scripts/install_vim_plug.sh
 
-update-grc:
-	scripts/install_grc.sh
+update-grc: install-grc
+
+update-npm: install-npm-packages
 
 update-python: install-python-packages
 
