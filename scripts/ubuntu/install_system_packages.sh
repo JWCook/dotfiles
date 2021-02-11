@@ -36,7 +36,6 @@ PKGS_APPS='
     curl
     figlet
     fish
-    fzf
     git
     htop
     jq

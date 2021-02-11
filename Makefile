@@ -24,6 +24,7 @@ install-conf: \
 
 install-portable-packages: \
     install-fonts \
+    install-fzf \
     install-grc \
     install-miniconda \
     install-npm-packages \
@@ -62,7 +63,7 @@ install-ubuntu: \
     install-portable-packages \
     install-conf \
     install-chrome-ubuntu \
-    install-flux-ubuntu \
+    install-retroterm-ubuntu \
     install-vim-ubuntu
 
 install-ubuntu-wsl: \
@@ -211,6 +212,7 @@ install-xfce-conf:
 	mkdir -p ~/.config/xfce4/terminal
 	ln -s `pwd`/xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
 	ln -s `pwd`/xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+	scripts/git/install_xfce_superkey.sh
 
 
 ############################
@@ -220,8 +222,11 @@ install-xfce-conf:
 install-fonts:
 	scripts/install_fonts.sh
 
+install-fzf:
+	scripts/git/install_fzf.sh
+
 install-grc:
-	scripts/install_grc.sh
+	scripts/git/install_grc.sh
 
 install-npm-packages:
 	scripts/install_npm_packages.sh
@@ -241,14 +246,13 @@ install-python-packages:
 	- poetry self update
 
 install-ruby-gems:
-	# scripts/install_rvm.sh
 	sudo gem install -g scripts/Gemfile
 
 install-ssh-agent-systemd:
 	scripts/install_ssh_agent_systemd.sh
 
 install-vim:
-	scripts/install_vim.sh
+	scripts/git/install_vim.sh
 	scripts/install_vim_plug.sh
 
 update-grc: install-grc
@@ -262,6 +266,13 @@ update-ruby:
 
 update-vim:
 	scripts/install_vim.sh
+
+update-git-repos:
+	scripts/git/install_fzf.sh
+	scripts/git/install_grc.sh
+	scripts/git/install_retroterm.sh
+	scripts/git/install_vim.sh
+	scripts/git/install_xfce_superkey.sh
 
 
 ####################
@@ -294,7 +305,8 @@ install-chrome-fedora:
 	sudo scripts/fedora/install_chrome.sh
 
 install-retroterm-fedora:
-	scripts/fedora/install_retroterm.sh
+	scripts/fedora/install_retroterm_prereqs.sh
+	scripts/git/install_retroterm.sh
 
 
 #####################
@@ -318,5 +330,6 @@ install-vim-ubuntu:
 install-chrome-ubuntu:
 	sudo scripts/ubuntu/install_chrome.sh
 
-install-flux-ubuntu:
-	sudo scripts/ubuntu/install_flux.sh
+install-retroterm-ubuntu:
+	scripts/ubuntu/install_retroterm_prereqs.sh
+	scripts/git/install_retroterm.sh

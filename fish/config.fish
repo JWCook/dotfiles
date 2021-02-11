@@ -49,7 +49,7 @@ end
 
 # Source a file, if it exists
 function source-file
-    [[ -f $1 ]] && source $argv
+    test -f $1 && source $argv
 end
 
 # Source an executable, if it exists on path
@@ -77,7 +77,7 @@ pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
 
-source ~/.local/share/icons-in-terminal/icons.fish
+# source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
 # [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
@@ -94,7 +94,7 @@ set -gx PYTHONPATH ~/.local/lib/python3.8/site-packages
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 # Configure Virtualfish, if installed
-cmd-exists vf && vf install compat_aliases > /dev/null
+# cmd-exists vf && vf install compat_aliases > /dev/null
 
 
 #########################

@@ -22,9 +22,10 @@ source-file ~/.bashrc_wsl                               # Additional config for 
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
 source-file ~/.travis/travis.sh                         # Travis CI utils
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
+source-file /usr/local/src/fzf/shell/completion.bash
+source-file /usr/local/src/fzf/shell/key-bindings.bash
 
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
-
 
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000
@@ -43,6 +44,7 @@ pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+pathadd /usr/local/src/fzf/bin
 
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
@@ -485,6 +487,8 @@ ssh-set-permissions() {
 # ❰❰ Git ❱❱ #
 #############
 
+export GLOBAL_REPO_DIR='/usr/local/src'
+
 # General
 # ------------------------------
 alias gp='git pull'
@@ -596,6 +600,15 @@ gpclone() {
         git -C $repo_dir pull
     else
         git clone $1 $repo_dir
+    fi
+}
+
+sgpclone() {
+    repo_dir="${GLOBAL_REPO_DIR}/$(basename $1)"
+    if [ -d "$repo_dir" ]; then
+        sudo git -C $repo_dir pull
+    else
+        sudo git clone $1 $repo_dir
     fi
 }
 

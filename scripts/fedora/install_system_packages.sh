@@ -55,7 +55,6 @@ PKGS_APPS='
     docker-ce
     figlet
     fish
-    fzf
     git
     htop
     nmap
