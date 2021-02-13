@@ -28,7 +28,8 @@ end
 
 # Format current hostname
 function _get_hostname
-    set _hostname (string replace "localhost" "🏠" (prompt_hostname))
+    # set _hostname (string replace "localhost" "🏠" (prompt_hostname))
+    set _hostname "🏠"
     echo -n -s (set_color $fish_color_user) "$_hostname"
 end
 

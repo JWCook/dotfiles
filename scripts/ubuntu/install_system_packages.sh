@@ -34,6 +34,7 @@ function install_repos() {
 PKGS_APPS='
     bat
     curl
+    feh
     figlet
     fish
     git
@@ -96,6 +97,7 @@ PKGS_LIBS='
 PKGS_IMG='
     exempi
     exiv2
+    imagemagick
     libexiv2-dev
     libexiv2-doc
     libimage-exiftool-perl

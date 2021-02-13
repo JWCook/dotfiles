@@ -66,6 +66,7 @@ alias ttput='tty -s && tput'
 #####################
 
 # Paths
+pathadd ~/.cargo/bin
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
@@ -104,6 +105,8 @@ set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
+alias feh='feh --borderless'
+alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 abbr open-ps powershell.exe /c start
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&

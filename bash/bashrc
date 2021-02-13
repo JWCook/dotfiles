@@ -34,6 +34,7 @@ export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 
 # Paths
+pathadd ~/.cargo/bin
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
@@ -82,6 +83,8 @@ export JUPYTER_LOCAL_PORT=9468
 export EDITOR=/usr/bin/nvim
 
 # Simple Command/App Aliases
+alias feh='feh --borderless'
+alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias lw='sudo logwatch | less'
 alias pycharm='~/.local/pycharm/bin/pycharm.sh &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'

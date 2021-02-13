@@ -53,6 +53,7 @@ PKGS_APPS='
     dnf-automatic
     dnf-plugins-core
     docker-ce
+    feh
     figlet
     fish
     git
