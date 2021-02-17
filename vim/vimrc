@@ -261,6 +261,7 @@ nnoremap <C-Y>        :CocCommand fzf-preview.Yankround<CR>
 inoremap <C-Y><ESC>   :CocCommand fzf-preview.Yankround<CR>
 
 let g:fzf_preview_command = 'bat --color=always --plain {-1}'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
 " tComment
 nnoremap <silent> <F3> :TComment<CR>

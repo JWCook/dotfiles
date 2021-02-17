@@ -122,7 +122,10 @@ PKGS_GNOME='
 # Packages for Xfce desktop environment
 PKGS_XFCE='
 '
-PKGS_SNAP='ffmpeg'
+PKGS_SNAP='
+    ffmpeg
+    pycharm-community
+'
 # Additional packages for WSL
 PKGS_WSL='
     dbus-x11

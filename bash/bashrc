@@ -62,7 +62,7 @@ fi
 # Python
 export PYTHONPATH=~/.local/lib/python3.8/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
-export PYTHON_DEFAULT_PACKAGES='ipython ipdb rich pip setuptools wheel'
+export PYTHON_DEFAULT_PACKAGES='flake8 ipython ipdb rich pip setuptools virtualenvwrapper wheel'
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
@@ -750,18 +750,33 @@ pip-install-req() {
 
 # Get all available versions of a package
 # Note: Output is broken with 2020 resolver, so this uses the legacy version; see https://github.com/pypa/pip/issues/9139
-pip-versions() {
-    pip install --use-deprecated=legacy-resolver "$1==none" 2>&1 \
+function pip-versions() {
+    version_list=$(\
+        pip install --use-deprecated=legacy-resolver "$1==none" 2>&1 \
         | head -n 1 \
         | sed 's/.*(from versions: \(.*\))/\1/' \
-        | sed 's/\, /\n/g'
+    )
+    format-version-list $version_list
+}
+
+# Highlight and indent major (x.0.0) and minor (x.x.0) versions
+# in a comma-separated list of version numbers
+function format-version-list() {
+    major_color=$(echo -e $BOLD_CYAN)
+    minor_color=$(echo -e $BOLD_WHITE)
+    nocolor=$(echo -e $NOCOLOR)
+
+    echo $@ \
+        | sed 's/\, /\n/g' \
+        | sed -e "s/^\([0-9]\+\.0\.0\)/$major_color\1$nocolor/g" \
+        | sed -e "s/^\([0-9]\+\.[0-9]\+\.0\)/$minor_color \1$nocolor/g" \
+        | sed -e "s/^\([0-9]\+\.[0-9]\+\.[0-9]\+\)/  \1/g"
 }
 
 # Install python packages from all available requirements files and/or setup.py
 pipr() {
     unset PYTHONPATH
-    pip install -U $PYTHON_DEFAULT_PACKAGES
-    pip install -Ue  '.[all,dev]'
+    pip install -U $PYTHON_DEFAULT_PACKAGES -e '.[all,dev]'
 
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f
