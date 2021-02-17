@@ -5,6 +5,7 @@
     telemetryConsent: "limited"
   editor:
     fontSize: 19
+    softWrap: true
   "exception-reporting":
     userId: "77506dbe-036a-40a4-ac66-251833854b4e"
   "markdown-writer":

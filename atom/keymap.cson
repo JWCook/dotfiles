@@ -1,2 +1,3 @@
-'atom-workspace atom-text-editor':
+'atom-text-editor':
   'f3': 'editor:toggle-line-comments'
+  'f6': 'tree-view:toggle'
