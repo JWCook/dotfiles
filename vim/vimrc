@@ -251,8 +251,8 @@ nnoremap <C-A-G>      :CocCommand fzf-preview.GitActions<CR>
 inoremap <C-A-G><ESC> :CocCommand fzf-preview.GitActions<CR>
 nnoremap <C-F>        :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
 inoremap <C-F><ESC>   :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <C-M>        :CocCommand fzf-preview.CommandPalette<CR>
-inoremap <C-M><ESC>   :CocCommand fzf-preview.CommandPalette<CR>
+nnoremap <C-N>        :CocCommand fzf-preview.CommandPalette<CR>
+inoremap <C-N><ESC>   :CocCommand fzf-preview.CommandPalette<CR>
 nnoremap <C-P>        :CocCommand fzf-preview.ProjectFiles<CR>
 inoremap <C-P><ESC>   :CocCommand fzf-preview.ProjectFiles<CR>
 nnoremap <C-S>        :CocCommand fzf-preview.GitStatus<CR>
@@ -490,8 +490,8 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-" YAML, vimscript: 1 tab = 2 spaces
-autocmd FileType yaml,vim  setlocal shiftwidth=2 softtabstop=2 tabstop=2
+" HTML, YAML, vimscript: 1 tab = 2 spaces
+autocmd FileType html,yaml,vim  setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set pastetoggle=<leader>p
 
