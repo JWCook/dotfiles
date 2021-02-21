@@ -115,7 +115,7 @@ abbr term-start PYTHONPATH= terminator -mfl start \&
 abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
 abbr lw sudo logwatch \| less
 abbr ta type -a
-complete -c ta -w type
+complete -c ta --wraps=type
 abbr top htop
 abbr tt tig
 abbr vim nvim
@@ -266,7 +266,8 @@ end
 
 # Commonly used config files
  set BASH_CONF "$DOTFILES/bash/bashrc"
- set BASH_CONF_ALL "$DOTFILES/bash/bashrc* $DOTFILES_EXTRA/bash/bashrc*"
+ set BASH_CONF_ALL "$DOTFILES/bash/bashrc*"
+ test -d $DOTFILES_EXTRA && set BASH_CONF_ALL "$BASH_CONF_ALL $DOTFILES_EXTRA/bash/bashrc*"
  set FISH_CONF $DOTFILES/fish/config.fish
  set FISH_FUNCS $DOTFILES/fish/functions/*
  set GIT_CONF "$DOTFILES/git/gitconfig"
@@ -280,7 +281,7 @@ end
 # Editor shortcuts
 function sb; echo "reloading fish config..."; source $FISH_CONF; end
 abbr vb "$EDITOR $BASH_CONF"
-abbr vbb "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF"
+abbr vbb "$EDITOR -O2 $FISH_CONF $BASH_CONF_ALL"
 abbr vg "$EDITOR $GIT_CONF"
 abbr vv "$EDITOR $VIM_CONF"
 abbr vvv "$EDITOR -O2 $VIM_CONF_ALL"
@@ -399,21 +400,21 @@ abbr gbranch git rev-parse --abbrev-ref HEAD
 abbr gbmv git branch -m
 abbr gbprune git fetch --prune
 
-function grebase -a branch
+function grebase -a branch --wraps=__fish_git_branches
     git rebase --interactive (coalesce $branch 'master')
 end
 
-function gbrebase -a branch
+function gbrebase -a branch --wraps=__fish_git_branches
     git rebase --interactive --rebase-merges (coalesce $branch 'master')
 end
 
-function gsrebase -a branch
+function gsrebase -a branch --wraps=__fish_git_branches
     git stash
     git rebase --interactive --rebase-merges (coalesce $branch 'master')
     git stash pop
 end
 
-function grebase-upstream -a branch
+function grebase-upstream -a branch --wraps=__fish_git_branches
     set branch (coalesce $branch 'master')
     git fetch upstream
     git rebase --interactive --rebase-merges upstream/$branch
@@ -431,12 +432,16 @@ end
 
 # Overwrite local branch with remote
 function gbreset
-    set _remote (git remote \| head -n 1)
+    set _remote (git remote | head -n 1)
     set _branch (git rev-parse --abbrev-ref HEAD)
-    git fetch $_remote $_branch
-    git status
-    printf "Resetting branch to $_remote/$_branch."
-    prompt-confirm && git reset --hard $_remote/$_branch
+    if contains -- -f $argv
+        git reset --hard $_remote/$_branch
+    else
+        git fetch $_remote $_branch
+        git status
+        printf "Resetting branch to $_remote/$_branch."
+        prompt-confirm && git reset --hard $_remote/$_branch
+    end
 end
 
 # Pull if repo is alredy cloned, otherwise clone
@@ -451,7 +456,7 @@ function gpclone -a repo_url repo_dir
 end
 
 # Delete local and remote branch
-function grm-branch -a branch -w git-branch
+function grm-branch -a branch --wraps=__fish_git_branches
     printf "Deleting local and remote branch $branch."
     if prompt-confirm
         git branch -D $branch
@@ -503,9 +508,9 @@ end
 # Optionally invoke docker-compose with config specified in an environment variable
 function dco
     if test -f "$DOCKER_COMPOSE_FILE"
-        docker-compose -f $DOCKER_COMPOSE_FILE "$argv"
+        docker-compose -f "$DOCKER_COMPOSE_FILE" $argv
     else
-        docker-compose
+        docker-compose $argv
     end
 end
 
