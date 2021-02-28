@@ -87,7 +87,7 @@ let g:rainbow_active = 1
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
-Plug 'suan/vim-instant-markdown'
+" Plug 'suan/vim-instant-markdown'
 " Plug 'Rykka/riv.vim'
 " Plug 'Rykka/InstantRst', {'do': pip_update.'U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
 

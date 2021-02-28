@@ -547,6 +547,7 @@ end
 
 abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
 abbr lsv lsvirtualenv -b
+abbr pt pytest
 
 # Get all directories currently on the python site path
 function pypath
@@ -630,7 +631,7 @@ function pipr
     pip install -Ue  '.[all,dev]'
 
     set req_files requirements*.txt
-    for _file in  $req_files
+    for _file in $req_files
         pip-install-req $_file
     end
 end
@@ -642,11 +643,13 @@ function update-python
     make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
 end
 
-# Pytest shortcut, if not already defined
-# cmd-exists pt || pt() {
-#     py-cleanup
-#     py.test ${1:-./test}
-# }
+# Run pytest with ipdb as debugger
+function ipt
+    export PYTHONBREAKPOINT='ipdb.set_trace'
+    export IPDB_CONTEXT_SIZE=7
+    pytest -s $argv
+end
+
 
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 function mkv -a env_name
@@ -679,13 +682,9 @@ end
 
 # Generate HTML py.test coverage report
 function ptc -a test_path src_path
-    set test_path (coalesce $test_path ./test)
-    set src_path (coalesce $src_path (pwd-src))
     py-cleanup
     vim-cleanup
-    py.test --junit-xml=test-reports/py.test-latest.xml\
-            --cov $src_path\
-            --cov-report html $test_path
+    py.test --cov --cov-report=term --cov-report=html
     set idx_file htmlcov/index.html
     test -e $idx_file && xdg-open $idx_file &
 end
