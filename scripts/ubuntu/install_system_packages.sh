@@ -20,6 +20,7 @@ function install_repos() {
     curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
     apt-add-repository ppa:fish-shell/release-3
     apt-add-repository ppa:neovim-ppa/stable
+    add-apt-repository ppa:phoerious/keepassxc
     add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     add-apt-repository \
@@ -38,6 +39,7 @@ PKGS_APPS='
     figlet
     fish
     git
+    gpaste
     htop
     jq
     ncdu
