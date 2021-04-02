@@ -52,6 +52,7 @@ PKGS_APPS='
     pv
     qpdf
     silversearcher-ag
+    sqlite3
     ssh
     telnet
     tig

@@ -78,6 +78,7 @@ install-ubuntu-wsl: \
 	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
 	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
 	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/
+	test -d /mnt/e/Downloads && rmdir ~/Downloads && ln -s /mnt/e/Downloads ~/Downloads
 	scripts/init_gnome_keyring.sh
 	# See: https://github.com/dnschneid/crouton/wiki/Fix-error-while-loading-shared-libraries:-libQt5Core.so.5
 	sudo strip --remove-section=.note.ABI-tag  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5

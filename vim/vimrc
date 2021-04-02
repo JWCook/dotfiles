@@ -491,8 +491,8 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-" HTML, YAML, vimscript: 1 tab = 2 spaces
-autocmd FileType html,yaml,vim  setlocal shiftwidth=2 softtabstop=2 tabstop=2
+" Selected filetypes: 1 tab = 2 spaces
+autocmd FileType html,yaml,vim,json,javascript,vue  setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set pastetoggle=<leader>p
 
