@@ -523,6 +523,7 @@ function dc-update
 end
 
 abbr dcu dco up -d
+abbr dcub dco up -d --build
 abbr dcd dco down
 abbr dcr dco restart
 abbr dcps dco ps

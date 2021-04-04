@@ -63,6 +63,7 @@ install-ubuntu: \
     install-portable-packages \
     install-conf \
     install-chrome-ubuntu \
+    install-duplicati-ubuntu \
     install-retroterm-ubuntu \
     install-vim-ubuntu
 
@@ -330,6 +331,9 @@ install-vim-ubuntu:
 
 install-chrome-ubuntu:
 	sudo scripts/ubuntu/install_chrome.sh
+
+install-duplicati-ubuntu:
+	scripts/ubuntu/install_duplicati.sh
 
 install-retroterm-ubuntu:
 	scripts/ubuntu/install_retroterm_prereqs.sh
