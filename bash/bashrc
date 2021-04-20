@@ -18,6 +18,7 @@ source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bash_completion                          # Additional shell completion scripts
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
+source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
 source-file ~/.travis/travis.sh                         # Travis CI utils
