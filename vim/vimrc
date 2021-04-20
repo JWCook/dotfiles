@@ -1,14 +1,13 @@
 let vim_header = [
-    \ '                 88                      ',
-    \ '                 ^^                      ',
-    \ '                                         ',
-    \ '  8b       d8    88    88.dPYba..adPYba. ',
-    \ '  `8b     d8`    88    88P`   ^88^    ^8a',
-    \ '   `8b   d8`     88    88      88      88',
-    \ '    `8b.d8`      88    88      88      88',
-    \ '      ^8^        88    88      88      88',
+    \ '                        88',
+    \ '                        ""',
+    \ '',
+    \ '8b.dPPYba.  8b       d8 88 88.dPYba..adPYba.',
+    \ '88P`   `"8a `8b     d8` 88 88P`   "88"    "8a',
+    \ '88       88  `8b   d8`  88 88      88      88',
+    \ '88       88   `8b.d8`   88 88      88      88',
+    \ '88       88     "8"     88 88      88      88',
     \ ]
-
 
 """"""""""""""""
 " ❰❰ Python ❱❱ "
@@ -40,6 +39,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'mhinz/vim-startify'
 Plug 'roman/golden-ratio'
+Plug 'farmergreg/vim-lastplace'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -58,7 +58,6 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-prettier',
   \ 'coc-pyright',
-  \ 'coc-python',
   \ 'coc-sh',
   \ 'coc-sql',
   \ 'coc-toml',
@@ -77,6 +76,7 @@ Plug 'w0rp/ale'
 Plug 'chrisbra/csv.vim'
 Plug 'dag/vim-fish'
 Plug 'pangloss/vim-javascript'
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'Kuniwak/vint', {'do': pip_update.'vim-vint'}
