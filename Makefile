@@ -23,6 +23,7 @@ install-conf: \
     install-xfce-conf
 
 install-portable-packages: \
+    install-cargo-packages \
     install-fonts \
     install-fzf \
     install-grc \
@@ -34,6 +35,7 @@ install-portable-packages: \
     install-ruby-gems
 
 update: \
+    update-cargo \
     update-npm \
     update-python \
     update-ruby \
@@ -221,6 +223,9 @@ install-xfce-conf:
 # Packages: Cross-Platform #
 ############################
 
+install-cargo-packages:
+	scripts/install_cargo_packages.sh
+
 install-fonts:
 	scripts/install_fonts.sh
 
@@ -256,6 +261,8 @@ install-ssh-agent-systemd:
 install-vim:
 	scripts/git/install_vim.sh
 	scripts/install_vim_plug.sh
+
+update-cargo: install-cargo-packages
 
 update-grc: install-grc
 

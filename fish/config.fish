@@ -153,7 +153,11 @@ end
 # Recursive folder size
 abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
 
-if cmd-exists colorls
+# Customize ls
+if cmd-exists exa
+    alias ls 'exa -aF --group-directories-first --icons'
+    alias ll 'exa -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
+else if cmd-exists colorls
     alias ls 'colorls -A --group-directories-first'
     alias ll 'colorls -AGl --group-directories-first'
 else

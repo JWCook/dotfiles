@@ -34,6 +34,7 @@ function install_repos() {
 # Terminal applications
 PKGS_APPS='
     bat
+    cargo
     curl
     feh
     figlet
@@ -46,6 +47,7 @@ PKGS_APPS='
     neovim
     net-tools
     nmap
+    npm
     ntp
     ntpdate
     p7zip-full
@@ -90,7 +92,6 @@ PKGS_LIBS='
     libxpm-dev
     libxt-dev
     ncurses-dev
-    npm
     python3-dev
     python3-pip
     python3-venv

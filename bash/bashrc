@@ -157,17 +157,23 @@ newest() {                                              # Find most recent file 
 # ❰❰ File & Directory Info ❱❱ #
 ###############################
 
-du() {                                                  # Recursive folder size
+# Recursive folder size
+du() {
     /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
 }
-if cmd-exists colorls; then
+
+# Customize ls
+if cmd-exists exa; then
+    alias ls='exa -aF --group-directories-first --icons'
+    alias ll='exa -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
+elif cmd-exists colorls; then
     alias ls='colorls -A --group-directories-first'
     alias ll='colorls -AGl --group-directories-first'
 else
     alias ll='ls -Alhv --group-directories-first'
 fi
 
-alias sll='sudo -E ls -Alhv --group-directories-first'
+alias sll='sudo -E ls -Alhv --group-directories-first'  # Long list with sudo
 lt() { tree $@ | color-filesize; }                      # Colored folder tree
 lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it

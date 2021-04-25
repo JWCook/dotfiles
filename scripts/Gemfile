@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 gem 'json'
 gem 'lolcat'
-gem 'colorls'
+# gem 'colorls'

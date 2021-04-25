@@ -50,6 +50,7 @@ RPM_URIS="
 # Terminal applications
 PKGS_APPS='
     bat
+    cargo
     dnf-automatic
     dnf-plugins-core
     docker-ce
@@ -59,6 +60,8 @@ PKGS_APPS='
     git
     htop
     nmap
+    jq
+    npm
     ntp
     ntpdate
     p7zip
@@ -104,7 +107,6 @@ PKGS_LIBS='
     gcc
     gcc-c++
     java-latest-openjdk
-    jq
     kernel-devel
     libX11-devel
     libappindicator-sharp
@@ -116,7 +118,6 @@ PKGS_LIBS='
     lua-devel
     mono-devel
     ncurses-devel
-    npm
     ntfsprogs
     openssl-devel
     perl-devel
