@@ -63,7 +63,7 @@ fi
 # Python
 export PYTHONPATH=~/.local/lib/python3.8/site-packages
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
-export PYTHON_DEFAULT_PACKAGES='flake8 ipython ipdb rich pip setuptools virtualenvwrapper wheel'
+export PYTHON_DEFAULT_PACKAGES='flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel'
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed

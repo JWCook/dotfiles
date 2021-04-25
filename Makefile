@@ -16,6 +16,7 @@ install-conf: \
     install-guake-conf \
     install-htop-conf \
     install-ipython-conf \
+    install-pdb-conf \
     install-pep8-conf \
     install-postgres-conf \
     install-terminator-conf \
@@ -182,6 +183,10 @@ install-ipython-conf:
 	rm -rf ~/.ipython/profile_default/startup
 	ln -s `pwd`/ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
 	ln -s `pwd`/ipython/profile_default/startup           ~/.ipython/profile_default/startup
+
+install-pdb-conf:
+	rm -f ~/.pdbrc
+	ln -s `pwd`/pdb/pdbrc ~/.pdbrc
 
 install-pep8-conf:
 	mkdir -p ~/.config
