@@ -576,8 +576,7 @@ alias gbranch='git rev-parse --abbrev-ref HEAD'
 alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
-grebase() { git rebase --interactive ${1:-master}; }
-gbrebase() { git rebase --interactive --rebase-merges ${1:-master}; }
+grebase() { git rebase --interactive --rebase-merges ${1:-master}; }
 gsrebase() {
     git stash
     git rebase --interactive --rebase-merges ${1:-master}
@@ -724,6 +723,7 @@ alias in-env='python -c\
               "import sys;\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
+alias pipgrep='pip freeze | grep -i'
 cmd-exists pt || alias pt='pytest'
 
 # Show a bunch of relevant python environment info
@@ -790,6 +790,8 @@ pipr() {
         pip-install-req $f
     done
 }
+
+alias pip-uninstall-all='pip freeze | xargs pip uninstall -y'
 
 # Install/update global python packages, if specified in dotfiles
 update-python() {

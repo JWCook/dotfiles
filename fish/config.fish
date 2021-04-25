@@ -405,10 +405,6 @@ abbr gbmv git branch -m
 abbr gbprune git fetch --prune
 
 function grebase -a branch --wraps=__fish_git_branches
-    git rebase --interactive (coalesce $branch 'master')
-end
-
-function gbrebase -a branch --wraps=__fish_git_branches
     git rebase --interactive --rebase-merges (coalesce $branch 'master')
 end
 
@@ -553,6 +549,7 @@ end
 abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
 abbr lsv lsvirtualenv -b
 abbr pt pytest
+abbr pipgrep pip freeze \| grep -i
 
 # Get all directories currently on the python site path
 function pypath
@@ -640,6 +637,8 @@ function pipr
         pip-install-req $_file
     end
 end
+
+abbr pip-uninstall-all pip freeze \| xargs pip uninstall -y
 
 # Install/update global python packages, if specified in dotfiles
 function update-python
