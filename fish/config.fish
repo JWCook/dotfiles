@@ -66,6 +66,7 @@ alias ttput='tty -s && tput'
 #####################
 
 # Paths
+set -e fish_user_paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
 pathadd ~/.poetry/bin
@@ -95,7 +96,7 @@ set -gx PYTHONPATH ~/.local/lib/python3.8/site-packages
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 # Configure Virtualfish, if installed
-# cmd-exists vf && vf install compat_aliases > /dev/null
+cmd-exists vf && vf install compat_aliases > /dev/null
 
 
 #########################
