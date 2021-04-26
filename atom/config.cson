@@ -1,8 +1,15 @@
 "*":
+  "autocomplete-plus":
+    fileBlacklist: [
+      ".*"
+      "*.md"
+      "*.txt"
+    ]
   "autocomplete-python":
     useKite: false
   core:
     telemetryConsent: "limited"
+    uriHandlerRegistration: "always"
   editor:
     fontSize: 19
     softWrap: true
