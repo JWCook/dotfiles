@@ -89,6 +89,7 @@ alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-in
 alias lw='sudo logwatch | less'
 alias pycharm='~/.local/pycharm/bin/pycharm.sh &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
+alias rr='ranger'
 alias ta='type -a'; complete -c ta
 alias term-code='termy -mfl code &'
 alias term-dev='termy -mfl 4-split &'

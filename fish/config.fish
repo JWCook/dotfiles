@@ -114,6 +114,7 @@ abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
 abbr term-start PYTHONPATH= terminator -mfl start \&
+alias rr='ranger'
 abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
 abbr lw sudo logwatch \| less
 abbr ta type -a
