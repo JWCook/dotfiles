@@ -93,6 +93,7 @@ if test -S $DEFAULT_SSH_AUTH_SOCK
 end
 
 set -gx PYTHONPATH ~/.local/lib/python3.8/site-packages
+set -gx PYTHON_DEFAULT_PACKAGES flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
 # Configure Virtualfish, if installed
@@ -285,7 +286,7 @@ end
 
 # Editor shortcuts
 function sb; echo "reloading fish config..."; source $FISH_CONF; end
-abbr vb "$EDITOR $BASH_CONF"
+abbr vb "$EDITOR $FISH_CONF"
 abbr vbb "$EDITOR -O2 $FISH_CONF $BASH_CONF_ALL"
 abbr vg "$EDITOR $GIT_CONF"
 abbr vv "$EDITOR $VIM_CONF"
@@ -352,6 +353,12 @@ function grm
     rm "$argv"
     git rm "$argv"
     git status
+end
+
+function gpu -a branch
+    set branch (coalesce $branch 'master')
+    git pull upstream branch
+    git push origin branch
 end
 
 # Commits
@@ -630,8 +637,13 @@ end
 # Install python packages from all available requirements files and/or setup.py
 function pipr
     set -e PYTHONPATH
-    pip install -U ipython pip setuptools wheel
-    pip install -Ue  '.[all,dev]'
+    pip install -U $PYTHON_DEFAULT_PACKAGES
+
+    if test -e setup.py
+        pip install -Ue  '.[all,dev]'
+    else
+        poetry install -v
+    end
 
     set req_files requirements*.txt
     for _file in $req_files

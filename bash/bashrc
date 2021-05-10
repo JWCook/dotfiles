@@ -518,8 +518,9 @@ alias gremote='git remote | head -n 1'
 alias gitonup='git push'
 alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
-grm(){ rm $1; git rm $1; }
 ggr() { git grep "$1" ${@:2}; }
+gpu() { git pull upstream ${1:-master} && git push origin ${1:-master}; }
+grm(){ rm $1; git rm $1; }
 
 # Commits
 # ------------------------------
@@ -784,7 +785,13 @@ function format-version-list() {
 # Install python packages from all available requirements files and/or setup.py
 pipr() {
     unset PYTHONPATH
-    pip install -U $PYTHON_DEFAULT_PACKAGES -e '.[all,dev]'
+    pip install -U $PYTHON_DEFAULT_PACKAGES
+
+    if test -e setup.py; then
+        pip install -Ue  '.[all,dev]'
+    else
+        poetry install -v
+    fi
 
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f
