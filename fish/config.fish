@@ -356,7 +356,7 @@ function grm
 end
 
 function gpu -a branch
-    set branch (coalesce $branch 'master')
+    set branch (coalesce $branch 'main')
     git pull upstream branch
     git push origin branch
 end
@@ -377,18 +377,18 @@ abbr guncommit git reset --soft HEAD~1
 # Fix a branch from a detatched HEAD state, starting with a specified commit
 function git-head-transplant
     git checkout -b transplant $argv
-    git branch -f master transplant
-    git checkout master
+    git branch -f main transplant
+    git checkout main
     git branch -d transplant
-    git push origin master
+    git push origin main
 end
 
 # Log
 # ------------------------------
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
-abbr glog-branch glog master..HEAD
-abbr glog-remote git fetch \; glog HEAD..origin/master
+abbr glog-branch glog main..HEAD
+abbr glog-remote git fetch \; glog HEAD..origin/main
 abbr glol glog \| lc-gradient-delay
 abbr gcstat git shortlog --summary --numbered
 abbr gcstat-all git rev-list --count HEAD
@@ -413,17 +413,17 @@ abbr gbmv git branch -m
 abbr gbprune git fetch --prune
 
 function grebase -a branch --wraps=__fish_git_branches
-    git rebase --interactive --rebase-merges (coalesce $branch 'master')
+    git rebase --interactive --rebase-merges (coalesce $branch 'main')
 end
 
 function gsrebase -a branch --wraps=__fish_git_branches
     git stash
-    git rebase --interactive --rebase-merges (coalesce $branch 'master')
+    git rebase --interactive --rebase-merges (coalesce $branch 'main')
     git stash pop
 end
 
 function grebase-upstream -a branch --wraps=__fish_git_branches
-    set branch (coalesce $branch 'master')
+    set branch (coalesce $branch 'main')
     git fetch upstream
     git rebase --interactive --rebase-merges upstream/$branch
 end

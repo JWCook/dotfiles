@@ -519,7 +519,7 @@ alias gitonup='git push'
 alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
 ggr() { git grep "$1" ${@:2}; }
-gpu() { git pull upstream ${1:-master} && git push origin ${1:-master}; }
+gpu() { git pull upstream ${1:-main} && git push origin ${1:-main}; }
 grm(){ rm $1; git rm $1; }
 
 # Commits
@@ -540,18 +540,18 @@ git-head-transplant-pre() {
     git checkout -b transplant $1
 }
 git-head-transplant() {
-    git branch -f master transplant
-    git checkout master
+    git branch -f main transplant
+    git checkout main
     git branch -d transplant
-    git push origin master
+    git push origin main
 }
 
 # Log
 # ------------------------------
 export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
 alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
-alias glog-branch='glog master..HEAD'
-alias glog-remote='gf; glog HEAD..origin/master'
+alias glog-branch='glog main..HEAD'
+alias glog-remote='gf; glog HEAD..origin/main'
 alias glol='glog | lc-gradient-delay'
 alias gcstat='git shortlog --summary --numbered'
 alias gcstat-all='git rev-list --count HEAD'
@@ -577,15 +577,15 @@ alias gbranch='git rev-parse --abbrev-ref HEAD'
 alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
-grebase() { git rebase --interactive --rebase-merges ${1:-master}; }
+grebase() { git rebase --interactive --rebase-merges ${1:-main}; }
 gsrebase() {
     git stash
-    git rebase --interactive --rebase-merges ${1:-master}
+    git rebase --interactive --rebase-merges ${1:-main}
     git stash pop
 }
 grebase-upstream() {
     git fetch upstream
-    git rebase --interactive --rebase-merges upstream/${1:-master}
+    git rebase --interactive --rebase-merges upstream/${1:-main}
 }
 alias gcontinue='git rebase --continue'
 alias gabort='git rebase --abort || git merge --abort'
