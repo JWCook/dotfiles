@@ -27,10 +27,11 @@ function install_repos() {
         "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
 }
 
+# sudo apt-get install ranger odt2txt zathura
+
 
 # Package categories
 # --------------------
-
 # Terminal applications
 PKGS_APPS='
     bat
