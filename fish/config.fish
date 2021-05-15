@@ -362,8 +362,8 @@ end
 
 function gpu -a branch
     set branch (coalesce $branch 'main')
-    git pull upstream branch
-    git push origin branch
+    git pull upstream $branch
+    git push origin $branch
 end
 
 # Commits
