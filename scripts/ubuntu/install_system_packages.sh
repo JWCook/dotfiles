@@ -85,6 +85,7 @@ PKGS_LIBS='
     exuberant-ctags
     libbz2-dev
     libffi-dev
+    libffi7
     libgpgme11-dev
     libreadline-dev
     libsqlite3-dev

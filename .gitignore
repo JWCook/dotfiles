@@ -1,5 +1,6 @@
 build/
 dist/
+scripts/bootstrap/
 .idea/
 *~
 *.sw*
@@ -8,14 +9,18 @@ dist/
 *.pyc
 _build.py
 .cache
+.netrwhist
+
+# Vim
+plugged
+plug.vim.old
 .vim/
+viminfo
 viminfo.tmp*
 vim/vim/autoload
 vim/vim/session
 vim/vim/plug-snapshot
-plugged
-viminfo
-plug.vim.old
-.netrwhist
+
+# Fish
 fundle.fish
 fish/completions/local_*.fish

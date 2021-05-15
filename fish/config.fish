@@ -69,6 +69,7 @@ alias ttput='tty -s && tput'
 set -e fish_user_paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
+pathadd ~/.miniconda/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
@@ -92,12 +93,15 @@ if test -S $DEFAULT_SSH_AUTH_SOCK
     set -gx SSH_AUTH_SOCK $DEFAULT_SSH_AUTH_SOCK
 end
 
-set -gx PYTHONPATH ~/.local/lib/python3.8/site-packages
+# Python stuff
+set -e PYTHONPATH
+set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 set -gx PYTHON_DEFAULT_PACKAGES flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 
-# Configure Virtualfish, if installed
-cmd-exists vf && vf install compat_aliases > /dev/null
+# Configure pyenv and virtualfish, if installed
+cmd-exists pyenv && pyenv init - | source
+# cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
 
 
 #########################
@@ -557,6 +561,7 @@ end
 
 abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
 abbr lsv lsvirtualenv -b
+alias rmv='vf rm'
 abbr pt pytest
 abbr pipgrep pip freeze \| grep -i
 
@@ -656,7 +661,6 @@ abbr pip-uninstall-all pip freeze \| xargs pip uninstall -y
 
 # Install/update global python packages, if specified in dotfiles
 function update-python
-    echo; print-title "Updating python packages..."
     make -C $DOTFILES update-python | lc-gradient-delay
     make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
 end
@@ -668,13 +672,11 @@ function ipt
     pytest -s $argv
 end
 
-
 # New virtual environment, with paths and packages (optionally with name, otherwise use dirname)
 function mkv -a env_name
     set env_name (coalesce $env_name (basename (pwd)))
-    mkvirtualenv $env_name
+    vf new --connect -p (which python) $env_name
     set -e PYTHONPATH
-    add2virtualenv .
     py-cleanup
     pipr
 end
@@ -927,7 +929,7 @@ end
 # end
 
 # >>> conda initialize >>>
-cmd-exists conda && eval ~/miniconda/bin/conda "shell.fish" "hook" $argv | source
+cmd-exists conda && eval ~/.miniconda/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
 # [ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true

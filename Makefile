@@ -28,11 +28,8 @@ install-portable-packages: \
     install-fonts \
     install-fzf \
     install-grc \
-    install-miniconda \
     install-npm-packages \
-    install-poetry \
-    install-pyenv \
-    install-python-packages \
+    install-python-tools \
     install-ruby-gems
 
 update: \
@@ -243,19 +240,14 @@ install-grc:
 install-npm-packages:
 	scripts/install_npm_packages.sh
 
-install-miniconda:
-	scripts/install_miniconda.sh
-
 install-poetry:
 	scripts/install_poetry.sh
 
 install-pyenv:
 	scripts/install_pyenv.sh
 
-install-python-packages:
-	pip install --user -U pip setuptools wheel
-	pip install --user -Ur scripts/requirements-user.txt
-	- poetry self update
+install-python-tools:
+	scripts/install_python_tools.sh
 
 install-ruby-gems:
 	sudo gem install -g scripts/Gemfile
@@ -273,7 +265,8 @@ update-grc: install-grc
 
 update-npm: install-npm-packages
 
-update-python: install-python-packages
+update-python:
+	scripts/install_python_tools.sh -u
 
 update-ruby:
 	sudo gem update
@@ -308,7 +301,6 @@ reinstall-system-packages-fedora:
 install-neovim-fedora:
 	scripts/fedora/install_neovim.sh
 	scripts/install_vim_plug.sh
-	scripts/install_neovim_venv.sh
 
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh

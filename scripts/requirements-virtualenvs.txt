@@ -1,0 +1,10 @@
+black>=21.5b0
+flake8
+ipython
+isort>=5.8
+mypy>=0.812
+pdbpp
+pip>=20.0
+rich
+setuptools
+virtualenvwrapper

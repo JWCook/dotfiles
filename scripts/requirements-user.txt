@@ -1,19 +1,15 @@
-# Python 3 packages to install in ~/.local/lib
+# Python tools to install in user-level site-packages
+# TODO: Use pipx for these instead?
 argcomplete
 asciinema
 awscli
-flake8
-ipython[all]
-jedi
 py-spy
-pygments
-python-dateutil
-requests[security,socks]
 virtualenvwrapper
 virtualfish
 yamllint
 
 # altair
+# ipython[all]
 # numpy
 # pandas
 # matplotlib

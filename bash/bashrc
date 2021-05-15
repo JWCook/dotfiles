@@ -8,25 +8,26 @@ pathadd() {                                             # Append to path, withou
     [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]] &&\
     export PATH="${PATH:+"$PATH:"}$1"
 }
-cmd-exists() { type -a $@ &> /dev/null; }           # Test if a command/alias/function exists
-source-file() { [[ -f $1 ]] && source $1; }             # Source a file, if it exists
+cmd-exists() { type -a $@ &> /dev/null; }               # Test if a command/alias/function exists
+source-file() { test -f $1 && source $1; }              # Source a file, if it exists
 source-bin() { cmd-exists $1 && source $(which $1); }   # Source an executable, if it exists on path
 alias ttput='tty -s && tput'                            # Safe tput, only for TTY sessions
 
+shopt -s dotglob extglob                                # Make glob patterns include hidden files
+
 # Additional runtime config
+BASH_COMPLETIONS=~/.config/bash/completions
+source $BASH_COMPLETIONS/*                              # Custom shell completion files
 source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bash_completion                          # Additional shell completion scripts
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
-source-file ~/.git-completion.bash                      # Git bash completion (for custom usage)
-source-file ~/.travis/travis.sh                         # Travis CI utils
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
-
-shopt -s dotglob extglob                                # Make glob patterns include hidden files
+source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
 
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000
@@ -60,8 +61,8 @@ if  [ -S $DEFAULT_SSH_AUTH_SOCK ] ; then
     export SSH_AUTH_SOCK=$DEFAULT_SSH_AUTH_SOCK
 fi
 
-# Python
-export PYTHONPATH=~/.local/lib/python3.8/site-packages
+# Python stuff
+unset PYTHONPATH
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
 export PYTHON_DEFAULT_PACKAGES='flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel'
 source-bin virtualenvwrapper.sh
@@ -159,6 +160,7 @@ newest() {                                              # Find most recent file 
 ###############################
 
 # Recursive folder size
+unalias du 2> /dev/null
 du() {
     /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
 }
@@ -330,6 +332,7 @@ sfill() {
 ############################
 
 # Readable disk usage
+unalias df 2> /dev/null
 df() {
     /bin/df -khT $@ | color-filesize
 }
@@ -803,7 +806,6 @@ alias pip-uninstall-all='pip freeze | xargs pip uninstall -y'
 
 # Install/update global python packages, if specified in dotfiles
 update-python() {
-    echo; print-title "Updating python packages..."
     make -C $DOTFILES update-python | lc-gradient-delay
     make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
 }
@@ -1119,7 +1121,6 @@ mkv-basic-px() {
 }
 
 
-
 # Split a PDF document into multiple documents by arbitrary page ranges
 # Usage: pdf-split-page-ranges $source_file 1-12,13-17,18-40
 pdf-split-page-ranges() {
@@ -1134,20 +1135,6 @@ pdf-split-page-ranges() {
     done
 }
 
-
-# >>> conda initialize >>>
-__conda_setup="$('~/miniconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "~/miniconda/etc/profile.d/conda.sh" ]; then
-        source "~/miniconda/etc/profile.d/conda.sh"
-    else
-        pathadd "~/miniconda/bin"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 # Enable Terminator to execute startup commands and keep shell open
 [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
