@@ -50,6 +50,8 @@
       parent = window0
       profile = solarized-dark
       type = Terminal
+      command = fish
+      directory = workspace
     [[[window0]]]
       parent = ""
       type = Window
@@ -333,18 +335,24 @@
       profile = default
       type = Terminal
       uuid = e7f73139-36eb-434e-9664-e975d0f84de8
+      command = fish
+      directory = workspace
     [[[terminal3]]]
       order = 1
       parent = child1
       profile = default
       type = Terminal
       uuid = f239039f-a51c-4a1b-b4b6-83ac14784c8f
+      command = fish
+      directory = workspace
     [[[terminal4]]]
       order = 2
       parent = child1
       profile = default
       type = Terminal
       uuid = 4cec0bf2-9fd1-4ca9-8af4-3b5f2daff493
+      command = fish
+      directory = workspace
   [[start]]
     [[[child0]]]
       fullscreen = False
