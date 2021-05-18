@@ -82,6 +82,7 @@ PKGS_APPS='
     xclip
     xmlstarlet
     xsel
+    zoxide
 '
 # Graphical applications
 PKGS_GUI_APPS='

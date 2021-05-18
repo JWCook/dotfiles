@@ -137,6 +137,8 @@ else if cmd-exists bat
     alias cat='bat'
 end
 
+cmd-exists zoxide && zoxide init fish | source
+
 
 ################
 # ❰❰ Search ❱❱ #

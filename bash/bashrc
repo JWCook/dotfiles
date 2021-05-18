@@ -73,6 +73,8 @@ if cmd-exists pyenv; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
+cmd-exists zoxide && eval "$(zoxide init bash)"
+
 # Misc application-specific settings
 export NTP_SERVER='pool.ntp.org'
 export JUPYTER_LOCAL_PORT=9468

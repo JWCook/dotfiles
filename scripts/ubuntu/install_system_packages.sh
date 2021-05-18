@@ -67,6 +67,7 @@ PKGS_APPS='
     wget
     xclip
     xsel
+    zoxide
 '
 # Graphical applications
 PKGS_GUI_APPS='
