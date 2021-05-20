@@ -94,10 +94,11 @@ if test -S $DEFAULT_SSH_AUTH_SOCK
 end
 
 # Python stuff
-set -e PYTHONPATH
-set -gx VIRTUALENVWRAPPER_PYTHON (which python)
-set -gx PYTHON_DEFAULT_PACKAGES flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
+set -e PYTHONPATH
+set -gx PYTHON_DEFAULT_PACKAGES flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel
+set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
+set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
@@ -125,7 +126,7 @@ abbr ta type -a
 complete -c ta --wraps=type
 abbr top htop
 abbr tt tig
-abbr vim nvim
+alias vim='nvim'
 abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
 

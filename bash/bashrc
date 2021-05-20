@@ -63,8 +63,9 @@ fi
 
 # Python stuff
 unset PYTHONPATH
-export VIRTUALENVWRAPPER_PYTHON=$(which python)
 export PYTHON_DEFAULT_PACKAGES='flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel'
+export VIRTUALENVWRAPPER_PYTHON=$(which python)
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
