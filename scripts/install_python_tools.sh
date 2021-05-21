@@ -18,10 +18,10 @@ done
 # Download bootstrap scripts
 print-title 'Downloading install scripts'
 mkdir -p $BOOTSTRAPS
-curl -sSL https://bootstrap.pypa.io/get-pip.py -o $BOOTSTRAPS/get-pip.py
-curl -sSL https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -o $BOOTSTRAPS/get-poetry.py
-curl -sSL http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
+curl -L https://bootstrap.pypa.io/get-pip.py -o $BOOTSTRAPS/get-pip.py
+curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
+curl -L https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -o $BOOTSTRAPS/get-poetry.py
+curl -L http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
 
 # Ensure we have the latest pip (usually only necessary if current pip is broken)
 print-title 'Installing/updating pip'

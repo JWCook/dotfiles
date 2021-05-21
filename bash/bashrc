@@ -63,9 +63,9 @@ fi
 
 # Python stuff
 unset PYTHONPATH
-export PYTHON_DEFAULT_PACKAGES='flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel'
-export VIRTUALENVWRAPPER_PYTHON=$(which python)
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUALENVWRAPPER_PYTHON=$(which python)
+export VIRTUALENV_REQUIREMENTS=~/dotfiles/scripts/requirements-virtualenvs.txt
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
@@ -792,7 +792,7 @@ function format-version-list() {
 # Install python packages from all available requirements files and/or setup.py
 pipr() {
     unset PYTHONPATH
-    pip install -U $PYTHON_DEFAULT_PACKAGES
+    pip install -Ur $VIRTUALENV_REQUIREMENTS
 
     if test -e setup.py; then
         pip install -Ue  '.[all,dev]'
@@ -847,9 +847,7 @@ ptv(){
 
 # Generate HTML py.test coverage report
 ptc() {
-    py-cleanup
-    vim-cleanup
-    py.test --cov --cov-report=term --cov-report=html
+    py.test -n auto --cov --cov-report=term --cov-report=html
     [[ -f htmlcov/index.html ]] && xdg-open htmlcov/index.html &
 }
 

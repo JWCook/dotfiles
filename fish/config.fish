@@ -96,9 +96,9 @@ end
 # Python stuff
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -e PYTHONPATH
-set -gx PYTHON_DEFAULT_PACKAGES flake8 ipython pdbpp pip rich setuptools virtualenvwrapper wheel
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
+set -gx VIRTUALENV_REQUIREMENTS ~/dotfiles/scripts/requirements-virtualenvs.txt
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
@@ -646,7 +646,7 @@ end
 # Install python packages from all available requirements files and/or setup.py
 function pipr
     set -e PYTHONPATH
-    pip install -U $PYTHON_DEFAULT_PACKAGES
+    pip install -Ur $VIRTUALENV_REQUIREMENTS
 
     if test -e setup.py
         pip install -Ue  '.[all,dev]'
@@ -705,9 +705,7 @@ end
 
 # Generate HTML py.test coverage report
 function ptc -a test_path src_path
-    py-cleanup
-    vim-cleanup
-    py.test --cov --cov-report=term --cov-report=html
+    py.test -n auto --cov --cov-report=term --cov-report=html
     set idx_file htmlcov/index.html
     test -e $idx_file && xdg-open $idx_file &
 end
