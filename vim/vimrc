@@ -427,6 +427,7 @@ set scrolloff=1
 set sidescrolloff=5
 
 " Darn those fat fingers
+ca E e
 ca W w
 ca WQ wq
 ca Wq wq
