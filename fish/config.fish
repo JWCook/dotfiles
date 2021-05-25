@@ -100,6 +100,8 @@ set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 set -gx VIRTUALENV_REQUIREMENTS ~/dotfiles/scripts/requirements-virtualenvs.txt
 
+set -gx SHELL (which fish)
+
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
 # cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null

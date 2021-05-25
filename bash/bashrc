@@ -74,7 +74,7 @@ if cmd-exists pyenv; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
-cmd-exists zoxide && eval "$(zoxide init bash)"
+export SHELL=$(which fish)
 
 # Misc application-specific settings
 export NTP_SERVER='pool.ntp.org'
@@ -113,6 +113,8 @@ if cmd-exists batcat; then
 elif cmd-exists bat; then
     alias cat='bat'
 fi
+
+cmd-exists zoxide && eval "$(zoxide init bash)"
 
 
 ####################
