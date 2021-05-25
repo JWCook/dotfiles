@@ -403,12 +403,18 @@ abbr gcstat-all git rev-list --count HEAD
 
 # Tags
 # ------------------------------
-function gmv-tag
-    git tag $2 $1
-    git tag -d $1
-    git push origin :refs/tags/$1
+function gmv-tag -a tag -a new_tag
+    git tag -d $tag
+    git push origin :refs/tags/$tag
+    git tag $newtag $tag
     git push --tags
 end
+
+function grm-tag -a tag
+    git tag -d $tag
+    git push origin :refs/tags/$tag
+end
+
 
 # Branches
 # ------------------------------

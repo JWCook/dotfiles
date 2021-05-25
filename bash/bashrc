@@ -572,6 +572,11 @@ gmv-tag() {
     git push --tags
 }
 
+grm-tag() {
+    git tag -d $1
+    git push origin :refs/tags/$1
+}
+
 
 # Branches
 # ------------------------------
