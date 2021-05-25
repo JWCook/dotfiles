@@ -666,6 +666,7 @@ function pipr
     end
 end
 
+alias pipv='pip install -Ur $VIRTUALENV_REQUIREMENTS'
 abbr pip-uninstall-all pip freeze \| xargs pip uninstall -y
 
 # Install/update global python packages, if specified in dotfiles
