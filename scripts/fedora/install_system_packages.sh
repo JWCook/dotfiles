@@ -133,6 +133,7 @@ PKGS_LIBS='
     sqlite-devel
     tcl-devel
     xdg-utils
+    xz-devel
     xz-libs
     zlib-devel
 '

@@ -89,6 +89,7 @@ PKGS_LIBS='
     libffi7
     libgpgme11-dev
     libreadline-dev
+    liblzma-dev
     libsqlite3-dev
     libssl-dev
     libx11-dev
