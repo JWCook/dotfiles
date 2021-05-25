@@ -2,7 +2,7 @@
 FISH_COMPLETE_DEST=~/.config/fish/completions/poetry.fish
 BASH_COMPLETE_DEST=~/.config/bash/completions/poetry.bash-completion
 BOOTSTRAPS=scripts/bootstrap
-DEFAULT_PYTHON=3.9.0
+DEFAULT_PYTHON=3.9.5
 source bash/bashrc
 source bash/bashrc_style
 
@@ -40,9 +40,9 @@ eval "$(pyenv virtualenv-init -)"
 
 # Install python versions
 pyenv install $PYENV_OPTS 3.6.12
-pyenv install $PYENV_OPTS 3.7.9
-pyenv install $PYENV_OPTS 3.8.6
-pyenv install $PYENV_OPTS 3.9.0
+pyenv install $PYENV_OPTS 3.7.10
+pyenv install $PYENV_OPTS 3.8.10
+pyenv install $PYENV_OPTS 3.9.5
 pyenv install $PYENV_OPTS 3.10.0b1
 pyenv global $DEFAULT_PYTHON
 
