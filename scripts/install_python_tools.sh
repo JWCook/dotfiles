@@ -8,20 +8,25 @@ source bash/bashrc_style
 
 # Use -u (upgrade) to only install new python versions if missing
 PYENV_OPTS='-f'
+UPDATE_ONLY=
 while getopts "u" option; do
     case "${option}" in
-        u) PYENV_OPTS='-s';;
+        u)
+            PYENV_OPTS='-s'
+            UPDATE_ONLY='true';;
     esac
 done
 
 
 # Download bootstrap scripts
-print-title 'Downloading install scripts'
-mkdir -p $BOOTSTRAPS
-curl -L https://bootstrap.pypa.io/get-pip.py -o $BOOTSTRAPS/get-pip.py
-curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
-curl -L https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -o $BOOTSTRAPS/get-poetry.py
-curl -L http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
+if test -z $UPDATE_ONLY; then
+    print-title 'Downloading install scripts'
+    mkdir -p $BOOTSTRAPS
+    curl -L https://bootstrap.pypa.io/get-pip.py -o $BOOTSTRAPS/get-pip.py
+    curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
+    curl -L https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -o $BOOTSTRAPS/get-poetry.py
+    curl -L http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
+fi
 
 # Ensure we have the latest pip (usually only necessary if current pip is broken)
 print-title 'Installing/updating pip'
