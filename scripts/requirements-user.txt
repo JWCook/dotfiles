@@ -3,6 +3,7 @@
 argcomplete
 asciinema
 awscli
+httpie
 py-spy
 virtualenvwrapper
 virtualfish

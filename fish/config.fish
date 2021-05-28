@@ -121,23 +121,36 @@ abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
 abbr term-start PYTHONPATH= terminator -mfl start \&
-alias rr='ranger'
 abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
 abbr lw sudo logwatch \| less
 abbr ta type -a
 complete -c ta --wraps=type
-abbr top htop
-abbr tt tig
 alias vim='nvim'
 abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
+
+# Modern replacements for Unix tools
+alias fd='fdfind'
+complete -c fd --wraps=fdfind
+alias ps='procs'
+alias pst='procs --tree'
+alias psw='procs --watch'
+complete -c ps --wraps=procs
+alias rr='ranger'
+complete -c rr --wraps=ranger
+alias top='btm --color gruvbox'
+complete -c top --wraps=btm
+alias tt='tig'
+complete -c tt --wraps=tig
 
 if cmd-exists batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
     alias bat='batcat'
     alias cat='batcat'
+    complete -c cat --wraps=batcat
 else if cmd-exists bat
     alias cat='bat'
+    complete -c cat --wraps=bat
 end
 
 cmd-exists zoxide && zoxide init fish | source
@@ -169,11 +182,14 @@ abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
 if cmd-exists exa
     alias ls 'exa -aF --group-directories-first --icons'
     alias ll 'exa -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
+    complete -c ll --wraps=exa
 else if cmd-exists colorls
     alias ls 'colorls -A --group-directories-first'
     alias ll 'colorls -AGl --group-directories-first'
+    complete -c ll --wraps=colorls
 else
     alias ll 'ls -Alhv --group-directories-first'
+    complete -c ll --wraps=ls
 end
 
 alias sll 'sudo -E ls -Alhv --group-directories-first'

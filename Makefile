@@ -36,8 +36,8 @@ update: \
     update-cargo \
     update-npm \
     update-python \
-    update-ruby \
-    update-grc
+    update-ruby
+    # update-grc
     # update-vim
 
 
