@@ -130,6 +130,11 @@ abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
 
 # Modern replacements for Unix tools
+cmd-exists zoxide && zoxide init fish | source
+
+# TODO: Not currently possible, fixed in next zoxide release
+# alias cd='z'
+# complete -c cd --wraps=__zoxide_z
 alias fd='fdfind'
 complete -c fd --wraps=fdfind
 alias ps='procs'
@@ -142,6 +147,8 @@ alias top='btm --color gruvbox'
 complete -c top --wraps=btm
 alias tt='tig'
 complete -c tt --wraps=tig
+alias zz='zi'
+complete -c zz --wraps=__zoxide_zi
 
 if cmd-exists batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
@@ -153,7 +160,6 @@ else if cmd-exists bat
     complete -c cat --wraps=bat
 end
 
-cmd-exists zoxide && zoxide init fish | source
 
 
 ################

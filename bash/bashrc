@@ -105,6 +105,9 @@ alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
 # Modern replacements for Unix tools
+cmd-exists zoxide && eval "$(zoxide init bash)"
+
+# alias cd='__zoxide_z'
 alias fd='fdfind'
 alias ps='procs'
 alias pst='procs --tree'
@@ -112,6 +115,7 @@ alias psw='procs --watch'
 alias rr='ranger'
 alias top='btm --color gruvbox'
 alias tt='tig'
+alias zz='__zoxide_zi'
 
 if cmd-exists batcat; then
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
@@ -120,8 +124,6 @@ if cmd-exists batcat; then
 elif cmd-exists bat; then
     alias cat='bat'
 fi
-
-cmd-exists zoxide && eval "$(zoxide init bash)"
 
 
 ####################
