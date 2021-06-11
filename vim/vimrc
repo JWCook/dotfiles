@@ -79,6 +79,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
+Plug 'cespare/vim-toml'
 Plug 'Kuniwak/vint', {'do': pip_update.'vim-vint'}
 Plug 'WolfgangMehner/bash-support'
 Plug 'frazrepo/vim-rainbow'
