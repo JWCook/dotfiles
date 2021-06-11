@@ -24,7 +24,7 @@ if test -z $UPDATE_ONLY; then
     mkdir -p $BOOTSTRAPS
     curl -L https://bootstrap.pypa.io/get-pip.py -o $BOOTSTRAPS/get-pip.py
     curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
-    curl -L https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -o $BOOTSTRAPS/get-poetry.py
+    curl -L https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o $BOOTSTRAPS/install-poetry.py
     curl -L http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
 fi
 
@@ -56,7 +56,7 @@ print-title 'Installing/updating poetry'
 if cmd-exists poetry; then
     poetry self update
 else
-    python $BOOTSTRAPS/get-poetry.py
+    python $BOOTSTRAPS/install-poetry.py
     poetry config virtualenvs.path ~/.virtualenvs
 fi
 
