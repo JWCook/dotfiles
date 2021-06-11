@@ -502,11 +502,13 @@ function gpclone -a repo_url repo_dir
 end
 
 # Delete local and remote branch
-function grm-branch -a branch --wraps=__fish_git_branches
-    printf "Deleting local and remote branch $branch."
+function grm-branch -a branch -a remote --wraps=__fish_git_branches
+    set remote (coalesce $remote 'origin')
+    printf "Deleting local and remote branch $remote/$branch."
     if prompt-confirm
         git branch -D $branch
-        git push origin --delete $branch
+        git branch -d -r $remote/$branch
+        git push $remote --delete $branch
     end
 end
 
