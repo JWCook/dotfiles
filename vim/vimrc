@@ -639,6 +639,9 @@ let g:netrw_keepdir=0
 " ❰❰ Misc. Auto Commands ❱❱ "
 """""""""""""""""""""""""""""
 
+" Syntax aliases
+au BufReadPost *.dwc set syntax=xml
+
 " Disable overhead for large files (over 10MB)
 if !exists("auto_commands_loaded")
   let auto_commands_loaded=1

@@ -62,10 +62,10 @@ install-ubuntu: \
     install-system-packages-ubuntu \
     install-portable-packages \
     install-conf \
-    install-chrome-ubuntu \
-    install-duplicati-ubuntu \
-    install-retroterm-ubuntu \
-    install-vim-ubuntu
+    install-duplicati-ubuntu
+    #install-chrome-ubuntu \
+    #install-retroterm-ubuntu \
+    #install-vim-ubuntu
 
 install-ubuntu-wsl: \
     install-system-packages-ubuntu-wsl \

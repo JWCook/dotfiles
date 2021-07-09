@@ -11,7 +11,7 @@
     telemetryConsent: "limited"
     uriHandlerRegistration: "always"
   editor:
-    fontSize: 19
+    fontSize: 27
     softWrap: true
   "exception-reporting":
     userId: "77506dbe-036a-40a4-ac66-251833854b4e"

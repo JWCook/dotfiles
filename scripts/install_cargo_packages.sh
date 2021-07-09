@@ -5,7 +5,7 @@ cargo install -f fd-find
 cargo install -f procs
 
 # Generate command completion files
-procs --completion bash
+~/.cargo/bin/procs --completion bash
 mv procs.bash ~/.config/bash/completions/
-procs --completion fish
+~/.cargo/bin/procs --completion fish
 mv procs.fish ~/.config/fish/completions/

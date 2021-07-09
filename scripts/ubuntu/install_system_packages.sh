@@ -16,15 +16,14 @@ set -o nounset
 # (or newer versions than base repo versions)
 function install_repos() {
     echo 'Installing apt repositories'
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    #curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
     apt-add-repository ppa:fish-shell/release-3
-    apt-add-repository ppa:neovim-ppa/stable
     add-apt-repository ppa:phoerious/keepassxc
-    add-apt-repository \
-        "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    add-apt-repository \
-        "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
+    add-apt-repository ppa:nextcloud-devs/client
+    echo \
+ 	"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 }
 
 # sudo apt-get install ranger odt2txt zathura
@@ -45,7 +44,6 @@ PKGS_APPS='
     htop
     jq
     ncdu
-    neovim
     net-tools
     nmap
     npm
@@ -54,6 +52,7 @@ PKGS_APPS='
     p7zip-full
     pv
     qpdf
+    ranger
     silversearcher-ag
     sqlite3
     ssh
@@ -71,11 +70,11 @@ PKGS_APPS='
 '
 # Graphical applications
 PKGS_GUI_APPS='
-    atom
     chromium-browser
     gimp
     guake
     keepassxc
+    nextcloud-client
     terminator
 '
 # Libraries, mostly needed for compiling other applications
@@ -95,11 +94,14 @@ PKGS_LIBS='
     libx11-dev
     libxpm-dev
     libxt-dev
+    
+    odt2txt
     ncurses-dev
     python3-dev
     python3-pip
     python3-venv
     ruby-dev
+    zathura
 '
 # Image processing libraries
 PKGS_IMG='
@@ -131,9 +133,15 @@ PKGS_GNOME='
 PKGS_XFCE='
 '
 PKGS_SNAP='
+    discord
     ffmpeg
-    pycharm-community
 '
+PKGS_SNAP_CLASSIC='
+    atom
+    code
+    nvim
+'
+#pycharm-community
 # Additional packages for WSL
 PKGS_WSL='
     dbus-x11
@@ -162,4 +170,9 @@ done
 apt-get update
 apt-get upgrade -y
 apt-get install -y $PACKAGES_TO_INSTALL
-snap install $PKGS_SNAP
+
+sudo snap install $PKGS_SNAP
+for pkg in $PKGS_SNAP_CLASSIC; do
+    sudo snap install $pkg --classic
+done
+

@@ -2,7 +2,7 @@
 FISH_COMPLETE_DEST=~/.config/fish/completions/poetry.fish
 BASH_COMPLETE_DEST=~/.config/bash/completions/poetry.bash-completion
 BOOTSTRAPS=scripts/bootstrap
-DEFAULT_PYTHON=3.9.5
+DEFAULT_PYTHON=3.9.6
 source bash/bashrc
 source bash/bashrc_style
 
@@ -30,25 +30,25 @@ fi
 
 # Ensure we have the latest pip (usually only necessary if current pip is broken)
 print-title 'Installing/updating pip'
-python $BOOTSTRAPS/get-pip.py
+python3 $BOOTSTRAPS/get-pip.py
 
 # Install pyenv
 print-title 'Installing/updating pyenv'
 if cmd-exists pyenv; then
     pyenv update
 else
-    python $BOOTSTRAPS/get-pyenv.sh
+    bash $BOOTSTRAPS/get-pyenv.sh
 fi
 pathadd ~/.pyenv/bin/
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # Install python versions
-pyenv install $PYENV_OPTS 3.6.12
-pyenv install $PYENV_OPTS 3.7.10
-pyenv install $PYENV_OPTS 3.8.10
-pyenv install $PYENV_OPTS 3.9.5
-pyenv install $PYENV_OPTS 3.10.0b1
+pyenv install $PYENV_OPTS 3.6.14
+pyenv install $PYENV_OPTS 3.7.11
+pyenv install $PYENV_OPTS 3.8.11
+pyenv install $PYENV_OPTS 3.9.6
+pyenv install $PYENV_OPTS 3.10.0b3
 pyenv global $DEFAULT_PYTHON
 
 # Install poetry

@@ -962,8 +962,4 @@ end
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
 
-# >>> conda initialize >>>
-cmd-exists conda && eval ~/.miniconda/bin/conda "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
-
 # [ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true
