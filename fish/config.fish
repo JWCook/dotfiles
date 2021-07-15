@@ -437,6 +437,7 @@ end
 function grm-tag -a tag
     git tag -d $tag
     git push origin :refs/tags/$tag
+    git push upstream :refs/tags/$tag
 end
 
 

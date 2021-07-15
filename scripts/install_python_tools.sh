@@ -58,6 +58,7 @@ if cmd-exists poetry; then
 else
     python $BOOTSTRAPS/install-poetry.py
     poetry config virtualenvs.path ~/.virtualenvs
+    poetry config virtualenvs.create false
 fi
 
 # Install poetry shell completions

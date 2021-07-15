@@ -46,5 +46,5 @@ function startme() {
 }
 
 
-init-keyring
-ssh-add ~/.ssh/github_rsa
+# init-keyring
+# ssh-add ~/.ssh/github_rsa
