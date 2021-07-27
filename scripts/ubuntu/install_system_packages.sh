@@ -84,6 +84,7 @@ PKGS_LIBS='
     build-essential
     cmake
     exuberant-ctags
+    graphviz-dev
     libbz2-dev
     libffi-dev
     libffi7

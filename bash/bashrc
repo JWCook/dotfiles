@@ -69,10 +69,7 @@ export VIRTUALENV_REQUIREMENTS=~/dotfiles/scripts/requirements-virtualenvs.txt
 source-bin virtualenvwrapper.sh
 
 # Init pyenv, if installed
-if cmd-exists pyenv; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-fi
+cmd-exists pyenv && eval "$(pyenv init -)"
 
 export SHELL=$(which fish)
 

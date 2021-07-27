@@ -1,8 +1,18 @@
-#!/bin/bash -
+#!/usr/bin/env bash
 FISH_COMPLETE_DEST=~/.config/fish/completions/poetry.fish
 BASH_COMPLETE_DEST=~/.config/bash/completions/poetry.bash-completion
 BOOTSTRAPS=scripts/bootstrap
-DEFAULT_PYTHON=3.9.6
+
+# Python versions to install and activate with pyenv
+# Note: The first version in list will be used as the default 'python3' version
+PYTHON_VERSIONS='
+    3.9.6
+    3.6.14
+    3.7.11
+    3.8.11
+    3.10.0b4
+'
+
 source bash/bashrc
 source bash/bashrc_style
 
@@ -41,15 +51,17 @@ else
 fi
 pathadd ~/.pyenv/bin/
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# eval "$(pyenv virtualenv-init -)"
+
+# Install pyenv-virtualenvwrapper plugin from source
+# git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
 
 # Install python versions
-pyenv install $PYENV_OPTS 3.6.14
-pyenv install $PYENV_OPTS 3.7.11
-pyenv install $PYENV_OPTS 3.8.11
-pyenv install $PYENV_OPTS 3.9.6
-pyenv install $PYENV_OPTS 3.10.0b3
-pyenv global $DEFAULT_PYTHON
+for version in $PYTHON_VERSIONS; do
+    pyenv install $PYENV_OPTS $version
+done
+pyenv global $PYTHON_VERSIONS
+python3 --version
 
 # Install poetry
 print-title 'Installing/updating poetry'

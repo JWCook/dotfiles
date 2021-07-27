@@ -107,6 +107,7 @@ PKGS_LIBS='
     ctags
     gcc
     gcc-c++
+    graphviz-devel
     java-latest-openjdk
     kernel-devel
     libX11-devel
