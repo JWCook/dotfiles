@@ -72,6 +72,7 @@ PKGS_APPS='
 PKGS_GUI_APPS='
     chromium-browser
     gimp
+    grub-customizer
     guake
     keepassxc
     nextcloud-client
@@ -94,8 +95,8 @@ PKGS_LIBS='
     libx11-dev
     libxpm-dev
     libxt-dev
-    
     odt2txt
+    pandoc
     ncurses-dev
     python3-dev
     python3-pip
