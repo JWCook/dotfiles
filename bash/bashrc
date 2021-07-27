@@ -749,6 +749,14 @@ alias lsv='lsvirtualenv -b'
 alias pipgrep='pip freeze | grep -i'
 cmd-exists pt || alias pt='pytest'
 
+# Tox / Nox
+alias toxe='tox -e'
+alias noxe='nox -e'
+alias ncov='nox -e cov'
+alias ndocs='nox -e docs'
+alias nlint='nox -e lint'
+alias ntest='nox -e test'
+
 # Show a bunch of relevant python environment info
 py-debug() {
     printf "PATH:\n"

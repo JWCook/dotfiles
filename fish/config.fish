@@ -599,8 +599,16 @@ abbr bb black --target-version py37 --line-length 100 --skip-string-normalizatio
 abbr install-pretty-errors python -m pretty_errors -s -p
 abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
-abbr pt pytest
 abbr pipgrep pip freeze \| grep -i
+abbr pt pytest
+
+# Tox / Nox
+abbr toxe tox -e
+abbr noxe nox -e
+abbr ncov nox -e cov
+abbr ndocs nox -e docs
+abbr nlint nox -e lint
+abbr ntest nox -e test
 
 # Get all directories currently on the python site path
 function pypath
