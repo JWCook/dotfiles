@@ -596,6 +596,7 @@ end
 ################
 
 abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
+abbr install-pretty-errors python -m pretty_errors -s -p
 abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
 abbr pt pytest
@@ -814,36 +815,28 @@ end
 # ❰❰ Sphinx ❱❱ #
 ################
 
-function sphinx-build-current
+function sphinx-build-project
     # Use 'all' target, if it exists
     make -C docs all | lc-gradient --seed=26
     # If it doesn't exist (make error code 2), use 'html' target
-    if [ $PIPESTATUS -eq 2 ]; then
+    if test $pipestatus[1] -eq 2
         make -C docs clean html | lc-gradient --seed=26
     end
 end
 
-function sphinx-build-project -a env_name
-    workon $env_name
-    pushd $WORKSPACE/$env_name
-    sphinx-build-current
-    popd
+function sphinx-autobuild-project
+    make -C docs clean
+    sphinx-autobuild docs/ docs/_build/html \
+        --ignore '*.csv' \
+        --ignore '*Makefile' \
+        --port 8181 \
+        --open-browser \
+        -j auto
 end
 
-# sphinx-autobuild-current() {
-#     sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z $(pwd-src)
-# }
-#
-# sphinx-autobuild-project() {
-#     wo $1
-#     sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z ${1/-/_}
-# }
-#
-abbr sphinx-open-docs xdg-open docs/_build/html/index.html
-abbr sp-open xdg-open docs/_build/html/index.html
-# alias sp-doc='sphinx-build-current'
-# alias spdo='sphinx-build-current && sphinx-open-docs'
-# alias sp-autodoc='sphinx-autobuild-current'
+alias sp-open='xdg-open docs/_build/html/index.html'
+alias sp-build='sphinx-build-project'
+alias sp-auto='sphinx-autobuild-project'
 
 
 ##########################

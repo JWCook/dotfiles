@@ -737,6 +737,7 @@ tnew() {
 ################
 
 alias bb='black --target-version py37 --line-length 100 --skip-string-normalization'
+alias install-pretty-errors='python -m pretty_errors -s -p'
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
 # Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
@@ -926,7 +927,7 @@ alias flask-run='export FLASK_APP=$(pwd-src)/runserver.py;\
 # ❰❰ Sphinx ❱❱ #
 ################
 
-sphinx-build-current() {
+sphinx-build-project() {
     # Use 'all' target, if it exists
     make -C docs all | lc-gradient --seed=26
     # If it doesn't exist (make error code 2), use 'html' target
@@ -935,27 +936,20 @@ sphinx-build-current() {
     fi
 }
 
-sphinx-build-project() {
-    workon $1
-    pushd $WORKSPACE/$1
-    sphinx-build-current
-    popd
-}
-
-sphinx-autobuild-current() {
-    sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z $(pwd-src)
-}
-
 sphinx-autobuild-project() {
-    wo $1
-    sphinx-autobuild docs/ docs/_build/html/ -i *.sw* -z ${1/-/_}
+    make -C docs clean
+    sphinx-autobuild docs/ docs/_build/html \
+        --ignore '*.csv' \
+        --ignore '*Makefile' \
+        --port 8181 \
+        --open-browser \
+        -j auto
 }
 
-alias sphinx-open-docs='xdg-open docs/_build/html/index.html'
-alias sp-open='sphinx-open-docs'
-alias sp-doc='sphinx-build-current'
-alias spdo='sphinx-build-current && sphinx-open-docs'
-alias sp-autodoc='sphinx-autobuild-current'
+
+alias sp-open='xdg-open docs/_build/html/index.html'
+alias sp-build='sphinx-build-project'
+alias sp-auto='sphinx-autobuild-project'
 
 
 #########################
