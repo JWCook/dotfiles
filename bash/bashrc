@@ -998,6 +998,10 @@ rm-old-kernels() {
     echo
     sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
 }
+fix-rpmdb() {
+    restorecon -Rv /var/lib/rpm
+    sudo rpmdb --rebuilddb
+}
 
 cmd-exists update-grub || alias update-grub='sudo grub2-mkconfig -o /boot/grub2/grub.cfg'
 

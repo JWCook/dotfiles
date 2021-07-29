@@ -17,7 +17,6 @@ RELEASEVER=$(rpm -E %fedora)
 REPO_RPM_URIS="
     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASEVER}.noarch.rpm
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASEVER}.noarch.rpm
-    https://download.postgresql.org/pub/repos/yum/reporpms/F-${RELEASEVER}-x86_64/pgdg-fedora-repo-latest.noarch.rpm
     https://rpmfind.net/linux/fedora/linux/releases/${RELEASEVER}/Everything/x86_64/os/Packages/g/gdouros-symbola-fonts-10.24-4.fc${RELEASEVER}.noarch.rpm
 "
 REPO_CONFIG_URIS="

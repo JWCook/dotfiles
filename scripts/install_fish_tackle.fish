@@ -21,8 +21,8 @@ ln -s (pwd)/scripts/requirements-virtualenvs.txt $VF_REQUIREMENTS
 cp fish/completions/* $CONF_DIR/completions/
 
 # Install Fisher package manager + packages
-curl -sSL https://git.io/fisher -o scripts/bootstrap/get-fisher.sh
-source scripts/bootstrap/get-fisher.sh
+curl -sSL https://git.io/fisher -o scripts/bootstrap/get-fisher.fish
+source scripts/bootstrap/get-fisher.fish
 fisher install jorgebucaran/fisher
 fisher install re3turn/fish-git-util
 fisher install PatrickF1/fzf.fish
