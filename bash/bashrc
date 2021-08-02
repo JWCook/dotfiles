@@ -534,7 +534,11 @@ alias gitonup='git push'
 alias gitondown='git pull'
 gadd() { git add ${@:-.}; }
 ggr() { git grep "$1" ${@:2}; }
-gpu() { git pull upstream ${1:-main} && git push origin ${1:-main}; }
+gpu() {
+    branch=${1:-$(gbranch)}
+    git pull upstream $branch
+    git push origin $branch
+}
 grm(){ rm $1; git rm $1; }
 
 # Commits
@@ -615,12 +619,12 @@ alias gscontinue='git stash; git rebase --continue; git stash pop'
 
 # Overwrite local branch with remote
 gbreset() {
-    REMOTE="$(gremote)"
-    BRANCH="$(gbranch)"
-    git fetch $REMOTE $BRANCH
+    remote=${2:-$(gremote)}
+    branch=${1:-$(gbranch)}
+    git fetch $remote $branch
     git status
-    printf "Resetting branch to $REMOTE/$BRANCH."
-    prompt-confirm && git reset --hard $REMOTE/$BRANCH
+    printf "Resetting branch to $remote/$branch."
+    prompt-confirm && git reset --hard $remote/$branch
 }
 
 # Pull if repo is alredy cloned, otherwise clone
@@ -645,7 +649,10 @@ sgpclone() {
 
 # Delete local and remote branch
 grm-branch() {
-    printf "Deleting branch $1."
+    remote=${2:-$(gremote)}
+    branch=${1:-$(gbranch)}
+    printf "Deleting local and remote branch $remote/$branch"
+
     if prompt-confirm; then
         git branch -D $1
         git push origin --delete $1
@@ -754,6 +761,7 @@ alias toxe='tox -e'
 alias noxe='nox -e'
 alias ncov='nox -e cov'
 alias ndocs='nox -e docs'
+alias ldocs='nox -e livedocs'
 alias nlint='nox -e lint'
 alias ntest='nox -e test'
 

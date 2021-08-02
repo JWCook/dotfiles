@@ -388,7 +388,7 @@ function grm
 end
 
 function gpu -a branch
-    set branch (coalesce $branch 'main')
+    set branch (coalesce $branch (gbranch))
     git pull upstream $branch
     git push origin $branch
 end
@@ -407,12 +407,13 @@ abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
 
 # Fix a branch from a detatched HEAD state, starting with a specified commit
-function git-head-transplant
+function git-head-transplant -a branch
+    set branch (coalesce $branch (gbranch))
     git checkout -b transplant $argv
-    git branch -f main transplant
-    git checkout main
+    git branch -f $branch transplant
+    git checkout $branch
     git branch -d transplant
-    git push origin main
+    git push origin $branch
 end
 
 # Log
@@ -446,13 +447,14 @@ end
 
 set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
+alias gbranch='git rev-parse --abbrev-ref HEAD'
 abbr gbranches git branch -vv
-abbr gbranch git rev-parse --abbrev-ref HEAD
 abbr gbmv git branch -m
 abbr gbprune git fetch --prune
 
 function grebase -a branch --wraps=__fish_git_branches
-    git rebase --interactive --rebase-merges (coalesce $branch 'main')
+    set branch (coalesce $branch 'main')
+    git rebase --interactive --rebase-merges $branch
 end
 
 function gsrebase -a branch --wraps=__fish_git_branches
@@ -478,16 +480,16 @@ function gball
 end
 
 # Overwrite local branch with remote
-function gbreset
-    set _remote (git remote | head -n 1)
-    set _branch (git rev-parse --abbrev-ref HEAD)
+function gbreset -a branch -a remove --wraps=__fish_git_branches
+    set remote (coalesce $remote (gremote))
+    set branch (coalesce $branch (gbranch))
     if contains -- -f $argv
-        git reset --hard $_remote/$_branch
+        git reset --hard $remote/$branch
     else
-        git fetch $_remote $_branch
+        git fetch $remote $branch
         git status
-        printf "Resetting branch to $_remote/$_branch."
-        prompt-confirm && git reset --hard $_remote/$_branch
+        printf "Resetting branch to $remote/$branch."
+        prompt-confirm && git reset --hard $remote/$branch
     end
 end
 
@@ -504,8 +506,10 @@ end
 
 # Delete local and remote branch
 function grm-branch -a branch -a remote --wraps=__fish_git_branches
-    set remote (coalesce $remote 'origin')
-    printf "Deleting local and remote branch $remote/$branch."
+    set remote (coalesce $remote (gremote))
+    set branch (coalesce $branch (gbranch))
+    printf "Deleting local and remote branch $remote/$branch"
+
     if prompt-confirm
         git branch -D $branch
         git branch -d -r $remote/$branch
@@ -607,6 +611,7 @@ abbr toxe tox -e
 abbr noxe nox -e
 abbr ncov nox -e cov
 abbr ndocs nox -e docs
+abbr ldocs nox -e livedocs
 abbr nlint nox -e lint
 abbr ntest nox -e test
 
