@@ -46,6 +46,7 @@ PKGS_APPS='
     ncdu
     net-tools
     nmap
+    neofetch
     npm
     ntp
     ntpdate
@@ -136,6 +137,7 @@ PKGS_XFCE='
 '
 PKGS_SNAP='
     discord
+    duf
     ffmpeg
 '
 PKGS_SNAP_CLASSIC='

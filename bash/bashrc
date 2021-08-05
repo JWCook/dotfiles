@@ -87,6 +87,7 @@ export EDITOR=/usr/bin/nvim
 # Simple Command/App Aliases
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
+alias hf='hyperfine'
 alias lw='sudo logwatch | less'
 alias pycharm='~/.local/pycharm/bin/pycharm.sh &'
 alias retroterm='/usr/local/src/retro-term/cool-retro-term &'
@@ -105,7 +106,7 @@ alias weather='curl -4 http://wttr.in/~50266'
 cmd-exists zoxide && eval "$(zoxide init bash)"
 
 # alias cd='__zoxide_z'
-alias fd='fdfind'
+# alias fd='fdfind'
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'
@@ -155,7 +156,7 @@ wcr() { gr "$1" $2 | wc -l; }
 # ❰❰ Search ❱❱ #
 ################
 
-fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
+# fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
 ff() { find ${2:-.} -name "$1" -type f; }               # Recursive search (lit, files)
 ge() { env | grep ${1:-""}; }                           # Search environment variables
 gr() { grep -r "$1" ${@:2}; }                           # Recursive search
@@ -171,10 +172,13 @@ newest() {                                              # Find most recent file 
 ###############################
 
 # Recursive folder size
-unalias du 2> /dev/null
-du() {
-    /usr/bin/du -Sh $@ | sort -hr | color-filesize | more;
-}
+if cmd-exists dust; then
+    alias du='dust'
+else
+    du() {
+        /usr/bin/du -Sh $@ | sort -hr | color-filesize | more
+    }
+fi
 
 # Customize ls
 if cmd-exists exa; then
@@ -342,11 +346,14 @@ sfill() {
 # ❰❰ Disk & Device Info ❱❱ #
 ############################
 
-# Readable disk usage
-unalias df 2> /dev/null
-df() {
-    /bin/df -khT $@ | color-filesize
-}
+# Disk usage
+if cmd-exists duf; then
+    alias df='duf'
+else
+    df() {
+        /bin/df -khT $@ | color-filesize
+    }
+fi
 
 # Get a single metric for a single device (or a directory's device)
 # Usage: df-single-metric metric [device]
@@ -376,6 +383,8 @@ alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_
 alias scan-local='nmap -v -sT localhost'
 alias scan-syn='sudo nmap -v -sS localhost'
 alias ssh-exit='ssh -O exit'
+cmd-exists gping && alias ping='gping'
+
 ssh-refresh() { nullify ssh -O exit $1; ssh $1; }
 
 # Mount a network share (remote_share, local_mountpoint, creds_file)

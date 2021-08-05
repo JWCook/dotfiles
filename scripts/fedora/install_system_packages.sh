@@ -60,6 +60,7 @@ PKGS_APPS='
     htop
     nmap
     jq
+    neofetch
     npm
     ntp
     ntpdate

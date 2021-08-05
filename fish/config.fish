@@ -116,6 +116,7 @@ set -gx EDITOR /usr/bin/nvim
 # Simple Command/App Aliases
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
+alias hf='hyperfine'
 abbr open-ps powershell.exe /c start
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
@@ -135,8 +136,8 @@ cmd-exists zoxide && zoxide init fish | source
 # TODO: Not currently possible, fixed in next zoxide release
 # alias cd='z'
 # complete -c cd --wraps=__zoxide_z
-alias fd='fdfind'
-complete -c fd --wraps=fdfind
+# alias fd='fdfind'
+# complete -c fd --wraps=fdfind
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'
@@ -182,7 +183,12 @@ end
 ###############################
 
 # Recursive folder size
-abbr du /usr/bin/du -Sh $argv \| sort -hr \| color-filesize \| more
+abbr -e du
+if cmd-exists dust
+    alias du='dust'
+else
+    alias du='/usr/bin/du -Sh $argv | sort -hr | color-filesize | more'
+end
 
 # Customize ls
 if cmd-exists exa
@@ -216,9 +222,12 @@ abbr tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\
 ############################
 
 # Readable disk usage
-function df -w /usr/bin/df
-    # /usr/bin/df -khT $argv | color-filesize
-    /usr/bin/df -khT $argv
+if cmd-exists duf
+    alias df='duf'
+else
+    function df -w /usr/bin/df
+        /usr/bin/df -khT $argv
+    end
 end
 
 # Get a single metric for a single device (or a directory's device)
@@ -252,6 +261,7 @@ abbr scan-local nmap -v -sT localhost
 abbr scan-syn sudo nmap -v -sS localhost
 abbr ssh-exit ssh -O exit
 abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
+cmd-exists gping && alias ping='gping'
 
 # Mount a network share
 function mount-share -a remote_share local_mountpoint creds_file
@@ -362,12 +372,12 @@ abbr gpush git push
 abbr gfpush git push --force
 abbr gstash git stash
 abbr gpop git stash pop
-abbr gremote git remote \| head -n 1
 abbr groot cd \(git rev-parse --show-toplevel\)
 abbr gs git status
 abbr gsv git status -vv
 abbr gss git status --short
 abbr gstlist git stash list \; git stash show
+alias gremote='git remote | head -n 1'
 
 function gadd
     set paths (string split ' ' (default-pwd $argv))

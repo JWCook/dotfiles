@@ -42,8 +42,20 @@
     changed = cyan
     deleted = red
     untracked = magenta
-[diff]
-    tool = nvim -d
+# [diff]
+#     tool = nvim -d
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[delta]
+    plus-style = "syntax #012800"
+    minus-style = "syntax #340001"
+    syntax-theme = Monokai Extended
+    navigate = true
+[interactive]
+    diffFilter = delta --color-only
 [tig]
     vertical-split = false
     split-view-height = 80%

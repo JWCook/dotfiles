@@ -16,6 +16,7 @@ install-conf: \
     install-guake-conf \
     install-htop-conf \
     install-ipython-conf \
+    install-neofetch-conf \
     install-pdb-conf \
     install-pep8-conf \
     install-postgres-conf \
@@ -180,6 +181,11 @@ install-ipython-conf:
 	rm -rf ~/.ipython/profile_default/startup
 	ln -s `pwd`/ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
 	ln -s `pwd`/ipython/profile_default/startup           ~/.ipython/profile_default/startup
+
+install-neofetch-conf:
+	rm -rf ~/.config/neofetch
+	mkdir -p ~/.config/neofetch
+	ln -s `pwd`/neofetch/config.conf ~/.config/neofetch/config.conf
 
 install-pdb-conf:
 	rm -f ~/.pdbrc
