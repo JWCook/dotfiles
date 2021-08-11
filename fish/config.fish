@@ -379,6 +379,12 @@ abbr gss git status --short
 abbr gstlist git stash list \; git stash show
 alias gremote='git remote | head -n 1'
 
+function gffpush -a branch
+    set branch (coalesce $branch (gbranch))
+    git push -f upstream $branch
+    git push -f origin $branch
+end
+
 function gadd
     set paths (string split ' ' (default-pwd $argv))
     git add $paths

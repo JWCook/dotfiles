@@ -549,6 +549,11 @@ gpu() {
     git push origin $branch
 }
 grm(){ rm $1; git rm $1; }
+gffpush() {
+    branch=${1:-$(gbranch)}
+    git push -f upstream $branch
+    git push -f origin $branch
+}
 
 # Commits
 # ------------------------------
