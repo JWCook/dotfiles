@@ -85,6 +85,7 @@ export JUPYTER_LOCAL_PORT=9468
 export EDITOR=/usr/bin/nvim
 
 # Simple Command/App Aliases
+alias ac='npx all-contributors'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
@@ -884,6 +885,9 @@ vim-cleanup() {
     find ${1:-.} -name "*.sw[mnop]" -type f -delete -printf "%h/%f\n"
 }
 
+# Open HTML coverage report
+alias cov-open='xdg-open test-reports/index.html'
+
 # Run py.test with ludicrous verbosity
 ptv(){
     py-cleanup
@@ -893,7 +897,7 @@ ptv(){
 
 # Generate HTML py.test coverage report
 ptc() {
-    py.test -n auto --cov --cov-report=term --cov-report=html
+    py.test -n auto --dist=loadfile --cov --cov-report=term --cov-report=html
     [[ -f htmlcov/index.html ]] && xdg-open htmlcov/index.html &
 }
 

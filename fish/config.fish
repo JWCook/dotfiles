@@ -114,6 +114,7 @@ cmd-exists pyenv && pyenv init - | source
 set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
+alias ac='npx all-contributors'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
@@ -759,6 +760,9 @@ function vim-cleanup
     find $_dir -name "*.sw[a-z]" -type f -delete -printf "%h/%f\n"
 end
 
+# Open HTML coverage report
+alias cov-open='xdg-open test-reports/index.html'
+
 # Run py.test with ludicrous verbosity
 function ptv -a path
     set path (coalesce $path ./test)
@@ -769,7 +773,7 @@ end
 
 # Generate HTML py.test coverage report
 function ptc -a test_path src_path
-    py.test -n auto --cov --cov-report=term --cov-report=html
+    py.test -n auto --dist=loadfile --cov --cov-report=term --cov-report=html
     set idx_file htmlcov/index.html
     test -e $idx_file && xdg-open $idx_file &
 end
