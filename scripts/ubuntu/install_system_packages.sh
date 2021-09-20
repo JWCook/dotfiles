@@ -64,6 +64,7 @@ PKGS_APPS='
     toilet
     traceroute
     tree
+    valgrind
     wget
     xclip
     xsel

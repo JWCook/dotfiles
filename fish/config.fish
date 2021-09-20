@@ -217,6 +217,18 @@ abbr tailn tail -n 100                               # Tail -f w/ defaults
 abbr tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
 abbr tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
 
+# Get the total memory usage of a process (in MB) using valgrind with massif
+function massif
+    valgrind --tool=massif \
+        --pages-as-heap=yes \
+        --massif-out-file=massif.out \
+        $argv
+    cat massif.out \
+        | sed -e 's/mem_heap_B=\(.*\)/\1/' \
+        | sort -g \
+        | tail -n 1 \
+        | awk '{print $1/1024/1024}'
+end
 
 ############################
 # ❰❰ Disk & Device Info ❱❱ #
