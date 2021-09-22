@@ -90,9 +90,19 @@ else
     conda install -y conda-build
 fi
 
-# Install some tools in user-level site-packages
+# Install some user-level site-packages
 print-title 'Installing/updating user packages'
 pip install --user -Ur scripts/requirements-user.txt
+
+# Install or update some python CLI tools with pipx
+if test -z $UPDATE_ONLY; then
+    while read package; do
+        pipx install $package
+    done < scripts/requirements-pipx.txt
+else
+    pipx upgrade-all
+fi
+
 
 # Make virtualenv for neovim
 if ! lsvirtualenv | grep -q nvim; then

@@ -1,22 +1,4 @@
-# Python tools to install in user-level site-packages
-# TODO: Use pipx for these instead?
-argcomplete
-asciinema
-awscli
-docker-compose
-httpie
-py-spy
+# Python packages to install in user-level site-packages
+pipx
 virtualenvwrapper
 virtualfish
-yamllint
-
-# altair
-# ipython[all]
-# numpy
-# pandas
-# matplotlib
-# scipy
-# scikit-learn
-# seaborn
-# visidata
-# xgboost
