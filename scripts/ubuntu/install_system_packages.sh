@@ -90,6 +90,7 @@ PKGS_LIBS='
     libbz2-dev
     libffi-dev
     libffi7
+    libgnutls28-dev
     libgpgme11-dev
     libreadline-dev
     liblzma-dev
