@@ -1,5 +1,3 @@
-# TODO: prompt for distro & window manager?
-
 #############################################
 # Grouped Pakcages & Config: Cross-Platform #
 #############################################
@@ -89,6 +87,15 @@ install-ubuntu-wsl: \
 
 update-ubuntu: update
 	sudo apt-get update && sudo apt-get upgrade -y
+
+# Minimal config + packages for Raspberry Pi (headless)
+install-rpi: \
+    install-bash-conf \
+    install-git-conf \
+    install-vim-conf \
+    install-python-tools
+	scripts/install_vim_plug.sh
+	scripts/rpi/install_system_packages.sh
 
 
 #########################

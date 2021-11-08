@@ -370,6 +370,17 @@ abbr svim "sudo -E $EDITOR"
 #     sudo -u $2 bash -c "source $HOME/.bashrc; crontab-append '$1'";
 # }
 
+function ssh-set-permissions
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/config
+    chmod 644 ~/.ssh/authorized_keys
+    chmod 644 ~/.ssh/known_hosts
+    chmod 644 ~/.ssh/*.pub
+    chmod 600 ~/.ssh/*.pem
+    # Find and chmod private keys, assuming pubkeys are also present and named "${privkey}.pub"
+    find ~/.ssh -name "*.pub" -type f | sed 's/\.pub//g' | xargs chmod 600
+end
+
 
 #############
 # ❰❰ Git ❱❱ #
@@ -643,6 +654,10 @@ abbr ndocs nox -e docs
 abbr ldocs nox -e livedocs
 abbr nlint nox -e lint
 abbr ntest nox -e test
+
+# Pre-commit
+abbr pc-all pre-commit run --all-files
+abbr pc-update pre-commit autoupdate
 
 # Get all directories currently on the python site path
 function pypath
