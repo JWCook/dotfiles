@@ -6,11 +6,12 @@ BOOTSTRAPS=scripts/bootstrap
 # Python versions to install and activate with pyenv
 # Note: The first version in list will be used as the default 'python3' version
 PYTHON_VERSIONS='
-    3.9.6
-    3.6.14
-    3.7.11
-    3.8.11
-    3.10.0b4
+    3.9.9
+    3.6.15
+    3.7.12
+    3.8.12
+    3.10.0
+    3.11-dev
 '
 
 source bash/bashrc
