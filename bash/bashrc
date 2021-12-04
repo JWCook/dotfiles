@@ -25,6 +25,7 @@ source-file ~/.bashrc_extra                             # Machine-specific confi
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
+source-file ~/.nvm/nvm.sh
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
 source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
@@ -173,6 +174,8 @@ newest() {                                              # Find most recent file 
 ###############################
 
 # Recursive folder size
+# unalias du
+# unalias df
 if cmd-exists dust; then
     alias du='dust'
 else

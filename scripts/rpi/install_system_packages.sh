@@ -7,6 +7,7 @@ curl
 git
 libatlas-base-dev
 python3-dev
+npm
 tig
 '
 
