@@ -572,6 +572,12 @@ alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
 alias grecommit='git commit -c ORIG_HEAD --no-edit'
 
+# Set last commit date to specified (or current) date
+gmend-date() {
+    target_date=${1:-$(date)}
+    GIT_COMMITTER_DATE="$target_date" git commit --amend --no-edit --date "$target_date"
+}
+
 # Functions to help fix a branch from a detatched HEAD state, starting with a specified commit
 git-head-transplant-pre() {
     git checkout -b transplant $1

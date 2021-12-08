@@ -446,6 +446,12 @@ abbr grevise git add --all \; git commit --amend --no-edit
 abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
 
+# Set last commit date to specified (or current) date
+function gmend-date -a target_date
+    set target_date (coalesce $target_date (date))
+    GIT_COMMITTER_DATE="$target_date" git commit --amend --no-edit --date "$target_date"
+end
+
 # Fix a branch from a detatched HEAD state, starting with a specified commit
 function git-head-transplant -a branch
     set branch (coalesce $branch (gbranch))
