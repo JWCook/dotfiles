@@ -349,6 +349,10 @@ abbr vvv "$EDITOR -O2 $VIM_CONF_ALL"
 abbr vc "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $FISH_FUNCS $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF"
 abbr svim "sudo -E $EDITOR"
 
+function vscp -a host -a path
+    vim scp://$host/$path
+end
+
 # Append a line to user crontab, excluding duplicates
 # crontab-append() {
 #     if ! [[ $(crontab -l) =~ "$1" ]]; then

@@ -35,7 +35,8 @@ update: \
     update-cargo \
     update-npm \
     update-python \
-    update-ruby
+    update-ruby \
+    update-tldr
     # update-grc
     # update-vim
 
@@ -283,6 +284,9 @@ update-python:
 
 update-ruby:
 	sudo gem update
+
+update-tldr:
+	- tldr --update
 
 update-vim:
 	scripts/install_vim.sh
