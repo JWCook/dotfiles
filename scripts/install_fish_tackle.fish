@@ -24,5 +24,6 @@ cp fish/completions/* $CONF_DIR/completions/
 curl -sSL https://git.io/fisher -o scripts/bootstrap/get-fisher.fish
 source scripts/bootstrap/get-fisher.fish
 fisher install jorgebucaran/fisher
+fisher install jorgebucaran/nvm.fish
 fisher install re3turn/fish-git-util
 fisher install PatrickF1/fzf.fish
