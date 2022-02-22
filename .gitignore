@@ -20,6 +20,7 @@ viminfo.tmp*
 vim/vim/autoload
 vim/vim/session
 vim/vim/plug-snapshot
+vim/vim/undo
 
 # Fish
 fundle.fish

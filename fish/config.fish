@@ -32,6 +32,13 @@ function cmd-exists
     type -a $argv &> /dev/null
 end
 
+# Most frequently used commands
+function hist-frequency
+    history \
+    | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' \
+    | sort -rn | less
+end
+
 # Append to path, without duplicates
 function pathadd
     set -U fish_user_paths $argv $fish_user_paths
