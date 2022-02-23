@@ -3,6 +3,7 @@
 export NATURTAG_DIR='/mnt/c/Users/JCook/AppData/Local/Naturtag'
 
 alias open-ps='powershell.exe /c start'
+alias sp-open-wsl='powershell.exe /c start docs/_build/html/index.html'
 
 # TODO: Don't add duplicate keys
 # eval $(ssh-agent -s)

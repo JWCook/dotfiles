@@ -912,6 +912,7 @@ function sphinx-autobuild-project
 end
 
 alias sp-open='xdg-open docs/_build/html/index.html'
+alias sp-open-wsl='powershell.exe /c start docs/_build/html/index.html'
 alias sp-build='sphinx-build-project'
 alias sp-auto='sphinx-autobuild-project'
 

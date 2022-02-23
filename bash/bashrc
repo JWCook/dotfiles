@@ -174,8 +174,7 @@ newest() {                                              # Find most recent file 
 ###############################
 
 # Recursive folder size
-# unalias du
-# unalias df
+unalias du > /dev/null
 if cmd-exists dust; then
     alias du='dust'
 else
@@ -351,6 +350,7 @@ sfill() {
 ############################
 
 # Disk usage
+unalias df > /dev/null
 if cmd-exists duf; then
     alias df='duf'
 else
