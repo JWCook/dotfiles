@@ -175,11 +175,11 @@ end
 # ❰❰ Search ❱❱ #
 ################
 
-# fd() { find ${2:-.} -name "$1" -prune -type d; }        # Recursive search (lit, dirs)
-# ff() { find ${2:-.} -name "$1" -type f; }               # Recursive search (lit, files)
-# ge() { env | grep ${1:-""}; }                           # Search environment variables
-# gr() { grep -r "$1" ${@:2}; }                           # Recursive search
-# grr() { grep -r "$1" $(pwd-base) test; }                # Recursive search default src and test dirs
+# Search environment variables
+function ge
+    env | grep $argv
+end
+
 # newest() {                                              # Find most recent file w/ pattern
 #     find ${2:-.} -type f -name $1 -print0 |\
 #     xargs -0 ls -t | head -n1
