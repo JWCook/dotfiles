@@ -86,6 +86,7 @@ pathadd ~/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+pathadd node_modules/.bin
 
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 

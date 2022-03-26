@@ -60,6 +60,16 @@ GRUB_TIMEOUT=1
 ```
 * `sudo update-grub` OR `sudo grub2-mkconfig -o /boot/grub2/grub.cfg`
 
+## Networking
+Disable IPv6 support, if needed:
+* `sudo vim /etc/sysctl.conf`
+```ini
+net.ipv6.conf.all.disable_ipv6 = 1 
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+```
+* `sudo sysctl -p`
+* Verify: `cat /proc/sys/net/ipv6/conf/all/disable_ipv6`
 
 ## Misc System Config
 
