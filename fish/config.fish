@@ -123,6 +123,7 @@ set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
 alias ac='npx all-contributors'
+alias dft='git difftool'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
@@ -138,13 +139,17 @@ complete -c ta --wraps=type
 alias vim='nvim'
 abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
+alias unalias='functions --erase'
 
 # Modern replacements for Unix tools
-cmd-exists zoxide && zoxide init fish | source
+if cmd-exists zoxide
+    zoxide init fish | source
+    alias cd='z'
+    complete -c cd --wraps=__zoxide_z
+    alias zz='zi'
+    complete -c zz --wraps=__zoxide_zi
+end
 
-# TODO: Not currently possible, fixed in next zoxide release
-# alias cd='z'
-# complete -c cd --wraps=__zoxide_z
 # alias fd='fdfind'
 # complete -c fd --wraps=fdfind
 alias ps='procs'
@@ -157,8 +162,6 @@ alias top='btm --color gruvbox'
 complete -c top --wraps=btm
 alias tt='tig'
 complete -c tt --wraps=tig
-alias zz='zi'
-complete -c zz --wraps=__zoxide_zi
 
 if cmd-exists batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision

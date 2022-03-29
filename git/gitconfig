@@ -42,8 +42,6 @@
     changed = cyan
     deleted = red
     untracked = magenta
-# [diff]
-#     tool = nvim -d
 [pager]
     diff = delta
     log = delta
@@ -56,12 +54,24 @@
     navigate = true
 [interactive]
     diffFilter = delta --color-only
+[credential]
+    helper = cache --timeout=3600
+[pull]
+    rebase = true
+# Diff/external tool settings
+[alias]
+    dft = difftool
+[diff]
+    tool = difftastic
+    # tool = nvim -d
+[difftool]
+    prompt = false
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+    difftool = true
 [tig]
     vertical-split = false
     split-view-height = 80%
     tab-size = 4
     line-graphics = utf-8
-[credential]
-    helper = cache --timeout=3600
-[pull]
-	rebase = true

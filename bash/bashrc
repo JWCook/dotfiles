@@ -110,6 +110,7 @@ cmd-exists zoxide && eval "$(zoxide init bash)"
 
 # alias cd='__zoxide_z'
 # alias fd='fdfind'
+alias dft='git difftool'
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'

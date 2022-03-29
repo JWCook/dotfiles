@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 cargo install -f bottom
+cargo install -f difftastic
 cargo install -f du-dust
 cargo install -f hyperfine
 cargo install -f exa
@@ -7,6 +8,7 @@ cargo install -f fd-find
 cargo install -f git-delta
 cargo install -f gping
 cargo install -f procs
+cargo install -f zoxide
 # cargo install --git https://github.com/ogham/dog dog
 
 # Generate command completion files
