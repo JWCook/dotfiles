@@ -668,8 +668,8 @@ abbr pipgrep pip freeze \| grep -i
 abbr pt pytest
 
 # Tox / Nox
-abbr toxe tox -e
-abbr noxe nox -e
+abbr te tox -e
+abbr ne nox -e
 abbr ncov nox -e cov
 abbr ndocs nox -e docs
 abbr ldocs nox -e livedocs
