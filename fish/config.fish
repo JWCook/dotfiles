@@ -810,6 +810,7 @@ end
 
 # Open HTML coverage report
 alias cov-open='xdg-open test-reports/index.html'
+alias cov-open-wsl='powershell.exe /c start test-reports/index.html'
 
 # Run py.test with ludicrous verbosity
 function ptv -a path
