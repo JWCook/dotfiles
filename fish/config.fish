@@ -76,7 +76,8 @@ alias ttput='tty -s && tput'
 set -e fish_user_paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
-pathadd ~/.miniconda/bin
+# pathadd ~/.miniconda/bin
+pathadd ~/.local/share/gem/ruby/3.0.0/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
@@ -406,6 +407,7 @@ end
 abbr gf git fetch --all
 abbr ggr git grep
 abbr gp git pull
+alias gpp='git pull && gbprune'
 abbr gpr git pull --rebase
 abbr gpush git push
 abbr gfpush git push --force
@@ -413,8 +415,10 @@ abbr gstash git stash
 abbr gpop git stash pop
 abbr groot cd \(git rev-parse --show-toplevel\)
 abbr gs git status
-abbr gsv git status -vv
 abbr gss git status --short
+abbr gsv git status -vv
+abbr gsw git switch
+abbr gsc git switch -c
 abbr gstlist git stash list \; git stash show
 alias gremote='git remote | head -n 1'
 
@@ -511,7 +515,12 @@ set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 alias gbranch='git rev-parse --abbrev-ref HEAD'
 abbr gbranches git branch -vv
 abbr gbmv git branch -m
-abbr gbprune git fetch --prune
+
+function gbprune
+    set gone_branches (git fetch -p && git branch -vv | awk '/: gone]/{print $1}')
+    printf "Deleting branches: $gone_branches"
+    git branch -D $gone_branches
+end
 
 function grebase -a branch --wraps=__fish_git_branches
     set branch (coalesce $branch 'main')
@@ -596,6 +605,14 @@ function git-latest-release-rpm -a repo
     git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
 end
 
+
+function fix-poetry
+    git add poetry.lock
+    git reset HEAD poetry.lock
+    git checkout poetry.lock
+    poetry update
+    git add poetry.lock
+end
 
 ################
 # ❰❰ Docker ❱❱ #

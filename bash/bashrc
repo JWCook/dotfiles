@@ -39,6 +39,7 @@ shopt -s histappend
 # Paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
+pathadd ~/.local/share/gem/ruby/3.0.0/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
@@ -153,7 +154,7 @@ prompt-confirm() {
 }
 
 # Recursive word count
-wcr() { gr "$1" $2 | wc -l; }
+wcr() { ag "$1" $2 | wc -l; }
 
 
 ################
@@ -173,7 +174,7 @@ newest() {                                              # Find most recent file 
 ###############################
 
 # Recursive folder size
-unalias du > /dev/null
+unalias du 2> /dev/null
 if cmd-exists dust; then
     alias du='dust'
 else
@@ -349,7 +350,7 @@ sfill() {
 ############################
 
 # Disk usage
-unalias df > /dev/null
+unalias df 2> /dev/null
 if cmd-exists duf; then
     alias df='duf'
 else
@@ -529,6 +530,7 @@ export GLOBAL_REPO_DIR='/usr/local/src'
 # General
 # ------------------------------
 alias gp='git pull'
+alias gpp='git pull && gbprune'
 alias gpr='git pull --rebase'
 alias gpush='git push'
 alias gfpush='git push --force'
@@ -537,8 +539,10 @@ alias gstash='git stash'
 alias gstlist='git stash list; git stash show'
 alias gpop='git stash pop'
 alias gs='git status'
-alias gsv='git status -vv'
 alias gss='git status --short'
+alias gsv='git status -vv'
+alias gsw='git switch'
+alias gsc='git switch -c'
 alias gf='git fetch --all'
 alias groot='cd $(git rev-parse --show-toplevel)'
 alias gremote='git remote | head -n 1'
@@ -625,6 +629,15 @@ alias gbranch='git rev-parse --abbrev-ref HEAD'
 alias gbmv='git branch -m'
 alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
 alias gbprune='git fetch --prune'
+
+unalias gbprune 2> /dev/null
+gbprune() {
+    gone_branches=$(git fetch -p && git branch -vv | awk '/: gone]/{print $1}')
+    printf "Deleting branches: $gone_branches"
+    git branch -D $gone_branches
+}
+
+
 grebase() { git rebase --interactive --rebase-merges ${1:-main}; }
 gsrebase() {
     git stash
