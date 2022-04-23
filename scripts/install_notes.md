@@ -35,6 +35,11 @@ Keyring:
 * Enable Secret Service Integration and SSH Agent in KeepassXC
 * `echo $SSH_AUTH_SOCK` and set that in KeepassXC
 
+Display/appearance:
+* In Fedora with Gnome 40+, to add window minimize/maximize buttons:
+```
+settings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+```
 
 ## XFCE
 
@@ -79,6 +84,16 @@ net.ipv6.conf.lo.disable_ipv6 = 1
   Defaults        env_reset,timestamp_timeout=120
   Defaults        secure_path = ...:/usr/local/bin
   ```
+* `sudo vim /etc/systemd/system.conf`: Uncommend/edit:
+  ```
+  DefaultTimeoutStopSec=15s
+  ```
+
+## Fix broken openssl after Ubuntu upgrade
+```
+wget https://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.1_1.1.0l-1~deb9u5_amd64.deb
+sudo dpkg -i libssl1.1*.deb
+```
 
 ## Fedora-specific:
 
@@ -98,3 +113,8 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 * Copy over SSH keys
 * Add git SSH config
 * Clone & install dotfiles
+
+## Dual-boot, shared storage partition
+```
+ln -s "/media/$USER/STORAGE/Nextcloud" "/home/$USER/Nextcloud"
+```

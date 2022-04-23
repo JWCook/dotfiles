@@ -21,11 +21,9 @@ REPO_RPM_URIS="
 "
 REPO_CONFIG_URIS="
     https://download.docker.com/linux/fedora/docker-ce.repo
-    https://download.opensuse.org/repositories/home:manuelschneid3r/Fedora_${RELEASEVER}/home:manuelschneid3r.repo
     scripts/fedora/atom.repo
 "
 RPM_KEYS='
-    https://build.opensuse.org/projects/home:manuelschneid3r/public_key
     https://packagecloud.io/AtomEditor/atom/gpgkey
 '
 
@@ -70,6 +68,7 @@ PKGS_APPS='
     pv
     qpdf
     rpmconf
+    snapd
     telnet
     the_silver_searcher
     tig
@@ -94,7 +93,6 @@ PKGS_GUI_APPS='
     guake
     inkscape
     keepassxc
-    nextcloud-client
     terminator
     xfce4-terminal
 '
@@ -208,6 +206,11 @@ dnf update -y
 dnf install -y $PACKAGES_TO_INSTALL
 
 activate-global-python-argcomplete
+
+# Install snap packages
+sudo ln -s /var/lib/snapd/snap /snap
+sudo service snapd start
+sudo snap install nextcloud-desktop-client
 
 # Disable cgroupsv2; see https://github.com/docker/cli/issues/297#issuecomment-547022631
 grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
