@@ -35,12 +35,12 @@ function install_repos() {
 PKGS_APPS='
     bat
     cargo
+    copyq
     curl
     feh
     figlet
     fish
     git
-    gpaste
     htop
     jq
     ncdu

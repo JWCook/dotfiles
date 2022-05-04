@@ -50,6 +50,7 @@ RPM_URIS="
 PKGS_APPS='
     bat
     cargo
+    copyq
     dnf-automatic
     dnf-plugins-core
     docker-ce
@@ -157,8 +158,6 @@ PKGS_IMG='
 PKGS_GNOME='
     alacarte
     dconf-editor
-    gpaste
-    gnome-shell-extension-gpaste
     gnome-shell-extension-gsconnect
     gnome-tweak-tool
     gnome-shell-extension-user-theme
