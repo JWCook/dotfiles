@@ -776,7 +776,7 @@ alias in-env='python -c\
               "import sys;\
                sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
-alias pipgrep='pip freeze | grep -i'
+alias pipg='pip freeze | grep -i'
 cmd-exists pt || alias pt='pytest'
 
 # Tox / Nox

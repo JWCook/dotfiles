@@ -112,7 +112,7 @@ set -gx SHELL (which fish)
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
-# cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
+cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
 
 
 #########################
@@ -664,7 +664,7 @@ abbr bb black --target-version py37 --line-length 100 --skip-string-normalizatio
 abbr install-pretty-errors python -m pretty_errors -s -p
 abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
-abbr pipgrep pip freeze \| grep -i
+abbr pipg pip freeze \| grep -i
 abbr pt pytest
 
 # Tox / Nox
