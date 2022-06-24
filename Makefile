@@ -76,6 +76,8 @@ install-ubuntu-wsl: \
     configure-sudoers
 	rm -f ~/.bashrc_wsl
 	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
+	rm -f ~/.config/fish/config_wsl.fish
+	ln -s `pwd`/fish/config_wsl.fish ~/.config/fish/config_wsl.fish
 	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
 	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
 	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/

@@ -55,8 +55,8 @@ function prompt-confirm
 end
 
 # Source a file, if it exists
-function source-file
-    test -f $1 && source $argv
+function source-file -a src_file
+    test -f $src_file && source $argv
 end
 
 # Source an executable, if it exists on path
@@ -89,6 +89,7 @@ pathadd /usr/local/bin
 pathadd /usr/local/sbin
 pathadd node_modules/.bin
 
+source-file ~/.config/fish/config_wsl.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
@@ -128,7 +129,6 @@ alias dft='git difftool'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
-abbr open-ps powershell.exe /c start
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
@@ -827,7 +827,6 @@ end
 
 # Open HTML coverage report
 alias cov-open='xdg-open test-reports/index.html'
-alias cov-open-wsl='powershell.exe /c start test-reports/index.html'
 
 # Run py.test with ludicrous verbosity
 function ptv -a path
@@ -934,7 +933,6 @@ function sphinx-autobuild-project
 end
 
 alias sp-open='xdg-open docs/_build/html/index.html'
-alias sp-open-wsl='powershell.exe /c start docs/_build/html/index.html'
 alias sp-build='sphinx-build-project'
 alias sp-auto='sphinx-autobuild-project'
 
