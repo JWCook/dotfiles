@@ -207,6 +207,7 @@ end
 if cmd-exists exa
     alias ls 'exa -aF --group-directories-first --icons'
     alias ll 'exa -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
+    abbr lls ll --sort size
     complete -c ll --wraps=exa
 else if cmd-exists colorls
     alias ls 'colorls -A --group-directories-first'
@@ -241,6 +242,32 @@ function massif
         | tail -n 1 \
         | awk '{print $1/1024/1024}'
 end
+
+
+#########################
+# ❰❰ File Operations ❱❱ #
+#########################
+
+# Swap two files
+function swap -a f1 -a f2
+    # Neither file exists (or were not specified)
+    test -z $f1 && test -z $f2 && return 1
+    test -f $f1 || test -f $f2 || return 1
+
+    # Only one file exists
+    not test -f $f1 && mv "$f2" "$f1" && return 0
+    not test -f $f2 && mv "$f1" "$f2" && return 0
+
+    # Both files exist
+    set TMPFILE "tmp.$fish_pid"
+    mv "$f1" $TMPFILE
+    mv "$f2" "$f1"
+    mv $TMPFILE "$f2"
+end
+
+alias tgz='tar -I "gzip -9" -cvf'
+abbr tx tar -xvf
+
 
 ############################
 # ❰❰ Disk & Device Info ❱❱ #

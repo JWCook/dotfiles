@@ -244,6 +244,8 @@ csv-preview() {
 }
 alias cv='csv-preview'
 
+alias tgz='tar -I "gzip -9" -cvf'
+
 # Create an archive (*.tar.gz) from given directory
 maketar() {
     tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"
