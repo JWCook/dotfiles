@@ -6,13 +6,14 @@ BOOTSTRAPS=scripts/bootstrap
 # Python versions to install and activate with pyenv
 # Note: The first version in list will be used as the default 'python3' version
 PYTHON_VERSIONS='
-    3.9.9
+    3.10.4
     3.6.15
-    3.7.12
-    3.8.12
-    3.10.2
-    3.11-dev
+    3.7.13
+    3.8.13
+    3.9.12
+    3.11.0b3
 '
+POETRY_VERSION='1.2.0b1'
 
 source bash/bashrc
 source bash/bashrc_style
@@ -69,7 +70,7 @@ print-title 'Installing/updating poetry'
 if cmd-exists poetry; then
     poetry self update
 else
-    python $BOOTSTRAPS/install-poetry.py
+    python $BOOTSTRAPS/install-poetry.py --version $POETRY_VERSION
     poetry config virtualenvs.path ~/.virtualenvs
     poetry config virtualenvs.create false
 fi
