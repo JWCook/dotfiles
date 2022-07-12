@@ -1,5 +1,13 @@
 packages: [
   "atom-beautify"
+  "atom-ide-base"
+  "atom-ide-code-format"
+  "atom-ide-datatip"
+  "atom-ide-definitions"
+  "atom-ide-hyperclick"
+  "atom-ide-markdown-service"
+  "atom-ide-outline"
+  "atom-ide-signature-help"
   "atom-material-syntax"
   "atom-material-ui"
   "autocomplete-python"

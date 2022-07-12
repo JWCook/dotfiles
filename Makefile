@@ -19,8 +19,8 @@ install-conf: \
     install-pep8-conf \
     install-postgres-conf \
     install-terminator-conf \
-    install-vim-conf \
-    install-xfce-conf
+    install-vim-conf
+    # install-xfce-conf
 
 install-portable-packages: \
     install-cargo-packages \
@@ -46,13 +46,13 @@ update: \
 ##############################################
 
 install-fedora: \
-    install-system-packages-fedora-xfce \
+    install-system-packages-fedora-gnome \
     install-portable-packages \
     install-conf \
-    install-chrome-fedora \
-    install-neovim-fedora \
-    install-retroterm-fedora \
+    install-vim-plug \
     install-ssh-agent-systemd
+    # install-retroterm-fedora \
+    # install-chrome-fedora \
     # install-vim-fedora
 
 update-fedora: update
@@ -273,6 +273,8 @@ install-ssh-agent-systemd:
 
 install-vim:
 	scripts/git/install_vim.sh
+	
+install-vim-plug:
 	scripts/install_vim_plug.sh
 
 update-cargo: install-cargo-packages
@@ -317,14 +319,9 @@ install-system-packages-fedora-headless:
 reinstall-system-packages-fedora:
 	sudo scripts/fedora/install_system_packages.sh
 
-install-neovim-fedora:
-	scripts/fedora/install_neovim.sh
-	scripts/install_vim_plug.sh
-
 install-vim-fedora:
 	scripts/fedora/install_vim_prereqs.sh
 	scripts/install_vim.sh
-	scripts/install_vim_plug.sh
 
 install-chrome-fedora:
 	sudo scripts/fedora/install_chrome.sh

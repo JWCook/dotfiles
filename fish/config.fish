@@ -90,6 +90,7 @@ pathadd /usr/local/sbin
 pathadd node_modules/.bin
 
 source-file ~/.config/fish/config_wsl.fish
+source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
@@ -1080,5 +1081,3 @@ end
 #     mkvirtualenv -p python3 ${1:-$(pwd-base)}
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
-
-# [ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true

@@ -11,7 +11,7 @@ PYTHON_VERSIONS='
     3.7.13
     3.8.13
     3.9.12
-    3.11.0b3
+    3.11.0b4
 '
 POETRY_VERSION='1.2.0b1'
 
@@ -94,7 +94,7 @@ fi
 
 # Install some user-level site-packages
 print-title 'Installing/updating user packages'
-pip install --user -Ur scripts/requirements-user.txt
+python3.10 -m pip install --user -Ur scripts/requirements-user.txt
 
 # Install or update some python CLI tools with pipx
 if test -z $UPDATE_ONLY; then
