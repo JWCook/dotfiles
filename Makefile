@@ -18,6 +18,7 @@ install-conf: \
     install-pdb-conf \
     install-pep8-conf \
     install-postgres-conf \
+    install-sublimetext-conf \
     install-terminator-conf \
     install-vim-conf
     # install-xfce-conf
@@ -211,6 +212,11 @@ install-pep8-conf:
 install-postgres-conf:
 	rm -rf ~/.psqlrc
 	ln -s `pwd`/postgres/psqlrc ~/.psqlrc
+
+install-sublimetext-conf:
+	mkdir -p ~/.config/sublime-text/Packages
+	rm -rf ~/.config/sublime-text/Packages/User
+	ln -s ~/.config/sublime-text/Packages/User ~/Nextcloud/Data/Config/SublimeText
 
 install-terminator-conf:
 	rm -rf ~/.config/terminator
