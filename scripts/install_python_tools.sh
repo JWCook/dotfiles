@@ -13,7 +13,6 @@ PYTHON_VERSIONS='
     3.9.12
     3.11.0b4
 '
-POETRY_VERSION='1.2.0b1'
 
 source bash/bashrc
 source bash/bashrc_style
@@ -70,7 +69,7 @@ print-title 'Installing/updating poetry'
 if cmd-exists poetry; then
     poetry self update
 else
-    python $BOOTSTRAPS/install-poetry.py --version $POETRY_VERSION
+    python $BOOTSTRAPS/install-poetry.py --preview
     poetry config virtualenvs.path ~/.virtualenvs
     poetry config virtualenvs.create false
 fi
