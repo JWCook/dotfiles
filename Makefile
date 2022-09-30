@@ -216,7 +216,7 @@ install-postgres-conf:
 install-sublimetext-conf:
 	mkdir -p ~/.config/sublime-text/Packages
 	rm -rf ~/.config/sublime-text/Packages/User
-	ln -s ~/.config/sublime-text/Packages/User ~/Nextcloud/Data/Config/SublimeText
+	ln -s ~/Nextcloud/Data/Config/SublimeText ~/.config/sublime-text/Packages/User
 
 install-terminator-conf:
 	rm -rf ~/.config/terminator
