@@ -182,3 +182,5 @@ for pkg in $PKGS_SNAP_CLASSIC; do
     sudo snap install $pkg --classic
 done
 
+# Symlink neovim snap location to standard system location
+sudo ln -s /snap/bin/nvim /usr/bin/nvim
