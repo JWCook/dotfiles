@@ -11,7 +11,7 @@ PYTHON_VERSIONS='
     3.7.13
     3.8.13
     3.9.12
-    3.11.0b4
+    3.11.0rc2
 '
 
 source bash/bashrc

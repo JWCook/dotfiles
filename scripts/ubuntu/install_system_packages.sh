@@ -72,6 +72,7 @@ PKGS_APPS='
 # Graphical applications
 PKGS_GUI_APPS='
     chromium-browser
+    chromium-codecs-ffmpeg-extra
     gimp
     grub-customizer
     guake

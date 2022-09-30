@@ -69,7 +69,7 @@ unset PYTHONPATH
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export VIRTUALENVWRAPPER_PYTHON=$(which python)
 export VIRTUALENV_REQUIREMENTS=~/dotfiles/scripts/requirements-virtualenvs.txt
-source-bin virtualenvwrapper.sh
+source $(which virtualenvwrapper.sh)
 
 # Init pyenv, if installed
 cmd-exists pyenv && eval "$(pyenv init -)"
