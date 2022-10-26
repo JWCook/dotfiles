@@ -782,14 +782,6 @@ alias bb='black --target-version py37 --line-length 100 --skip-string-normalizat
 alias install-pretty-errors='python -m pretty_errors -s -p'
 # Get all directories currently on the python site path
 alias pypath='python -c "import sys; print(\"\n\".join(sys.path))"'
-# Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
-alias py-site-packages='python -c\
-    "from distutils.sysconfig import get_python_lib;\
-    print(get_python_lib())"'
-# Determine if we are running in a virtualenv
-alias in-env='python -c\
-              "import sys;\
-               sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
 alias lsv='lsvirtualenv -b'
 alias pipg='pip freeze | grep -i'
 cmd-exists pt || alias pt='pytest'
@@ -803,15 +795,29 @@ alias ldocs='nox -e livedocs'
 alias nlint='nox -e lint'
 alias ntest='nox -e test'
 
-# Show a bunch of relevant python environment info
+# Determine if we are running in a virtualenv
+alias in-env='python -c\
+              "import sys;\
+               sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"'
+
+# Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
+alias py-site-packages='python -c\
+    "from distutils.sysconfig import get_python_lib;\
+    print(get_python_lib())"'
+
+# Show relevant python environment info
 py-debug() {
     printf "PATH:\n"
-    path
+    echo -e ${PATH//:/\\n}
+
     printf "\nPYTHONPATH: $PYTHONPATH\n\n"
+
     printf "sys.path:"
-    pypath
+    python -c "import sys; print(\"\n\".join(sys.path))"
+
     printf "\nsite-packages:"
     py-site-packages
+
     printf "In a virtualenv?"
     in-env && echo 'Yes' || echo 'No'
 
@@ -820,6 +826,7 @@ py-debug() {
     which python3 && python3 --version
     which pip && pip --version
     which pip3 && pip3 --version
+    which poetry && poetry --version
 }
 
 # Pip install a package, temporarily overriding any custom index URLs
