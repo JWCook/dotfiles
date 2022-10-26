@@ -1,6 +1,5 @@
 asciinema
 awscli
-docker-compose
 httpie
 py-spy
 yamllint

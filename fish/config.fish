@@ -667,9 +667,9 @@ end
 # Optionally invoke docker-compose with config specified in an environment variable
 function dco
     if test -f "$DOCKER_COMPOSE_FILE"
-        docker-compose -f "$DOCKER_COMPOSE_FILE" $argv
+        docker compose -f "$DOCKER_COMPOSE_FILE" $argv
     else
-        docker-compose $argv
+        docker compose $argv
     end
 end
 

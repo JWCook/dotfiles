@@ -121,6 +121,7 @@ PKGS_SERVER='
     containerd.io
     docker-ce
     docker-ce-cli
+    docker-compose-plugin
 '
 PKGS_MEDIA='
     gstreamer1.0-plugins-base

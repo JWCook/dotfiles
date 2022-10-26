@@ -741,9 +741,9 @@ function dkill() {
 # Optionally invoke docker-compose with config specified in an environment variable
 function dco() {
     if [[ -f "$DOCKER_COMPOSE_FILE" ]]; then
-        docker-compose -f $DOCKER_COMPOSE_FILE "$@"
+        docker compose -f $DOCKER_COMPOSE_FILE "$@"
     else
-        docker-compose
+        docker compose
     fi
 }
 
