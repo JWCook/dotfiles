@@ -18,3 +18,11 @@ Set-alias gunstage func_gunstage
 
 Function func_guncommit {gunstage git reset --soft HEAD~}
 Set-alias guncommit func_guncommit
+
+Function func_export_associations {
+    Dism /Online /Export-DefaultAppAssociations:"D:\Nextcloud\Data\Config\WinAppAssociations.xml"
+}
+
+Function func_import_associations {
+    Dism /Online /Import-DefaultAppAssociations:"D:\Nextcloud\Data\Config\WinAppAssociations.xml"
+}
