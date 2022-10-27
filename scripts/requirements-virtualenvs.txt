@@ -1,9 +1,8 @@
-black>=21.5b0
+black>=22.8
 flake8
 ipdb
 ipython
 isort>=5.8
-mypy>=0.812
 # TODO: Switch back to pdb++ when fancycompleter stuff is fixed
 # pdbpp
 pip>20,<22.1
@@ -11,4 +10,5 @@ pytest-sugar
 pytest-xdist
 rich
 setuptools
-virtualenvwrapper
+scalene
+# virtualenvwrapper
