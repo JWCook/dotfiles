@@ -120,8 +120,10 @@ Plug 'ryanoasis/vim-devicons'
 " Plug 'atelierbram/Base2Tone-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'sainnhe/everforest'
 Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
+Plug 'EdenEast/nightfox.nvim', {'do': ':NightfoxCompile'}
 Plug 'arcticicestudio/nord-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'lifepillar/vim-solarized8'
@@ -464,9 +466,9 @@ au BufNewFile,BufRead *.less set filetype=css
 " Color scheme
 set termguicolors
 try
-  colorscheme gruvbox
+  colorscheme nightfox
   "Favorites -
-  "  ayu deep-space gruvbox jellybeans monokai nord palenight
+  "  ayu deep-space gruvbox jellybeans monokai nord nightfox terafox palenight
   "  solarized8_high tender two-firewatch ubaryd
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
