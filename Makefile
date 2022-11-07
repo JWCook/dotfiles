@@ -1,113 +1,43 @@
-#############################################
-# Grouped Pakcages & Config: Cross-Platform #
-#############################################
-
+# Config for terminal applications
 install-conf: \
-    install-albert-conf \
-    install-atom-conf \
     install-bash-conf \
     install-figlet-conf \
     install-fish-conf \
     install-git-conf \
-    install-gnome-terminal-conf \
     install-grc-conf \
-    install-guake-conf \
     install-htop-conf \
     install-ipython-conf \
     install-neofetch-conf \
     install-pdb-conf \
     install-pep8-conf \
     install-postgres-conf \
-    install-sublimetext-conf \
-    install-terminator-conf \
-    install-vim-conf
-    # install-xfce-conf
-
-install-portable-packages: \
-    install-cargo-packages \
-    install-fonts \
-    install-fzf \
-    install-grc \
-    install-npm-packages \
-    install-python-tools \
-    install-ruby-gems
-
-update: \
-    update-cargo \
-    update-npm \
-    update-python \
-    update-ruby \
-    update-tldr
-    # update-grc
-    # update-vim
-
-
-##############################################
-# Grouped Pakcages & Config: Distro-Specific #
-##############################################
-
-install-fedora: \
-    install-system-packages-fedora-gnome \
-    install-portable-packages \
-    install-conf \
-    install-vim-plug \
-    install-ssh-agent-systemd
-    # install-retroterm-fedora \
-    # install-chrome-fedora \
-    # install-vim-fedora
-
-update-fedora: update
-	sudo dnf upgrade -y
-
-install-ubuntu: \
-    install-system-packages-ubuntu \
-    install-portable-packages \
-    install-conf \
-    install-duplicati-ubuntu
-    #install-chrome-ubuntu \
-    #install-retroterm-ubuntu \
-    #install-vim-ubuntu
-
-install-ubuntu-wsl: \
-    install-system-packages-ubuntu-wsl \
-    install-portable-packages \
-    install-conf \
-    init-ssh-conf \
-    configure-fonts-wsl \
-    configure-sudoers
-	rm -f ~/.bashrc_wsl
-	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
-	rm -f ~/.config/fish/config_wsl.fish
-	ln -s `pwd`/fish/config_wsl.fish ~/.config/fish/config_wsl.fish
-	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
-	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
-	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/
-	test -d /mnt/e/Downloads && rmdir ~/Downloads && ln -s /mnt/e/Downloads ~/Downloads
-	scripts/init_gnome_keyring.sh
-	# See: https://github.com/dnschneid/crouton/wiki/Fix-error-while-loading-shared-libraries:-libQt5Core.so.5
-	sudo strip --remove-section=.note.ABI-tag  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
-	# WIP: Set up host Firefox to allow opening browser from links in WSL
-	# sudo update-alternatives --install "/bin/host_firefox" "firefox" '/mnt/c/Program Files/Mozilla Firefox/firefox.exe' 1
-
-update-ubuntu: update
-	sudo apt-get update && sudo apt-get upgrade -y
-
-# Minimal config + packages for Raspberry Pi (headless)
-install-rpi: \
-    install-bash-conf \
-    install-git-conf \
     install-vim-conf \
-    install-python-tools
-	scripts/install_vim_plug.sh
-	scripts/rpi/install_system_packages.sh
+    install-vim-plug
 
+# Config for GUI applications
+install-gui-conf: \
+    install-albert-conf \
+    install-atom-conf \
+    install-gnome-terminal-conf \
+    install-guake-conf \
+    install-sublimetext-conf \
+    install-terminator-conf
 
-#########################
-# Runtime Configuration #
-#########################
+# Extra bits that require sudo access
+install-extras: \
+    configure-gnome \
+    configure-ntp \
+    configure-sudoers \
+    install-fonts
 
-configure-fonts-wsl:
-	scripts/configure_fonts_wsl.sh
+# WSL-specific config
+install-wsl: \
+    install-conf \
+    install-conf-wsl \
+    install-fonts \
+    configure-fonts-wsl \
+    install-xfce-conf
+
 
 configure-gnome:
 	scripts/configure_gnome.sh
@@ -118,7 +48,6 @@ configure-ntp:
 configure-sudoers:
 	sudo scripts/configure_sudoers.sh
 
-# WIP
 init-ssh-conf:
 	mkdir -p ~/.ssh
 	cp ssh/config ~/.ssh/
@@ -162,6 +91,9 @@ install-fish-conf:
 install-figlet-conf:
 	rm -rf ~/.figlet
 	ln -s `pwd`/figlet ~/.figlet
+
+install-fonts:
+	scripts/install_fonts.sh
 
 install-git-conf:
 	rm -f ~/.gitconfig
@@ -235,132 +167,29 @@ install-vim-conf:
 	# Sync vim sessions, if sync folder exists
 	- [ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
 
+install-vim-plug:
+	scripts/install_vim_plug.sh
+
+
+# WSL-specific bits
+
+install-conf-wsl:
+	rm -f ~/.bashrc_wsl
+	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
+	rm -f ~/.config/fish/config_wsl.fish
+	ln -s `pwd`/fish/config_wsl.fish ~/.config/fish/config_wsl.fish
+	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
+	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
+	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/
+	test -d /mnt/e/Downloads && rmdir ~/Downloads && ln -s /mnt/e/Downloads ~/Downloads
+
+configure-fonts-wsl:
+	scripts/configure_fonts_wsl.sh
+
 install-xfce-conf:
 	rm -rf ~/.config/xfce4/terminal
 	mkdir -p ~/.config/xfce4/terminal
 	ln -s `pwd`/xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
 	ln -s `pwd`/xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
-	scripts/git/install_xfce_superkey.sh
 
 
-############################
-# Packages: Cross-Platform #
-############################
-
-install-cargo-packages:
-	scripts/install_cargo_packages.sh
-
-install-fonts:
-	scripts/install_fonts.sh
-
-install-fzf:
-	scripts/git/install_fzf.sh
-
-install-grc:
-	scripts/git/install_grc.sh
-
-install-npm-packages:
-	scripts/install_npm_packages.sh
-
-install-poetry:
-	scripts/install_poetry.sh
-
-install-pyenv:
-	scripts/install_pyenv.sh
-
-install-python-tools:
-	scripts/install_python_tools.sh
-
-install-ruby-gems:
-	sudo gem install -g scripts/Gemfile
-
-install-ssh-agent-systemd:
-	scripts/install_ssh_agent_systemd.sh
-
-install-vim:
-	scripts/git/install_vim.sh
-	
-install-vim-plug:
-	scripts/install_vim_plug.sh
-
-update-cargo: install-cargo-packages
-
-update-grc: install-grc
-
-update-npm: install-npm-packages
-
-update-python:
-	scripts/install_python_tools.sh -u
-
-update-ruby:
-	sudo gem update
-
-update-tldr:
-	- tldr --update
-
-update-vim:
-	scripts/install_vim.sh
-
-update-git-repos:
-	scripts/git/install_fzf.sh
-	scripts/git/install_grc.sh
-	scripts/git/install_retroterm.sh
-	scripts/git/install_vim.sh
-	scripts/git/install_xfce_superkey.sh
-
-
-####################
-# Packages: Fedora #
-####################
-
-install-system-packages-fedora-gnome:
-	sudo scripts/fedora/install_system_packages.sh -r -g -n
-
-install-system-packages-fedora-xfce:
-	sudo scripts/fedora/install_system_packages.sh -r -g -x
-
-install-system-packages-fedora-headless:
-	sudo scripts/fedora/install_system_packages.sh -r
-
-reinstall-system-packages-fedora:
-	sudo scripts/fedora/install_system_packages.sh
-
-install-vim-fedora:
-	scripts/fedora/install_vim_prereqs.sh
-	scripts/install_vim.sh
-
-install-chrome-fedora:
-	sudo scripts/fedora/install_chrome.sh
-
-install-retroterm-fedora:
-	scripts/fedora/install_retroterm_prereqs.sh
-	scripts/git/install_retroterm.sh
-
-
-#####################
-# Packages: Ubuntu #
-#####################
-
-install-system-packages-ubuntu:
-	sudo scripts/ubuntu/install_system_packages.sh -r -g
-
-install-system-packages-ubuntu-wsl:
-	sudo scripts/ubuntu/install_system_packages.sh -r -w
-
-reinstall-system-packages-ubuntu:
-	sudo scripts/ubuntu/install_system_packages.sh
-
-install-vim-ubuntu:
-	scripts/ubuntu/install_vim_prereqs.sh
-	scripts/install_vim.sh
-	scripts/install_vim_plug.sh
-
-install-chrome-ubuntu:
-	sudo scripts/ubuntu/install_chrome.sh
-
-install-duplicati-ubuntu:
-	scripts/ubuntu/install_duplicati.sh
-
-install-retroterm-ubuntu:
-	scripts/ubuntu/install_retroterm_prereqs.sh
-	scripts/git/install_retroterm.sh

@@ -1,6 +1,0 @@
-asciinema
-awscli
-httpie
-yamllint
-
-# py-spy

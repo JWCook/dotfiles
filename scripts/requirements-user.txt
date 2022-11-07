@@ -1,4 +1,0 @@
-# Python packages to install in user-level site-packages
-pipx
-virtualenvwrapper
-virtualfish
