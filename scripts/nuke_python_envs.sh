@@ -5,6 +5,8 @@
 python scripts/bootstrap/install-poetry.py --uninstall
 rm -rf ~/.local/share/pypoetry
 rm -f ~/.local/bin/poetry
+rm -rf ~/.cache/pip
+rm -rf ~/.cache/pypoetry
 rm -rf ~/.poetry
 rm -rf ~/.pyenv
 rm -rf ~/.miniconda
