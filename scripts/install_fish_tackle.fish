@@ -17,10 +17,13 @@ ln -s (pwd)/fish/conf.d/virtualfish-loader.fish $VF_LOADER
 cp fish/completions/* $CONF_DIR/completions/
 
 # Install Fisher package manager + packages
-mkdir -p scripts/bootstrp
+mkdir -p scripts/bootstrap
 curl -sSL https://git.io/fisher -o scripts/bootstrap/get-fisher.fish
 source scripts/bootstrap/get-fisher.fish
 fisher install jorgebucaran/fisher
 fisher install jorgebucaran/nvm.fish
 fisher install re3turn/fish-git-util
 fisher install PatrickF1/fzf.fish
+
+# Set fish as default shell
+sudo chsh -s /usr/bin/fish
