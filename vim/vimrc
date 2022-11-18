@@ -466,7 +466,7 @@ au BufNewFile,BufRead *.less set filetype=css
 " Color scheme
 set termguicolors
 try
-  colorscheme nightfox
+  colorscheme gruvbox
   "Favorites -
   "  ayu deep-space gruvbox jellybeans monokai nord nightfox terafox palenight
   "  solarized8_high tender two-firewatch ubaryd
@@ -496,7 +496,7 @@ set softtabstop=4
 set tabstop=4
 
 " Selected filetypes: 1 tab = 2 spaces
-autocmd FileType html,yaml,vim,json,javascript,vue  setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType html,javascript,json,lua,vim,vue,yaml  setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set pastetoggle=<leader>p
 
