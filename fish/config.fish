@@ -109,9 +109,7 @@ set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -e PYTHONPATH
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
-set -gx VIRTUALENV_REQUIREMENTS ~/dotfiles/scripts/requirements-virtualenvs.txt
-
-set -gx SHELL (which fish)
+set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source

@@ -65,16 +65,14 @@ if  [ -S $DEFAULT_SSH_AUTH_SOCK ] ; then
 fi
 
 # Python stuff
-unset PYTHONPATH
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export VIRTUALENVWRAPPER_PYTHON=$(which python)
-export VIRTUALENV_REQUIREMENTS=~/dotfiles/scripts/requirements-virtualenvs.txt
-source $(which virtualenvwrapper.sh)
-
 # Init pyenv, if installed
 cmd-exists pyenv && eval "$(pyenv init -)"
 
-export SHELL=$(which fish)
+unset PYTHONPATH
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUALENVWRAPPER_PYTHON=$(which python)
+export VIRTUALENV_REQUIREMENTS=~/.virtualenvs/global_requirements.txt
+source-file $(which virtualenvwrapper.sh || echo 'none')
 
 # Misc application-specific settings
 export NTP_SERVER='pool.ntp.org'
