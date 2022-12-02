@@ -46,6 +46,7 @@ pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
 pathadd ~/bin
+pathadd ~/go/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
@@ -766,7 +767,7 @@ alias dcps='dco ps'
 
 alias tls='tmux ls'
 alias trm='tmux kill-session -t'
- # Create new session, or attach if it already exists
+# Create new session, or attach if it already exists
 tnew() {
     tmux new-session -A -s $1 -c ${2:-~}
 }

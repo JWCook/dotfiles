@@ -84,6 +84,7 @@ pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
 pathadd ~/bin
+pathadd ~/go/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
