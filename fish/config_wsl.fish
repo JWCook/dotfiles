@@ -1,6 +1,7 @@
 # Additional config + aliases specific to WSL
 
-export HOME_WIN=(wslpath (wslvar USERPROFILE))
+# TODO: Use WSLENV envar instead
+# export HOME_WIN=(wslpath (wslvar USERPROFILE))
 export APPDATA="$HOME_WIN/AppData"
 export WORKSPACE_WIN='/mnt/d/workspace'
 
