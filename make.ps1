@@ -1,3 +1,6 @@
+# Add powershell aliases to user profile
+# On new system, run as admin: Set-ExecutionPolicy RemoteSigned
+
 $dotfiles = "D:\Workspace\dotfiles"
 $profile_src = "$dotfiles\powershell\powershell_aliases.ps1"
 
@@ -16,3 +19,7 @@ If (test-path $profile_dest) {
 
 
 New-Item -ItemType SymbolicLink  -Path $profile_dest -Target $profile_src
+
+
+# Install some common packages
+winget install "The Silver Searcher"
