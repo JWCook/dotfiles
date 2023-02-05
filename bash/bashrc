@@ -777,6 +777,7 @@ tnew() {
 # ❰❰ Python ❱❱ #
 ################
 
+alias bp='bpython'
 alias bb='black --target-version py37 --line-length 100 --skip-string-normalization'
 alias install-pretty-errors='python -m pretty_errors -s -p'
 # Get all directories currently on the python site path
