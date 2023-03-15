@@ -722,8 +722,11 @@ abbr nlint nox -e lint
 abbr ntest nox -e test
 
 # Pre-commit
-abbr pc-all pre-commit run --all-files
-abbr pc-update pre-commit autoupdate
+abbr pc-all pre-commit run -a
+abbr -e pc-update
+function pc-update
+    pre-commit autoupdate && pre-commit run -a
+end
 
 # Get all directories currently on the python site path
 function pypath
