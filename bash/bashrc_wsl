@@ -1,7 +1,7 @@
 # :set filetype=bash
 
-export HOME_WIN=$(wslpath "$(wslvar USERPROFILE)")
-export APPDATA="$HOME_WIN/AppData"
+# export HOME_WIN=$(wslpath "$(wslvar USERPROFILE)")
+# export APPDATA="$HOME_WIN/AppData"
 export WORKSPACE_WIN='/mnt/d/workspace'
 
 alias open-ps='powershell.exe /c start'
