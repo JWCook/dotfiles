@@ -95,7 +95,10 @@ source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
-# [ -z "$DOTFILES_EXTRA" ] && set DOTFILES_EXTRA=~/dotfiles-extra
+# Set extra dotfiles folder, if not already set by another script
+if ! test -d "$DOTFILES_EXTRA"
+    set -x DOTFILES_EXTRA ~/dotfiles-extra
+end
 set -x WORKSPACE ~/workspace
 abbr cw cd $WORKSPACE
 
