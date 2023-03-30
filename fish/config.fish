@@ -705,7 +705,7 @@ end
 ################
 
 abbr bp bpython
-abbr bb black --target-version py37 --line-length 100 --skip-string-normalization
+abbr bb black --line-length 100 --skip-string-normalization
 abbr install-pretty-errors python -m pretty_errors -s -p
 abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
