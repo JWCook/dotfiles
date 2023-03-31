@@ -88,6 +88,7 @@ pathadd ~/go/bin
 pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
+pathadd /usr/local/src/fzf/bin
 pathadd node_modules/.bin
 
 source-file ~/.config/fish/config_wsl.fish
