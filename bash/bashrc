@@ -39,6 +39,7 @@ shopt -s histappend
 # Paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
+pathadd ~/.local/kitty.app/bin
 pathadd ~/.local/share/gem/ruby/3.0.0/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin

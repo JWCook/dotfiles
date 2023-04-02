@@ -125,6 +125,11 @@ install-ipython-conf:
 	ln -s `pwd`/ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
 	ln -s `pwd`/ipython/profile_default/startup           ~/.ipython/profile_default/startup
 
+install-kitty-conf:
+	mkdir -p ~/.config/kitty
+	rm -f ~/.config/kitty/kitty.conf
+	ln -s `pwd`/kitty/kitty.conf ~/.config/kitty/kitty.conf
+
 install-neofetch-conf:
 	rm -rf ~/.config/neofetch
 	mkdir -p ~/.config/neofetch
