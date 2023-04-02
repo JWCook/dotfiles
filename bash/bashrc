@@ -28,7 +28,7 @@ source-file ~/.local/share/icons-in-terminal/icons_bash.sh
 source-file ~/.nvm/nvm.sh
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
-source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
+#source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
 
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000

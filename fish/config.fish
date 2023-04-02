@@ -76,9 +76,9 @@ alias ttput='tty -s && tput'
 set -e fish_user_paths
 pathadd ~/.cargo/bin
 pathadd ~/.local/bin
-# pathadd ~/.miniconda/bin
 pathadd ~/.local/kitty.app/bin
 pathadd ~/.local/share/gem/ruby/3.0.0/bin
+# pathadd ~/.miniconda/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
