@@ -93,7 +93,7 @@ Plug 'jtratner/vim-flavored-markdown'
 " Plug 'Rykka/InstantRst', {'do': pip_update.'U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
 
 " Python
-Plug 'MicahChambers/vim-flake8'
+" Plug 'MicahChambers/vim-flake8'
 Plug 'alfredodeza/pytest.vim'
 Plug 'jmcantrell/vim-virtualenv'
 
@@ -320,9 +320,9 @@ let g:tagbar_type_markdown = {
 \ }
 
 " Flake8
-autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR>
-autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
-let g:flake8_show_in_gutter=1
+" autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR>
+" autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
+" let g:flake8_show_in_gutter=1
 
 " GitGutter
 noremap <silent> \ :GitGutterToggle<CR>
