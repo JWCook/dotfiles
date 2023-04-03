@@ -667,6 +667,7 @@ end
 
 # Docker-Compose
 # ------------------------------
+abbr dc docker compose
 
 # Optionally invoke docker-compose with config specified in an environment variable
 function dco
