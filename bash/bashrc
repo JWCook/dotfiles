@@ -231,9 +231,9 @@ cp-bak() {
     fi
 }
 
-# Verbose copy w/progress
-cpv() {
-    rsync --whole-file --archive --human-readable --progress --verbose $1 $2;
+# Recursive rsync copy w/ progress
+cprv() {
+    rsync --archive --whole-file --human-readable --info=progress2 $1 $2;
 }
 
 # Formatted preview for CSV files

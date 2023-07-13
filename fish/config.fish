@@ -273,6 +273,11 @@ end
 alias tgz='tar -I "gzip -9" -cvf'
 abbr tx tar -xvf
 
+# Recursive rsync copy w/ progress
+function cprv -a d1 -a d2
+    rsync --archive --whole-file --human-readable --info=progress2 $d1 $d2;
+end
+
 
 ############################
 # ❰❰ Disk & Device Info ❱❱ #
