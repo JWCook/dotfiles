@@ -315,7 +315,8 @@ abbr listen lsof -P -i -n \| grcat conf.nmap
 function local-ip
     ifconfig | awk "/inet/ { print $argv[2] } " | sed -e s/addr://
 end
-abbr public-ip curl ifconfig.me
+abbr -e public-ip
+alias public-ip='curl -s ifconfig.me'
 abbr netconn netstat -pan --inet
 abbr tracert traceroute
 abbr unproxy unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY
@@ -342,7 +343,10 @@ end
 
 abbr date-update sudo ntpdate $NTP_SERVER
 abbr lu column -ts: /etc/passwd \| sort                                  # Formatted local user list
-abbr lu-current w -hs \| cut -d \" \" -f1 \| sort \| uniq                  # Currently logged on users
+abbr -e lu-current
+function lu-current  # Currently logged on users
+    w -hs | cut -d " " -f1 | sort | uniq
+end
 alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'                 # List/format items on PATH
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'                    # List user processes
 function distinfo                                                           # Distribution info
@@ -356,16 +360,16 @@ alias usb-info='lsusb -v'
 
 # Combined system information
 function sysinfo
-    echo -e "\n{$RED}Host information:$NOCOLOR " ; uname -a | lc-gradient -S 60
-    echo -e "\n{$RED}Distro information:$NOCOLOR " ; distinfo | lc-gradient -S 60
-    echo -e "\n{$RED}Users logged on:$NOCOLOR " ; lu-current | lc-gradient -S 60
-    echo -e "\n{$RED}Current date :$NOCOLOR " ; date | lc-gradient -S 60
-    echo -e "\n{$RED}Machine stats :$NOCOLOR " ; uptime | lc-gradient -S 60
-    echo -e "\n{$RED}Memory stats :$NOCOLOR " ; free | lc-gradient -S 60
-    echo -e "\n{$RED}Diskspace :$NOCOLOR " ; df
-    echo -e "\n{$RED}Local IP Address :$NOCOLOR" ; local-ip | lc-gradient -S 60
-    echo -e "\n{$RED}Public IP Address :$NOCOLOR" ; public-ip | lc-gradient -S 60
-    echo -e "\n{$RED}Open connections :$NOCOLOR "; netconn;
+    echo -e "$RED\nHost information:$NOCOLOR" ; uname -a | lc-gradient -S 60
+    echo -e "$RED\nDistro information:$NOCOLOR" ; distinfo | lc-gradient -S 60
+    echo -e "$RED\nUsers logged on:$NOCOLOR" ; lu-current | lc-gradient -S 60
+    echo -e "$RED\nCurrent date:$NOCOLOR" ; date | lc-gradient -S 60
+    echo -e "$RED\nMachine stats:$NOCOLOR" ; uptime | lc-gradient -S 60
+    echo -e "$RED\nMemory stats:$NOCOLOR" ; free | lc-gradient -S 60
+    echo -e "$RED\nDiskspace:$NOCOLOR" ; df
+    echo -e "$RED\nLocal IP Address:$NOCOLOR" ; local-ip | lc-gradient -S 60
+    echo -e "$RED\nPublic IP Address:$NOCOLOR" ; public-ip | lc-gradient -S 60
+    echo -e "$RED\n\nOpen connections:$NOCOLOR "; netstat -pan --inet;
     echo
 end
 
