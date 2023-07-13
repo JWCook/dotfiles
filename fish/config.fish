@@ -315,7 +315,7 @@ abbr listen lsof -P -i -n \| grcat conf.nmap
 function local-ip
     ifconfig | awk "/inet/ { print $argv[2] } " | sed -e s/addr://
 end
-abbr public-ip curl v4.ifconfig.co
+abbr public-ip curl ifconfig.me
 abbr netconn netstat -pan --inet
 abbr tracert traceroute
 abbr unproxy unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY

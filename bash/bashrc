@@ -382,7 +382,7 @@ df-mount()  { df-single-metric "target" "$1"; }
 
 alias listen='lsof -P -i -n | grcat conf.nmap'
 alias local-ip='(ifconfig | awk "/inet/ { print $2 } " | sed -e s/addr://)'
-alias public-ip='curl v4.ifconfig.co'
+alias public-ip='curl ifconfig.me'
 alias netconn='netstat -pan --inet'
 alias tracert='traceroute'
 alias unproxy='unset http_proxy https_proxy ftp_proxy no_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY'
