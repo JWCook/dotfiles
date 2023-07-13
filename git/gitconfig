@@ -1,6 +1,7 @@
 [user]
 	name = 'Jordan Cook'
 	email = jordan.cook.git@proton.me
+	signingkey = /home/jcook/.ssh/github_rsa
 [github]
     user = JWCook
 [core]
@@ -75,3 +76,5 @@
     split-view-height = 80%
     tab-size = 4
     line-graphics = utf-8
+[gpg]
+	format = ssh
