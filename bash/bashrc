@@ -531,11 +531,12 @@ export GLOBAL_REPO_DIR='/usr/local/src'
 
 # General
 # ------------------------------
+alias gab='git absorb'
 alias gp='git pull'
-alias gpp='git pull && gbprune'
+alias gpp='git pull --rebase && gbprune'
 alias gpr='git pull --rebase'
 alias gpush='git push'
-alias gfpush='git push --force'
+alias gfpush='git push --force-with-lease'
 alias gpr='git stash; git pull --rebase; git stash pop'
 alias gstash='git stash'
 alias gstlist='git stash list; git stash show'
@@ -573,10 +574,12 @@ alias gmend='git commit --amend'
 alias gmendc='git commit --amend --no-edit'
 alias grevise='git add --all; git commit --amend --no-edit'
 alias gpatch='git add --patch'
-alias gunstage='git reset HEAD'
 alias guncommit='git reset --soft HEAD~1'
 alias grecommit='git commit -c ORIG_HEAD --no-edit'
 
+gunstage() {
+    git restore --staged ${@:-.}
+}
 # Set last commit date to specified (or current) date
 gmend-date() {
     target_date=${1:-$(date)}

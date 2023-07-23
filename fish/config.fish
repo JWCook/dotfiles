@@ -134,6 +134,7 @@ alias dft='git difftool'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
+alias icat='kitten icat'
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
@@ -448,10 +449,10 @@ end
 abbr gf git fetch --all
 abbr ggr git grep
 abbr gp git pull
-alias gpp='git pull && gbprune'
+alias gpp='git pull --rebase && gbprune'
 abbr gpr git pull --rebase
 abbr gpush git push
-abbr gfpush git push --force
+abbr gfpush git push --force-with-lease
 abbr gstash git stash
 abbr gpop git stash pop
 abbr groot cd \(git rev-parse --show-toplevel\)
@@ -495,16 +496,22 @@ end
 
 # Commits
 # ------------------------------
+abbr gab git absorb
 abbr gc git commit --verbose
 abbr gcm git commit -m
 abbr gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
 abbr gmend git commit --amend
 abbr gmendc git commit --amend --no-edit
 abbr gpatch git add --patch
-abbr gunstage git reset HEAD
 abbr grevise git add --all \; git commit --amend --no-edit
 abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
+
+abbr -e gunstage
+function gunstage -a files
+    set files (coalesce $files .)
+    git restore --staged $files
+end
 
 # Set last commit date to specified (or current) date
 function gmend-date -a target_date
