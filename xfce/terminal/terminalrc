@@ -38,4 +38,3 @@ ColorPalette=#3f3f3f;#705050;#60b48a;#dfaf8f;#9ab8d7;#dc8cc3;#8cd0d3;#dcdcdc;#70
 RunCustomCommand=TRUE
 CustomCommand=fish
 ScrollingOnOutput=FALSE
-

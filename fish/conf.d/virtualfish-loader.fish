@@ -1,3 +1,4 @@
+#!/usr/bin/env fish
 set -g VIRTUALFISH_VERSION 2.5.5
 set -g VIRTUALFISH_PYTHON_EXEC /home/jcook/.pyenv/shims/python
 # TODO: dont hardcode this path, that's dumb
@@ -11,4 +12,3 @@ source-file $VF_SITE_PACKAGES/virtual.fish
 source-file $VF_SITE_PACKAGES/compat_aliases.fish
 source-file $VF_SITE_PACKAGES/global_requirements.fish
 source-file $VF_SITE_PACKAGES/projects.fish
-
