@@ -11,6 +11,7 @@ install-conf: \
     install-pdb-conf \
     install-pep8-conf \
     install-postgres-conf \
+    install-ranger-conf \
     install-vim-conf \
     install-vim-plug
 
@@ -151,6 +152,10 @@ install-pep8-conf:
 install-postgres-conf:
 	rm -rf ~/.psqlrc
 	ln -s `pwd`/postgres/psqlrc ~/.psqlrc
+
+install-ranger-conf:
+	rm -rf ~/.config/ranger
+	ln -s `pwd`/ranger ~/.config/ranger
 
 install-sublimetext-conf:
 	mkdir -p ~/.config/sublime-text/Packages
