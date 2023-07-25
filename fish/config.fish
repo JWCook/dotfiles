@@ -180,6 +180,7 @@ else if cmd-exists bat
     complete -c cat --wraps=bat
 end
 
+alias icat='kitty +kitten icat'
 
 
 ################
@@ -216,14 +217,15 @@ if cmd-exists exa
     abbr lls ll --sort size
     complete -c ll --wraps=exa
 else if cmd-exists colorls
-    alias ls 'colorls -A --group-directories-first'
-    alias ll 'colorls -AGl --group-directories-first'
+    alias ls 'colorls -A --group-directories-first --hyperlink'
+    alias ll 'colorls -AGl --group-directories-first --hyperlink'
     complete -c ll --wraps=colorls
 else
-    alias ll 'ls -Alhv --group-directories-first'
+    alias ll 'ls -Alhv --group-directories-first --hyperlink=auto'
     complete -c ll --wraps=ls
 end
 
+alias llh '/usr/bin/ls -Alhv --group-directories-first --hyperlink=auto'
 alias sll 'sudo -E ls -Alhv --group-directories-first'
 # lt() { tree $@ | color-filesize; }                      # Colored folder tree
 # lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)

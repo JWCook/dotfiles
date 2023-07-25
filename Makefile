@@ -128,7 +128,9 @@ install-ipython-conf:
 install-kitty-conf:
 	mkdir -p ~/.config/kitty
 	rm -f ~/.config/kitty/kitty.conf
+	rm -f ~/.config/kitty/open-actions.conf
 	ln -s `pwd`/kitty/kitty.conf ~/.config/kitty/kitty.conf
+	ln -s `pwd`/kitty/open-actions.conf ~/.config/kitty/open-actions.conf
 
 install-neofetch-conf:
 	rm -rf ~/.config/neofetch
@@ -196,5 +198,3 @@ install-xfce-conf:
 	mkdir -p ~/.config/xfce4/terminal
 	ln -s `pwd`/xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
 	ln -s `pwd`/xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
-
-
