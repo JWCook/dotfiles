@@ -78,3 +78,5 @@
     line-graphics = utf-8
 [gpg]
 	format = ssh
+[init]
+	defaultBranch = main
