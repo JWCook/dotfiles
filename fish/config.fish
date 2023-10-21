@@ -180,6 +180,7 @@ else if cmd-exists bat
     complete -c cat --wraps=bat
 end
 
+alias catp='bat -pp'
 alias icat='kitty +kitten icat'
 
 
@@ -1108,3 +1109,5 @@ end
 #     mkvirtualenv -p python3 ${1:-$(pwd-base)}
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
+
+neofetch

@@ -26,6 +26,7 @@ source-file ~/.config/tabtab/__tabtab.bash              # Additional shell compl
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
 source-file ~/.nvm/nvm.sh
+source-file ~/.nvm/bash_completion
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
 #source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
@@ -128,6 +129,7 @@ elif cmd-exists bat; then
     alias cat='bat'
 fi
 
+alias catp='bat -pp'
 alias icat='kitty +kitten icat'
 
 
@@ -1224,6 +1226,7 @@ pdf-split-page-ranges() {
     done
 }
 
-
 # Enable Terminator to execute startup commands and keep shell open
-[[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
+# [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
+
+neofetch
