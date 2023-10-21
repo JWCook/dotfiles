@@ -1064,13 +1064,11 @@ abbr suspend-pm pm-suspend
 abbr hibernate-pm pm-hibernate
 
 # Install a .deb file from url
-# install-deb() {
-#     deb_tempfile=$(mktemp --suffix=.deb)
-#     wget -O $deb_tempfile $1
-#     sudo apt-get install -y $deb_tempfile
-#     sleep 1
-#     rm $deb_tempfile
-# }
+function install-deb -a deb_url
+    set deb_tempfile (mktemp --suffix=.deb)
+    wget -O $deb_tempfile $deb_url
+    sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
+end
 
 
 ##########################
