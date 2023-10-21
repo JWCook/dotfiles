@@ -1108,4 +1108,4 @@ end
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
 
-neofetch
+status --is-interactive && neofetch
