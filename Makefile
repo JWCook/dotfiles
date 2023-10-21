@@ -18,7 +18,6 @@ install-conf: \
 # Config for GUI applications
 install-gui-conf: \
     install-albert-conf \
-    install-atom-conf \
     install-gnome-terminal-conf \
     install-guake-conf \
     install-sublimetext-conf \
@@ -58,22 +57,6 @@ install-albert-conf:
 	rm -f ~/.config/albert/albert.conf
 	mkdir -p ~/.config/albert
 	ln -s `pwd`/albert/albert.conf ~/.config/albert/albert.conf
-
-install-atom-conf:
-	rm -f ~/.atom/config.cson
-	rm -f ~/.atom/keymap.cson
-	rm -f ~/.atom/packages.cson
-	rm -f ~/.atom/snippets.cson
-	rm -f ~/.atom/init.coffee
-	rm -f ~/.atom/styles.less
-	mkdir -p ~/.atom
-	ln -s `pwd`/atom/config.cson    ~/.atom/config.cson
-	ln -s `pwd`/atom/keymap.cson    ~/.atom/keymap.cson
-	ln -s `pwd`/atom/packages.cson  ~/.atom/packages.cson
-	ln -s `pwd`/atom/snippets.cson  ~/.atom/snippets.cson
-	ln -s `pwd`/atom/init.coffee    ~/.atom/init.coffee
-	ln -s `pwd`/atom/styles.less    ~/.atom/styles.less
-	- apm install package-sync
 
 install-bash-conf:
 	rm -f ~/.bashrc
