@@ -199,7 +199,7 @@ else
 fi
 
 alias sll='sudo -E ls -Alhv --group-directories-first'  # Long list with sudo
-alias llh '/usr/bin/ls -Alhv --group-directories-first --hyperlink=auto'
+alias llh='/usr/bin/ls -Alhv --group-directories-first --hyperlink=auto'
 lt() { tree $@ | color-filesize; }                      # Colored folder tree
 lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
