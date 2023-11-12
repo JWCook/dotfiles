@@ -1227,4 +1227,4 @@ pdf-split-page-ranges() {
 # Enable Terminator to execute startup commands and keep shell open
 # [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
 
-[ -z "$PS1" ] || neofetch
+[ -z "$PS1" ] || cmd-exists neofetch && neofetch
