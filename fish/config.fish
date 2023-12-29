@@ -19,12 +19,7 @@ end
 
 # Set an argument to current dir if not specified
 function default-pwd
-    coalesce "$argv" '.'
-end
-
-# Set an argument to current dir if not specified
-function default-pwd-base
-    coalesce "$argv" (pwd-base)
+    string split ' ' (coalesce "$argv" '.')
 end
 
 # Test if a command/alias/function exists
@@ -449,7 +444,7 @@ end
 
 # General
 # ------------------------------
-abbr gf git fetch --all
+abbr gf git fetch --all && git status
 abbr ggr git grep
 abbr gp git pull
 alias gpp='git pull --rebase && gbprune'
@@ -471,12 +466,6 @@ function gffpush -a branch
     set branch (coalesce $branch (gbranch))
     git push -f upstream $branch
     git push -f origin $branch
-end
-
-function gadd
-    set paths (string split ' ' (default-pwd $argv))
-    git add $paths
-    git status --short --branch
 end
 
 function gpr
@@ -510,10 +499,17 @@ abbr grevise git add --all \; git commit --amend --no-edit
 abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
 
+function gadd
+    set paths (default-pwd $argv)
+    git add $paths
+    git status --short --branch
+end
+
 abbr -e gunstage
-function gunstage -a files
-    set files (coalesce $files .)
-    git restore --staged $files
+function gunstage
+    set paths (default-pwd $argv)
+    git restore --staged $paths
+    git status --short --branch
 end
 
 # Set last commit date to specified (or current) date
