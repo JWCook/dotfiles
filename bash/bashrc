@@ -22,6 +22,7 @@ source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bash_completion                          # Additional shell completion scripts
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
+source-file ~/.cargo/env
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
