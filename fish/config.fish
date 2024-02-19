@@ -665,9 +665,6 @@ end
 # ❰❰ Docker ❱❱ #
 ################
 
-# Vanilla Docker
-# ------------------------------
-
 abbr dps docker ps -a
 abbr dlog docker logs -f
 abbr dstat docker stats
@@ -678,6 +675,28 @@ end
 
 function dkill -a container
     docker kill $container && docker rm $container
+end
+
+# Get info for the latest version of an image
+function dimg -a image
+    docker pull -q "$image:latest"
+    docker image inspect "$image:latest" | jq -r '.[0]'
+end
+
+function dimg-version -a image
+    docker pull -q "$image:latest"
+    docker image inspect "$image:latest" \
+        | jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
+end
+
+function drl -a container
+    docker restart "$container"
+    docker logs -f "$container"
+end
+
+function drm -a container
+    docker stop "$container"
+    docker rm "$container"
 end
 
 # Docker-Compose
