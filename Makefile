@@ -1,3 +1,7 @@
+###################
+# Grouped Scripts #
+###################
+
 # Config for terminal applications
 install-conf: \
     install-bash-conf \
@@ -17,15 +21,18 @@ install-conf: \
 
 # Config for GUI applications
 install-gui-conf: \
-    install-albert-conf \
-    install-gnome-terminal-conf \
     install-guake-conf \
     install-sublimetext-conf \
     install-terminator-conf
+    #install-albert-conf \
+
+install-gnome-conf: \
+    install-gui-conf \
+    configure-gnome \
+    install-gnome-terminal-conf
 
 # Extra bits that require sudo access
 install-extras: \
-    configure-gnome \
     configure-ntp \
     configure-sudoers \
     install-fonts
@@ -38,6 +45,10 @@ install-wsl: \
     configure-fonts-wsl \
     install-xfce-conf
 
+
+######################
+# Individual Scripts #
+######################
 
 configure-gnome:
 	scripts/configure_gnome.sh
