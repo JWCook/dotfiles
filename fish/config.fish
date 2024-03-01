@@ -114,7 +114,7 @@ set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
-cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
+# cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
 
 
 #########################
@@ -736,7 +736,9 @@ abbr trm tmux kill-session -t
 
 # Create new session, or attach if it already exists
 function tnew -a session_name start_dir
-    tmux new-session -A -s $session_name -c (coalesce $start_dir ~)
+    set session_name (coalesce $session_name 'default')
+    set start_dir (coalesce $start_dir ~)
+    tmux new-session -A -s $session_name -c $start_dir
 end
 
 
