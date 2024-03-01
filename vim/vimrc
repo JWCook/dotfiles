@@ -567,8 +567,6 @@ set mat=2
 " CTRL-Left/Right/h/l to move between buffers
 noremap <silent> <C-Left>  :bprev<CR>
 noremap <silent> <C-Right> :bnext<CR>
-noremap <silent> <C-h>     :bprev<CR>
-noremap <silent> <C-l>     :bnext<CR>
 
 " Alt-Left/Right/Up/Down/h/j/k/l to move between windows
 nnoremap <silent> <A-Up>    :wincmd k<CR>
@@ -579,10 +577,6 @@ nnoremap <silent> <A-Left>  :wincmd h<CR>
 inoremap <silent> <A-Left>  <C-O>:wincmd h<CR>
 nnoremap <silent> <A-Right> :wincmd l<CR>
 inoremap <silent> <A-Right> <C-O>:wincmd l<CR>
-noremap <silent> <A-k>     :wincmd k<CR>
-noremap <silent> <A-j>     :wincmd j<CR>
-noremap <silent> <A-h>     :wincmd h<CR>
-noremap <silent> <A-l>     :wincmd l<CR>
 
 " Alt +/-/= to increase/decrease/equalize window size
 nnoremap <silent> +    :wincmd +<CR>
