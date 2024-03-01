@@ -16,12 +16,20 @@ M.general = {
   },
 
   n = {
-    ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
+    [";"] = { ":", "enter command mode", opts = { nowait = true } },
+
     -- switch between windows
-    ["<C-h>"] = { "<C-w>h", "Window left" },
-    ["<C-l>"] = { "<C-w>l", "Window right" },
-    ["<C-j>"] = { "<C-w>j", "Window down" },
-    ["<C-k>"] = { "<C-w>k", "Window up" },
+    ["<A-Left>"] = { "<C-w>h", "Window left" },
+    ["<A-Right>"] = { "<C-w>l", "Window right" },
+    ["<A-Down>"] = { "<C-w>j", "Window down" },
+    ["<A-Up>"] = { "<C-w>k", "Window up" },
+    ["<A-h>"] = { "<C-w>h", "Window left" },
+    ["<A-l>"] = { "<C-w>l", "Window right" },
+    ["<A-j>"] = { "<C-w>j", "Window down" },
+    ["<A-k>"] = { "<C-w>k", "Window up" },
+
+    -- clear search
+    ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
 
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "Save file" },
@@ -108,7 +116,7 @@ M.comment = {
 
   -- toggle comment in both modes
   n = {
-    ["<leader>/"] = {
+    ["<F3>"] = {
       function()
         require("Comment.api").toggle.linewise.current()
       end,
@@ -117,7 +125,7 @@ M.comment = {
   },
 
   v = {
-    ["<leader>/"] = {
+    ["<F3>"] = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
       "Toggle comment",
     },

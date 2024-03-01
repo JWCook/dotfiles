@@ -16,11 +16,13 @@ opt.clipboard = "unnamedplus"
 opt.cursorline = true
 
 -- Indenting
+-- opt.smartindent = true
+opt.copyindent = true
 opt.expandtab = true
-opt.shiftwidth = 2
-opt.smartindent = true
-opt.tabstop = 2
-opt.softtabstop = 2
+opt.shiftround = true
+opt.shiftwidth = 4
+opt.softtabstop = 4
+opt.tabstop = 4
 
 opt.fillchars = { eob = " " }
 opt.ignorecase = true
@@ -111,5 +113,13 @@ autocmd("BufWritePost", {
 local new_cmd = vim.api.nvim_create_user_command
 
 new_cmd("NvChadUpdate", function()
-  require "nvchad.updater"()
+  require "nvchad.updater" ()
 end, {})
+
+-- local autocmd = vim.api.nvim_create_autocmd
+
+-- Auto resize panes when resizing nvim window
+-- autocmd("VimResized", {
+--   pattern = "*",
+--   command = "tabdo wincmd =",
+-- })
