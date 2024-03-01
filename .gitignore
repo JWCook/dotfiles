@@ -22,6 +22,9 @@ vim/vim/session
 vim/vim/plug-snapshot
 vim/vim/undo
 
+# Neovim
+lazy-lock.json
+
 # Fish
 fundle.fish
 fish/completions/local_*.fish
