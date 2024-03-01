@@ -450,7 +450,7 @@ nnoremap Q <nop>
 
 " Enable persistent undo
 set undodir=~/.vim/undo
-set undofile
+# set undofile
 au BufWritePre /tmp/* setlocal noundofile
 
 autocmd FileType fish compiler fish
@@ -488,28 +488,18 @@ endif
 " ❰❰ Whitepsace ❱❱ "
 """"""""""""""""""""
 
-
-" Selected filetypes: 1 tab = 2 spaces
-autocmd FileType html,javascript,json,lua,vim,vue,yaml  setlocal shiftwidth=2 softtabstop=2 tabstop=2
-
 set pastetoggle=<leader>p
-
-" Tabs and non-breaking spaces are evil
-set list
-set listchars=tab:❱·,nbsp:¤
 
 " Ctrl+Up/Down/j/k to move across display lines (i.e., including line breaks)
 nnoremap <C-Up> gk
-nnoremap <C-Down> gj
-nnoremap <C-k> gk
-nnoremap <C-j> gj
-
 inoremap <C-Up> <C-O>gk
-inoremap <C-Down> <C-O>gj
-
 vnoremap <C-Up> gk
+nnoremap <C-Down> gj
+inoremap <C-Down> <C-O>gj
 vnoremap <C-Down> gj
+nnoremap <C-k> gk
 vnoremap <C-k> gk
+nnoremap <C-j> gj
 vnoremap <C-j> gj
 
 " Wrap visual selection to 100 chars (Shift-F3)
@@ -520,17 +510,6 @@ set whichwrap+=<,>,h,l
 
 " Sort visual selection, keeping only unique (Ctrl-Shift-F3)
 vnoremap <silent> <F35> :sort u<CR>
-
-
-""""""""""""""""
-" ❰❰ Search ❱❱ "
-""""""""""""""""
-
-set ignorecase " Ignore case when searching
-set smartcase  " Except when uppercase is used in search
-
-" Clear search highligts
-nnoremap <leader>b :nohlsearch<CR>
 
 
 """"""""""""""""""""""""
@@ -559,35 +538,6 @@ set mat=2
 " ❰❰ Buffers/Windows/Tabs ❱❱ "
 """"""""""""""""""""""""""""""
 
-" CTRL-Left/Right/h/l to move between buffers
-noremap <silent> <C-Left>  :bprev<CR>
-noremap <silent> <C-Right> :bnext<CR>
-noremap <silent> <C-h>     :bprev<CR>
-noremap <silent> <C-l>     :bnext<CR>
-
-" Alt-Left/Right/Up/Down/h/j/k/l to move between windows
-# nnoremap <silent> <A-Up>    :wincmd k<CR>
-# nnoremap <silent> <A-Down>  :wincmd j<CR>
-# nnoremap <silent> <A-Left>  :wincmd h<CR>
-# nnoremap <silent> <A-Right> :wincmd l<CR>
-
-# noremap <silent> <A-k>     :wincmd k<CR>
-# noremap <silent> <A-j>     :wincmd j<CR>
-# noremap <silent> <A-h>     :wincmd h<CR>
-# noremap <silent> <A-l>     :wincmd l<CR>
-
-inoremap <silent> <A-Up>    <C-O>:wincmd k<CR>
-inoremap <silent> <A-Down>  <C-O>:wincmd j<CR>
-inoremap <silent> <A-Left>  <C-O>:wincmd h<CR>
-inoremap <silent> <A-Right> <C-O>:wincmd l<CR>
-
-" Alt +/-/= to increase/decrease/equalize window size
-nnoremap <silent> +    :wincmd +<CR>
-inoremap <silent> +    <C-O>:wincmd +<CR>
-nnoremap <silent> -    :wincmd -<CR>
-inoremap <silent> -    <C-O>:wincmd -<CR>
-nnoremap <silent> =    :wincmd =<CR>
-inoremap <silent> =    <C-O>:wincmd =<CR>
 
 " Enlarge (but not fully maximize) current window
 " Aliasing to Ctrl-Shift-X to match Terminator 'maximize terminal (split)' shortcut
@@ -596,37 +546,8 @@ inoremap <silent> <C-x> <C-O>:resize 45 \| :vertical resize 100<CR>
 nnoremap <silent> <C-S-x> :resize 45 \| :vertical resize 100<CR>
 inoremap <silent> <C-S-x> <C-O>:resize 45 \| :vertical resize 100<CR>
 
-" Windows splits
-set splitbelow
-set splitright
-nnoremap <silent> vv <C-w>v
-nnoremap <silent> hh <C-w>s
-
-" Create/close buffers/tabs
-command! BN new
-nnoremap <silent> <leader>q :BD<CR>
-command! TD tabclose
-command! TN tabnew | vsp
-
-" Shift+ Left/Right to move between tabs
-nnoremap <silent> <S-Left>  :tabp<CR>
-inoremap <silent> <S-Left>  <C-O>:tabp<CR>
-nnoremap <silent> <S-Right> :tabn<CR>
-inoremap <silent> <S-Right> <C-O>:tabn<CR>
-
-" Ctrl-Shift-Left/Right to reorder tabs
-nnoremap <silent> <C-S-Left>   :tabm -1<CR>
-nnoremap <silent> <C-S-Right>  :tabm +1<CR>
-
 " Switch between unsaved buffers w/o save, preserves history
 set hidden
-
-" Alt+h/j/k/l moves cursor in insert mode
-" inoremap <C-V><A-h> <left>
-" inoremap <C-V><A-j> <down>
-" inoremap <C-V><A-k> <up>
-" inoremap <C-V><A-l> <right>
-
 
 """""""""""""""
 " ❰❰ NetRW ❱❱ "
