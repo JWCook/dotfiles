@@ -543,6 +543,7 @@ alias gpp='git pull --rebase && gbprune'
 alias gpr='git pull --rebase'
 alias gpush='git push'
 alias gfpush='git push --force-with-lease'
+alias gffpush='git push --force'
 alias gpr='git stash; git pull --rebase; git stash pop'
 alias gstash='git stash'
 alias gstlist='git stash list; git stash show'
@@ -565,7 +566,7 @@ gpu() {
     git push origin $branch
 }
 grm(){ rm $1; git rm $1; }
-gffpush() {
+gfpushu() {
     branch=${1:-$(gbranch)}
     git push -f upstream $branch
     git push -f origin $branch
@@ -855,13 +856,15 @@ pip-install-req() {
 }
 
 # Get all available versions of a package
-# Note: Output is broken with 2020 resolver, so this uses the legacy version; see https://github.com/pypa/pip/issues/9139
 function pip-versions() {
     version_list=$(\
-        pip install --use-deprecated=legacy-resolver "$1==none" 2>&1 \
-        | head -n 1 \
-        | sed 's/.*(from versions: \(.*\))/\1/' \
+        pip install \
+        --index-url=https://pypi.python.org/simple \
+        "$package_name==0.0.0-alpha0" 2>&1 \
+        | grep 'from versions:' \
+        | sed 's/.*(from versions: \(.*\))/\1/'
     )
+
     format-version-list $version_list
 }
 

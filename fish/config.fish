@@ -451,6 +451,7 @@ alias gpp='git pull --rebase && gbprune'
 abbr gpr git pull --rebase
 abbr gpush git push
 abbr gfpush git push --force-with-lease
+abbr gffpush git push --force
 abbr gstash git stash
 abbr gpop git stash pop
 abbr groot cd \(git rev-parse --show-toplevel\)
@@ -462,7 +463,7 @@ abbr gsc git switch -c
 abbr gstlist git stash list \; git stash show
 alias gremote='git remote | head -n 1'
 
-function gffpush -a branch
+function gfpushu -a branch
     set branch (coalesce $branch (gbranch))
     git push -f upstream $branch
     git push -f origin $branch
@@ -823,9 +824,11 @@ end
 # Get all available versions of a package as a formatted list
 function pip-versions -a package_name
     set version_list (\
-        pip install --use-deprecated=legacy-resolver "$package_name==none" 2>&1 \
-        | head -n 1 \
-        | sed 's/.*(from versions: \(.*\))/\1/'\
+        pip install \
+        --index-url=https://pypi.python.org/simple \
+        "$package_name==0.0.0-alpha0" 2>&1 \
+        | grep 'from versions:' \
+        | sed 's/.*(from versions: \(.*\))/\1/'
     )
 
     format-version-list $version_list
