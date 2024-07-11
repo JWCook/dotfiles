@@ -444,7 +444,7 @@ end
 
 # General
 # ------------------------------
-abbr gf git fetch --all && git status
+abbr gf git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull
 alias gpp='git pull --rebase && gbprune'
