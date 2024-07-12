@@ -125,7 +125,6 @@ set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
 alias ac='npx all-contributors'
-alias dft='git difftool'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
@@ -444,6 +443,8 @@ end
 
 # General
 # ------------------------------
+abbr gd git diff
+abbr gdt git dft
 abbr gf git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull

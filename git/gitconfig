@@ -1,23 +1,22 @@
 [user]
-	name = 'Jordan Cook'
-	email = jordan.cook.git@proton.me
-	signingkey = /home/jcook/.ssh/github_rsa
+    name = 'Jordan Cook'
+    email = jordan.cook.git@proton.me
+    signingkey = /home/jcook/.ssh/github_rsa
 [github]
     user = JWCook
-[core]
-    editor = nvim
 [alias]
     amend = commit --amend
     b = branch -vv
     c = commit --verbose
     cm = commit -m
+    dft = difftool
     down = pull
-    f = fetch origin master:master
+    f = fetch --all
     p = pull
     pr = "!git stash; git pull --rebase; git stash pop"
     patch = add --patch
     recommit = commit -c ORIG_HEAD --no-edit
-    rb = git rebase --interactive master
+    rb = git rebase --interactive main
     s = status
     ss = status --short
     sv = status -vv
@@ -26,10 +25,6 @@
     uncommit = reset --soft HEAD~1
     unstage = reset HEAD
     up = push
-[push]
-	default = current
-[merge "ours"]
-    driver = true
 [color]
     diff = always
     grep = always
@@ -43,40 +38,45 @@
     changed = cyan
     deleted = red
     untracked = magenta
+[core]
+    editor = nvim
+[init]
+    defaultBranch = main
+[merge "ours"]
+    driver = true
+[pull]
+    rebase = true
+[push]
+    default = current
 [pager]
     diff = delta
+    difftool = true
     log = delta
     reflog = delta
     show = delta
-[delta]
-    plus-style = "syntax #012800"
-    minus-style = "syntax #340001"
-    syntax-theme = Monokai Extended
-    navigate = true
-[interactive]
-    diffFilter = delta --color-only
+
+# External tool config
 [credential]
     helper = cache --timeout=3600
-[pull]
-    rebase = true
-# Diff/external tool settings
-[alias]
-    dft = difftool
+[delta]
+    features = arctic-fox
+    navigate = true
+[include]
+    path = ~/.config/themes.gitconfig
 [diff]
     tool = difftastic
+    # tool = delta
     # tool = nvim -d
 [difftool]
     prompt = false
 [difftool "difftastic"]
     cmd = difft "$LOCAL" "$REMOTE"
-[pager]
-    difftool = true
+[gpg]
+    format = ssh
+[interactive]
+    diffFilter = delta --color-only
 [tig]
     vertical-split = false
     split-view-height = 80%
     tab-size = 4
     line-graphics = utf-8
-[gpg]
-	format = ssh
-[init]
-	defaultBranch = main

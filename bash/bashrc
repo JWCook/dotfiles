@@ -113,7 +113,6 @@ cmd-exists zoxide && eval "$(zoxide init bash)"
 
 # alias cd='__zoxide_z'
 # alias fd='fdfind'
-alias dft='git difftool'
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'
@@ -538,6 +537,8 @@ export GLOBAL_REPO_DIR='/usr/local/src'
 # General
 # ------------------------------
 alias gab='git absorb'
+alias gd='git diff'
+alias gdt='git difftool'
 alias gp='git pull'
 alias gpp='git pull --rebase && gbprune'
 alias gpr='git pull --rebase'
