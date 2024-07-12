@@ -1,0 +1,14 @@
+default_profile = 'sqlite3'
+
+[profiles.sqlite3]
+adapter = 'sqlite'
+theme = 'nord-darker'
+
+[profiles.postgres]
+adapter = 'postgres'
+theme = 'nord-darker'
+host = 'localhost'
+user = 'postgres'
+password = 'secretadminpassword'
+dbname = 'postgres'
+port = 5432

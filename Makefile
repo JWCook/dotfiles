@@ -5,6 +5,7 @@ install-conf: \
     install-fish-conf \
     install-git-conf \
     install-grc-conf \
+	install-harlequin-config \
     install-htop-conf \
     install-ipython-conf \
     install-neofetch-conf \
@@ -13,7 +14,8 @@ install-conf: \
     install-postgres-conf \
     install-ranger-conf \
     install-vim-conf \
-    install-vim-plug
+    install-vim-plug \
+	configure-locale
 
 # Config for GUI applications
 install-gui-conf: \
@@ -38,6 +40,9 @@ install-wsl: \
     configure-fonts-wsl \
     install-xfce-conf
 
+configure-locale:
+	sudo locale-gen 'en_US.UTF-8'
+	echo 'LANG=en_US.UTF-8' | sudo tee /etc/default/locale
 
 configure-gnome:
 	scripts/configure_gnome.sh
@@ -96,6 +101,11 @@ install-guake-conf:
 	- guake --restore-preferences guake/guake_settings
 	# To export settings:
 	# guake --save-preferences ~/dotfiles/guake/guake_settings
+
+install-harlequin-config:
+	rm -rf ~/.config/harlequin
+	mkdir -p ~/.config/harlequin
+	ln -s `pwd`/harlequin/harlequin.toml ~/.config/harlequin/harlequin.toml
 
 install-htop-conf:
 	rm -rf ~/.config/htop

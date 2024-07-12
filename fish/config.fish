@@ -128,6 +128,7 @@ alias ac='npx all-contributors'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
+alias hq='harlequin'
 alias icat='kitten icat'
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
