@@ -594,54 +594,20 @@ gmend-date() {
     GIT_COMMITTER_DATE="$target_date" git commit --amend --no-edit --date "$target_date"
 }
 
-# Functions to help fix a branch from a detatched HEAD state, starting with a specified commit
-git-head-transplant-pre() {
-    git checkout -b transplant $1
-}
-git-head-transplant() {
-    git branch -f main transplant
-    git checkout main
-    git branch -d transplant
-    git push origin main
-}
-
-# Log
-# ------------------------------
-export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
-alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
-alias glog-branch='glog main..HEAD'
-alias glog-remote='gf; glog HEAD..origin/main'
-alias glol='glog | lc-gradient-delay'
-alias gcstat='git shortlog --summary --numbered'
-alias gcstat-all='git rev-list --count HEAD'
-
-# Tags
-# ------------------------------
-gmv-tag() {
-    git tag -d $1
-    git push origin :refs/tags/$1
-    git tag $1 $2
-    git push --tags
-}
-
-grm-tag() {
-    git tag -d $1
-    git push origin :refs/tags/$1
-    git push upstream :refs/tags/$1
-}
-
-
 # Branches
 # ------------------------------
 
 export GREF_FORMAT="%(align:60,left)%(color:blue)%(refname:short)%(end) \
                     %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
-alias gbranches='git branch -vv'
+alias gb='git branch -vv'
 alias gbranch='git rev-parse --abbrev-ref HEAD'
 # Alternative: alias gbranch="git branch | grep \\* | cut -d ' ' -f2"
 alias gbmv='git branch -m'
-alias gball='git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/'
-alias gbprune='git fetch --prune'
+
+unalias gball 2> /dev/null
+gball() {
+    git for-each-ref --sort=-committerdate --format="$GREF_FORMAT" refs/remotes/
+}
 
 unalias gbprune 2> /dev/null
 gbprune() {
@@ -649,7 +615,6 @@ gbprune() {
     printf "Deleting branches: $gone_branches"
     git branch -D $gone_branches
 }
-
 
 grebase() { git rebase --interactive --rebase-merges ${1:-main}; }
 gsrebase() {
@@ -708,6 +673,41 @@ grm-branch() {
     fi
 }
 cmd-exists __git_complete && __git_complete grm-branch _git_branch
+
+#  Fix a branch from a detatched HEAD state, starting with a specified commit
+git-head-transplant-pre() {
+    git checkout -b transplant $1
+}
+git-head-transplant() {
+    git branch -f main transplant
+    git checkout main
+    git branch -d transplant
+    git push origin main
+}
+# Log
+# ------------------------------
+export GLOG_FORMAT="%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green)  [%cn] %C(yellow)%d"
+alias glog='git log --pretty=format:"$GLOG_FORMAT" --decorate --date=short'
+alias glog-branch='glog main..HEAD'
+alias glog-remote='gf; glog HEAD..origin/main'
+alias glol='glog | lc-gradient-delay'
+alias gcstat='git shortlog --summary --numbered'
+alias gcstat-all='git rev-list --count HEAD'
+
+# Tags
+# ------------------------------
+gmv-tag() {
+    git tag -d $1
+    git push origin :refs/tags/$1
+    git tag $1 $2
+    git push --tags
+}
+
+grm-tag() {
+    git tag -d $1
+    git push origin :refs/tags/$1
+    git push upstream :refs/tags/$1
+}
 
 # GitHub
 # ------------------------------

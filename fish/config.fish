@@ -520,57 +520,28 @@ function gmend-date -a target_date
     GIT_COMMITTER_DATE="$target_date" git commit --amend --no-edit --date "$target_date"
 end
 
-# Fix a branch from a detatched HEAD state, starting with a specified commit
-function git-head-transplant -a branch
-    set branch (coalesce $branch (gbranch))
-    git checkout -b transplant $argv
-    git branch -f $branch transplant
-    git checkout $branch
-    git branch -d transplant
-    git push origin $branch
-end
-
-# Log
-# ------------------------------
-set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
-abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
-abbr glog-branch glog main..HEAD
-abbr glog-remote git fetch \; glog HEAD..origin/main
-abbr glol glog \| lc-gradient-delay
-abbr gcstat git shortlog --summary --numbered
-abbr gcstat-all git rev-list --count HEAD
-
-# Tags
-# ------------------------------
-function gmv-tag -a tag -a new_tag
-    git tag -d $tag
-    git push origin :refs/tags/$tag
-    git tag $newtag $tag
-    git push --tags
-end
-
-function grm-tag -a tag
-    git tag -d $tag
-    git push origin :refs/tags/$tag
-    git push upstream :refs/tags/$tag
-end
-
-
 # Branches
 # ------------------------------
 
 set -x GREF_FORMAT "%(align:60,left)%(color:blue)%(refname:short)%(end) \
 %(color:cyan)%(committerdate:short) %(color:green)[%(authorname)]"
 alias gbranch='git rev-parse --abbrev-ref HEAD'
-abbr gbranches git branch -vv
+abbr gb git branch -vv
 abbr gbmv git branch -m
 
+# List all remote branches
+function gball
+    git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
+end
+
+# Prune branches that have been deleted remotely
 function gbprune
     set gone_branches (git fetch -p && git branch -vv | awk '/: gone]/{print $1}')
     printf "Deleting branches: $gone_branches"
     git branch -D $gone_branches
 end
 
+# Interactive rebase (onto main by default)
 function grebase -a branch --wraps=__fish_git_branches
     set branch (coalesce $branch 'main')
     git rebase --interactive --rebase-merges $branch
@@ -593,10 +564,6 @@ abbr gcontinue git rebase --continue
 abbr gskip git rebase --skip
 abbr gscontinue git stash \; git rebase --continue \; git stash pop
 
-# List all remote branches
-function gball
-    git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
-end
 
 # Overwrite local branch with remote
 function gbreset -a branch -a remove --wraps=__fish_git_branches
@@ -634,6 +601,41 @@ function grm-branch -a branch -a remote --wraps=__fish_git_branches
         git branch -d -r $remote/$branch
         git push $remote --delete $branch
     end
+end
+
+# Fix a branch from a detatched HEAD state, starting with a specified commit
+function git-head-transplant -a branch
+    set branch (coalesce $branch (gbranch))
+    git checkout -b transplant $argv
+    git branch -f $branch transplant
+    git checkout $branch
+    git branch -d transplant
+    git push origin $branch
+end
+
+# Log
+# ------------------------------
+set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
+abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
+abbr glog-branch glog main..HEAD
+abbr glog-remote git fetch \; glog HEAD..origin/main
+abbr glol glog \| lc-gradient-delay
+abbr gcstat git shortlog --summary --numbered
+abbr gcstat-all git rev-list --count HEAD
+
+# Tags
+# ------------------------------
+function gmv-tag -a tag -a new_tag
+    git tag -d $tag
+    git push origin :refs/tags/$tag
+    git tag $newtag $tag
+    git push --tags
+end
+
+function grm-tag -a tag
+    git tag -d $tag
+    git push origin :refs/tags/$tag
+    git push upstream :refs/tags/$tag
 end
 
 
