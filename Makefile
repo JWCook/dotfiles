@@ -1,3 +1,7 @@
+###################
+# Grouped Scripts #
+###################
+
 # Config for terminal applications
 install-conf: \
     install-bash-conf \
@@ -19,15 +23,18 @@ install-conf: \
 
 # Config for GUI applications
 install-gui-conf: \
-    install-albert-conf \
-    install-gnome-terminal-conf \
     install-guake-conf \
     install-sublimetext-conf \
     install-terminator-conf
+    #install-albert-conf \
+
+install-gnome-conf: \
+    install-gui-conf \
+    configure-gnome \
+    install-gnome-terminal-conf
 
 # Extra bits that require sudo access
 install-extras: \
-    configure-gnome \
     configure-ntp \
     configure-sudoers \
     install-fonts
@@ -43,6 +50,10 @@ install-wsl: \
 configure-locale:
 	sudo locale-gen 'en_US.UTF-8'
 	echo 'LANG=en_US.UTF-8' | sudo tee /etc/default/locale
+
+######################
+# Individual Scripts #
+######################
 
 configure-gnome:
 	scripts/configure_gnome.sh
