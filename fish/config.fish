@@ -114,7 +114,7 @@ set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
-# cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
+cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
 
 
 #########################
@@ -857,16 +857,17 @@ function pipr
     set -e PYTHONPATH
     pip install -Ur $VIRTUALENV_REQUIREMENTS
 
-    if test -e setup.py
-        pip install -Ue  '.[all,dev]'
-    else
+    set req_files requirements*.txt
+    if test "$req_files"
+        for _file in $req_files
+            pip-install-req $_file
+        end
+    else if grep -q poetry pyproject.toml 2> /dev/null
         poetry install -v
+    else
+        pip install -Ue  '.'
     end
 
-    set req_files requirements*.txt
-    for _file in $req_files
-        pip-install-req $_file
-    end
 end
 
 alias pipv='pip install -Ur $VIRTUALENV_REQUIREMENTS'
@@ -968,7 +969,7 @@ abbr vvp vvpathext
 # Workon & cd/deactivate a virtualenv (with autocomplete)
 function wo -a env_name
     if test -n $env_name
-        workon $env_name
+        vf activate $env_name
         set -x _VIRT_ENV_PREV_PWD $PWD
         set -e PYTHONPATH
         cd $WORKSPACE/$env_name

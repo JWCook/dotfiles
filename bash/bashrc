@@ -888,12 +888,8 @@ function format-version-list() {
 pipr() {
     unset PYTHONPATH
     pip install -Ur $VIRTUALENV_REQUIREMENTS
-
-    if test -e setup.py; then
-        pip install -Ue  '.[all,dev]'
-    else
-        poetry install -v
-    fi
+    pip install -Ue  '.'
+    poetry install -v
 
     for f in $(ls requirements*.txt 2> /dev/null | sort -V); do
         pip-install-req $f
