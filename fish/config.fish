@@ -1032,6 +1032,14 @@ function system-is-deb
     test -f /etc/debian_version
 end
 
+# WIP
+function update-all
+    pipx upgrade-all
+    poetry self update
+    tldr --update
+    nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
+end
+
 # Fedora-based
 # ------------------------------
 function update-dnf
