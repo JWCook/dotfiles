@@ -207,11 +207,11 @@ else
 end
 
 # Customize ls
-if cmd-exists exa
-    alias ls 'exa -aF --group-directories-first --icons'
-    alias ll 'exa -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
+if cmd-exists eza
+    alias ls 'eza -aF --group-directories-first --icons'
+    alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
     abbr lls ll --sort size
-    complete -c ll --wraps=exa
+    complete -c ll --wraps=eza
 else if cmd-exists colorls
     alias ls 'colorls -A --group-directories-first --hyperlink'
     alias ll 'colorls -AGl --group-directories-first --hyperlink'
