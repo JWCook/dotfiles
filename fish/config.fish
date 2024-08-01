@@ -247,6 +247,9 @@ function massif
         | awk '{print $1/1024/1024}'
 end
 
+function dims -a path
+    file $path | grep -Eo "[[:digit:]]+ *x *[[:digit:]]+"
+end
 
 #########################
 # ❰❰ File Operations ❱❱ #
