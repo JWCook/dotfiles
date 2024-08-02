@@ -130,6 +130,7 @@ alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-in
 alias hf='hyperfine'
 alias hq='harlequin'
 alias icat='kitten icat'
+abbr npr npm run
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
 abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
@@ -977,12 +978,12 @@ function wo -a env_name
         set -e PYTHONPATH
         cd $WORKSPACE/$env_name
     else
-        deactivate
+        vf deactivate
         cd $_VIRT_ENV_PREV_PWD
         source $FISH_CONF
     end
 end
-complete -c wo --wraps=workon
+complete -c wo --wraps='vf activate'
 
 # Misc shortcuts for python apps & scripts
 function flask-run
