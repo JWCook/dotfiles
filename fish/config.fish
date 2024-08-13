@@ -1150,4 +1150,11 @@ end
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
 
-status --is-interactive && cmd-exists neofetch && neofetch
+# Run neofetch if this is the first interactive terminal
+function neofetch_first_term
+    set term_count (procs | grep -v "grep" | grep "fish" | wc -l)
+    if test $term_count -lt 2 && status --is-interactive && cmd-exists neofetch
+        neofetch
+    end
+end
+neofetch_first_term
