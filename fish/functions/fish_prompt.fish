@@ -11,25 +11,28 @@ function fish_prompt
     set -U fish_color_branch 1aff8c
     set -U fish_color_venv 1ad1ff
     set -U fish_prompt_pwd_dir_length 3
+    set prompt_symbol_color (_get_cmd_color)
 
     echo -s \
         (set_color -b $fish_prompt_bg_1) \
         (_get_user)"@"(_get_hostname) (set_color -b $fish_prompt_bg_2 $fish_prompt_bg_1) \
         (_get_cwd) (set_color -b $fish_prompt_bg_3 $fish_prompt_bg_2) \
         (_get_branch) (set_color -b $fish_prompt_bg_4 $fish_prompt_bg_3) \
-        (_get_virtualenv) (set_color -b black $fish_prompt_bg_4) \
-        (_get_prompt_symbol $last_cmd_status)
+        (_get_virtualenv) (set_color -b $prompt_symbol_color $fish_prompt_bg_4) \
+        (set_color -b black $prompt_symbol_color)' '\
+        (set_color normal)
 end
 
-# Format current user
+# Format user
 function _get_user
     echo -n -s (set_color $fish_color_user) "$USER" (set_color $fish_color_cwd_sep)
 end
 
-# Format current hostname
+# Format hostname
 function _get_hostname
-    # set _hostname (string replace "localhost" "🏠" (prompt_hostname))
-    set _hostname "🏠"
+    set _hostname (string replace "localhost" "🏠" (prompt_hostname))
+    set _hostname (string replace "$USER-" "" "$_hostname")
+    set _hostname (string replace -- "-7500" "" "$_hostname")
     echo -n -s (set_color $fish_color_user) "$_hostname"
 end
 
@@ -61,21 +64,11 @@ function _get_virtualenv
     end
 end
 
-# Format prompt symbol
-function _get_prompt_symbol
-    # Change prompt symbol if running as root
-    if [ $USER = "root" ]
-        set prompt_symbol '#'
+# Color prompt symbol if last command failed
+function _get_cmd_color
+    if test $status -eq 0
+        echo -n -s $fish_prompt_bg_2
     else
-        set prompt_symbol '$'
+        echo -n -s red
     end
-
-    # Color prompt symbol if last command failed
-    if [ $argv = 0 ]
-        set prompt_symbol_color normal
-    else
-        set prompt_symbol_color red
-    end
-
-    echo -n -s (set_color $prompt_symbol_color) ' ' $prompt_symbol ' ' (set_color normal)
 end
