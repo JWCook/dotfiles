@@ -129,7 +129,7 @@ alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
 alias hf='hyperfine'
 alias hq='harlequin'
-alias icat='kitten icat'
+alias icat='wezterm imgcat'
 abbr npr npm run
 abbr termy PYTHONPATH= terminator -mf
 abbr term-code PYTHONPATH= terminator -mfl code \&
@@ -328,6 +328,11 @@ abbr scan-syn sudo nmap -v -sS localhost
 abbr ssh-exit ssh -O exit
 abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
 cmd-exists gping && alias ping='gping'
+
+# SSH with wezterm multiplexing
+function wssh -a host --wraps=ssh
+    wezterm cli spawn --domain-name SSHMUX:$host
+end
 
 # Mount a network share
 function mount-share -a remote_share local_mountpoint creds_file

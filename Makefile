@@ -186,6 +186,11 @@ install-vim-conf:
 install-vim-plug:
 	scripts/install_vim_plug.sh
 
+install-wezterm-conf:
+	mkdir -p ~/.config/wezterm
+	rm -f ~/.config/wezterm/wezterm.lua
+	ln -s `pwd`/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+
 
 # WSL-specific bits
 

@@ -131,7 +131,7 @@ elif cmd-exists bat; then
 fi
 
 alias catp='bat -pp'
-alias icat='kitty +kitten icat'
+alias icat='wezterm imgcat'
 
 
 ####################
