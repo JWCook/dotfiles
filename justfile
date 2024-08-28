@@ -4,6 +4,7 @@
 
 install-conf:
     just \
+    install-atuin-conf \
     install-bash-conf \
     install-figlet-conf \
     install-fish-conf \
@@ -74,6 +75,11 @@ install-albert-conf:
     rm -f ~/.config/albert/albert.conf
     mkdir -p ~/.config/albert
     ln -s `pwd`/albert/albert.conf ~/.config/albert/albert.conf
+
+install-atuin-conf:
+    rm -f ~/.config/atuin/config.toml
+    mkdir -p ~/.config/atuin
+    ln -s `pwd`/atuin/config.toml ~/.config/atuin/config.toml
 
 install-bash-conf:
     rm -f ~/.bashrc

@@ -144,7 +144,9 @@ abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
 alias unalias='functions --erase'
 
-# Modern replacements for Unix tools
+alias at='atuin'
+cmd-exists atuin && atuin init fish --disable-up-arrow | source
+
 if cmd-exists zoxide
     zoxide init fish | source
     alias cd='z'

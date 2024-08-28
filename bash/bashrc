@@ -23,6 +23,7 @@ source-file ~/.bash_completion                          # Additional shell compl
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
 source-file ~/.cargo/env
+source-file ~/.config/bash/preexec.sh
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
@@ -109,7 +110,8 @@ alias vim='nvim'
 alias vimdiff='nvim -d'
 alias weather='curl -4 http://wttr.in/~50266'
 
-# Modern replacements for Unix tools
+alias at='atuin'
+cmd-exists atuin && eval "$(atuin init bash --disable-up-arrow)"
 cmd-exists zoxide && eval "$(zoxide init bash)"
 
 # alias cd='__zoxide_z'
