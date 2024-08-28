@@ -1033,7 +1033,7 @@ alias sp-auto='sphinx-autobuild-project'
 # ❰❰ Distro-Specific ❱❱ #
 #########################
 
-# TODO: Separate .bashrc_$distro files, if/when needed
+# TODO: Separate config files per distro, if/when needed
 
 # Tests
 function system-is-rpm
@@ -1045,6 +1045,8 @@ end
 
 # WIP
 function update-all
+    sudo nala upgrade -y
+    sudo snap refresh
     pipx upgrade-all
     poetry self update
     tldr --update
