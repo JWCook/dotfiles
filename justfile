@@ -25,6 +25,7 @@ install-conf:
 install-gui-conf:
     just \
     install-guake-conf \
+    install-qcad-conf \
     install-sublimetext-conf \
     install-terminator-conf
 
@@ -172,6 +173,11 @@ install-sublimetext-conf:
     mkdir -p ~/.config/sublime-text/Packages
     rm -rf ~/.config/sublime-text/Packages/User
     ln -s ~/Nextcloud/Data/Config/SublimeText ~/.config/sublime-text/Packages/User
+
+install-qcad-conf:
+    mkdir -p ~/.config/QCAD/
+    rm -f ~/.config/QCAD/QCAD3.conf
+    ln -s ~/Nextcloud/Data/Config/QCAD3.conf ~/.config/QCAD/QCAD3.conf
 
 install-terminator-conf:
     rm -rf ~/.config/terminator
