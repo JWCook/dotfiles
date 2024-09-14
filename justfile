@@ -25,6 +25,7 @@ install-conf:
 install-gui-conf:
     just \
     install-guake-conf \
+    install-heynote-conf \
     install-qcad-conf \
     install-sublimetext-conf \
     install-terminator-conf
@@ -110,6 +111,11 @@ install-git-conf:
 install-grc-conf:
     rm -rf ~/.grc
     ln -s `pwd`/grc ~/.grc
+
+install-heynote-conf:
+    mkdir -p ~/.config/Heynote
+    rm ~/.config/Heynote/buffer.txt
+    ln -s ~/Nextcloud/Notes/scratch.md ~/.config/Heynote/buffer.txt
 
 # To export settings:
 # dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
