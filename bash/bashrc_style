@@ -51,7 +51,7 @@ print-title() {
 
 # Bash commands using GRC
 GRC=$(which grc)
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]
+if [ "$TERM" != dumb ] && test -e "$GRC" && test -n "$GRC"
 then
     alias colorize="$GRC -es --colour=auto"
     alias as='colorize as'

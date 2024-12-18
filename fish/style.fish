@@ -58,7 +58,7 @@ end
 
 # Bash commands using GRC
 set -x GRC (which grc)
-if [ "$TERM" != "dumb" ] && test -e "$GRC"
+if [ "$TERM" != "dumb" ] && ! test -z "$GRC" && test -e "$GRC"
     alias colorize="$GRC -es --colour=auto"
     alias as='colorize as'
     alias configure='colorize ./configure'
