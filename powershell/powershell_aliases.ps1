@@ -2,7 +2,8 @@
 # --------------------
 
 Function func_ll {Get-ChildItem -l .}
-Set-alias ll func_ll
+Set-Alias ll func_ll
+Set-Alias which get-command
 
 
 # Application aliases
