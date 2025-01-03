@@ -1,3 +1,9 @@
+default:
+    @just --choose
+
+distro := `. /etc/os-release && echo $ID`
+
+
 ###################
 # Grouped Scripts #
 ###################
