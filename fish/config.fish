@@ -338,6 +338,11 @@ abbr ssh-exit ssh -O exit
 abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
 cmd-exists gping && alias ping='gping'
 
+# Look up a DNS A record with CloudFlare DNS
+function dns -a host
+    nslookup -type=a $host 1.1.1.1 | awk -F': ' 'NR==6 { print $2 } '
+end
+
 # SSH with wezterm multiplexing
 function wssh -a host --wraps=ssh
     wezterm cli spawn --domain-name SSHMUX:$host
