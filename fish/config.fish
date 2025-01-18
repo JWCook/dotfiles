@@ -791,6 +791,20 @@ abbr ldocs nox -e livedocs
 abbr nlint nox -e lint
 abbr ntest nox -e test
 
+# uv
+abbr uvr uv run
+abbr uvn uv run nox
+abbr uvs uv sync --frozen --all-extras --all-groups
+function uvl
+    uv lock --default-index https://pypi.org/simple
+end
+function uvv
+    uv venv
+    uv sync --frozen --all-extras --all-groups
+    uv pip install -Ur $VIRTUALENV_REQUIREMENTS
+end
+complete -c uvv --wraps='uv venv'
+
 # Pre-commit
 abbr pc-all pre-commit run -a
 abbr -e pc-update
