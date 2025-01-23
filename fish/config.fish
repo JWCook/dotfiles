@@ -795,9 +795,8 @@ abbr ntest nox -e test
 abbr uvr uv run
 abbr uvn uv run nox
 abbr uvs uv sync --frozen --all-extras --all-groups
-function uvl
-    uv lock --default-index https://pypi.org/simple
-end
+abbr uvpc uv run --default-index https://pypi.org/simple pre-commit run -a
+abbr uvl uv lock --default-index https://pypi.org/simple
 function uvv
     uv venv
     uv sync --frozen --all-extras --all-groups
@@ -1075,6 +1074,7 @@ function update-all
     sudo snap refresh
     pipx upgrade-all
     poetry self update
+    uv self update
     tldr --update
     nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
 end
