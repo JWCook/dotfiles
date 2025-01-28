@@ -1,0 +1,6 @@
+copy-on-select = true
+linux-cgroup = always
+theme = GruvboxDark
+
+keybind = ctrl+h=new_split:down
+keybind = ctrl+v=new_split:right

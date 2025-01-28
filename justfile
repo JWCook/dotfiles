@@ -123,6 +123,10 @@ install-heynote-conf:
     rm ~/.config/Heynote/buffer.txt
     ln -s ~/Nextcloud/Notes/scratch.md ~/.config/Heynote/buffer.txt
 
+install-ghostty-conf:
+    rm -rf ~/.config/ghostty
+    ln -s `pwd`/ghostty ~/.config/ghostty
+
 # To export settings:
 # dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
 install-gnome-terminal-conf:
