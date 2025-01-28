@@ -803,12 +803,18 @@ abbr uvn uv run nox
 abbr uvs uv sync --frozen --all-extras --all-groups
 abbr uvpc uv run --default-index https://pypi.org/simple pre-commit run -a
 abbr uvl uv lock --default-index https://pypi.org/simple
+abbr uvt uv tool
 function uvv
     uv venv
     uv sync --frozen --all-extras --all-groups
     uv pip install -Ur $VIRTUALENV_REQUIREMENTS
 end
 complete -c uvv --wraps='uv venv'
+
+# Interpreter in default 'scratch' venv
+function ipy
+    uv run --directory ~/workspace/scratch ipython
+end
 
 # Pre-commit
 abbr pc-all pre-commit run -a
@@ -1078,9 +1084,9 @@ end
 function update-all
     sudo nala upgrade -y
     sudo snap refresh
-    pipx upgrade-all
-    poetry self update
     uv self update
+    uv tool upgrade --all
+    poetry self update
     tldr --update
     nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
 end
