@@ -116,6 +116,8 @@ set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 cmd-exists pyenv && pyenv init - | source
 cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
 
+# Remove shell greeting message
+set -U fish_greeting
 
 #########################
 # ❰❰ General Aliases ❱❱ #
@@ -284,10 +286,14 @@ function tgz-dir -a src -a dest
     tar cf - "$src" -P | pv -s $(/bin/du -sb "$src" | awk '{print $1}') | gzip
 end
 
-
 # Recursive rsync copy w/ progress
 function cprv -a d1 -a d2
     rsync --archive --whole-file --human-readable --info=progress2 "$d1" "$d2";
+end
+
+# Recursively convert all files in a dir to Unix line endings
+function convert-line-endings
+    find '.' -type f ! -path "*/.git/*" -exec sed -i 's/\r$//' {} +
 end
 
 

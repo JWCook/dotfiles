@@ -2,9 +2,38 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {}
 
+-- OS-specific settings
+----------------------------------------
+
+local function getOS()
+    -- ask LuaJIT first
+    if jit then
+        return jit.os
+    end
+
+    -- Unix, Linux variants
+    local fh,err = assert(io.popen('uname -o 2>/dev/null','r'))
+    if fh then
+        osname = fh:read()
+    end
+
+    return osname or 'Windows'
+end
+
+if getOS() == 'Windows' then
+    config.default_prog = { 'wsl', '~' }
+else
+    config.default_prog = {  '/usr/bin/fish', '-l' }
+end
+
+
+--  Tabs & Windows
+----------------------------------------
+
 hide_tab_bar_if_only_one_tab = true
 config.enable_scroll_bar = true
-config.default_prog = { '/usr/bin/fish', '-l' }
+config.window_close_confirmation = 'NeverPrompt'
+config.window_decorations = 'RESIZE'
 
 
 --  Colors & Fonts
@@ -14,6 +43,17 @@ config.color_scheme = 'Gruvbox dark, medium (base16)'
 -- config.color_scheme = 'nord'
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 14.0
+
+config.window_background_gradient = {
+  colors = {
+    -- '#282828',
+    '#3c3836',
+    '#1d2021',
+  },
+  -- preset = 'Viridis',
+  orientation = 'Vertical',
+  -- orientation = { Linear = { angle = -80.0 } },
+}
 
 
 -- Keybindings
@@ -34,12 +74,12 @@ config.keys = {
     {
         key = 't',
         mods = 'CTRL',
-        action = act.SpawnTab "CurrentPaneDomain",
+        action = act.SpawnTab 'CurrentPaneDomain',
     },
     {
         key = 'w',
         mods = 'CTRL',
-        action = act { CloseCurrentTab = { confirm = true } },
+        action = act { CloseCurrentTab = { confirm = false } },
     },
     {
         key = 'Tab',
@@ -53,14 +93,14 @@ config.keys = {
     },
     -- Splits
     {
-        key = 'h',
-        mods = 'CTRL|SHIFT',
-        action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } },
-    },
-    {
         key = 'y',
         mods = 'CTRL|SHIFT',
-        action = act { SplitVertical = { domain = "CurrentPaneDomain" } },
+        action = act { SplitHorizontal = { domain = 'CurrentPaneDomain' } },
+    },
+    {
+        key = 'h',
+        mods = 'CTRL|SHIFT',
+        action = act { SplitVertical = { domain = 'CurrentPaneDomain' } },
     },
     {
         key = 'x',
@@ -70,24 +110,43 @@ config.keys = {
     {
         key = 'LeftArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = "Left" },
+        action = act { ActivatePaneDirection = 'Left' },
     },
     {
         key = 'RightArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = "Right" },
+        action = act { ActivatePaneDirection = 'Right' },
     },
     {
         key = 'UpArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = "Up" },
+        action = act { ActivatePaneDirection = 'Up' },
     },
     {
         key = 'DownArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = "Down" },
+        action = act { ActivatePaneDirection = 'Down' },
     },
-
+    {
+        key = 'LeftArrow',
+        mods = 'CTRL|ALT',
+        action = act.AdjustPaneSize { 'Left', 5 },
+    },
+    {
+        key = 'RightArrow',
+        mods = 'CTRL|ALT',
+        action = act.AdjustPaneSize { 'Right', 5 },
+    },
+    {
+        key = 'UpArrow',
+        mods = 'CTRL|ALT',
+        action = act.AdjustPaneSize { 'Up', 5 },
+    },
+    {
+        key = 'DownArrow',
+        mods = 'CTRL|ALT',
+        action = act.AdjustPaneSize { 'Down', 5 },
+    },
 }
 
 return config
