@@ -2,11 +2,11 @@ default_profile = 'sqlite3'
 
 [profiles.sqlite3]
 adapter = 'sqlite'
-theme = 'nord-darker'
+theme = 'nord'
 
 [profiles.postgres]
 adapter = 'postgres'
-theme = 'nord-darker'
+theme = 'nord'
 host = 'localhost'
 user = 'postgres'
 password = 'secretadminpassword'

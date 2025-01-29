@@ -8,6 +8,7 @@ distro := `. /etc/os-release && echo $ID`
 # Grouped Scripts #
 ###################
 
+# Install config for terminal applications
 install-conf:
     just \
     install-atuin-conf \
@@ -16,26 +17,28 @@ install-conf:
     install-fish-conf \
     install-git-conf \
     install-grc-conf \
+    install-guake-conf \
     install-harlequin-config \
     install-htop-conf \
     install-ipython-conf \
     install-neofetch-conf \
     install-pdb-conf \
-    install-pep8-conf \
     install-postgres-conf \
     install-ranger-conf \
+    install-terminator-conf \
+    install-tmux-conf \
     install-vim-conf \
     install-vim-plug \
     configure-locale
 
+# Install config for desktop applications
 install-gui-conf:
     just \
-    install-guake-conf \
     install-heynote-conf \
     install-qcad-conf \
-    install-sublimetext-conf \
-    install-terminator-conf
+    install-sublimetext-conf
 
+# Install GNOME-specific config
 install-gnome-conf:
     just \
     install-gui-conf \
@@ -48,6 +51,7 @@ install-extras:
     configure-sudoers \
     install-fonts
 
+# Install WSL-specific config
 install-wsl:
     just \
     install-conf \
@@ -69,7 +73,9 @@ configure-locale:
     echo 'LANG=en_US.UTF-8' | sudo tee /etc/default/locale
 
 configure-ntp:
-    scripts/configure_ntp.sh
+    sudo chkconfig ntpd on
+    sudo ntpdate pool.ntp.org
+    sudo service ntpd start
 
 configure-sudoers:
     sudo scripts/configure_sudoers.sh
@@ -170,13 +176,6 @@ install-pdb-conf:
     rm -f ~/.pdbrc
     ln -s `pwd`/pdb/pdbrc ~/.pdbrc
 
-install-pep8-conf:
-    mkdir -p ~/.config
-    rm -rf ~/.config/pep8
-    rm -rf ~/.config/flake8
-    ln -s `pwd`/pep8/pep8 ~/.config/pep8
-    ln -s `pwd`/pep8/flake8 ~/.config/flake8
-
 install-postgres-conf:
     rm -rf ~/.psqlrc
     ln -s `pwd`/postgres/psqlrc ~/.psqlrc
@@ -198,6 +197,12 @@ install-qcad-conf:
 install-terminator-conf:
     rm -rf ~/.config/terminator
     ln -s `pwd`/terminator ~/.config/terminator
+
+install-tmux-conf:
+    - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    rm -f ~/.config/tmux/tmux.conf
+    mkdir -p ~/.config/tmux
+    ln -s `pwd`/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
 install-vim-conf:
     rm -rf ~/.vim
