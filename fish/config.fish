@@ -760,6 +760,20 @@ abbr dcd dco down
 abbr dcr dco restart
 abbr dcps dco ps
 
+# Docker run
+# ------------------------------
+
+# Run watchtower once in monitor mode
+function watchtower
+    docker run --rm \
+        --name watchtower \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        containrrr/watchtower \
+        --monitor-only \
+        --run-once \
+        --notifications-level=info
+end
+
 
 ##############
 # ❰❰ Tmux ❱❱ #
