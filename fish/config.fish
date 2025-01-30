@@ -1208,7 +1208,7 @@ end
 
 # Run neofetch if this is the first interactive terminal
 function neofetch_first_term
-    set term_count (procs | grep -v "grep" | grep "fish" | wc -l)
+    set term_count (/bin/ps aux | grep -v "grep" | grep "fish" | wc -l)
     if test $term_count -lt 2 && status --is-interactive && cmd-exists neofetch
         neofetch
     end
