@@ -421,7 +421,7 @@ end
  set VIM_CONF_ALL "$VIM_CONF $DOTFILES/vim/README.md"
 
 # Editor shortcuts
-function sb; echo "reloading fish config..."; source $FISH_CONF; end
+function sb; echo "reloading fish config..."; exec fish; end
 abbr vb "$EDITOR $FISH_CONF"
 abbr vbb "$EDITOR -O2 $FISH_CONF $BASH_CONF_ALL"
 abbr vg "$EDITOR $GIT_CONF"
