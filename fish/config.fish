@@ -146,8 +146,12 @@ abbr vimdiff nvim -d
 abbr weather curl -4 http://wttr.in/~50266
 alias unalias='functions --erase'
 
+# If installed, use atuin with Ctrl+R and move fzf.fish history to Ctrl+Alt+R
+if status is-interactive && cmd-exists atuin
+    fzf_configure_bindings --history=\e\cr
+    atuin init fish --disable-up-arrow | source
+end
 alias at='atuin'
-cmd-exists atuin && atuin init fish --disable-up-arrow | source
 
 if cmd-exists zoxide
     zoxide init fish | source
