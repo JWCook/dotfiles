@@ -825,6 +825,10 @@ function uvv
 end
 complete -c uvv --wraps='uv venv'
 
+function rich-md
+    uvx rich - --markdown --emoji --left --hyperlinks --theme gruvbox-dark
+end
+
 # Interpreter in default 'scratch' venv
 function ipy
     uv run --directory ~/workspace/scratch ipython
@@ -837,6 +841,7 @@ function pc-update
     pre-commit autoupdate && pre-commit run -a
 end
 
+abbr sv source .venv/bin/activate.fish
 # Get all directories currently on the python site path
 function pypath
     python -c "import sys; print('\n'.join(sys.path))"
@@ -1078,6 +1083,16 @@ end
 alias sp-open='xdg-open docs/_build/html/index.html'
 alias sp-build='sphinx-build-project'
 alias sp-auto='sphinx-autobuild-project'
+
+
+########################
+# ❰❰ Misc Dev Tools ❱❱ #
+########################
+
+function llmg --wraps llm
+    llm "$argv" | tee llm-out.tmp | less +F
+    glow llm-out.tmp && rm llm-out.tmp
+end
 
 
 ##########################
