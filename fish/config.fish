@@ -1084,7 +1084,17 @@ function sphinx-autobuild-project
         -j auto
 end
 
-alias sp-open='xdg-open docs/_build/html/index.html'
+# Open built Sphinx docs in browser
+function sp-open
+    for check_dir in docs/_build/html _build/html build/html
+        if test -d $check_dir
+            set doc_dir $check_dir
+            break
+        end
+    end
+    xdg-open $doc_dir/index.html
+end
+
 alias sp-build='sphinx-build-project'
 alias sp-auto='sphinx-autobuild-project'
 
