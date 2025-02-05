@@ -27,6 +27,11 @@ function cmd-exists
     type -a $argv &> /dev/null
 end
 
+# Check fish shell script syntax
+function fish-check
+    for f in **/*.fish; fish -n $f; end
+end
+
 # Most frequently used commands
 function hist-frequency
     history \
