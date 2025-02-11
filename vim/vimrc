@@ -411,6 +411,8 @@ nnoremap ev :vsplit $MYVIMRC<CR>
 nnoremap sv :source $MYVIMRC<CR>
 nnoremap rr :redraw!<CR>
 
+set mouse=
+
 " set clipboard+=unnamedplus
 
 " Disable (slow) saving backup of current buffer on write
