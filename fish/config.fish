@@ -833,7 +833,10 @@ function uvv
     uv pip install -Ur $VIRTUALENV_REQUIREMENTS
 end
 complete -c uvv --wraps='uv venv'
-
+function rufff
+    uv run ruff check .
+    uv run ruff format .
+end
 function rich-md
     uvx rich - --markdown --emoji --left --hyperlinks --theme gruvbox-dark
 end
@@ -976,6 +979,7 @@ function py-cleanup
     set _dir (default-pwd $argv)
     find $_dir -name "*.pyc" -type f -delete -printf "%h/%f\n"
     find $_dir -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
+    find $_dir -name "*.egg-info" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
 end
 function vim-cleanup
     set _dir (default-pwd $argv)
