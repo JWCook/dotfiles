@@ -1206,6 +1206,10 @@ function install-deb -a deb_url
     sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
 end
 
+# List all installed packages, sorted by size
+function package-sizes
+    dpkg-query -W -f='${Installed-Size;8}  ${Package}\n' | sort -n
+end
 
 ##########################
 # ❰❰ Proxied Commands ❱❱ #
