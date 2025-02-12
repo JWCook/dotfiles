@@ -117,8 +117,10 @@ install-fonts:
     scripts/install_fonts.sh
 
 install-git-conf:
-    rm -f ~/.gitconfig
-    ln -s `pwd`/git/gitconfig ~/.gitconfig
+    rm -f ~/.gitconfig ~/.config/git/config ~/.config/git/ignore
+    mkdir -p ~/.config/git
+    ln -s `pwd`/git/config ~/.config/git/config
+    ln -s `pwd`/git/ignore ~/.config/git/ignore
 
 install-grc-conf:
     rm -rf ~/.grc
