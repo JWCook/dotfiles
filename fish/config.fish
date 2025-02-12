@@ -33,10 +33,14 @@ function fish-check
 end
 
 # Most frequently used commands
-function hist-frequency
-    history \
-    | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' \
-    | sort -rn | less
+function hist-frequency -a local
+    if cmd-exists atuin && test -z $local
+        atuin stats --count 30
+    else
+        history \
+        | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' \
+        | sort -rn | less
+    end
 end
 
 # Append to path, without duplicates
