@@ -31,7 +31,6 @@ source-file ~/.nvm/nvm.sh
 source-file ~/.nvm/bash_completion
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
-#source-file ~/.miniconda/etc/profile.d/conda.sh || pathadd "~/.miniconda/bin"
 
 # Support bash_history across multiple terminals
 export HISTFILESIZE=20000
@@ -160,9 +159,6 @@ prompt-confirm() {
     fi
 }
 
-# Recursive word count
-wcr() { ag "$1" $2 | wc -l; }
-
 
 ################
 # ❰❰ Search ❱❱ #
@@ -174,6 +170,7 @@ newest() {                                              # Find most recent file 
     find ${2:-.} -type f -name $1 -print0 |\
     xargs -0 ls -t | head -n1
 }
+wcr() { grep -r "$1" ${2:-.} | wc -l; }                 # Recursive word count
 
 
 ###############################
@@ -316,7 +313,7 @@ chownr() {
 grepsed() {
     FILE_COUNT=$(wcr "$1" "$3")
     if [ $FILE_COUNT -gt 0 ]; then
-        printf "Replacing $FILE_COUNT occurances of '$1' with '$2'."
+        printf "Replacing $FILE_COUNT occurances of '$1' with '$2'"
         if prompt-confirm; then
             grep -rl --exclude-dir=.git "$1" ${3:-.} | xargs sed -i "s/$1/$2/g"
         fi

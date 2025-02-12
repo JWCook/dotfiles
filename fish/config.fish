@@ -207,6 +207,10 @@ end
 #     xargs -0 ls -t | head -n1
 # }
 
+function wcr -a find_str -a search_dir
+    grep -r $find_str (default-pwd $search_dir) | wc -l
+end
+
 
 ###############################
 # ❰❰ File & Directory Info ❱❱ #
@@ -303,6 +307,21 @@ end
 # Recursively convert all files in a dir to Unix line endings
 function convert-line-endings
     find '.' -type f ! -path "*/.git/*" -exec sed -i 's/\r$//' {} +
+end
+
+# Recursive find/replace
+function grepsed -a find_str -a replace_str -a directory
+    set directory (default-pwd $directory)
+    set file_count (wcr $find_str $directory)
+    if test $file_count -gt 0
+        echo "Replacing $file_count occurrences of '$find_str' with '$replace_str'"
+        if prompt-confirm
+            grep -rl --exclude-dir=.git $find_str $directory \
+                | xargs sed -i "s/$find_str/$replace_str/g"
+        end
+    else
+        echo "No occurrences of '$find_str' found"
+    end
 end
 
 
