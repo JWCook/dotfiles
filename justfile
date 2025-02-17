@@ -13,6 +13,7 @@ install-conf:
     just \
     install-atuin-conf \
     install-bash-conf \
+    install-dbcli-conf \
     install-figlet-conf \
     install-fish-conf \
     install-git-conf \
@@ -105,6 +106,13 @@ install-bash-conf:
     ln -s `pwd`/bash/bash_profile ~/.bash_profile
     ln -s `pwd`/bash/bash_logout ~/.bash_logout
     scripts/install_bash_completion.sh
+
+install-dbcli-conf:
+    rm -f ~/.config/litecli/config
+    rm -f ~/.config/pgcli/config
+    mkdir -p ~/.config/{litecli,pgcli}
+    ln -s `pwd`/dbcli/litecli_config ~/.config/litecli/config
+    ln -s `pwd`/dbcli/pgcli_config ~/.config/pgcli/config
 
 install-fish-conf:
     scripts/install_fish_tackle.fish
