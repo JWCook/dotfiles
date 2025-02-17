@@ -116,7 +116,6 @@ end
 
 # Python stuff
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
-set -e PYTHONPATH
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
