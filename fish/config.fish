@@ -255,6 +255,10 @@ abbr tailn tail -n 100                               # Tail -f w/ defaults
 abbr tailc tailf $argv \| grcat conf.logfile         # Tail -f w/ generic syntax highlighting
 abbr tree /usr/bin/tree -CAFah --du --dirsfirst --prune -I \""$IGNORE_PATTERNS"\"
 
+function modified -a path
+    stat -c "%y" $path | cut -d. -f1
+end
+
 # Get the total memory usage of a process (in MB) using valgrind with massif
 function massif
     valgrind --tool=massif \
@@ -1137,6 +1141,9 @@ alias sp-auto='sphinx-autobuild-project'
 function llmg --wraps llm
     llm "$argv" | tee llm-out.tmp | less +F
     glow llm-out.tmp && rm llm-out.tmp
+end
+function llmr --wraps llm
+    llm "$argv" | richify.py
 end
 
 
