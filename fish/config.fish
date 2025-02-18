@@ -118,6 +118,7 @@ end
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
+set -gx VIRTUALENV_DIR ~/.virtualenvs
 set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 
 # Configure pyenv and virtualfish, if installed
@@ -869,7 +870,7 @@ end
 
 # Interpreter in default 'scratch' venv
 function ipy
-    uv run --directory ~/workspace/scratch ipython
+    uv run --directory $WORKSPACE/scratch ipython
 end
 
 # Pre-commit
@@ -1074,18 +1075,19 @@ abbr vvp vvpathext
 
 # Workon & cd/deactivate a virtualenv (with autocomplete)
 function wo -a env_name
-    if test -n $env_name
-        vf activate $env_name
-        set -x _VIRT_ENV_PREV_PWD $PWD
-        set -e PYTHONPATH
-        cd $WORKSPACE/$env_name
-    else
+    if test -z $env_name
         vf deactivate
-        cd $_VIRT_ENV_PREV_PWD
-        source $FISH_CONF
+    else
+        cd $WORKSPACE/$env_name
+        # Activate venv in either user-level dir or project-level dir
+        if test -d $VIRTUALENV_DIR/$env_name
+            vf activate $env_name
+        else if test -d .venv
+            source .venv/bin/activate.fish
+        end
     end
 end
-complete -c wo --wraps='vf activate'
+complete -c wo -a "(ls -D $WORKSPACE)"
 
 # Misc shortcuts for python apps & scripts
 function flask-run
