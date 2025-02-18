@@ -110,7 +110,8 @@ install-bash-conf:
 install-dbcli-conf:
     rm -f ~/.config/litecli/config
     rm -f ~/.config/pgcli/config
-    mkdir -p ~/.config/{litecli,pgcli}
+    mkdir -p ~/.config/litecli
+    mkdir -p ~/.config/pgcli
     ln -s `pwd`/dbcli/litecli_config ~/.config/litecli/config
     ln -s `pwd`/dbcli/pgcli_config ~/.config/pgcli/config
 
