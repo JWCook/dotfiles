@@ -1141,11 +1141,11 @@ alias sp-auto='sphinx-autobuild-project'
 ########################
 
 function llmg --wraps llm
-    llm "$argv" | tee llm-out.tmp | less +F
+    llm $argv | tee llm-out.tmp | less +F
     glow llm-out.tmp && rm llm-out.tmp
 end
 function llmr --wraps llm
-    llm "$argv" | richify.py
+    llm $argv | richify.py
 end
 
 
