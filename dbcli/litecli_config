@@ -7,7 +7,7 @@
 # lines. End of line (return) is considered as the end of the statement.
 multi_line = False
 
-destructive_warning = True
+destructive_warning = False
 
 # In Unix/Linux: ~/.config/litecli/log
 # In Windows: %USERPROFILE%\AppData\Local\dbcli\litecli\log
