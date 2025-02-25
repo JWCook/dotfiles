@@ -1147,6 +1147,9 @@ end
 function llmr --wraps llm
     llm $argv | richify.py
 end
+function llmr-logs
+    llm logs list $argv | richify.py
+end
 
 
 ##########################
