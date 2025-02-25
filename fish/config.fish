@@ -796,6 +796,17 @@ abbr dcd dco down
 abbr dcr dco restart
 abbr dcps dco ps
 
+# Get all images referenced in a docker-compose file
+function dc-images -a dc_file
+    set dc_file (coalesce $dc_file docker-compose.yml)
+    # Search with yq if installed, otherwise grep/sed
+    if cmd-exists yqq
+        yq -r '.services[] | .image' $dc_file
+    else
+        grep 'image:' $dc_file | grep -v '#' | sed -E 's/\s+image\:\s+//'
+    end
+end
+
 # Docker run
 # ------------------------------
 
