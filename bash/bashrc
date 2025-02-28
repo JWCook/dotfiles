@@ -58,7 +58,7 @@ pathadd node_modules/.bin
 
 export IGNORE_PATTERNS='*.pyc|*.sw*|.cache|.git|__pycache__'
 export DOTFILES=~/dotfiles
-[ -z "$DOTFILES_EXTRA" ] && export DOTFILES_EXTRA=~/dotfiles-extra
+[ -z "$DOTFILES_LOCAL" ] && export DOTFILES_LOCAL=~/dotfiles-local
 export WORKSPACE=~/workspace
 alias cw='cd $WORKSPACE'
 
@@ -453,14 +453,14 @@ GIT_CONF="$DOTFILES/git/gitconfig"
 PIP_CONF=~/.config/pip/pip.conf
 PG_CONF="$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
 SETUP_CONF="$DOTFILES/Makefile"
-SSH_CONF="$DOTFILES_EXTRA/ssh/config"
+SSH_CONF="$DOTFILES_LOCAL/ssh/config"
 VIM_CONF="$DOTFILES/vim/vimrc"
 VIM_CONF_ALL="$VIM_CONF $DOTFILES/vim/README.md"
 
 # Add config from extra dotfiles repo, if it exists
-if [ -d $DOTFILES_EXTRA ]; then
-    BASH_CONF_ALL="$BASH_CONF_ALL $DOTFILES_EXTRA/bash/bashrc*"
-    SETUP_CONF="$SETUP_CONF $DOTFILES_EXTRA/Makefile"
+if [ -d $DOTFILES_LOCAL ]; then
+    BASH_CONF_ALL="$BASH_CONF_ALL $DOTFILES_LOCAL/bash/bashrc*"
+    SETUP_CONF="$SETUP_CONF $DOTFILES_LOCAL/Makefile"
 fi
 
 # Editor shortcuts
@@ -901,7 +901,7 @@ alias pip-uninstall-all='pip freeze | xargs pip uninstall -y'
 # Install/update global python packages, if specified in dotfiles
 update-python() {
     make -C $DOTFILES update-python | lc-gradient-delay
-    make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
+    make -C $DOTFILES_LOCAL update-python | lc-gradient-delay
 }
 
 # Run pytest with ipdb as debugger

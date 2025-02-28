@@ -4,14 +4,13 @@ default:
 distro := `. /etc/os-release && echo $ID`
 
 
-###################
-# Grouped Scripts #
-###################
+########################
+# ❰❰ Grouped Scripts ❱❱ #
+########################
 
 # Install config for terminal applications
 install:
-    just \
-    install-atuin-conf \
+    @just \
     install-bash-conf \
     install-dbcli-conf \
     install-figlet-conf \
@@ -29,32 +28,15 @@ install:
     install-terminator-conf \
     install-tmux-conf \
     install-vim-conf \
-    install-vim-plug \
-    configure-locale
+    install-vim-plug
 
-# Install config for desktop applications
-install-gui-conf:
-    just \
-    install-heynote-conf \
-    install-qcad-conf \
-    install-sublimetext-conf
+install-gnome-conf: configure-gnome install-gnome-terminal-conf
 
-# Install GNOME-specific config
-install-gnome-conf:
-    just \
-    install-gui-conf \
-    configure-gnome \
-    install-gnome-terminal-conf
-
-install-extras:
-    just \
-    configure-ntp \
-    configure-sudoers \
-    install-fonts
+install-extras: configure-locale configure-ntp configure-sudoers install-fonts
 
 # Install WSL-specific config
 install-wsl:
-    just \
+    @just \
     install-conf \
     install-conf-wsl \
     install-fonts \
@@ -62,9 +44,9 @@ install-wsl:
     install-xfce-conf
 
 
-######################
-# Individual Scripts #
-######################
+###########################
+# ❰❰ Individual Scripts ❱❱ #
+###########################
 
 configure-gnome:
     scripts/configure_gnome.sh
@@ -81,68 +63,50 @@ configure-ntp:
 configure-sudoers:
     sudo scripts/configure_sudoers.sh
 
-init-ssh-conf:
-    mkdir -p ~/.ssh
-    cp ssh/config ~/.ssh/
-    source bash/bashrc && ssh-set-permissions
-
 install-albert-conf:
-    rm -f ~/.config/albert/albert.conf
-    mkdir -p ~/.config/albert
-    ln -s `pwd`/albert/albert.conf ~/.config/albert/albert.conf
+    @just symlink albert/albert.conf ~/.config/albert/albert.conf
 
 install-atuin-conf:
-    rm -f ~/.config/atuin/config.toml
-    mkdir -p ~/.config/atuin
-    ln -s `pwd`/atuin/config.toml ~/.config/atuin/config.toml
+    @just symlink atuin/config.toml ~/.config/atuin/config.toml
 
 install-bash-conf:
-    rm -f ~/.bashrc
-    rm -f ~/.bashrc_style
-    rm -f ~/.bash_profile
-    rm -f ~/.bash_logout
-    ln -s `pwd`/bash/bashrc ~/.bashrc
-    ln -s `pwd`/bash/bashrc_style ~/.bashrc_style
-    ln -s `pwd`/bash/bash_profile ~/.bash_profile
-    ln -s `pwd`/bash/bash_logout ~/.bash_logout
+    @just symlink bash/bashrc       ~/.bashrc
+    @just symlink bash/bashrc_style ~/.bashrc_style
+    @just symlink bash/bash_profile ~/.bash_profile
+    @just symlink bash/bash_logout  ~/.bash_logout
     scripts/install_bash_completion.sh
 
 install-dbcli-conf:
-    rm -f ~/.config/litecli/config
-    rm -f ~/.config/pgcli/config
-    mkdir -p ~/.config/litecli
-    mkdir -p ~/.config/pgcli
-    ln -s `pwd`/dbcli/litecli_config ~/.config/litecli/config
-    ln -s `pwd`/dbcli/pgcli_config ~/.config/pgcli/config
+    @just symlink dbcli/litecli_config ~/.config/litecli/config
+    @just symlink dbcli/pgcli_config ~/.config/pgcli/config
 
 install-fish-conf:
-    scripts/install_fish_tackle.fish
+    @just symlink fish/config.fish                           ~/.config/fish/config.fish
+    @just symlink fish/style.fish                            ~/.config/fish/style.fish
+    @just symlink fish/functions/fish_prompt.fish            ~/.config/fish/functions/fish_prompt.fish
+    @just symlink fish/functions/atuin_key_bindings.fish     ~/.config/fish/functions/fish_user_key_bindings.fish
+    @just symlink fish/functions/fish_user_key_bindings.fish ~/.config/fish/functions/atuin_key_bindings.fish
+    mkdir -p ~/.config/fish/completions
+    cp fish/completions/*                                    ~/.config/fish/completions/
+    scripts/install_fish_plugins.fish
 
 install-figlet-conf:
-    rm -rf ~/.figlet
-    ln -s `pwd`/figlet ~/.figlet
+    @just symlink figlet ~/.figlet
 
 install-fonts:
     scripts/install_fonts.sh
 
 install-git-conf:
-    rm -f ~/.gitconfig ~/.config/git/config ~/.config/git/ignore
-    mkdir -p ~/.config/git
-    ln -s `pwd`/git/config ~/.config/git/config
-    ln -s `pwd`/git/ignore ~/.config/git/ignore
+    rm -f ~/.gitconfig
+    @just symlink git/config ~/.config/git/config
+    @just symlink git/ignore ~/.config/git/ignore
 
 install-grc-conf:
-    rm -rf ~/.grc
-    ln -s `pwd`/grc ~/.grc
+    @just symlink grc ~/.grc
 
-install-heynote-conf:
-    mkdir -p ~/.config/Heynote
-    rm ~/.config/Heynote/buffer.txt
-    ln -s ~/Nextcloud/Notes/scratch.md ~/.config/Heynote/buffer.txt
 
 install-ghostty-conf:
-    rm -rf ~/.config/ghostty
-    ln -s `pwd`/ghostty ~/.config/ghostty
+    @just symlink ghostty ~/.config/ghostty
 
 # To export settings:
 # dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
@@ -155,97 +119,72 @@ install-guake-conf:
     - guake --restore-preferences guake/guake_settings
 
 install-harlequin-config:
-    rm -rf ~/.config/harlequin
-    mkdir -p ~/.config/harlequin
-    ln -s `pwd`/harlequin/harlequin.toml ~/.config/harlequin/harlequin.toml
+    @just symlink harlequin/harlequin.toml ~/.config/harlequin/harlequin.toml
 
 install-htop-conf:
-    rm -rf ~/.config/htop
-    mkdir -p ~/.config/htop
-    ln -s `pwd`/htop ~/.config/htop
+    @just symlink htop/htoprc ~/.config/htop/htoprc
 
 install-ipython-conf:
-    mkdir -p ~/.ipython/profile_default
-    rm -f ~/.ipython/profile_default/ipython_config.py
-    rm -rf ~/.ipython/profile_default/startup
-    ln -s `pwd`/ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
-    ln -s `pwd`/ipython/profile_default/startup ~/.ipython/profile_default/startup
+    @just symlink ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
+    @just symlink ipython/profile_default/startup           ~/.ipython/profile_default/startup
 
 install-kitty-conf:
-    mkdir -p ~/.config/kitty
-    rm -f ~/.config/kitty/kitty.conf
-    rm -f ~/.config/kitty/open-actions.conf
-    ln -s `pwd`/kitty/kitty.conf ~/.config/kitty/kitty.conf
-    ln -s `pwd`/kitty/open-actions.conf ~/.config/kitty/open-actions.conf
+    @just symlink kitty/kitty.conf ~/.config/kitty/kitty.conf
+    @just symlink kitty/open-actions.conf ~/.config/kitty/open-actions.conf
 
 install-neofetch-conf:
-    rm -rf ~/.config/neofetch
-    mkdir -p ~/.config/neofetch
-    ln -s `pwd`/neofetch/config.conf ~/.config/neofetch/config.conf
+    @just symlink neofetch/config.conf ~/.config/neofetch/config.conf
 
 install-pdb-conf:
-    rm -f ~/.pdbrc
-    ln -s `pwd`/pdb/pdbrc ~/.pdbrc
+    @just symlink pdb/pdbrc.py ~/.pdbrc
 
 install-postgres-conf:
-    rm -rf ~/.psqlrc
-    ln -s `pwd`/postgres/psqlrc ~/.psqlrc
+    @just symlink postgres/psqlrc ~/.psqlrc
 
 install-ranger-conf:
-    rm -rf ~/.config/ranger
-    ln -s `pwd`/ranger ~/.config/ranger
-
-install-sublimetext-conf:
-    mkdir -p ~/.config/sublime-text/Packages
-    rm -rf ~/.config/sublime-text/Packages/User
-    ln -s ~/Nextcloud/Data/Config/SublimeText ~/.config/sublime-text/Packages/User
-
-install-qcad-conf:
-    mkdir -p ~/.config/QCAD/
-    rm -f ~/.config/QCAD/QCAD3.conf
-    ln -s ~/Nextcloud/Data/Config/QCAD3.conf ~/.config/QCAD/QCAD3.conf
+    @just symlink ranger ~/.config/ranger
 
 install-terminator-conf:
-    rm -rf ~/.config/terminator
-    ln -s `pwd`/terminator ~/.config/terminator
+    @just symlink terminator ~/.config/terminator
 
 install-tmux-conf:
     - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    rm -f ~/.config/tmux/tmux.conf
-    mkdir -p ~/.config/tmux
-    ln -s `pwd`/tmux/tmux.conf ~/.config/tmux/tmux.conf
+    @just symlink tmux/tmux.conf ~/.config/tmux/tmux.conf
 
 install-vim-conf:
-    rm -rf ~/.vim
-    rm -rf ~/.vimrc
-    rm -f ~/.config/nvim/init.vim
-    rm -f ~/.config/nvim/coc-settings.json
-    mkdir -p ~/.config/nvim
-    ln -s `pwd`/vim/vimrc ~/.vimrc
-    ln -s `pwd`/vim/vim ~/.vim
-    ln -s `pwd`/vim/vimrc ~/.config/nvim/init.vim
-    ln -s `pwd`/vim/coc-settings.json ~/.config/nvim/coc-settings.json
-    - [ -d ~/Nextcloud/Data/vim-sessions ] && ln -s ~/Nextcloud/Data/vim-sessions `pwd`/vim/vim/session
+    @just symlink vim/vimrc             ~/.vimrc
+    @just symlink vim/vim               ~/.vim
+    @just symlink vim/vimrc             ~/.config/nvim/init.vim
+    @just symlink vim/coc-settings.json ~/.config/nvim/coc-settings.json
 
 install-vim-plug:
     scripts/install_vim_plug.sh
 
 install-wezterm-conf:
-    mkdir -p ~/.config/wezterm
-    rm -f ~/.config/wezterm/wezterm.lua
-    ln -s `pwd`/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+    @just symlink wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 
 install-conf-wsl:
-    rm -f ~/.bashrc_wsl
-    ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
-    rm -f ~/.config/fish/config_wsl.fish
-    ln -s `pwd`/fish/config_wsl.fish ~/.config/fish/config_wsl.fish
+    @just symlink bash/bashrc_wsl ~/.bashrc_wsl
+    @just symlink fish/config_wsl.fish ~/.config/fish/config_wsl.fish
 
 configure-fonts-wsl:
     scripts/configure_fonts_wsl.sh
 
 install-xfce-conf:
-    rm -rf ~/.config/xfce4/terminal
-    mkdir -p ~/.config/xfce4/terminal
-    ln -s `pwd`/xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
-    ln -s `pwd`/xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+    @just symlink xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
+    @just symlink xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+
+
+##########################
+# ❰❰ Helper Functions ❱❱ #
+##########################
+
+symlink src dest:
+    @just _symlink $(realpath {{src}}) {{dest}}
+
+_symlink src dest:
+    @test -e "{{src}}" && test -n "{{dest}}" \
+        || (echo "invalid symlink: {{src}} -> {{dest}}" && exit 1)
+    @rm -f "{{dest}}"
+    @mkdir -p "$(dirname {{dest}})"
+    ln -s "{{src}}" "{{dest}}"

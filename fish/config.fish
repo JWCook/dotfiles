@@ -97,14 +97,12 @@ pathadd /usr/local/src/fzf/bin
 pathadd node_modules/.bin
 
 source-file ~/.config/fish/config_wsl.fish
+source-file ~/.config/fish/config_local.fish
 source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -x DOTFILES ~/dotfiles
-# Set extra dotfiles folder, if not already set by another script
-if ! test -d "$DOTFILES_EXTRA"
-    set -x DOTFILES_EXTRA ~/dotfiles-extra
-end
+test -d "$DOTFILES_LOCAL" || set -x DOTFILES_LOCAL ~/dotfiles-local
 set -x WORKSPACE ~/workspace
 abbr cw cd $WORKSPACE
 
@@ -445,14 +443,14 @@ end
 # Commonly used config files
  set BASH_CONF "$DOTFILES/bash/bashrc"
  set BASH_CONF_ALL "$DOTFILES/bash/bashrc*"
- test -d $DOTFILES_EXTRA && set BASH_CONF_ALL "$BASH_CONF_ALL $DOTFILES_EXTRA/bash/bashrc*"
- set FISH_CONF $DOTFILES/fish/config.fish
+ test -d $DOTFILES_LOCAL && set BASH_CONF_ALL "$BASH_CONF_ALL $DOTFILES_LOCAL/bash/bashrc*"
+ set FISH_CONF ~/.config/fish/config*.fish
  set FISH_FUNCS $DOTFILES/fish/functions/*
  set GIT_CONF "$DOTFILES/git/gitconfig"
  set PIP_CONF ~/.config/pip/pip.conf
  set PG_CONF "$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
- set SETUP_CONF "$DOTFILES/Makefile $DOTFILES_EXTRA/Makefile"
- set SSH_CONF "$DOTFILES_EXTRA/ssh/config"
+ set SETUP_CONF "$DOTFILES/Makefile $DOTFILES_LOCAL/Makefile"
+ set SSH_CONF "$DOTFILES_LOCAL/ssh/config"
  set VIM_CONF "$DOTFILES/vim/vimrc"
  set VIM_CONF_ALL "$VIM_CONF $DOTFILES/vim/README.md"
 
@@ -993,7 +991,7 @@ abbr pip-uninstall-all pip freeze \| xargs pip uninstall -y
 # Install/update global python packages, if specified in dotfiles
 function update-python
     make -C $DOTFILES update-python | lc-gradient-delay
-    make -C $DOTFILES_EXTRA update-python | lc-gradient-delay
+    make -C $DOTFILES_LOCAL update-python | lc-gradient-delay
 end
 
 # Run pytest with ipdb as debugger
