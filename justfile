@@ -9,7 +9,7 @@ distro := `. /etc/os-release && echo $ID`
 ###################
 
 # Install config for terminal applications
-install-conf:
+install:
     just \
     install-atuin-conf \
     install-bash-conf \

@@ -6,5 +6,5 @@
 # Installation
 ```bash
 git clone https://github.com/JWCook/dotfiles && cd dotfiles
-just install-conf
+just install
 ```
