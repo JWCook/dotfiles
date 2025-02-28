@@ -108,6 +108,11 @@ config.keys = {
         action = act.TogglePaneZoomState,
     },
     {
+        key = 'x',
+        mods = 'CTRL|SHIFT|ALT',
+        action = act.TogglePaneZoomState,
+    },
+    {
         key = 'LeftArrow',
         mods = 'ALT',
         action = act { ActivatePaneDirection = 'Left' },
