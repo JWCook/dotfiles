@@ -82,7 +82,6 @@ pathadd ~/.cargo/bin
 pathadd ~/.local/bin
 pathadd ~/.local/kitty.app/bin
 pathadd ~/.local/share/gem/ruby/3.0.0/bin
-# pathadd ~/.miniconda/bin
 pathadd ~/.poetry/bin
 pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
@@ -117,7 +116,6 @@ set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 set -gx VIRTUALENV_DIR ~/.virtualenvs
-set -gx VIRTUALENV_REQUIREMENTS ~/.virtualenvs/global_requirements.txt
 
 # Configure pyenv and virtualfish, if installed
 cmd-exists pyenv && pyenv init - | source
@@ -535,6 +533,7 @@ function gfpushu -a branch
 end
 
 function gpr
+    git fetch --all
     git stash
     git pull --rebase
     git stash pop
@@ -866,7 +865,7 @@ abbr uvt uv tool
 function uvv
     uv venv
     uv sync --frozen --all-extras --all-groups
-    uv pip install -Ur $VIRTUALENV_REQUIREMENTS
+    uv pip install -U ipython ipdb
 end
 complete -c uvv --wraps='uv venv'
 function rufff
@@ -970,8 +969,6 @@ end
 # Install python packages from all available requirements files and/or setup.py
 function pipr
     set -e PYTHONPATH
-    pip install -Ur $VIRTUALENV_REQUIREMENTS
-
     set req_files requirements*.txt
     if test "$req_files"
         for _file in $req_files
@@ -985,7 +982,6 @@ function pipr
 
 end
 
-alias pipv='pip install -Ur $VIRTUALENV_REQUIREMENTS'
 abbr pip-uninstall-all pip freeze \| xargs pip uninstall -y
 
 # Install/update global python packages, if specified in dotfiles
@@ -1160,6 +1156,12 @@ function llmr-logs
     llm logs list $argv | richify.py
 end
 
+function f2p -a path -a out --wraps files-to-prompt
+    set path (default-pwd $path)
+    set out (coalesce $out f2p.txt)
+    files-to-prompt $path --ignore-gitignore -o $out
+end
+
 
 ##########################
 # ❰❰ Distro-Specific ❱❱ #
@@ -1173,17 +1175,6 @@ function system-is-rpm
 end
 function system-is-deb
     test -f /etc/debian_version
-end
-
-# WIP
-function update-all
-    sudo nala upgrade -y
-    sudo snap refresh
-    uv self update
-    uv tool upgrade --all
-    poetry self update
-    tldr --update
-    nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
 end
 
 # Fedora-based
