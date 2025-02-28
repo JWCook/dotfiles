@@ -21,3 +21,14 @@ repos:
     hooks:
       - id: prettier
         types_or: [yaml, css, json, javascript]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.23.1
+    hooks:
+      - id: gitleaks
+  # - repo: https://github.com/awslabs/git-secrets
+  #   rev: 5357e18
+  #   hooks:
+  #     - id: git-secrets
+  #       entry: git-secrets --scan
+  #       files: .
+  #       args: [--untracked]
