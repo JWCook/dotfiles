@@ -1,0 +1,12 @@
+atuin
+bottom
+difftastic
+du-dust
+hyperfine
+eza
+fd-find
+git-delta
+gping
+pik
+procs
+zoxide

@@ -1,0 +1,17 @@
+aider-chat[playwright] --python 3.11
+asciinema
+datasette
+files-to-prompt
+harlequin
+httpie
+litecli
+llm --with llm-perplexity --with llm-openrouter
+pgcli
+pre-commit
+py-spy
+ranger-fm --with pillow
+rich-cli
+ruff
+virtualfish
+yamllint
+yq

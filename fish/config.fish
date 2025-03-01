@@ -148,7 +148,6 @@ abbr ta type -a
 complete -c ta --wraps=type
 alias vim='nvim'
 abbr vimdiff nvim -d
-abbr weather curl -4 http://wttr.in/~50266
 alias unalias='functions --erase'
 
 # If installed, use atuin with Ctrl+R and move fzf.fish history to Ctrl+Alt+R

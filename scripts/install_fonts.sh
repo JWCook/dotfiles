@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 FONT_NAMES='
     3270
     DejaVuSansMono
@@ -26,7 +25,8 @@ mkdir -p  $DOWNLOAD_DIR $FONT_DIR
 for font_name in $FONT_NAMES; do
     filename=${font_name}.zip
     if ! test -f ${DOWNLOAD_DIR}/${filename}; then
-        wget -NP $DOWNLOAD_DIR ${RELEASE_BASE_URL}/${filename}
+        mkdir -p $DOWNLOAD_DIR
+        curl ${RELEASE_BASE_URL}/${filename} -o $DOWNLOAD_DIR/$filename
     fi
 done
 

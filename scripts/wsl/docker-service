@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+DOCKER_DISTRO="Ubuntu"
+DOCKER_LOG_DIR=/var/log/docker
+mkdir -pm o=,ug=rwx "$DOCKER_LOG_DIR"
+/mnt/c/Windows/System32/wsl.exe -d $DOCKER_DISTRO sh -c "nohup sudo -b dockerd < /dev/null > $DOCKER_LOG_DIR/dockerd.log 2>&1"

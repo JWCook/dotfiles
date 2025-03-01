@@ -1,15 +1,29 @@
 default:
-    @just --choose
+    @just --list
+    @echo "\nDistro: {{distro}}"
 
-distro := `. /etc/os-release && echo $ID`
+# Detect distro or WSL
+distro := `uname -r | grep -q microsoft && echo 'wsl' || (. /etc/os-release && echo $ID)`
 
-
-########################
-# ❰❰ Grouped Scripts ❱❱ #
-########################
-
-# Install config for terminal applications
+# Run install scripts for the current distro
 install:
+    ./scripts/install_bootstrap_packages.sh
+    @just install-conf install-fonts
+    @just install-{{distro}}
+    @just install-xdistro
+
+# Run update scripts for the current distro
+update:
+    @just update-{{distro}}
+    @just update-xdistro
+
+
+##########
+# Config #
+##########
+
+# Install config for all terminal applications
+install-conf:
     @just \
     install-bash-conf \
     install-dbcli-conf \
@@ -30,38 +44,8 @@ install:
     install-vim-conf \
     install-vim-plug
 
-install-gnome-conf: configure-gnome install-gnome-terminal-conf
-
-install-extras: configure-locale configure-ntp configure-sudoers install-fonts
-
-# Install WSL-specific config
-install-wsl:
-    @just \
-    install-conf \
-    install-conf-wsl \
-    install-fonts \
-    configure-fonts-wsl \
-    install-xfce-conf
-
-
-###########################
-# ❰❰ Individual Scripts ❱❱ #
-###########################
-
-configure-gnome:
-    scripts/configure_gnome.sh
-
-configure-locale:
-    sudo locale-gen 'en_US.UTF-8'
-    echo 'LANG=en_US.UTF-8' | sudo tee /etc/default/locale
-
-configure-ntp:
-    sudo chkconfig ntpd on
-    sudo ntpdate pool.ntp.org
-    sudo service ntpd start
-
-configure-sudoers:
-    sudo scripts/configure_sudoers.sh
+install-gnome-conf: install-gnome-terminal-conf
+    ./scripts/configure_gnome.sh
 
 install-albert-conf:
     @just symlink albert/albert.conf ~/.config/albert/albert.conf
@@ -93,8 +77,9 @@ install-fish-conf:
 install-figlet-conf:
     @just symlink figlet ~/.figlet
 
+# Download and install selected monospace fonts
 install-fonts:
-    scripts/install_fonts.sh
+    ./scripts/install_fonts.sh
 
 install-git-conf:
     rm -f ~/.gitconfig
@@ -104,19 +89,18 @@ install-git-conf:
 install-grc-conf:
     @just symlink grc ~/.grc
 
-
 install-ghostty-conf:
     @just symlink ghostty ~/.config/ghostty
 
-# To export settings:
-# dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
 install-gnome-terminal-conf:
     - dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
+export-gnome-terminal-conf:
+    dconf load /org/gnome/terminal/ < ~/dotfiles/gnome-terminal/gnome-terminal-settings
 
-# To export settings:
-# guake --save-preferences ~/dotfiles/guake/guake_settings
 install-guake-conf:
     - guake --restore-preferences guake/guake_settings
+export-guake-conf:
+    guake --save-preferences ~/dotfiles/guake/guake_settings
 
 install-harlequin-config:
     @just symlink harlequin/harlequin.toml ~/.config/harlequin/harlequin.toml
@@ -158,33 +142,129 @@ install-vim-conf:
     @just symlink vim/coc-settings.json ~/.config/nvim/coc-settings.json
 
 install-vim-plug:
-    scripts/install_vim_plug.sh
+    ./scripts/xdistro/install_vim_plug.sh
 
 install-wezterm-conf:
     @just symlink wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 
-install-conf-wsl:
+install-wsl-conf:
     @just symlink bash/bashrc_wsl ~/.bashrc_wsl
     @just symlink fish/config_wsl.fish ~/.config/fish/config_wsl.fish
-
-configure-fonts-wsl:
-    scripts/configure_fonts_wsl.sh
 
 install-xfce-conf:
     @just symlink xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
     @just symlink xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
 
 
+#############################
+# Packages: Distro-specific #
+#############################
+
+install-debian:
+    sudo ./scripts/debian/install_system_packages.sh
+update-debian:
+    @sudo -v
+    sudo nala upgrade -y &
+
+install-ubuntu:
+    sudo ./scripts/ubuntu/install_system_packages.fish -g -k
+    @just install-fzf
+update-ubuntu: update-debian
+    @just install-fzf
+
+install-wsl:
+    @just install-wsl-conf
+    sudo ./scripts/ubuntu/install_system_packages.fish -w
+    ./scripts/wsl/configure_fonts.sh
+update-wsl: update-ubuntu
+
+install-fedora:
+    sudo ./scripts/fedora/install_system_packages.sh -r -g -n
+    @just install-ssh-agent-systemd
+update-fedora:
+    @sudo -v
+    sudo dnf upgrade -y &
+
+install-arch:
+    sudo ./scripts/arch/install_system_packages.sh
+update-arch:
+    sudo pacman -Syu
+
+
 ##########################
-# ❰❰ Helper Functions ❱❱ #
+# Packages: Cross-Distro #
 ##########################
 
+# Install all cross-distro packages
+install-xdistro:
+    @just install-cargo-packages &
+    @just install-python-tools install-node install-grc
+# Update all cross-distro packages
+update-xdistro:
+    @just update-cargo &
+    @just update-python update-nvim-plugins update-tldr update-repos
+    -which -s snap && sudo snap refresh
+
+# Package collections
+# -------------------
+
+install-cargo-packages:
+    ./scripts/install_cargo_packages.sh
+update-cargo: install-cargo-packages
+
+install-node:
+    ./scripts/install_node.fish
+update-npm:
+    npm update -g
+
+install-python-tools:
+    ./scripts/install_python_tools.fish
+update-python:
+    ./scripts/install_python_tools.fish -u
+
+update-repos:
+    -@just update-repo ~/dotfiles
+    -@just update-repo ~/dotfiles-local
+    -@just update-repo ~/setup-scripts
+    -@just update-repo ~/workspace/@scripts
+
+# Individual packages
+# -------------------
+# Note: Most of these are only necessary in cases where the base repo is far behind
+
+install-fzf:
+    ./scripts/xdistro/install_fzf.sh
+install-grc:
+    ./scripts/xdistro/install_grc.sh
+install-kitty:
+    ./scripts/xdistro/install_kitty.sh
+install-ssh-agent-systemd:
+    ./scripts/install_ssh_agent_systemd.sh
+update-nvim-plugins:
+    nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
+update-tldr:
+    - tldr --update
+
+
+####################
+# Helper Functions #
+####################
+
+# Symlink a file or directory, with sanity checks
 symlink src dest:
     @just _symlink $(realpath {{src}}) {{dest}}
-
 _symlink src dest:
     @test -e "{{src}}" && test -n "{{dest}}" \
         || (echo "invalid symlink: {{src}} -> {{dest}}" && exit 1)
     @rm -f "{{dest}}"
     @mkdir -p "$(dirname {{dest}})"
     ln -s "{{src}}" "{{dest}}"
+
+[no-exit-message]
+update-repo REPO_DIR:
+    @test -d {{REPO_DIR}} \
+        || (echo "{{REPO_DIR}} does not exist" && exit 1)
+    @git -C {{REPO_DIR}} fetch --all
+    @git -C {{REPO_DIR}} stash
+    git -C {{REPO_DIR}} pull --rebase
+    @git -C {{REPO_DIR}} stash pop
