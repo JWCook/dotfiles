@@ -49,20 +49,20 @@ Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
 " Autocomplete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'LeafCage/yankround.vim'
-let g:coc_global_extensions = [
-  \ 'coc-fzf-preview',
-  \ 'coc-git',
-  \ 'coc-json',
-  \ 'coc-prettier',
-  \ 'coc-pyright',
-  \ 'coc-sh',
-  \ 'coc-sql',
-  \ 'coc-toml',
-  \ 'coc-yaml'
-\]
+" let g:coc_global_extensions = [
+"   \ 'coc-fzf-preview',
+"   \ 'coc-git',
+"   \ 'coc-json',
+"   \ 'coc-prettier',
+"   \ 'coc-pyright',
+"   \ 'coc-sh',
+"   \ 'coc-sql',
+"   \ 'coc-toml',
+"   \ 'coc-yaml'
+" \]
 
 " Search
 if has('nvim')
@@ -72,7 +72,7 @@ else
 endif
 
 " Syntax
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'chrisbra/csv.vim'
 Plug 'dag/vim-fish'
 Plug 'pangloss/vim-javascript'
@@ -218,17 +218,17 @@ let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
 
 " Ale
-let g:ale_sign_error = '✘❱'
-let g:ale_sign_warning = '‽❱'
-let g:ale_sign_info = '‡❱'
-let g:ale_sign_style_error = '❱❱'
-let g:ale_sign_style_warning = '❱❱'
-let g:ale_lint_on_enter = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_delay = 500
-let g:ale_maximum_file_size = 1048576
+" let g:ale_sign_error = '✘❱'
+" let g:ale_sign_warning = '‽❱'
+" let g:ale_sign_info = '‡❱'
+" let g:ale_sign_style_error = '❱❱'
+" let g:ale_sign_style_warning = '❱❱'
+" let g:ale_lint_on_enter = 1
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 'always'
+" let g:ale_lint_on_insert_leave = 1
+" let g:ale_lint_delay = 500
+" let g:ale_maximum_file_size = 1048576
 
 " Bash Support
 let g:BASH_InsertFileHeader = 'yes'
@@ -247,22 +247,22 @@ nnoremap <silent> gc :execute ':Gcommit' \| :startinsert<CR>
 nnoremap <silent> gu :Git reset --soft HEAD~1 \| :redraw<CR>
 
 " Fzf
-nnoremap <C-B>        :CocCommand fzf-preview.Buffers<CR>
-inoremap <C-B><ESC>   :CocCommand fzf-preview.Buffers<CR>
-nnoremap <C-G>        :CocCommand fzf-preview.GitFiles<CR>
-inoremap <C-G><ESC>   :CocCommand fzf-preview.GitFiles<CR>
-nnoremap <C-A-G>      :CocCommand fzf-preview.GitActions<CR>
-inoremap <C-A-G><ESC> :CocCommand fzf-preview.GitActions<CR>
-nnoremap <C-F>        :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-inoremap <C-F><ESC>   :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <C-N>        :CocCommand fzf-preview.CommandPalette<CR>
-inoremap <C-N><ESC>   :CocCommand fzf-preview.CommandPalette<CR>
-nnoremap <C-P>        :CocCommand fzf-preview.ProjectFiles<CR>
-inoremap <C-P><ESC>   :CocCommand fzf-preview.ProjectFiles<CR>
-nnoremap <C-S>        :CocCommand fzf-preview.GitStatus<CR>
-inoremap <C-S><ESC>   :CocCommand fzf-preview.GitStatus<CR>
-nnoremap <C-Y>        :CocCommand fzf-preview.Yankround<CR>
-inoremap <C-Y><ESC>   :CocCommand fzf-preview.Yankround<CR>
+" nnoremap <C-B>        :CocCommand fzf-preview.Buffers<CR>
+" inoremap <C-B><ESC>   :CocCommand fzf-preview.Buffers<CR>
+" nnoremap <C-G>        :CocCommand fzf-preview.GitFiles<CR>
+" inoremap <C-G><ESC>   :CocCommand fzf-preview.GitFiles<CR>
+" nnoremap <C-A-G>      :CocCommand fzf-preview.GitActions<CR>
+" inoremap <C-A-G><ESC> :CocCommand fzf-preview.GitActions<CR>
+" nnoremap <C-F>        :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+" inoremap <C-F><ESC>   :CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+" nnoremap <C-N>        :CocCommand fzf-preview.CommandPalette<CR>
+" inoremap <C-N><ESC>   :CocCommand fzf-preview.CommandPalette<CR>
+" nnoremap <C-P>        :CocCommand fzf-preview.ProjectFiles<CR>
+" inoremap <C-P><ESC>   :CocCommand fzf-preview.ProjectFiles<CR>
+" nnoremap <C-S>        :CocCommand fzf-preview.GitStatus<CR>
+" inoremap <C-S><ESC>   :CocCommand fzf-preview.GitStatus<CR>
+" nnoremap <C-Y>        :CocCommand fzf-preview.Yankround<CR>
+" inoremap <C-Y><ESC>   :CocCommand fzf-preview.Yankround<CR>
 
 let g:fzf_preview_command = 'bat --color=always --plain {-1}'
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
@@ -501,7 +501,7 @@ set tabstop=4
 " Selected filetypes: 1 tab = 2 spaces
 autocmd FileType html,javascript,json,lua,vim,vue,yaml  setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
-set pastetoggle=<leader>p
+" set pastetoggle=<leader>p
 
 " Tabs and non-breaking spaces are evil
 set list
