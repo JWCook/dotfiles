@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+
+# Install rust
+type -q rustup || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup update
 rustup default stable
 
+# Install crates
 cat scripts/deps/cargo_crates.txt | xargs cargo install
 
 # Generate command completion files

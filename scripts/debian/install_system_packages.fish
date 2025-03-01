@@ -31,6 +31,7 @@ set PKGS_TOOLS '
     wget
 '
 set PKGS_LIBS '
+    build-essential
     libgconf
     network-manager-openvpn
 '
