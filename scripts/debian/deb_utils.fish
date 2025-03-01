@@ -14,7 +14,7 @@ set VERSION_CODENAME (release-var VERSION_CODENAME)
 # Install a signing key (GPG)
 function install-gpg -a url -a path
     echo "Installing key: $url"
-    curl -sSL "$url" | gpg --dearmor > "$path"
+    curl -fsSL "$url" | gpg --dearmor > "$path"
     chmod a+r "$path"
 end
 
@@ -29,14 +29,14 @@ end
 function install-deb -a url
     echo "Installing $url"
     set deb_tempfile $(mktemp --suffix=.deb)
-    curl -L $url -o $deb_tempfile
+    curl -fsSL $url -o $deb_tempfile
     apt install -y --fix-broken $deb_tempfile \
     && sleep 1 && rm -v $deb_tempfile
 end
 
 # Get URL of latest release deb file from GitHub releases (assumes tag-based releases)
 function gh-latest-release -a repo
-    curl -s "https://api.github.com/repos/$repo/releases/latest" \
+    curl -fsSL "https://api.github.com/repos/$repo/releases/latest" \
     | jq -r '.assets[] | select(.name | test("\\\\.deb")) | .browser_download_url' \
     | head -n 1
 end
@@ -61,7 +61,7 @@ function install-duplicati
 
     # Find latest version of Duplicati
     set -l DEB_URL $(
-        curl -s "https://updates.duplicati.com/stable/latest-v2.json" \
+        curl -fsSL "https://updates.duplicati.com/stable/latest-v2.json" \
         | jq -r '."linux-x64-gui.deb".url' )
     if ! set -q DEB_URL
         echo "Error: Could not find latest Duplicati release"
@@ -79,7 +79,7 @@ function install-ghostty
     set -l ARCH $(dpkg --print-architecture)
     set -l FILENAME_PATTERN "ghostty_[^\s/_]+_{$ARCH}_{$VERSION_ID}.deb"
     set -l DEB_URL $(
-        curl -s "https://api.github.com/repos/mkasberg/ghostty-ubuntu/releases/latest" \
+        curl -fsSL "https://api.github.com/repos/mkasberg/ghostty-ubuntu/releases/latest" \
         | grep -oP "https://github.com/mkasberg/ghostty-ubuntu/releases/download/[^\s/]+/$FILENAME_PATTERN"
     )
     if ! set -q DEB_URL
@@ -130,7 +130,7 @@ function install-vivaldi
     echo -e "Installing Vivaldi\n--------------------\n"
 
     # Find latest version of Vivaldi
-    curl -sSLO https://repo.vivaldi.com/archive/deb/dists/stable/main/binary-amd64/Packages
+    curl -fsSL -O https://repo.vivaldi.com/archive/deb/dists/stable/main/binary-amd64/Packages
     set -l v_latest $(tac Packages | grep -m1 Version | cut -d " " -f2)
     rm Packages
     echo "Installing Vivaldi $v_latest"

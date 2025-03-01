@@ -5,7 +5,7 @@ set DEFAULT_NODE_VERSION 20
 
 # Install nvm (bash)
 mkdir -p bootstrap
-curl -L 'https://raw.githubusercontent.com/creationix/nvm/master/install.sh' \
+curl -fsSL 'https://raw.githubusercontent.com/creationix/nvm/master/install.sh' \
     -o bootstrap/install-nvm.sh
 bash bootstrap/install-nvm.sh
 

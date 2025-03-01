@@ -26,7 +26,7 @@ for font_name in $FONT_NAMES; do
     filename=${font_name}.zip
     if ! test -f ${DOWNLOAD_DIR}/${filename}; then
         mkdir -p $DOWNLOAD_DIR
-        curl ${RELEASE_BASE_URL}/${filename} -o $DOWNLOAD_DIR/$filename
+        curl -fsSL ${RELEASE_BASE_URL}/${filename} -o $DOWNLOAD_DIR/$filename
     fi
 done
 

@@ -706,7 +706,7 @@ end
 
 # Get latest version info from a project's GitHub Releases
 function git-releases -a repo
-    curl --silent "https://api.github.com/repos/$repo/releases/latest"
+    curl -s "https://api.github.com/repos/$repo/releases/latest"
 end
 function git-latest-release -a repo
     git-releases $repo | jq -r .tag_name

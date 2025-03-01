@@ -14,7 +14,7 @@ install-appimage() {
 
     echo "Downloading ${url}"
     sudo mkdir -p "$APPIMAGE_DIR"
-    sudo curl -L "$url" -o "$dest_path"
+    sudo curl -fsSL "$url" -o "$dest_path"
     sudo chmod +x "$dest_path"
 
     # Symlink to binary dir; backup (non-symlink) file if it already exists

@@ -24,9 +24,9 @@ set UPDATE_ONLY (set -q _flag_update && echo true || echo false)
 if not $UPDATE_ONLY
     echo "Downloading install scripts"
     mkdir -p $BOOTSTRAPS
-    curl -Lf https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
-    curl -Lf https://install.python-poetry.org/install-poetry.py -o $BOOTSTRAPS/install-poetry.py
-    curl -Lf https://astral.sh/uv/install.sh -o $BOOTSTRAPS/install-uv.sh
+    curl -fsSL https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
+    curl -fsSL https://install.python-poetry.org/install-poetry.py -o $BOOTSTRAPS/install-poetry.py
+    curl -fsSL https://astral.sh/uv/install.sh -o $BOOTSTRAPS/install-uv.sh
     chmod +x $BOOTSTRAPS/*
 end
 
