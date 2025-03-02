@@ -244,14 +244,24 @@ _symlink src dest:
     @mkdir -p "$(dirname {{dest}})"
     ln -s "{{src}}" "{{dest}}"
 
+# Update a local git repository, with sanity checks
 [no-exit-message]
 _update-repo REPO_DIR:
-    @test -d {{REPO_DIR}} \
-        || (echo "{{REPO_DIR}} does not exist" && exit 1)
-    @git -C {{REPO_DIR}} fetch --all
-    @git -C {{REPO_DIR}} stash
-    git -C {{REPO_DIR}} pull --rebase
-    @git -C {{REPO_DIR}} stash pop
+    #!/usr/bin/env bash
+    REPO="{{REPO_DIR}}"
+    test -d "$REPO" && cd "$REPO" || (echo "❌ $REPO does not exist" && exit 1)
+
+    # Check for uncommitted changes
+    if ! git diff --quiet || ! git diff --quiet --cached; then
+        echo "⚠️ Repository has uncommitted changes, stashing..."
+        git stash save -q "auto-stash" || exit 1
+        STASHED=1
+    fi
+
+    # Fetch and merge updates, and reapply any stashed changes
+    git fetch -q --all --prune
+    git pull -q --rebase && echo "✅ Updated $(basename $REPO)"
+    if test -n "$STASHED"; then git stash pop -q; fi
 
 # Run multiple jobs in parallel
 _parallel *COMMANDS:
