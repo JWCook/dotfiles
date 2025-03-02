@@ -4,6 +4,7 @@ default:
 
 # Detect distro or WSL
 distro := `uname -r | grep -q microsoft && echo 'wsl' || (. /etc/os-release && echo $ID)`
+config_dir := env_var_or_default("XDG_CONFIG_HOME", "~/.config")
 
 # Run install scripts for the current distro
 install:
@@ -23,35 +24,20 @@ update:
 ##########
 
 # Install config for all terminal applications
+configs := "bash dbcli figlet fish git grc guake harlequin htop ipython neofetch pdb postgres ranger terminator tmux vim"
 install-conf:
-    @just \
-    install-bash-conf \
-    install-dbcli-conf \
-    install-figlet-conf \
-    install-fish-conf \
-    install-git-conf \
-    install-grc-conf \
-    install-guake-conf \
-    install-harlequin-config \
-    install-htop-conf \
-    install-ipython-conf \
-    install-neofetch-conf \
-    install-pdb-conf \
-    install-postgres-conf \
-    install-ranger-conf \
-    install-terminator-conf \
-    install-tmux-conf \
-    install-vim-conf \
-    install-vim-plug
+    @for conf in {{configs}}; do \
+        just install-$conf-conf; \
+    done
 
 install-gnome-conf: install-gnome-terminal-conf
     ./scripts/configure_gnome.sh
 
 install-albert-conf:
-    @just symlink albert/albert.conf ~/.config/albert/albert.conf
+    @just symlink albert/albert.conf {{config_dir}}/albert/albert.conf
 
 install-atuin-conf:
-    @just symlink atuin/config.toml ~/.config/atuin/config.toml
+    @just symlink atuin/config.toml {{config_dir}}/atuin/config.toml
 
 install-bash-conf:
     @just symlink bash/bashrc       ~/.bashrc
@@ -61,17 +47,17 @@ install-bash-conf:
     scripts/install_bash_completion.sh
 
 install-dbcli-conf:
-    @just symlink dbcli/litecli_config ~/.config/litecli/config
-    @just symlink dbcli/pgcli_config ~/.config/pgcli/config
+    @just symlink dbcli/litecli_config {{config_dir}}/litecli/config
+    @just symlink dbcli/pgcli_config   {{config_dir}}/pgcli/config
 
 install-fish-conf:
-    @just symlink fish/config.fish                           ~/.config/fish/config.fish
-    @just symlink fish/style.fish                            ~/.config/fish/style.fish
-    @just symlink fish/functions/fish_prompt.fish            ~/.config/fish/functions/fish_prompt.fish
-    @just symlink fish/functions/atuin_key_bindings.fish     ~/.config/fish/functions/fish_user_key_bindings.fish
-    @just symlink fish/functions/fish_user_key_bindings.fish ~/.config/fish/functions/atuin_key_bindings.fish
-    mkdir -p ~/.config/fish/completions
-    cp fish/completions/*                                    ~/.config/fish/completions/
+    @just symlink fish/config.fish                           {{config_dir}}/fish/config.fish
+    @just symlink fish/style.fish                            {{config_dir}}/fish/style.fish
+    @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
+    @just symlink fish/functions/atuin_key_bindings.fish     {{config_dir}}/fish/functions/fish_user_key_bindings.fish
+    @just symlink fish/functions/fish_user_key_bindings.fish {{config_dir}}/fish/functions/atuin_key_bindings.fish
+    mkdir -p {{config_dir}}/fish/completions
+    cp fish/completions/*                                    {{config_dir}}/fish/completions/
     scripts/install_fish_plugins.fish
 
 install-figlet-conf:
@@ -83,14 +69,14 @@ install-fonts:
 
 install-git-conf:
     rm -f ~/.gitconfig
-    @just symlink git/config ~/.config/git/config
-    @just symlink git/ignore ~/.config/git/ignore
+    @just symlink git/config {{config_dir}}/git/config
+    @just symlink git/ignore {{config_dir}}/git/ignore
 
 install-grc-conf:
     @just symlink grc ~/.grc
 
 install-ghostty-conf:
-    @just symlink ghostty ~/.config/ghostty
+    @just symlink ghostty {{config_dir}}/ghostty
 
 install-gnome-terminal-conf:
     - dconf dump /org/gnome/terminal/ > ~/dotfiles/gnome-terminal/gnome-terminal-settings
@@ -103,21 +89,21 @@ export-guake-conf:
     guake --save-preferences ~/dotfiles/guake/guake_settings
 
 install-harlequin-config:
-    @just symlink harlequin/harlequin.toml ~/.config/harlequin/harlequin.toml
+    @just symlink harlequin/harlequin.toml {{config_dir}}/harlequin/harlequin.toml
 
 install-htop-conf:
-    @just symlink htop/htoprc ~/.config/htop/htoprc
+    @just symlink htop/htoprc {{config_dir}}/htop/htoprc
 
 install-ipython-conf:
     @just symlink ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
     @just symlink ipython/profile_default/startup           ~/.ipython/profile_default/startup
 
 install-kitty-conf:
-    @just symlink kitty/kitty.conf ~/.config/kitty/kitty.conf
-    @just symlink kitty/open-actions.conf ~/.config/kitty/open-actions.conf
+    @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
+    @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
 
 install-neofetch-conf:
-    @just symlink neofetch/config.conf ~/.config/neofetch/config.conf
+    @just symlink neofetch/config.conf {{config_dir}}/neofetch/config.conf
 
 install-pdb-conf:
     @just symlink pdb/pdbrc.py ~/.pdbrc
@@ -126,34 +112,32 @@ install-postgres-conf:
     @just symlink postgres/psqlrc ~/.psqlrc
 
 install-ranger-conf:
-    @just symlink ranger ~/.config/ranger
+    @just symlink ranger {{config_dir}}/ranger
 
 install-terminator-conf:
-    @just symlink terminator ~/.config/terminator
+    @just symlink terminator {{config_dir}}/terminator
 
 install-tmux-conf:
     - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    @just symlink tmux/tmux.conf ~/.config/tmux/tmux.conf
+    @just symlink tmux/tmux.conf {{config_dir}}/tmux/tmux.conf
 
 install-vim-conf:
     @just symlink vim/vimrc             ~/.vimrc
     @just symlink vim/vim               ~/.vim
-    @just symlink vim/vimrc             ~/.config/nvim/init.vim
-    @just symlink vim/coc-settings.json ~/.config/nvim/coc-settings.json
-
-install-vim-plug:
+    @just symlink vim/vimrc             {{config_dir}}/nvim/init.vim
+    @just symlink vim/coc-settings.json {{config_dir}}/nvim/coc-settings.json
     ./scripts/xdistro/install_vim_plug.sh
 
 install-wezterm-conf:
-    @just symlink wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+    @just symlink wezterm/wezterm.lua {{config_dir}}/wezterm/wezterm.lua
 
 install-wsl-conf:
     @just symlink bash/bashrc_wsl ~/.bashrc_wsl
-    @just symlink fish/config_wsl.fish ~/.config/fish/config_wsl.fish
+    @just symlink fish/config_wsl.fish {{config_dir}}/fish/config_wsl.fish
 
 install-xfce-conf:
-    @just symlink xfce/terminal/accels.scm ~/.config/xfce4/terminal/accels.scm
-    @just symlink xfce/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+    @just symlink xfce/terminal/accels.scm {{config_dir}}/xfce4/terminal/accels.scm
+    @just symlink xfce/terminal/terminalrc {{config_dir}}/xfce4/terminal/terminalrc
 
 
 #############################
@@ -222,10 +206,11 @@ install-python-tools:
 update-python:
     ./scripts/install_python_tools.fish -u
 
+repos := "~/dotfiles ~/dotfiles-local ~/workspace/@scripts"
 update-repos:
-    -@just update-repo ~/dotfiles
-    -@just update-repo ~/dotfiles-local
-    -@just update-repo ~/workspace/@scripts
+    @for repo in {{repos}}; do \
+        just update-repo $repo || true; \
+    done
 
 # Individual packages
 # -------------------
