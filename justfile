@@ -225,7 +225,6 @@ update-python:
 update-repos:
     -@just update-repo ~/dotfiles
     -@just update-repo ~/dotfiles-local
-    -@just update-repo ~/setup-scripts
     -@just update-repo ~/workspace/@scripts
 
 # Individual packages
