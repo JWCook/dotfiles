@@ -148,7 +148,7 @@ install-debian:
     sudo ./scripts/debian/install_system_packages.sh
 update-debian:
     @sudo -v
-    sudo nala upgrade -y &
+    sudo nala upgrade -y
 
 install-ubuntu:
     sudo ./scripts/ubuntu/install_system_packages.fish -g -k
@@ -167,7 +167,7 @@ install-fedora:
     @just install-ssh-agent-systemd
 update-fedora:
     @sudo -v
-    sudo dnf upgrade -y &
+    sudo dnf upgrade -y
 
 install-arch:
     sudo ./scripts/arch/install_system_packages.sh
@@ -181,13 +181,13 @@ update-arch:
 
 # Install all cross-distro packages
 install-xdistro:
-    @just install-cargo-packages &
-    @just install-python-tools install-node install-grc
+    @just _parallel install-cargo-packages install-python-tools
+    @just install-node install-grc
 # Update all cross-distro packages
 update-xdistro:
-    @just update-cargo &
-    @just update-python update-nvim-plugins update-tldr update-repos
-    -which -s snap && sudo snap refresh
+    @just _parallel update-cargo update-python
+    @just update-tldr update-nvim-plugins update-repos
+    @if command -v snap &> /dev/null; then sudo snap refresh; fi
 
 # Package collections
 # -------------------
@@ -209,7 +209,7 @@ update-python:
 repos := "~/dotfiles ~/dotfiles-local ~/workspace/@scripts"
 update-repos:
     @for repo in {{repos}}; do \
-        just update-repo $repo || true; \
+        just _update-repo $repo || true; \
     done
 
 # Individual packages
@@ -245,10 +245,37 @@ _symlink src dest:
     ln -s "{{src}}" "{{dest}}"
 
 [no-exit-message]
-update-repo REPO_DIR:
+_update-repo REPO_DIR:
     @test -d {{REPO_DIR}} \
         || (echo "{{REPO_DIR}} does not exist" && exit 1)
     @git -C {{REPO_DIR}} fetch --all
     @git -C {{REPO_DIR}} stash
     git -C {{REPO_DIR}} pull --rebase
     @git -C {{REPO_DIR}} stash pop
+
+# Run multiple jobs in parallel
+_parallel *COMMANDS:
+    #!/usr/bin/env bash
+    set -e
+    pids=()
+    for cmd in {{COMMANDS}}; do
+        echo "Starting: $cmd"
+        eval "just $cmd" & pids+=($!)
+    done
+
+    # Wait for all processes and check return codes
+    for pid in "${pids[@]}"; do
+        if ! wait $pid; then
+            echo "Command with PID $pid failed"
+            exit 1
+        fi
+    done
+
+_test-parallel:
+    @just _parallel _test1 _test2
+_test1:
+    @echo "Test 1 start"
+    @sleep 0.2
+    @echo "Test 1 end"
+_test2:
+    @echo "Test 2"
