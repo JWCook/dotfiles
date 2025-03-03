@@ -9,7 +9,7 @@ config_dir := env_var_or_default("XDG_CONFIG_HOME", "~/.config")
 # Run install scripts for the current distro
 install:
     ./scripts/install_bootstrap_packages.sh
-    @just install-conf install-fonts
+    @just install-conf
     @just install-{{distro}}
     @just install-xdistro
 
@@ -27,7 +27,7 @@ update:
 configs := "bash dbcli figlet fish git grc guake harlequin htop ipython neofetch pdb postgres ranger terminator tmux vim"
 install-conf:
     @for conf in {{configs}}; do \
-        just install-$conf-conf; \
+        just install-$conf-conf || true; \
     done
 
 install-gnome-conf: install-gnome-terminal-conf
@@ -88,7 +88,7 @@ install-guake-conf:
 export-guake-conf:
     guake --save-preferences ~/dotfiles/guake/guake_settings
 
-install-harlequin-config:
+install-harlequin-conf:
     @just symlink harlequin/harlequin.toml {{config_dir}}/harlequin/harlequin.toml
 
 install-htop-conf:
@@ -126,7 +126,6 @@ install-vim-conf:
     @just symlink vim/vim               ~/.vim
     @just symlink vim/vimrc             {{config_dir}}/nvim/init.vim
     @just symlink vim/coc-settings.json {{config_dir}}/nvim/coc-settings.json
-    ./scripts/xdistro/install_vim_plug.sh
 
 install-wezterm-conf:
     @just symlink wezterm/wezterm.lua {{config_dir}}/wezterm/wezterm.lua
@@ -145,7 +144,7 @@ install-xfce-conf:
 #############################
 
 install-debian:
-    sudo ./scripts/debian/install_system_packages.sh
+    sudo ./scripts/debian/install_system_packages.fish
 update-debian:
     @sudo -v
     sudo nala upgrade -y
@@ -181,12 +180,12 @@ update-arch:
 
 # Install all cross-distro packages
 install-xdistro:
-    @just _parallel install-cargo-packages install-python-tools
-    @just install-node install-grc
+    @just _parallel install-cargo-packages install-python-tools install-fonts
+    @just install-grc install-node install-vim-plug
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-cargo update-python
-    @just update-tldr update-nvim-plugins update-repos
+    @just update-tldr update-vim-plugins update-repos
     @if command -v snap &> /dev/null; then sudo snap refresh; fi
 
 # Package collections
@@ -224,7 +223,9 @@ install-kitty:
     ./scripts/xdistro/install_kitty.sh
 install-ssh-agent-systemd:
     ./scripts/install_ssh_agent_systemd.sh
-update-nvim-plugins:
+install-vim-plug:
+    ./scripts/xdistro/install_vim_plug.sh
+update-vim-plugins:
     nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
 update-tldr:
     - tldr --update
@@ -233,6 +234,10 @@ update-tldr:
 ####################
 # Helper Functions #
 ####################
+
+# Run containerized setup script tests
+test-setup:
+    ./tests/run-tests.sh
 
 # Symlink a file or directory, with sanity checks
 symlink src dest:

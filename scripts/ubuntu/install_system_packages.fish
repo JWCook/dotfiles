@@ -53,6 +53,7 @@ set PKGS_TOOLS '
     traceroute
     tree
     ubuntu-drivers-common
+    unzip
     valgrind
     vim
     wget
@@ -68,7 +69,9 @@ set PKGS_LIBS '
     cifs-utils
     cmake
     exuberant-ctags
+    fontconfig
     golang
+    gpg
     graphviz-dev
     libbz2-dev
     libffi-dev

@@ -1,5 +1,6 @@
 #!/usr/bin/env fish
-source debian/deb_utils.fish
+set script_dir (dirname (dirname (status filename)))
+source $script_dir/debian/deb_utils.fish
 
 
 # Package categories
@@ -27,11 +28,14 @@ set PKGS_TOOLS '
     tig
     tmux
     tree
+    unzip
     vim
     wget
 '
 set PKGS_LIBS '
     build-essential
+    fontconfig
+    gpg
     libgconf
     network-manager-openvpn
 '
@@ -61,12 +65,11 @@ function install-docker
     echo -e "Installing docker\n--------------------\n"
 
     set DOCKER_KEY /etc/apt/keyrings/docker.asc
-    source /etc/os-release
     install-asc "https://download.docker.com/linux/debian/gpg" "$DOCKER_KEY"
 
     echo "deb [arch=amd64 signed-by=$DOCKER_KEY] https://download.docker.com/linux/debian $VERSION_CODENAME stable" \
       > /etc/apt/sources.list.d/docker.list
-    apt update && apt install -y $PKGS_DOCKER
+    apt update && echo $PKGS_DOCKER | xargs apt install -y
 end
 
 # Mirrors used by nala for parallel downloads
@@ -100,7 +103,7 @@ apt update && apt upgrade -y
 echo $PACKAGES_TO_INSTALL | xargs apt install -y --ignore-missing
 install -m 0755 -d /etc/apt/keyrings
 install-docker
-install-extras
+install-glow
 install-mirrors
 if set -q _flag_g
     install-extras-gui

@@ -39,7 +39,7 @@ if type -q uv
 else
     sh $BOOTSTRAPS/install-uv.sh
     # Install python interpreters
-    uv python install $PYTHON_VERSIONS
+    echo $PYTHON_VERSIONS | xargs uv python install
 
     # Init config file
     mkdir -p ~/.config/uv
@@ -95,10 +95,11 @@ end
 # ----------------------------------------
 
 echo "Installing packages for neovim plugins"
+mkdir -p ~/.virtualenvs
 set NVIM_VENV ~/.virtualenvs/nvim
 if test -d "$NVIM_VENV"
     python -m venv "$NVIM_VENV"
 end
 source "$NVIM_VENV/bin/activate.fish"
-pip3 install -U pip jedi pynvim vim-vint
+python -m pip install -U pip jedi pynvim vim-vint
 deactivate
