@@ -134,7 +134,7 @@ function install-vivaldi
     set -l v_latest $(tac Packages | grep -m1 Version | cut -d " " -f2)
     rm Packages
     echo "Installing Vivaldi $v_latest"
-    install-deb "https://repo.vivaldi.com/archive/deb/pool/main/vivaldi-stable_$v_latest_amd64.deb"
+    install-deb "https://repo.vivaldi.com/archive/deb/pool/main/vivaldi-stable_{$v_latest}_amd64.deb"
 end
 
 function install-vscode

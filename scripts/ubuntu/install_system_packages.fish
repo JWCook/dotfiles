@@ -1,5 +1,6 @@
 #!/usr/bin/env fish
-source debian/deb_utils.fish
+set script_dir (dirname (dirname (status filename)))
+source $script_dir/debian/deb_utils.fish
 
 # Options:
 # -g: Install graphical (desktop) applications
