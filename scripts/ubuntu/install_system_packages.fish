@@ -70,6 +70,7 @@ set PKGS_LIBS '
     cifs-utils
     cmake
     exuberant-ctags
+    extrepo
     fontconfig
     golang
     gpg

@@ -99,6 +99,14 @@ function install-glow
     apt update && apt install -y glow
 end
 
+function install-librewolf
+    type -q librewolf && exit 0
+    echo -e "Installing LibreWolf\n--------------------\n"
+
+    extrepo enable librewolf
+    apt update && apt install -y librewolf
+end
+
 function install-localsend
     type -q localsend && exit 0
     echo -e "Installing Localsend\n--------------------\n"
@@ -157,6 +165,7 @@ end
 
 function install-extras-gui
     install-duplicati
+    install-librewolf
     install-localsend
     install-signal
     install-sublime-text

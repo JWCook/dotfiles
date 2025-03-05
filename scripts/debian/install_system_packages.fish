@@ -34,6 +34,7 @@ set PKGS_TOOLS '
 '
 set PKGS_LIBS '
     build-essential
+    extrepo
     fontconfig
     gpg
     libgconf
