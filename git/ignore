@@ -1,6 +1,12 @@
-.aider*
+# Editor-specific / other dev tool-specific config and temp files
+.cursor/
+.eclipse/
 .idea/
+.tmp/
 .vim/
 .vscode/
+.~*
+.aider*
+*.kate-swp
 *.sw*
 *.code-workspace
