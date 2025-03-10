@@ -1,7 +1,7 @@
 # Additional config + aliases specific to WSL
-set -x WIN_HOME (wslpath "C:/Users/$USER")
-set -x WIN_WORKSPACE (wslpath 'D:/workspace')
-set -x APPDATA "$WIN_HOME/AppData"
+set -gx WIN_HOME (wslpath "C:/Users/$USER")
+set -gx WIN_WORKSPACE (wslpath 'D:/workspace')
+set -gx APPDATA "$WIN_HOME/AppData"
 set -x COLORTERM truecolor
 
 abbr open-ps powershell.exe /c start
