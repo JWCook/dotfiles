@@ -37,7 +37,6 @@ set PKGS_LIBS '
     extrepo
     fontconfig
     gpg
-    libgconf
     network-manager-openvpn
 '
 
