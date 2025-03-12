@@ -48,6 +48,7 @@
     rebase = true
 [push]
     default = current
+    autosetupremote = true
 [pager]
     diff = delta
     difftool = true
