@@ -116,6 +116,12 @@ function install-localsend
     install-deb "$(gh-latest-release localsend/localsend)"
 end
 
+function install-obsidian
+    type -q obsidian && exit 0
+    echo -e "Installing Obsidian\n--------------------\n"
+    install-deb "$(gh-latest-release obsidianmd/obsidian-releases)"
+end
+
 function install-neovim
     # TODO: Use stable release when v0.10+ is available for 24.04
     # add-apt-repository -ny ppa:neovim-ppa/stable
@@ -167,6 +173,7 @@ function install-extras-gui
     install-duplicati
     install-librewolf
     install-localsend
+    install-obsidian
     install-signal
     install-sublime-text
     install-vivaldi
