@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli figlet fish git grc guake harlequin htop ipython neofetch pdb postgres ranger terminator tmux vim"
+configs := "bash dbcli figlet fish git grc guake harlequin htop ipython neofetch pdb postgres ranger terminator tmux vim wezterm"
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
