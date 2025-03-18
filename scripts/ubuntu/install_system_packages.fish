@@ -110,7 +110,6 @@ set PKGS_GUI_APPS '
     guake
     keepassxc
     nextcloud-desktop
-    yubioath-desktop
 '
 set PKGS_MEDIA '
     gstreamer1.0-plugins-base

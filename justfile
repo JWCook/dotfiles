@@ -181,7 +181,7 @@ update-arch:
 # Install all cross-distro packages
 install-xdistro:
     @just _parallel install-cargo-packages install-python-tools install-fonts
-    @just install-grc install-node install-vim-plug
+    @just install-grc install-node install-vim-plug install-yubico-auth
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-cargo update-python
@@ -227,6 +227,8 @@ install-vim-plug:
     ./scripts/xdistro/install_vim_plug.sh
 update-vim-plugins:
     nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
+install-yubico-auth:
+    ./scripts/xdistro/install_yubico_auth.fish
 update-tldr:
     - tldr --update
 
