@@ -189,6 +189,12 @@ else if cmd-exists bat
 end
 
 alias catp='bat -pp'
+function catj -a path
+    cat $path | jq
+end
+function cats -a path
+    cat $path | sort
+end
 alias icat='kitty +kitten icat'
 
 
