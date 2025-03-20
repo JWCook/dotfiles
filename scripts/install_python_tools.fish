@@ -63,7 +63,7 @@ echo "Installing/updating poetry"
 if type -q poetry
     poetry self update
 else
-    python $BOOTSTRAPS/install-poetry.py --preview
+    uv run python $BOOTSTRAPS/install-poetry.py --preview
     poetry config virtualenvs.path ~/.virtualenvs
     poetry config virtualenvs.create false
     poetry self add poetry-plugin-use-pip-global-index-url@latest
@@ -97,9 +97,8 @@ end
 echo "Installing packages for neovim plugins"
 mkdir -p ~/.virtualenvs
 set NVIM_VENV ~/.virtualenvs/nvim
-if test -d "$NVIM_VENV"
-    python -m venv "$NVIM_VENV"
+if ! test -d "$NVIM_VENV"
+    uv run python -m venv "$NVIM_VENV"
 end
 source "$NVIM_VENV/bin/activate.fish"
-python -m pip install -U pip jedi pynvim vim-vint
-deactivate
+uv run python -m pip install -U pip jedi pynvim vim-vint
