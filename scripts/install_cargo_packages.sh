@@ -9,7 +9,7 @@ rustup default stable
 cat scripts/deps/cargo_crates.txt | xargs cargo install
 
 # Generate command completion files
-export PATH=$PATH:~/.cargo/bin
+export PATH=$PATH:$CARGO_HOME:~/.cargo/bin
 atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash
 atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
 procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash

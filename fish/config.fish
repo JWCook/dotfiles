@@ -76,9 +76,25 @@ alias ttput='tty -s && tput'
 # ❰❰ Environment ❱❱ #
 #####################
 
+# XDG dirs
+set -gx XDG_CACHE_HOME ~/.cache
+set -gx XDG_CONFIG_HOME ~/.config
+set -gx XDG_DATA_HOME ~/.local/share
+set -gx XDG_STATE_HOME ~/.local/state
+
+# Relocate some files from home dir to XDG dirs
+set -gx CARGO_HOME ~/.local/share/cargo
+set -gx DOTNET_CLI_HOME $XDG_DATA_HOME/dotnet
+set -gx GNUPGHOME $XDG_DATA_HOME/gnupg
+set -gx GTK2_RC_FILES $XDG_CONFIG_HOME/gtk-2.0/gtkrc
+set -gx HISTFILE $XDG_CONFIG_HOME/bash/history
+set -gx NVM_DIR $XDG_DATA_HOME/nvm
+set -gx PSQLRC $XDG_CONFIG_HOME/pg/psqlrc
+set -gx RUSTUP_HOME $XDG_DATA_HOME/rustup
+
 # Paths
 set -e fish_user_paths
-pathadd ~/.cargo/bin
+pathadd $CARGO_HOME/bin
 pathadd ~/.local/bin
 pathadd ~/.local/kitty.app/bin
 pathadd ~/.local/share/gem/ruby/3.0.0/bin
@@ -87,9 +103,7 @@ pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
-pathadd ~/bin
 pathadd ~/go/bin
-pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
 pathadd /usr/local/src/fzf/bin
@@ -887,7 +901,7 @@ function ipy
 end
 
 # Pre-commit
-abbr pc-all pre-commit run -a \&\& git status
+abbr pc-all pre-commit run -a \|\| git status
 abbr -e pc-update
 function pc-update
     pre-commit autoupdate && pre-commit run -a

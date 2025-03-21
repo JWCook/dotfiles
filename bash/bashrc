@@ -15,6 +15,25 @@ alias ttput='tty -s && tput'                            # Safe tput, only for TT
 
 shopt -s dotglob extglob                                # Make glob patterns include hidden files
 
+# XDG dirs
+export XDG_CACHE_HOME=~/.cache
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=~/.local/share
+export XDG_STATE_HOME=~/.local/state
+
+# Relocate some files from home dir to XDG dirs
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export DOTNET_CLI_HOME=$XDG_DATA_HOME/dotnet
+export GNUPGHOME=$XDG_DATA_HOME/gnupg
+export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
+export HISTFILE=$XDG_CONFIG_HOME/bash/history
+export NVM_DIR=$XDG_DATA_HOME/nvm
+export PSQLRC=$XDG_CONFIG_HOME/pg/psqlrc
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+# export NPM_CONFIG_INIT_MODULE=$XDG_CONFIG_HOME/npm/config/npm-init.js
+# export NPM_CONFIG_CACHE=$XDG_CACHE_HOME/npm
+# export NPM_CONFIG_TMP=$XDG_RUNTIME_DIR/npm
+
 # Additional runtime config
 BASH_COMPLETIONS=~/.config/bash/completions
 source $BASH_COMPLETIONS/*                              # Custom shell completion files
@@ -22,13 +41,13 @@ source-file /etc/bashrc                                 # Global bashrc
 source-file ~/.bash_completion                          # Additional shell completion scripts
 source-file ~/.bashrc_style                             # Prompt & command colorization
 source-file ~/.bashrc_extra                             # Machine-specific config
-source-file ~/.cargo/env
+source-file $CARGO_HOME/env
 source-file ~/.config/bash/preexec.sh
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
-source-file ~/.nvm/nvm.sh
-source-file ~/.nvm/bash_completion
+source-file $NVM_DIR/nvm.sh
+source-file $NVM_DIR/bash_completion
 source-file /usr/local/src/fzf/shell/completion.bash
 source-file /usr/local/src/fzf/shell/key-bindings.bash
 
@@ -48,9 +67,7 @@ pathadd ~/.pyenv/bin
 pathadd ~/.pyenv/shims
 pathadd ~/.rvm/bin
 pathadd ~/.serverless/bin
-pathadd ~/bin
 pathadd ~/go/bin
-pathadd ~/scripts
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
 pathadd /usr/local/src/fzf/bin

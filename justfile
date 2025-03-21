@@ -109,7 +109,8 @@ install-pdb-conf:
     @just symlink pdb/pdbrc.py ~/.pdbrc
 
 install-postgres-conf:
-    @just symlink postgres/psqlrc ~/.psqlrc
+    rm ~/.psqlrc
+    @just symlink postgres/psqlrc ~/.config/pg/.psqlrc
 
 install-ranger-conf:
     @just symlink ranger {{config_dir}}/ranger
@@ -241,6 +242,12 @@ update-tldr:
 ####################
 # Helper Functions #
 ####################
+
+xdg-ninja:
+    - ./scripts/xdg_ninja.sh
+
+xdg-relocate:
+    ./scripts/xdg_relocate.fish
 
 # Run containerized setup script tests
 test-setup:
