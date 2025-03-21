@@ -887,7 +887,7 @@ function ipy
 end
 
 # Pre-commit
-abbr pc-all pre-commit run -a
+abbr pc-all pre-commit run -a \&\& git status
 abbr -e pc-update
 function pc-update
     pre-commit autoupdate && pre-commit run -a

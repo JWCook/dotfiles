@@ -181,11 +181,11 @@ update-arch:
 # Install all cross-distro packages
 install-xdistro:
     @just _parallel install-cargo-packages install-python-tools install-fonts
-    @just install-grc install-node install-vim-plug install-yubico-auth
+    @just install-auto-cpufreq install-grc install-node install-vim-plug install-yubico-auth
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-cargo update-python
-    @just update-tldr update-vim-plugins update-repos
+    @just update-vim-plugins update-repos update-tldr update-auto-cpufreq
     @if command -v snap &> /dev/null; then sudo snap refresh; fi
 
 # Package collections
@@ -216,7 +216,10 @@ update-repos:
 # Note: Most of these are only necessary in cases where the base repo is far behind
 
 install-auto-cpufreq:
-    ./scripts/xdistro/install_auto_cpufreq.sh
+    # TODO: only install for laptops/other battery-powered devices?
+    sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
+update-auto-cpufreq:
+    - sudo auto-cpufreq --update
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:
