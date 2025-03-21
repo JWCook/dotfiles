@@ -31,10 +31,6 @@ set PKGS_TOOLS '
     net-tools
     nmap
     neofetch
-    network-manager-openvpn
-    npm
-    ntp
-    ntpdate
     p7zip-full
     pv
     qpdf
@@ -53,14 +49,22 @@ set PKGS_TOOLS '
     toilet
     traceroute
     tree
-    ubuntu-drivers-common
     unzip
     valgrind
     vim
     wget
+    zathura
+'
+# System utilities, drivers, etc.
+set PKGS_SYS '
+    fontconfig
+    network-manager-openvpn
+    ntp
+    ntpdate
+    thermald
+    ubuntu-drivers-common
     xclip
     xsel
-    zathura
 '
 # Libraries, mostly needed for compiling other applications
 # TODO: Re-evaluate how many of these are still needed
@@ -71,7 +75,6 @@ set PKGS_LIBS '
     cmake
     exuberant-ctags
     extrepo
-    fontconfig
     golang
     gpg
     graphviz-dev
@@ -185,7 +188,7 @@ end
 # --------------------
 
 # Determine packages to install based on shell arguments
-set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_LIBS $PKGS_IMG $PKGS_LANG"
+set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_LANG"
 argparse 'g' 'n' 'k' 'w' 'x' -- $argv
 or begin
     exit 1

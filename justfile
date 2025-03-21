@@ -215,6 +215,8 @@ update-repos:
 # -------------------
 # Note: Most of these are only necessary in cases where the base repo is far behind
 
+install-auto-cpufreq:
+    ./scripts/xdistro/install_auto_cpufreq.sh
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:
