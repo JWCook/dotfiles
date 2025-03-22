@@ -877,10 +877,16 @@ abbr ntest nox -e test
 # uv
 abbr uvr uv run
 abbr uvn uv run nox
-abbr uvs uv sync --frozen --all-extras --all-groups
 abbr uvpc uv run --default-index https://pypi.org/simple pre-commit run -a
 abbr uvl uv lock --default-index https://pypi.org/simple
 abbr uvt uv tool
+abbr -e uvs
+function uvs
+    set sync_args '--all-extras' '--all-groups'
+    test -f uv.lock && set sync_args $sync_args '--frozen'
+    uv sync $sync_args
+end
+complete -c uvs --wraps='uv sync'
 function uvv
     uv venv
     uv sync --frozen --all-extras --all-groups
