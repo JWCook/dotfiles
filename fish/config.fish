@@ -171,6 +171,10 @@ if status is-interactive && cmd-exists atuin
 end
 alias at='atuin'
 
+function b64-decode -a b64_str
+    echo $b64_str | base64 -d
+end
+
 if cmd-exists zoxide
     zoxide init fish | source
     alias cd='z'
