@@ -109,7 +109,7 @@ install-pdb-conf:
     @just symlink pdb/pdbrc.py ~/.pdbrc
 
 install-postgres-conf:
-    rm ~/.psqlrc
+    rm -f ~/.psqlrc
     @just symlink postgres/psqlrc ~/.config/pg/.psqlrc
 
 install-ranger-conf:
