@@ -38,7 +38,7 @@ end
 function gh-latest-release -a repo
     curl -fsSL "https://api.github.com/repos/$repo/releases/latest" \
     | jq -r '.assets[] | select(.name | test("\\\\.deb")) | .browser_download_url' \
-    | head -n 1
+    | tail -n 1
 end
 
 
@@ -108,11 +108,11 @@ function install-librewolf
 end
 
 function install-localsend
-    type -q localsend && exit 0
+    type -q localsend || type -q localsend_app && exit 0
     echo -e "Installing Localsend\n--------------------\n"
 
     # appindicator package name varies by distro
-    apt install -y libayatana-appindicator || apt install -y libayatana-appindicator3-1
+    apt install -y libayatana-appindicator 2> /dev/null || apt install -y libayatana-appindicator3-1
     install-deb "$(gh-latest-release localsend/localsend)"
 end
 
