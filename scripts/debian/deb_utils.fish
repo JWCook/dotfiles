@@ -70,6 +70,9 @@ function install-duplicati
 
     echo "Installing $DEB_URL"
     install-deb "$DEB_URL"
+
+    touch /var/log/duplicati.log
+    chown 1000:1000 /var/log/duplicati.log
 end
 
 function install-ghostty
