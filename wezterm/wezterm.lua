@@ -43,6 +43,7 @@ config.color_scheme = 'Gruvbox dark, medium (base16)'
 -- config.color_scheme = 'nord'
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 14.0
+config.window_background_opacity = 0.9
 
 config.window_background_gradient = {
   colors = {
