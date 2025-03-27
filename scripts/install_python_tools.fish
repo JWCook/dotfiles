@@ -2,17 +2,17 @@
 set BOOTSTRAPS $HOME/bootstrap
 set FISH_COMPLETE_DEST ~/.config/fish/completions/poetry.fish
 set BASH_COMPLETE_DEST ~/.config/bash/completions/poetry.bash-completion
-set PYTHON_VERSIONS '
-    3.13
-    3.12
-    3.11
-    3.10
-    3.9
-    3.8
-    3.7
-    pypy3.9
+set PYTHON_VERSIONS \
+    3.13 \
+    3.12 \
+    3.11 \
+    3.10 \
+    3.9 \
+    3.8 \
+    3.7 \
+    pypy3.9 \
     pypy3.10
-'
+
 
 # Read arguments
 argparse 'u/update' -- $argv
@@ -24,7 +24,6 @@ set UPDATE_ONLY (set -q _flag_update && echo true || echo false)
 if not $UPDATE_ONLY
     echo "Downloading install scripts"
     mkdir -p $BOOTSTRAPS
-    curl -fsSL https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer -o $BOOTSTRAPS/get-pyenv.sh
     curl -fsSL https://install.python-poetry.org/install-poetry.py -o $BOOTSTRAPS/install-poetry.py
     curl -fsSL https://astral.sh/uv/install.sh -o $BOOTSTRAPS/install-uv.sh
     chmod +x $BOOTSTRAPS/*
@@ -38,22 +37,14 @@ if type -q uv
     uv self update
 else
     sh $BOOTSTRAPS/install-uv.sh
+
     # Install python interpreters
-    echo $PYTHON_VERSIONS | xargs uv python install
-
-    # Init config file
-    mkdir -p ~/.config/uv
-    cp uv.toml ~/.config/uv/uv.toml
-end
-
-# pyenv
-# ----------------------------------------
-
-echo "Installing/updating pyenv"
-if type -q pyenv
-    pyenv update
-else
-    bash $BOOTSTRAPS/get-pyenv.sh
+    uv python install $PYTHON_VERSIONS
+    uv python install --preview $PYTHON_VERSIONS[1]
+    set default_python "~/.local/bin/python{$PYTHON_VERSIONS[1]}"
+    test -f $default_python \
+        && rm -f ~/.local/bin/python \
+        && ln -s $default_python ~/.local/bin/python
 end
 
 # poetry
@@ -63,7 +54,7 @@ echo "Installing/updating poetry"
 if type -q poetry
     poetry self update
 else
-    uv run python $BOOTSTRAPS/install-poetry.py --preview
+    $BOOTSTRAPS/install-poetry.py
     poetry config virtualenvs.path ~/.virtualenvs
     poetry config virtualenvs.create false
     poetry self add poetry-plugin-use-pip-global-index-url@latest
