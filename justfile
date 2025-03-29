@@ -227,6 +227,8 @@ install-grc:
     ./scripts/xdistro/install_grc.sh
 install-kitty:
     ./scripts/xdistro/install_kitty.sh
+install-kwin-gestures:
+    sudo ./scripts/xdistro/install_kwin_gestures.sh
 install-ssh-agent-systemd:
     ./scripts/install_ssh_agent_systemd.sh
 install-vim-plug:
