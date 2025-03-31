@@ -57,7 +57,6 @@ else
     $BOOTSTRAPS/install-poetry.py
     poetry config virtualenvs.path ~/.virtualenvs
     poetry config virtualenvs.create false
-    poetry self add poetry-plugin-use-pip-global-index-url@latest
     poetry self add poetry-plugin-export@latest
 end
 
