@@ -159,7 +159,7 @@ update-ubuntu: update-debian
 install-wsl:
     @just install-wsl-conf
     sudo ./scripts/ubuntu/install_system_packages.fish -w
-    ./scripts/wsl/configure_fonts.sh
+    sudo ./scripts/wsl/configure_fonts.sh
 update-wsl: update-ubuntu
 
 install-fedora:
