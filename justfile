@@ -219,6 +219,7 @@ update-repos:
 install-auto-cpufreq:
     # TODO: only install for laptops/other battery-powered devices?
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
+    @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:
     - sudo auto-cpufreq --update
 install-fzf:
