@@ -53,6 +53,7 @@ PKGS_APPS='
     dnf-plugins-core
     docker-ce
     docker-compose-plugin
+    fastfetch
     feh
     figlet
     fish
@@ -61,7 +62,6 @@ PKGS_APPS='
     lolcat
     nmap
     jq
-    neofetch
     neovim
     npm
     p7zip

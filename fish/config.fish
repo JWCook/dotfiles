@@ -185,6 +185,8 @@ end
 
 # alias fd='fdfind'
 # complete -c fd --wraps=fdfind
+alias ff='fastfetch'
+complete -c ff --wraps=fastfetch
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'
@@ -1311,11 +1313,11 @@ end
 #     swap $PIP_CONF ${PIP_CONF}.bak
 # end
 
-# Run neofetch if this is the first interactive terminal
-function neofetch_first_term
+# Run fastfetch if this is the first interactive terminal
+function fastfetch_first_term
     set term_count (/bin/ps aux | grep -v "grep" | grep "fish" | wc -l)
-    if test $term_count -lt 2 && status --is-interactive && cmd-exists neofetch
-        neofetch
+    if test $term_count -lt 2 && status --is-interactive && cmd-exists fastfetch
+        fastfetch
     end
 end
-neofetch_first_term
+fastfetch_first_term

@@ -18,6 +18,7 @@ set PKGS_TOOLS '
     bat
     curl
     duf
+    fastfetch
     feh
     ffmpeg
     figlet
@@ -30,7 +31,6 @@ set PKGS_TOOLS '
     ncdu
     net-tools
     nmap
-    neofetch
     p7zip-full
     pv
     qpdf

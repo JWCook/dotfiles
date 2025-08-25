@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli figlet fish git grc guake harlequin htop ipython neofetch pdb postgres ranger terminator tmux vim wezterm"
+configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython  pdb postgres ranger terminator tmux vim wezterm"
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
@@ -49,6 +49,9 @@ install-bash-conf:
 install-dbcli-conf:
     @just symlink dbcli/litecli_config {{config_dir}}/litecli/config
     @just symlink dbcli/pgcli_config   {{config_dir}}/pgcli/config
+
+install-fastfetch-conf:
+    @just symlink fastfetch/config.jsonc {{config_dir}}/fastfetch/config.jsonc
 
 install-fish-conf:
     @just symlink fish/config.fish                           {{config_dir}}/fish/config.fish
@@ -101,9 +104,6 @@ install-ipython-conf:
 install-kitty-conf:
     @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
     @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
-
-install-neofetch-conf:
-    @just symlink neofetch/config.conf {{config_dir}}/neofetch/config.conf
 
 install-pdb-conf:
     @just symlink pdb/pdbrc.py ~/.pdbrc
