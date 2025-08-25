@@ -3,6 +3,7 @@ bottom
 difftastic
 du-dust
 hyperfine
+impala
 eza
 fd-find
 git-delta

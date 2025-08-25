@@ -58,6 +58,7 @@ set PKGS_TOOLS '
 # System utilities, drivers, etc.
 set PKGS_SYS '
     fontconfig
+    iwd
     network-manager-openvpn
     ntp
     ntpdate
@@ -223,3 +224,4 @@ install-mirrors
 ubuntu-drivers install
 
 usermod -aG docker "$USER"
+systemctl enable --now iwd
