@@ -108,3 +108,4 @@ install-mirrors
 if set -q _flag_g
     install-extras-gui
 end
+chsh -s (which fish)
