@@ -225,3 +225,4 @@ ubuntu-drivers install
 
 usermod -aG docker "$USER"
 systemctl enable --now iwd
+chsh -s (which fish)
