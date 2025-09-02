@@ -7,6 +7,8 @@
 .vscode/
 .~*
 .aider*
+CLAUDE.md
+PLAN.md
 *.kate-swp
 *.sw*
 *.code-workspace
