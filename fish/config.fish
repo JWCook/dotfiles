@@ -429,14 +429,24 @@ end
 #####################
 
 abbr date-update sudo ntpdate $NTP_SERVER
-abbr lu column -ts: /etc/passwd \| sort                                  # Formatted local user list
+# Formatted local user list
+abbr lu column -ts: /etc/passwd \| sort
 abbr -e lu-current
 function lu-current  # Currently logged on users
     w -hs | cut -d " " -f1 | sort | uniq
 end
-alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'                 # List/format items on PATH
-alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'                    # List user processes
-function distinfo                                                           # Distribution info
+# List/format directories on PATH
+alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'
+# List all executables on PATH
+function path-exes
+    echo "$PATH" | tr ':' '\n' \
+        | xargs -I {} find '{}' -maxdepth 1 -executable -type f 2> /dev/null \
+        | sed 's/.*\///' | sort
+end
+# List user processes
+alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
+# Distribution info
+function distinfo
     cat /etc/os-release; lsb_release -a
 end
 
