@@ -10,4 +10,5 @@ git-delta
 gping
 pik
 procs
+rink
 zoxide
