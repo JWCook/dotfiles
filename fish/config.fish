@@ -197,6 +197,8 @@ alias top='btm --theme gruvbox'
 complete -c top --wraps=btm
 alias tt='tig'
 complete -c tt --wraps=tig
+alias uc='rink'
+complete -c uc --wraps=rink
 
 if cmd-exists batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
