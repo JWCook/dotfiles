@@ -906,6 +906,10 @@ function uvs
 end
 complete -c uvs --wraps='uv sync'
 function uvu
+    uv sync -U --all-extras --all-groups
+end
+complete -c uvu --wraps='uv sync'
+function uvu-pypi
     uv sync -U --all-extras --all-groups --default-index https://pypi.org/simple
 end
 complete -c uvu --wraps='uv sync'
