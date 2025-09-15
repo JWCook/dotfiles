@@ -1,155 +1,244 @@
-# Vim Reference
-Reference for vim commands, including custom commands, mappings, plugins, etc.
+# Neovim Configuration Reference
 
-# Git
-| Action             | Alias | Command
-| ------             | ----- | -------
-| tig history        | tig
-| tig %              | tt
-| git diff %         | gf    | `:Gdiff`
-| git status         | gs    | `:Gstatus`
-| * stage/unstage    | -
-| * diff             | D
-| * remove           | u
-| * commit           | cc
-| * refresh          | r
-| git browse         | gb    | `:Gbrowse`
-| git blame          | gl    | `:Gblame`
-| git pull           | gp    | `:Gpull`
-| git add %          | gw    | `:Gwrite`
-| git checkout %     |       | `:Gread`
-| git commit         | gc    | `:Gcommit`
-| undo last commit   | gu    | `:Git reset --soft HEAD~1`
-| git move (+file)   |       | `:Gmove`
-| git remove (+file) |       | `:Gremove`
-| git push           |       | `:Gpush`
-| Git add + wq       |       | `:Gwq`
-| Git cd repo        |       | `:Gcd`
+This is a [LazyVim](https://www.lazyvim.org/) based configuration with custom plugins and keymaps.
 
-# Plugins
-| Plugin       | Action                     | Alias         | Command
-| ------       | ------                     | -----         | -------
-| tComment     | toggle comment (line/v)    | F3            | `:TComment[Block]`
-| Tabular      | align Markdown Table       | Ctrl-F3       | `:Tabularize /[char]`
-| Formatting   | wrap selected text         | Shift-F3
-|              | sort lines (unique)        | Ctrl-Shift-F3 | :sort u
-| Visual Split | resize to visual selection | F4            | `:VSResize`
-|              | split to visual selection  | Ctrl-F4       | `:VSSplit`
-| Folding      | toggle                     | F4 (n,i)      | za
-| NERD Tree    | toggle (left vsplit)       | F6
-|              | open selected in split     | i
-|              | open selected in vsplit    | s
-|              | refresh all                | R
-|              | change wd to selected      | cd
-|              | change root to selected    | C
-|              | change root to `..`        | u
-|              | show hidden files          | I
-|              | maximize/Minimize window   | A
-| Gundo        | toggle (left vsplit)       | Ctrl-F6
-| Tagbar       | toggle (right vsplit)      | F7
-|              | zoom                       | x
-| Bash Support | Check bash syntax          | F8
-| Pep8         | check                      | F8
-|              | clear markers              | Ctrl-F8
-| Startify     | quicksave                  | F10           | `:SSave ~quicksave`
-|              | load quicksave             | Ctrl-F10      | `:Sload  ~quicksave`
-|              | open Startify              | Shift-F10     | `:Startify`
-|              | load session               |               | `:SLoad [name]`
-|              | save session               |               | `:SSave [name]`
-|              | delete session             |               | `:SDelete [name]`
-|              | save/close session         |               | `:SClose`
-| Plug         | update plugins             | F12
-|              | plugin status              | Ctrl-F12
-| Misc toggles | indent guides              | Ctrl-\
-|              | gitGutter                  | Alt-\
-| Pytest       | run current func           | \pf[v]        | `:Pytest function [verbose]`
-|              | run current file           | \pt[v]        | `:Pytest file     [verbose]`
-|              | run all in project         | \pp[v]        | `:Pytest project  [verbose]`
-|              | last session output        | \ps           | `:Pytest session`
-|              | last session failures      | \pl           | `:Pytest fails`
-|              | see test dir               | \pd           | `:Pytest projecttestwd`
-| Whitespace   | strip whitespace           | ww            | `:StripWhitespace`
-|              | toggle Markers             | wt            | `:ToggleWhitespace`
-|              | strip on save              | ws            | `:ToggleStripWhitespaceOnSave`
-| Fzf          | buffer search              | Ctrl-B
-|              | line search                | Ctrl-F
-|              | `git` file search          | Ctrl-G
-|              | `git` actions              | Ctrl-Alt-G
-|              | command history search     | Ctrl-M
-|              | project file search        | Ctrl-P
-|              | `git status`               | Ctrl-S
-|              | yank history search        | Ctrl-Y
-| Virtualenvs  | list                       | vl            | `:VirtualEnvList`
-|              | deactivate                 | vd            | `:VirtualEnvDeactivate`
-|              | activate                   |               | `:VirtualEnvActivate [name/tab-complete]`
+## Custom Keymaps
 
+Custom keymaps are defined in `lua/config/keymaps.lua` and override or extend LazyVim defaults.
 
-# General Reference
+### General Mappings
+| Action                  | Keymap        | Command
+| ------                  | ------        | -------
+| Open nvim config        | `ev`          | `:vsplit ~/.config/nvim/init.lua`
+| Reload nvim config      | `sv`          | `:luafile ~/.config/nvim/init.lua`
+| Command mode            | `;`           | `:`
+| Redraw screen           | `rr`          | `:redraw!`
+| Clear search highlights | `<leader>b`   | `:nohlsearch`
 
-| Category          | Action                         | Command                      | Example
-| --------          | ------                         | -------                      | -------
-| Movement          | beginning/end of line          | 0 , $
-|                   | (non-blank) beginning of line  | ^
-|                   | beginning/end of file          | gg , GG
-|                   | show current line #            | Ctrl-G
-|                   | goto line #                    | ``:[#]`` OR  [#]G
-|                   | goto last change               | ''
-|                   | goto matching bracket `(){}{}` | %
-| Copy/Paste        | delete line                    | dd
-|                   | copy (yank)                    | y
-|                   | copy line                      | Y OR yy
-|                   | paste after                    | p
-|                   | paste before                   | P
-|                   | set paste mode                 | \p
-|                   | replace between markers        | ci[mark]                     | ci" (between quotes) OR ci[ (between brackets)
-|                   | yank history                   | Ctrl-Y
-| Search/Replace    | search                         | /[pattern]
-|                   | copy from here to str          | y/[pattern]
-|                   | next/prev result               | n , N
-|                   | clear search highlights        | \b
-|                   | indent/unindent line           | >> , <<
-|                   | substistutions                 | `:s/find/replace`
-|                   | sub (append)                   | `:s/find/&append`
-|                   | sub (w/ capture groups)        | `:s/\(find1\)\(find2\)/\1\2`
-|                   | sub (w/ confirmation)          | `:s/find/replace/c`
-|                   | sub (whole line)               | `:s/find/replace/g`
-|                   | sub (whole file)               | `:%s/find/replace/g`
-|                   | delete matching lines          | `%g/find/d`
-| Marks             | create mark                    | m[a-z]
-|                   | goto a line beginning          | 'a
-|                   | goto a exact location          | `a
-|                   | copy from here to a            | y`a
-| Registers         | "[a-z]
-|                   | copy to register a             | "ay
-| Buffers           | movement                       | Ctrl+Left/Right
-|                   | buffer list                    | Ctrl-B
-|                   | new (empty) buffer             | `:BN` OR `:new`
-|                   | open file in new buffer        | `:e [filename]`
-|                   | close current buffer           | `:bd`
-|                   | close buffer (& keep window)   | `:BD` OR \q
-| Windows (Splits)  | movement                       | Alt+Up/Down/Left/Right
-|                   | open vim w/ vert split         | `vim -O2 [filenames]...`
-|                   | horizontal split               | hh OR `:[N]sp`               | `:2sp`
-|                   | vertical split                 | vv OR `:[N]vsp`
-|                   | open file in new split         | `:[v]sp [filename]`
-|                   | close current window           | `:q`
-|                   | resize split                   | Alt -/+/=
-| Tabs              | movement                       | Shift+Left/Right
-|                   | list tabs                      | `:tabn`
-|                   | new tab                        | `:TN` OR `:tabnew`
-|                   | new tab w/ file                | `:tabnew [filename]`
-|                   | close tab                      | `:TD` OR `:tabclose`
-|                   | move tab to last position      | `:tabm`
-| Visual Mode       | charwise/linewise/blockwise    | v, V, Ctrl-v
-|                   | last visual selection          | gv
-|                   | reformat paragraph             | gq
-|                   | upper/lower/toggle case        | U , u, ~
-|                   | indent/unindent                | > , <
-|                   | format lines                   | Shift-F3
-|                   | sort lines (unique)            | Ctrl-Shift-F3
-|                   | block insert/append            | I, A                         | **I{str}<ESC>** inserts {str} at beginning of each line in block; **A{str}<ESC>** appends to end
-|                   | remove selection from `ex` cmd | Ctrl-U
-| Other ex commands | run external command           | `:![command]`
-|                   | insert output of command       | `:r ![command]`
-|                   | show non-default options       | `:set`
-|                   | reload `.vimrc`                | `:so ~/.vimrc`
+### Movement
+| Action                         | Keymap            | Description
+| ------                         | ------            | -----------
+| Move up/down (line wrap)       | `<C-Up>/<C-Down>` | Navigate considering line wrapping
+| Move up/down (visual wrap)     | `<C-k>/<C-j>`     | Navigate considering line wrapping
+
+### File Navigation (Telescope)
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Find files           | `<C-p>`       | `:Telescope find_files`
+| Find files           | `<leader>ff`  | `:Telescope find_files`
+| Live grep            | `<leader>fg`  | `:Telescope live_grep`
+| Buffer list          | `<leader>fb`  | `:Telescope buffers`
+| Help tags            | `<leader>fh`  | `:Telescope help_tags`
+| Recent files         | `<leader>fr`  | `:Telescope oldfiles`
+
+### LSP & Code Actions
+| Action                  | Keymap         | Description
+| ------                  | ------         | -----------
+| Go to definition        | `gd`           | Jump to symbol definition
+| Go to declaration       | `gD`           | Jump to symbol declaration
+| Find references         | `gr`           | Show all references
+| Go to implementation    | `gi`           | Jump to implementation
+| Hover documentation     | `K`            | Show documentation
+| Signature help          | `<leader>ck`   | Show function signature
+| Code actions            | `<leader>ca`   | Available code actions
+| Rename symbol           | `<leader>cr`   | Rename current symbol
+| Format code             | `<leader>cf`   | Format current buffer
+
+### Diagnostics
+| Action                  | Keymap         | Description
+| ------                  | ------         | -----------
+| Previous diagnostic     | `[d`           | Jump to previous diagnostic
+| Next diagnostic         | `]d`           | Jump to next diagnostic
+| Show line diagnostics   | `<leader>cd`   | Show diagnostics for current line
+| Diagnostics to loclist  | `<leader>cq`   | Send diagnostics to location list
+
+### Trouble (Diagnostics Viewer)
+| Action                  | Keymap         | Command
+| ------                  | ------         | -------
+| Toggle trouble          | `<leader>tt`   | `:Trouble diagnostics toggle`
+| Buffer diagnostics      | `<leader>td`   | `:Trouble diagnostics toggle filter.buf=0`
+| Symbols                 | `<leader>ts`   | `:Trouble symbols toggle focus=false`
+
+### Buffer Management
+| Action               | Keymap             | Command
+| ------               | ------             | -------
+| Previous buffer      | `<C-Left>/<C-h>`   | `:bprev`
+| Next buffer          | `<C-Right>/<C-l>`  | `:bnext`
+
+### Window Management
+| Action               | Keymap                    | Command
+| ------               | ------                    | -------
+| Navigate windows     | `<A-Up/Down/Left/Right>`  | `:wincmd [kjhl]`
+| Navigate windows     | `<A-k/j/h/l>`             | `:wincmd [kjhl]`
+| Resize windows       | `<M-+/-/=>`               | `:wincmd [+-=]`
+| Maximize window      | `<C-x>`                   | `:resize 45 \| vertical resize 100`
+| Vertical split       | `vv`                      | `<C-w>v`
+| Horizontal split     | `hh`                      | `<C-w>s`
+
+### Tab Management
+| Action               | Keymap                    | Command
+| ------               | ------                    | -------
+| Previous/next tab    | `<S-Left>/<S-Right>`      | `:tabp/:tabn`
+| Move tab left/right  | `<C-S-Left>/<C-S-Right>`  | `:tabm -1/:tabm +1`
+
+### Plugin-Specific
+
+#### File Explorer (Neo-tree)
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Toggle file tree     | `<F6>`        | `:Neotree toggle`
+
+#### Undo Tree
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Toggle undo tree     | `<C-F6>`      | `:UndotreeToggle`
+
+#### Tagbar (Code Outline)
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Toggle tagbar        | `<F7>`        | `:TagbarToggle`
+
+#### Folding
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Toggle fold          | `<F4>`        | `za`
+
+#### Plugin Updates
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Sync plugins         | `<F12>`       | `:Lazy sync`
+| Open Lazy            | `<F24>`       | `:Lazy`
+
+#### Terminal
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Toggle terminal      | `<F8>`        | `:ToggleTerm`
+
+### Git Integration (Fugitive + Gitsigns)
+
+#### Git Commands
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Git diff             | `gf`          | `:Gdiff`
+| Git status           | `gs`          | `:Git`
+| Git pull             | `gp`          | `:Git pull`
+| Git write (add)      | `gw`          | `:Gwrite`
+| Git blame            | `gl`          | `:Git blame`
+| Git commit           | `gc`          | `:Git commit \| startinsert`
+| Undo last commit     | `gu`          | `:Git reset --soft HEAD~1`
+
+#### Git Hunks (Gitsigns)
+| Action               | Keymap         | Command
+| ------               | ------         | -------
+| Toggle git signs     | `<M-\\>`       | `:Gitsigns toggle_signs`
+| Next hunk            | `]c`           | `:Gitsigns next_hunk`
+| Previous hunk        | `[c`           | `:Gitsigns prev_hunk`
+| Stage hunk           | `<leader>hs`   | `:Gitsigns stage_hunk`
+| Reset hunk           | `<leader>hr`   | `:Gitsigns reset_hunk`
+| Preview hunk         | `<leader>hp`   | `:Gitsigns preview_hunk`
+
+### Development Tools
+
+#### Python
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Run Python file     | `<F9>`        | `:w<CR>:exec "!python" shellescape(@%, 1)`
+
+#### External Commands
+| Action               | Keymap        | Command
+| ------               | ------        | -------
+| Open tig             | `tt`          | `:!tig`
+| Tig current file     | `th`          | `:!tig %`
+| List files           | `ls`          | `!ls -Alhv --group-directories-first`
+
+#### Whitespace Management
+| Action               | Keymap        | Description
+| ------               | ------        | -----------
+| Trim whitespace      | `ww`          | Remove trailing whitespace
+| Toggle whitespace    | `wt`          | Toggle whitespace highlighting
+
+## LazyVim Default Keymaps
+
+LazyVim provides many built-in keymaps. Key defaults include:
+
+### Navigation
+- `j/k` - Move up/down respecting line wrapping
+- `<Ctrl-h/j/k/l>` - Navigate between windows
+- `<Shift-h/l>` or `[b/]b` - Navigate between buffers
+
+### Window Management
+- `<Leader>-` - Split window below
+- `<Leader>|` - Split window right
+- `<Leader>wd` - Delete current window
+
+### Editing
+- `<Ctrl-s>` - Save file
+- `<Alt-j/k>` - Move lines up/down
+- `v` with `<`/`>` - Indent while maintaining selection
+
+### Toggles
+- `<Leader>uf` - Toggle formatting
+- `<Leader>us` - Toggle spelling
+- `<Leader>uw` - Toggle line wrap
+- `<Leader>ul` - Toggle line numbers
+
+### Git (LazyGit)
+- `<Leader>gg` - Open Lazygit
+- `<Leader>gb` - Git blame current line
+
+### Misc
+- `<Leader>qq` - Quit all
+- `<Leader>L` - Open LazyVim changelog
+
+## Additional Plugins
+
+The configuration includes these additional plugins beyond LazyVim defaults:
+
+- **vim-fugitive** - Git integration
+- **undotree** - Undo history visualization
+- **tagbar** - Code outline/navigation
+- **yanky.nvim** - Enhanced yank/paste functionality
+- **vim-bufkill** - Better buffer management
+- **mini.trailspace** - Whitespace management
+- **nvim-surround** - Text object manipulation
+- **toggleterm.nvim** - Terminal integration
+- **vim-tmux-navigator** - Tmux pane navigation
+
+## General Vim Reference
+
+### Basic Movement
+| Command    | Action
+| -------    | ------
+| `0` / `$`  | Beginning/end of line
+| `^`        | First non-blank character
+| `gg` / `G` | Beginning/end of file
+| `<Ctrl-g>` | Show current line number
+| `:[#]` or `[#]G` | Go to line number
+| `''`       | Go to last change
+| `%`        | Go to matching bracket
+
+### Copy/Paste/Edit
+| Command      | Action
+| -------      | ------
+| `dd`         | Delete line
+| `y` / `yy`   | Yank (copy)
+| `p` / `P`    | Paste after/before
+| `ci[marker]` | Change inside markers (e.g., `ci"`, `ci[`)
+
+### Search/Replace
+| Command                | Action
+| -------                | ------
+| `/[pattern]`           | Search forward
+| `n` / `N`              | Next/previous search result
+| `:s/find/replace`      | Substitute on current line
+| `:%s/find/replace/g`   | Substitute in whole file
+| `:s/find/replace/c`    | Substitute with confirmation
+
+### Visual Mode
+| Command         | Action
+| -------         | ------
+| `v` / `V` / `<Ctrl-v>` | Character/line/block visual mode
+| `gv`            | Reselect last visual selection
+| `gq`            | Reformat paragraph
+| `U` / `u` / `~` | Upper/lower/toggle case
+| `>` / `<`       | Indent/unindent
