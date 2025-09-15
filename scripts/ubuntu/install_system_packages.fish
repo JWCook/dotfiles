@@ -91,6 +91,7 @@ set PKGS_LIBS '
     libx11-dev
     libxpm-dev
     libxt-dev
+    luarocks
     odt2txt
     pandoc
     ncurses-dev
