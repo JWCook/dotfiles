@@ -869,6 +869,10 @@ function tnew -a session_name start_dir
     set start_dir (coalesce $start_dir ~)
     tmux new-session -A -s $session_name -c $start_dir
 end
+function tkill -a session_name
+    set session_name (coalesce $session_name 'default')
+    tmux kill-session -t $session_name
+end
 
 
 ################
