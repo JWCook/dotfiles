@@ -7,202 +7,375 @@ vim.g.python3_host_prog = venv_dir .. '/bin/python3'
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable",
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
 -- Plugin specifications
 require("lazy").setup({
-  -- UI
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require('lualine').setup({
-        options = {
-          theme = 'gruvbox',
-          component_separators = { left = '', right = ''},
-          section_separators = { left = '', right = ''},
-        },
-        sections = {
-          lualine_c = {{
-            'filename',
-            file_status = true,
-            newfile_status = false,
-            path = 1,
-          }}
-        },
-        tabline = {
-          lualine_a = {{
-            'buffers',
-            show_filename_only = true,
-            mode = 2,
-          }}
-        }
-      })
-    end,
-  },
-  { "nathanaelkane/vim-indent-guides" },
-  { "roman/golden-ratio" },
-  { "farmergreg/vim-lastplace" },
-
-  -- Git
-  { "tpope/vim-fugitive" },
-  { "tpope/vim-git" },
-  { "tpope/vim-rhubarb" },
-  { "shumphrey/fugitive-gitlab.vim" },
-  {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require('gitsigns').setup({
-        signs = {
-          add          = { text = '➕' },
-          change       = { text = '│' },
-          delete       = { text = '➖' },
-          topdelete    = { text = '‾' },
-          changedelete = { text = '≃' },
-          untracked    = { text = '┆' },
-        },
-        update_debounce = 100,
-        max_file_length = 40000,
-      })
-    end,
-  },
-
-  -- Fuzzy finder
-  {
-    "nvim-telescope/telescope.nvim",
-    tag = '0.1.8',
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make"
-      }
+    -- UI
+    {
+        "nvim-lualine/lualine.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require('lualine').setup({
+                options = {
+                    theme = 'gruvbox',
+                    component_separators = { left = '', right = '' },
+                    section_separators = { left = '', right = '' },
+                },
+                sections = {
+                    lualine_c = { {
+                        'filename',
+                        file_status = true,
+                        newfile_status = false,
+                        path = 1,
+                    } }
+                },
+                tabline = {
+                    lualine_a = { {
+                        'buffers',
+                        show_filename_only = true,
+                        mode = 2,
+                    } }
+                }
+            })
+        end,
     },
-    config = function()
-      require('telescope').setup({
-        defaults = {
-          layout_config = {
-            width = 0.9,
-            height = 0.6,
-          },
-          file_previewer = require('telescope.previewers').vim_buffer_cat.new,
-          grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
-        }
-      })
-      require('telescope').load_extension('fzf')
-    end,
-  },
+    { "nathanaelkane/vim-indent-guides" },
+    { "roman/golden-ratio" },
+    { "farmergreg/vim-lastplace" },
 
-  -- Syntax
-  { "chrisbra/csv.vim" },
-  { "dag/vim-fish" },
-  { "pangloss/vim-javascript" },
-  { "Glench/Vim-Jinja2-Syntax" },
-  { "NoahTheDuke/vim-just" },
-  { "godlygeek/tabular" },
-  { "cespare/vim-toml" },
-  { "WolfgangMehner/bash-support" },
-  {
-    "frazrepo/vim-rainbow",
-    config = function()
-      vim.g.rainbow_active = 1
-    end,
-  },
+    -- Git
+    { "tpope/vim-fugitive" },
+    { "tpope/vim-git" },
+    { "tpope/vim-rhubarb" },
+    { "shumphrey/fugitive-gitlab.vim" },
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require('gitsigns').setup({
+                signs = {
+                    add          = { text = '➕' },
+                    change       = { text = '│' },
+                    delete       = { text = '➖' },
+                    topdelete    = { text = '‾' },
+                    changedelete = { text = '≃' },
+                    untracked    = { text = '┆' },
+                },
+                update_debounce = 100,
+                max_file_length = 40000,
+            })
+        end,
+    },
 
-  -- Markdown/Docs
-  { "tpope/vim-markdown" },
-  { "jtratner/vim-flavored-markdown" },
-
-  -- Other Utilities (Commands)
-  { "qpkorr/vim-bufkill" },
-  {
-    "numToStr/Comment.nvim",
-    config = function()
-      require('Comment').setup()
-    end,
-  },
-  {
-    "echasnovski/mini.trailspace",
-    config = function()
-      require('mini.trailspace').setup()
-    end,
-  },
-
-  -- Other Utilities (UI)
-  {
-    "mbbill/undotree",
-    config = function()
-      vim.g.undotree_WindowLayout = 2
-      vim.g.undotree_ShortIndicators = 1
-      vim.g.undotree_SetFocusWhenToggle = 1
-    end,
-  },
-  { "preservim/nerdtree" },
-  { "Xuyuanp/nerdtree-git-plugin" },
-  { "tiagofumo/vim-nerdtree-syntax-highlight" },
-  { "majutsushi/tagbar" },
-  { "Shougo/neoyank.vim" },
-
-  -- Syntax highlighting
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "lua", "vim", "vimdoc", "python", "bash", "javascript",
-          "html", "css", "json", "yaml", "toml", "markdown"
+    -- Fuzzy finder
+    {
+        "nvim-telescope/telescope.nvim",
+        tag = '0.1.8',
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make"
+            }
         },
-        auto_install = true,
-        highlight = {
-          enable = true,
-          disable = function(lang, buf)
-            local max_filesize = 100 * 1024 -- 100 KB
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-            if ok and stats and stats.size > max_filesize then
-              return true
+        config = function()
+            require('telescope').setup({
+                defaults = {
+                    layout_config = {
+                        width = 0.9,
+                        height = 0.6,
+                    },
+                    file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+                    grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+                }
+            })
+            require('telescope').load_extension('fzf')
+        end,
+    },
+
+    -- Syntax
+    { "chrisbra/csv.vim" },
+    { "pangloss/vim-javascript" },
+    { "Glench/Vim-Jinja2-Syntax" },
+    { "NoahTheDuke/vim-just" },
+    { "godlygeek/tabular" },
+    {
+        "frazrepo/vim-rainbow",
+        config = function()
+            vim.g.rainbow_active = 1
+        end,
+    },
+
+    -- Markdown/Docs
+    { "tpope/vim-markdown" },
+    { "jtratner/vim-flavored-markdown" },
+
+    -- Other Utilities (Commands)
+    { "qpkorr/vim-bufkill" },
+    {
+        "numToStr/Comment.nvim",
+        config = function()
+            require('Comment').setup()
+        end,
+    },
+    {
+        "echasnovski/mini.trailspace",
+        config = function()
+            require('mini.trailspace').setup()
+        end,
+    },
+
+    -- Other Utilities (UI)
+    {
+        "mbbill/undotree",
+        config = function()
+            vim.g.undotree_WindowLayout = 2
+            vim.g.undotree_ShortIndicators = 1
+            vim.g.undotree_SetFocusWhenToggle = 1
+        end,
+    },
+    { "preservim/nerdtree" },
+    { "Xuyuanp/nerdtree-git-plugin" },
+    { "tiagofumo/vim-nerdtree-syntax-highlight" },
+    { "majutsushi/tagbar" },
+    { "Shougo/neoyank.vim" },
+
+    -- Syntax highlighting
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                ensure_installed = {
+                    "lua", "vim", "vimdoc", "python", "bash", "javascript",
+                    "html", "css", "json", "yaml", "toml", "markdown"
+                },
+                auto_install = true,
+                highlight = {
+                    enable = true,
+                    disable = function(lang, buf)
+                        local max_filesize = 100 * 1024 -- 100 KB
+                        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                        if ok and stats and stats.size > max_filesize then
+                            return true
+                        end
+                    end,
+                },
+                indent = { enable = true },
+            })
+        end,
+    },
+
+    -- Color schemes
+    { "ayu-theme/ayu-vim" },
+    { "tyrannicaltoucan/vim-deep-space" },
+    { "sainnhe/everforest" },
+    { "morhetz/gruvbox" },
+    { "nanotech/jellybeans.vim" },
+    { "EdenEast/nightfox.nvim" },
+    { "arcticicestudio/nord-vim" },
+    { "drewtempelmeyer/palenight.vim" },
+    { "lifepillar/vim-solarized8" },
+    { "chlorm/vim-monokai-truecolor" },
+    { "jacoborus/tender.vim" },
+    { "rakr/vim-two-firewatch" },
+    { "Donearm/Ubaryd" },
+
+    -- LSP and completion
+    {
+        "williamboman/mason.nvim",
+        config = function()
+            require("mason").setup({
+                ui = {
+                    icons = {
+                        package_installed = "✓",
+                        package_pending = "➜",
+                        package_uninstalled = "✗"
+                    }
+                }
+            })
+        end,
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = { "mason.nvim" },
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "basedpyright",
+                    "bashls",
+                    "sqlls",
+                    "taplo",
+                    "yamlls",
+                    "jsonls",
+                    "lua_ls",
+                    "rust_analyzer",
+                    "html",
+                    "cssls",
+                    "marksman",
+                },
+                automatic_installation = true,
+            })
+        end,
+    },
+    {
+        "neovim/nvim-lspconfig",
+        dependencies = { "mason-lspconfig.nvim" },
+        config = function()
+            local lspconfig = require("lspconfig")
+
+            -- Setup LSP servers
+            local servers = {
+                basedpyright = {},
+                bashls = {},
+                sqlls = {},
+                taplo = {},
+                yamlls = {},
+                jsonls = {},
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            runtime = { version = 'LuaJIT' },
+                            diagnostics = { globals = { 'vim' } },
+                            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+                            telemetry = { enable = false },
+                        }
+                    }
+                },
+                rust_analyzer = {},
+                html = {},
+                cssls = {},
+                marksman = {},
+            }
+
+            -- Configure each server
+            for server, config in pairs(servers) do
+                lspconfig[server].setup(config)
             end
-          end,
+        end,
+    },
+    {
+        "saghen/blink.cmp",
+        dependencies = "rafamadriz/friendly-snippets",
+        version = "*",
+        opts = {
+            keymap = { preset = 'default' },
+            appearance = {
+                use_nvim_cmp_as_default = true,
+                nerd_font_variant = 'mono'
+            },
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+            completion = {
+                accept = {
+                    auto_brackets = {
+                        enabled = true,
+                    },
+                },
+                menu = {
+                    draw = {
+                        treesitter = { "lsp" }
+                    }
+                },
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 200,
+                },
+            },
+            signature = { enabled = true }
         },
-        indent = { enable = true },
-      })
-    end,
-  },
+    },
+    {
+        "stevearc/conform.nvim",
+        config = function()
+            require("conform").setup({
+                formatters_by_ft = {
+                    python = { "black", "isort" },
+                    lua = { "stylua" },
+                    rust = { "rustfmt" },
+                    fish = { "fish_indent" },
+                    bash = { "shfmt" },
+                    sh = { "shfmt" },
+                    json = { "jq" },
+                    yaml = { "yamlfmt" },
+                    toml = { "taplo" },
+                    html = { "prettier" },
+                    css = { "prettier" },
+                    javascript = { "prettier" },
+                    markdown = { "prettier" },
+                },
+                format_on_save = {
+                    timeout_ms = 500,
+                    lsp_format = "fallback",
+                },
+            })
+        end,
+    },
+    {
+        "mfussenegger/nvim-lint",
+        config = function()
+            require("lint").linters_by_ft = {
+                python = { "ruff" },
+                bash = { "shellcheck" },
+                sh = { "shellcheck" },
+                fish = { "fish" },
+                yaml = { "yamllint" },
+                json = { "jsonlint" },
+                markdown = { "markdownlint" },
+            }
 
-  -- Color schemes
-  { "ayu-theme/ayu-vim" },
-  { "tyrannicaltoucan/vim-deep-space" },
-  { "sainnhe/everforest" },
-  { "morhetz/gruvbox" },
-  { "nanotech/jellybeans.vim" },
-  { "EdenEast/nightfox.nvim" },
-  { "arcticicestudio/nord-vim" },
-  { "drewtempelmeyer/palenight.vim" },
-  { "lifepillar/vim-solarized8" },
-  { "chlorm/vim-monokai-truecolor" },
-  { "jacoborus/tender.vim" },
-  { "rakr/vim-two-firewatch" },
-  { "Donearm/Ubaryd" },
+            -- Auto-lint on save and text change
+            vim.api.nvim_create_autocmd({ "BufWritePost", "TextChanged", "InsertLeave" }, {
+                callback = function()
+                    require("lint").try_lint()
+                end,
+            })
+        end,
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require("trouble").setup({
+                modes = {
+                    preview_float = {
+                        mode = "diagnostics",
+                        preview = {
+                            type = "float",
+                            relative = "editor",
+                            border = "rounded",
+                            title = "Preview",
+                            title_pos = "center",
+                            position = { 0, -2 },
+                            size = { width = 0.3, height = 0.3 },
+                            zindex = 200,
+                        },
+                    },
+                },
+            })
+        end,
+    },
 
-  -- Must be loaded last
-  { "ryanoasis/vim-devicons" },
+    -- Must be loaded last
+    { "ryanoasis/vim-devicons" },
 })
 
 -- ❰❰ Plugin Settings ❱❱
 local ignore_files = {
-  '__pycache__', '~$', '.egg-info$', '^.cache$', '^.git$', '^.idea',
-  '^.sonar$', '^.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
-  '^tmp$', '^.coverage$', '.a$', '.class$', '.idea$', '.o$', '.obj$',
-  '.pyc$', '.sw\\a$', '.so$'
+    '__pycache__', '~$', '.egg-info$', '^.cache$', '^.git$', '^.idea',
+    '^.sonar$', '^.tox$', '_build$', '^docs/_build', '^dist$', 'htmlcov$',
+    '^tmp$', '^.coverage$', '.a$', '.class$', '.idea$', '.o$', '.obj$',
+    '.pyc$', '.sw\\a$', '.so$'
 }
 
 -- Bash Support
@@ -234,7 +407,8 @@ vim.opt.backup = false
 vim.opt.sessionoptions:remove({ "options", "folds" })
 vim.opt.timeoutlen = 200
 vim.opt.ttimeoutlen = 50
-vim.opt.wildignore = "*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm"
+vim.opt.wildignore =
+"*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm"
 vim.opt.scrolloff = 1
 vim.opt.sidescrolloff = 5
 vim.opt.undodir = vim.env.HOME .. "/.vim/undo"
@@ -328,6 +502,28 @@ keymap('n', '<leader>fb', ':Telescope buffers<CR>', { silent = true })
 keymap('n', '<leader>fh', ':Telescope help_tags<CR>', { silent = true })
 keymap('n', '<leader>fr', ':Telescope oldfiles<CR>', { silent = true })
 
+-- LSP keybindings
+keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+keymap('n', 'gD', vim.lsp.buf.declaration, { desc = 'Go to declaration' })
+keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Find references' })
+keymap('n', 'gi', vim.lsp.buf.implementation, { desc = 'Go to implementation' })
+keymap('n', 'K', vim.lsp.buf.hover, { desc = 'Show hover documentation' })
+keymap('n', '<leader>ck', vim.lsp.buf.signature_help, { desc = 'Show signature help' })
+keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code actions' })
+keymap('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
+keymap('n', '<leader>cf', function() require("conform").format({ async = true }) end, { desc = 'Format code' })
+
+-- Diagnostics
+keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
+keymap('n', '<leader>cq', vim.diagnostic.setloclist, { desc = 'Diagnostics to location list' })
+
+-- Trouble (diagnostics viewer)
+keymap('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle trouble diagnostics' })
+keymap('n', '<leader>td', ':Trouble diagnostics toggle filter.buf=0<CR>', { desc = 'Buffer diagnostics' })
+keymap('n', '<leader>ts', ':Trouble symbols toggle focus=false<CR>', { desc = 'Symbols' })
+
 -- Buffers
 keymap('n', '<C-Left>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-Right>', ':bnext<CR>', { silent = true })
@@ -411,11 +607,11 @@ keymap('n', '<F9>', ':w<CR>:exec "!python" shellescape(@%, 1)<CR>', { silent = t
 
 -- Bash support
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "sh",
-  callback = function()
-    keymap('n', '<F8>', ':BashCheck<CR>', { buffer = true, silent = true })
-    keymap('n', '<F9>', ':Bash<CR>', { buffer = true, silent = true })
-  end,
+    pattern = "sh",
+    callback = function()
+        keymap('n', '<F8>', ':BashCheck<CR>', { buffer = true, silent = true })
+        keymap('n', '<F9>', ':Bash<CR>', { buffer = true, silent = true })
+    end,
 })
 
 -- Whitespace commands (mini.trailspace)
@@ -433,8 +629,8 @@ keymap('n', 'ls', '!ls -Alhv --group-directories-first<CR>')
 
 -- ❰❰ Commands ❱❱
 vim.api.nvim_create_user_command('Silent', function(opts)
-  vim.cmd('silent !' .. opts.args)
-  vim.cmd('redraw!')
+    vim.cmd('silent !' .. opts.args)
+    vim.cmd('redraw!')
 end, { nargs = 1 })
 
 vim.api.nvim_create_user_command('Jsonify', '%!jq .', {})
@@ -458,68 +654,68 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- File type associations
 autocmd({ "BufNewFile", "BufRead" }, {
-  pattern = "*.ejs",
-  command = "set filetype=html",
+    pattern = "*.ejs",
+    command = "set filetype=html",
 })
 
 autocmd({ "BufNewFile", "BufRead" }, {
-  pattern = "*.less",
-  command = "set filetype=css",
+    pattern = "*.less",
+    command = "set filetype=css",
 })
 
 autocmd({ "BufReadPost" }, {
-  pattern = "*.dwc",
-  command = "set syntax=xml",
+    pattern = "*.dwc",
+    command = "set syntax=xml",
 })
 
 -- Filetype-specific indentation
 autocmd("FileType", {
-  pattern = { "html", "javascript", "json", "lua", "vim", "vue", "yaml" },
-  callback = function()
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.tabstop = 2
-  end,
+    pattern = { "html", "javascript", "json", "lua", "vim", "vue", "yaml" },
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.softtabstop = 2
+        vim.opt_local.tabstop = 2
+    end,
 })
 
 -- Fish compiler
 autocmd("FileType", {
-  pattern = "fish",
-  command = "compiler fish",
+    pattern = "fish",
+    command = "compiler fish",
 })
 
 -- Disable undo for temp files
 autocmd("BufWritePre", {
-  pattern = "/tmp/*",
-  command = "setlocal noundofile",
+    pattern = "/tmp/*",
+    command = "setlocal noundofile",
 })
 
 -- Color scheme highlights
 autocmd({ "VimEnter", "Colorscheme" }, {
-  callback = function()
-    vim.cmd("hi VertSplit ctermfg=237 ctermbg=235")
-    vim.cmd("hi Normal ctermbg=NONE")
-    vim.cmd("hi nonText ctermbg=NONE")
-    vim.cmd("hi ColorColumn ctermbg=235")
-    vim.cmd("hi IndentGuidesOdd ctermbg=237")
-    vim.cmd("hi IndentGuidesEven ctermbg=235")
-  end,
+    callback = function()
+        vim.cmd("hi VertSplit ctermfg=237 ctermbg=235")
+        vim.cmd("hi Normal ctermbg=NONE")
+        vim.cmd("hi nonText ctermbg=NONE")
+        vim.cmd("hi ColorColumn ctermbg=235")
+        vim.cmd("hi IndentGuidesOdd ctermbg=237")
+        vim.cmd("hi IndentGuidesEven ctermbg=235")
+    end,
 })
 
 -- Startify integration
 autocmd("User", {
-  pattern = "Startified",
-  command = "setlocal buftype=",
+    pattern = "Startified",
+    command = "setlocal buftype=",
 })
 
 autocmd("VimEnter", {
-  callback = function()
-    if vim.fn.argc() == 0 then
-      vim.cmd("Startify")
-      vim.cmd("NERDTree")
-      vim.cmd("wincmd w")
-    end
-  end,
+    callback = function()
+        if vim.fn.argc() == 0 then
+            vim.cmd("Startify")
+            vim.cmd("NERDTree")
+            vim.cmd("wincmd w")
+        end
+    end,
 })
 
 -- Large file handling
@@ -527,34 +723,34 @@ local large_file_group = augroup("LargeFile", { clear = true })
 local large_file_size = 1024 * 1024 * 10 -- 10MB
 
 autocmd("BufReadPre", {
-  group = large_file_group,
-  callback = function()
-    local file = vim.fn.expand("<afile>")
-    if vim.fn.getfsize(file) > large_file_size then
-      vim.opt_local.eventignore:append("FileType")
-      vim.opt_local.swapfile = false
-      vim.opt_local.bufhidden = "unload"
-      vim.opt_local.buftype = "nowrite"
-      vim.opt_local.undolevels = -1
-    else
-      vim.opt_local.eventignore:remove("FileType")
-    end
-  end,
+    group = large_file_group,
+    callback = function()
+        local file = vim.fn.expand("<afile>")
+        if vim.fn.getfsize(file) > large_file_size then
+            vim.opt_local.eventignore:append("FileType")
+            vim.opt_local.swapfile = false
+            vim.opt_local.bufhidden = "unload"
+            vim.opt_local.buftype = "nowrite"
+            vim.opt_local.undolevels = -1
+        else
+            vim.opt_local.eventignore:remove("FileType")
+        end
+    end,
 })
 
 -- Tagbar type definitions
 vim.g.tagbar_type_make = {
-  kinds = {
-    'm:macros',
-    't:targets'
-  }
+    kinds = {
+        'm:macros',
+        't:targets'
+    }
 }
 
 vim.g.tagbar_type_markdown = {
-  ctagstype = 'markdown',
-  kinds = {
-    'h:Heading_L1',
-    'i:Heading_L2',
-    'k:Heading_L3'
-  }
+    ctagstype = 'markdown',
+    kinds = {
+        'h:Heading_L1',
+        'i:Heading_L2',
+        'k:Heading_L3'
+    }
 }
