@@ -22,11 +22,6 @@ function default-pwd
     string split ' ' (coalesce "$argv" '.')
 end
 
-# Test if a command/alias/function exists
-function cmd-exists
-    type -a $argv &> /dev/null
-end
-
 # Check fish shell script syntax
 function fish-check
     for f in **/*.fish; fish -n $f; end
@@ -34,7 +29,7 @@ end
 
 # Most frequently used commands
 function hist-frequency -a local
-    if cmd-exists atuin && test -z $local
+    if command -q atuin && test -z $local
         atuin stats --count 30
     else
         history \
@@ -43,9 +38,9 @@ function hist-frequency -a local
     end
 end
 
-# Append to path, without duplicates
+# Append to path, without duplicates (modern Fish way)
 function pathadd
-    set -U fish_user_paths $argv $fish_user_paths
+    fish_add_path $argv
 end
 
 # Prompt for confirmation before continuing
@@ -60,12 +55,14 @@ end
 
 # Source a file, if it exists
 function source-file -a src_file
-    test -f $src_file && source $argv
+    test -f "$src_file" && source $argv
 end
 
 # Source an executable, if it exists on path
 function source-bin
-    cmd-exists $argv && source (which $argv)
+    command -q $argv || return 1
+    set -l executable_path (which $argv)
+    test -f "$executable_path" && source "$executable_path"
 end
 
 # Safe tput, only for TTY sessions
@@ -92,22 +89,21 @@ set -gx NVM_DIR $XDG_DATA_HOME/nvm
 set -gx PSQLRC $XDG_CONFIG_HOME/pg/psqlrc
 set -gx RUSTUP_HOME $XDG_DATA_HOME/rustup
 
-# Paths
-set -e fish_user_paths
-pathadd $CARGO_HOME/bin
-pathadd ~/.local/bin
-pathadd ~/.local/kitty.app/bin
-pathadd ~/.local/share/gem/ruby/3.0.0/bin
-pathadd ~/.poetry/bin
-pathadd ~/.pyenv/bin
-pathadd ~/.pyenv/shims
-pathadd ~/.rvm/bin
-pathadd ~/.serverless/bin
-pathadd ~/go/bin
-pathadd /usr/local/bin
-pathadd /usr/local/sbin
-pathadd /usr/local/src/fzf/bin
-pathadd node_modules/.bin
+# Paths - using modern fish_add_path (automatically deduplicates)
+fish_add_path $CARGO_HOME/bin
+fish_add_path ~/.local/bin
+fish_add_path ~/.local/kitty.app/bin
+fish_add_path ~/.local/share/gem/ruby/3.0.0/bin
+fish_add_path ~/.poetry/bin
+fish_add_path ~/.pyenv/bin
+fish_add_path ~/.pyenv/shims
+fish_add_path ~/.rvm/bin
+fish_add_path ~/.serverless/bin
+fish_add_path ~/go/bin
+fish_add_path /usr/local/bin
+fish_add_path /usr/local/sbin
+fish_add_path /usr/local/src/fzf/bin
+fish_add_path node_modules/.bin
 
 source-file ~/.config/fish/config_wsl.fish
 source-file ~/.config/fish/config_local.fish
@@ -132,11 +128,11 @@ set -gx VIRTUALENVWRAPPER_PYTHON (which python)
 set -gx VIRTUALENV_DIR ~/.virtualenvs
 
 # Configure pyenv and virtualfish, if installed
-cmd-exists pyenv && pyenv init - | source
-cmd-exists vf && vf install compat_aliases global_requirements projects > /dev/null
+command -q pyenv && pyenv init - | source
+command -q vf && vf install compat_aliases global_requirements projects > /dev/null
 
 # Remove shell greeting message
-set -U fish_greeting
+set -g fish_greeting
 
 #########################
 # ❰❰ General Aliases ❱❱ #
@@ -165,7 +161,7 @@ abbr vimdiff nvim -d
 alias unalias='functions --erase'
 
 # If installed, use atuin with Ctrl+R and move fzf.fish history to Ctrl+Alt+R
-if status is-interactive && cmd-exists atuin
+if status is-interactive && command -q atuin
     fzf_configure_bindings --history=\e\cr
     atuin init fish --disable-up-arrow | source
 end
@@ -175,7 +171,7 @@ function b64-decode -a b64_str
     echo $b64_str | base64 -d
 end
 
-if cmd-exists zoxide
+if command -q zoxide
     zoxide init fish | source
     alias cd='z'
     complete -c cd --wraps=__zoxide_z
@@ -200,12 +196,12 @@ complete -c tt --wraps=tig
 alias uc='rink'
 complete -c uc --wraps=rink
 
-if cmd-exists batcat
+if command -q batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
     alias bat='batcat'
     alias cat='batcat'
     complete -c cat --wraps=batcat
-else if cmd-exists bat
+else if command -q bat
     alias cat='bat'
     complete -c cat --wraps=bat
 end
@@ -245,19 +241,19 @@ end
 
 # Recursive folder size
 abbr -e du
-if cmd-exists dust
+if command -q dust
     alias du='dust'
 else
     alias du='/usr/bin/du -Sh $argv | sort -hr | color-filesize | more'
 end
 
 # Customize ls
-if cmd-exists eza
+if command -q eza
     alias ls 'eza -aF --group-directories-first --icons'
     alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
     abbr lls ll --sort size
     complete -c ll --wraps=eza
-else if cmd-exists colorls
+else if command -q colorls
     alias ls 'colorls -A --group-directories-first --hyperlink'
     alias ll 'colorls -AGl --group-directories-first --hyperlink'
     complete -c ll --wraps=colorls
@@ -315,10 +311,10 @@ function swap -a f1 -a f2
     not test -f $f2 && mv "$f1" "$f2" && return 0
 
     # Both files exist
-    set TMPFILE "tmp.$fish_pid"
-    mv "$f1" $TMPFILE
+    set -l tmpfile "tmp.$fish_pid"
+    mv "$f1" $tmpfile
     mv "$f2" "$f1"
-    mv $TMPFILE "$f2"
+    mv $tmpfile "$f2"
 end
 
 alias tgz='tar -I "gzip -9" -cvf'
@@ -361,7 +357,7 @@ end
 ############################
 
 # Readable disk usage
-if cmd-exists duf
+if command -q duf
     alias df='duf'
 else
     function df -w /usr/bin/df
@@ -401,7 +397,7 @@ abbr scan-local nmap -v -sT localhost
 abbr scan-syn sudo nmap -v -sS localhost
 abbr ssh-exit ssh -O exit
 abbr ssh-refresh nullify ssh -O exit $argv \; ssh $argv
-cmd-exists gping && alias ping='gping'
+command -q gping && alias ping='gping'
 
 # Look up a DNS A record with CloudFlare DNS
 function dns -a host
@@ -834,7 +830,7 @@ abbr dcps dco ps
 function dc-images -a dc_file
     set dc_file (coalesce $dc_file docker-compose.yml)
     # Search with yq if installed, otherwise grep/sed
-    if cmd-exists yqq
+    if command -q yqq
         yq -r '.services[] | .image' $dc_file
     else
         grep 'image:' $dc_file | grep -v '#' | sed -E 's/\s+image\:\s+//'
@@ -1265,7 +1261,7 @@ abbr lsko ls-old-kernels
 #     sudo dnf remove $(dnf repoquery --installonly --latest-limit=-$n_keep -q)
 # }
 
-cmd-exists update-grub || abbr update-grub sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+command -q update-grub || abbr update-grub sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Debian-based
 # ------------------------------
@@ -1340,7 +1336,7 @@ end
 # Run fastfetch if this is the first interactive terminal
 function fastfetch_first_term
     set term_count (/bin/ps aux | grep -v "grep" | grep "fish" | wc -l)
-    if test $term_count -lt 2 && status --is-interactive && cmd-exists fastfetch
+    if test $term_count -lt 2 && status --is-interactive && command -q fastfetch
         fastfetch
     end
 end

@@ -31,13 +31,15 @@ set -xg NOCOLOR '\033[0m'
 
 # Determine how many times a string can fit in the current terminal width
 function string-fit -a text
-    math --scale=0 $COLUMNS / (string length $text)
+    test -z "$text" && return 1
+    math --scale=0 $COLUMNS / (string length -- $text)
 end
 
 # Repeat a string n times (defaults to fit terminal)
 function repeat-str -a text length
-    set length (coalesce $length (string-fit $text))
-    printf "$text%.s" (seq $length)
+    test -z "$text" && return 1
+    set -l length (coalesce $length (string-fit $text))
+    string repeat -n $length -- $text
 end
 
 function printc -a color text
