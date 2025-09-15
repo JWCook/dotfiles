@@ -127,7 +127,7 @@ install-vim-conf:
     @just symlink vim/vim               ~/.vim
 
 install-nvim-conf:
-    @just symlink nvim/init.lua         {{config_dir}}/nvim/init.lua
+    @just symlink nvim {{config_dir}}/nvim
 
 install-wezterm-conf:
     @just symlink wezterm/wezterm.lua {{config_dir}}/wezterm/wezterm.lua
