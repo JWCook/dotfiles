@@ -1,14 +1,3 @@
-let vim_header = [
-    \ '                        88',
-    \ '                        ""',
-    \ '',
-    \ '8b.dPPYba.  8b       d8 88 88.dPYba..adPYba.',
-    \ '88P`   `"8a `8b     d8` 88 88P`   "88"    "8a',
-    \ '88       88  `8b   d8`  88 88      88      88',
-    \ '88       88   `8b.d8`   88 88      88      88',
-    \ '88       88     "8"     88 88      88      88',
-    \ ]
-
 """"""""""""""""
 " ❰❰ Python ❱❱ "
 """"""""""""""""
@@ -45,34 +34,14 @@ Plug 'farmergreg/vim-lastplace'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-rhubarb'
-Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
 " Autocomplete
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'LeafCage/yankround.vim'
-" let g:coc_global_extensions = [
-"   \ 'coc-fzf-preview',
-"   \ 'coc-git',
-"   \ 'coc-json',
-"   \ 'coc-prettier',
-"   \ 'coc-pyright',
-"   \ 'coc-sh',
-"   \ 'coc-sql',
-"   \ 'coc-toml',
-"   \ 'coc-yaml'
-" \]
-
-" Search
-if has('nvim')
-  Plug 'Shougo/denite.nvim', {'do': pip_update.'pynvim'} ", {'do': ':UpdateRemotePlugins'}
-else
-  Plug 'Shougo/denite.nvim'
-endif
+Plug 'Shougo/denite.nvim'
 
 " Syntax
-" Plug 'w0rp/ale'
 Plug 'chrisbra/csv.vim'
 Plug 'dag/vim-fish'
 Plug 'pangloss/vim-javascript'
@@ -89,12 +58,8 @@ let g:rainbow_active = 1
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
-" Plug 'suan/vim-instant-markdown'
-" Plug 'Rykka/riv.vim'
-" Plug 'Rykka/InstantRst', {'do': pip_update.'U https://github.com/Rykka/instant-rst.py/archive/master.zip'}
 
 " Python
-" Plug 'MicahChambers/vim-flake8'
 Plug 'alfredodeza/pytest.vim'
 Plug 'jmcantrell/vim-virtualenv'
 
@@ -109,7 +74,6 @@ Plug 'vim-scripts/Gundo'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-" Plug 'jistr/vim-nerdtree-tabs'
 Plug 'majutsushi/tagbar'
 Plug 'Shougo/neoyank.vim'
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
@@ -118,20 +82,10 @@ Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
-" Plug 'atelierbram/Base2Tone-vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'tyrannicaltoucan/vim-deep-space'
-Plug 'sainnhe/everforest'
 Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
-Plug 'EdenEast/nightfox.nvim', {'do': ':NightfoxCompile'}
 Plug 'arcticicestudio/nord-vim'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'lifepillar/vim-solarized8'
 Plug 'chlorm/vim-monokai-truecolor'
-Plug 'jacoborus/tender.vim'
-Plug 'rakr/vim-two-firewatch'
-Plug 'Donearm/Ubaryd'
 
 call plug#end()
 
@@ -210,25 +164,11 @@ let ignore_files = [
   \]
 
 " Airline
-" let g:airline_theme='ubaryd'
 let g:airline_theme='deep_space'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemod=':t'
 set laststatus=2
-
-" Ale
-" let g:ale_sign_error = '✘❱'
-" let g:ale_sign_warning = '‽❱'
-" let g:ale_sign_info = '‡❱'
-" let g:ale_sign_style_error = '❱❱'
-" let g:ale_sign_style_warning = '❱❱'
-" let g:ale_lint_on_enter = 1
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 'always'
-" let g:ale_lint_on_insert_leave = 1
-" let g:ale_lint_delay = 500
-" let g:ale_maximum_file_size = 1048576
 
 " Bash Support
 let g:BASH_InsertFileHeader = 'yes'
@@ -236,7 +176,6 @@ autocmd FileType sh nnoremap <silent> <buffer> <F8> :BashCheck<CR>
 autocmd FileType sh nnoremap <silent> <buffer> <F9> :Bash<CR>
 
 " Fugitive
-let g:fugitive_gitlab_domains = [ 'dsigitlab.research.auto.pioneer.com' ]
 nnoremap <silent> gf :Gdiff<CR>
 nnoremap <silent> gs :Gstatus<CR>
 nnoremap <silent> gp :Gpull<CR>
@@ -319,11 +258,6 @@ let g:tagbar_type_markdown = {
         \ 'k:Heading_L3'
     \ ]
 \ }
-
-" Flake8
-" autocmd FileType python nnoremap <silent> <buffer> <F8> :call flake8#Flake8()<CR>
-" autocmd FileType python nnoremap <silent> <buffer> <C-F8> :call flake8#Flake8UnplaceMarkers()<CR>
-" let g:flake8_show_in_gutter=1
 
 " GitGutter
 noremap <silent> \ :GitGutterToggle<CR>
@@ -662,21 +596,19 @@ endif
 """""""""""""""""""""""""""""""
 
 " Settings that are already defaults in nvim
-if !has('nvim')
-  set encoding=utf-8
-  syntax on  " Enable syntax highlighting
-  set history=1000
-  filetype plugin indent on  " Enable filetype-specific plugins and indent files
-  set nocompatible  " Prevents VIM from being nerfed into acting like VI
-  set wildmenu
-  set showcmd  " Show partial commands during entry
-  set autoindent
-  set smarttab
-  set backspace=indent,eol,start
-  set hlsearch   " Highlight search results
-  set incsearch  " Search while typing
-  set noerrorbells
-  set novisualbell
-  set t_vb=
-  set ttimeout
-endif
+set encoding=utf-8
+syntax on  " Enable syntax highlighting
+set history=1000
+filetype plugin indent on  " Enable filetype-specific plugins and indent files
+set nocompatible  " Prevents VIM from being nerfed into acting like VI
+set wildmenu
+set showcmd  " Show partial commands during entry
+set autoindent
+set smarttab
+set backspace=indent,eol,start
+set hlsearch   " Highlight search results
+set incsearch  " Search while typing
+set noerrorbells
+set novisualbell
+set t_vb=
+set ttimeout

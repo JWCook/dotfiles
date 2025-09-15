@@ -125,8 +125,9 @@ install-tmux-conf:
 install-vim-conf:
     @just symlink vim/vimrc             ~/.vimrc
     @just symlink vim/vim               ~/.vim
-    @just symlink vim/vimrc             {{config_dir}}/nvim/init.vim
-    @just symlink vim/coc-settings.json {{config_dir}}/nvim/coc-settings.json
+
+install-nvim-conf:
+    @just symlink nvim/init.lua         {{config_dir}}/nvim/init.lua
 
 install-wezterm-conf:
     @just symlink wezterm/wezterm.lua {{config_dir}}/wezterm/wezterm.lua
