@@ -22,13 +22,31 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- UI
   {
-    "vim-airline/vim-airline",
-    dependencies = { "vim-airline/vim-airline-themes" },
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      vim.g.airline_theme = 'deep_space'
-      vim.g.airline_powerline_fonts = 1
-      vim.g['airline#extensions#tabline#enabled'] = 1
-      vim.g['airline#extensions#tabline#fnamemod'] = ':t'
+      require('lualine').setup({
+        options = {
+          theme = 'gruvbox',
+          component_separators = { left = '', right = ''},
+          section_separators = { left = '', right = ''},
+        },
+        sections = {
+          lualine_c = {{
+            'filename',
+            file_status = true,
+            newfile_status = false,
+            path = 1,
+          }}
+        },
+        tabline = {
+          lualine_a = {{
+            'buffers',
+            show_filename_only = true,
+            mode = 2,
+          }}
+        }
+      })
     end,
   },
   { "nathanaelkane/vim-indent-guides" },
@@ -40,20 +58,48 @@ require("lazy").setup({
   { "tpope/vim-git" },
   { "tpope/vim-rhubarb" },
   { "shumphrey/fugitive-gitlab.vim" },
-  { "airblade/vim-gitgutter" },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require('gitsigns').setup({
+        signs = {
+          add          = { text = '➕' },
+          change       = { text = '│' },
+          delete       = { text = '➖' },
+          topdelete    = { text = '‾' },
+          changedelete = { text = '≃' },
+          untracked    = { text = '┆' },
+        },
+        update_debounce = 100,
+        max_file_length = 40000,
+      })
+    end,
+  },
 
   -- Fuzzy finder
   {
-    "junegunn/fzf",
-    build = function()
-      vim.fn["fzf#install"]()
-    end
-  },
-
-  -- Search
-  {
-    "Shougo/denite.nvim",
-    build = ":UpdateRemotePlugins",
+    "nvim-telescope/telescope.nvim",
+    tag = '0.1.8',
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make"
+      }
+    },
+    config = function()
+      require('telescope').setup({
+        defaults = {
+          layout_config = {
+            width = 0.9,
+            height = 0.6,
+          },
+          file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+          grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+        }
+      })
+      require('telescope').load_extension('fzf')
+    end,
   },
 
   -- Syntax
@@ -78,11 +124,28 @@ require("lazy").setup({
 
   -- Other Utilities (Commands)
   { "qpkorr/vim-bufkill" },
-  { "tomtom/tcomment_vim" },
-  { "ntpeters/vim-better-whitespace" },
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require('Comment').setup()
+    end,
+  },
+  {
+    "echasnovski/mini.trailspace",
+    config = function()
+      require('mini.trailspace').setup()
+    end,
+  },
 
   -- Other Utilities (UI)
-  { "vim-scripts/Gundo" },
+  {
+    "mbbill/undotree",
+    config = function()
+      vim.g.undotree_WindowLayout = 2
+      vim.g.undotree_ShortIndicators = 1
+      vim.g.undotree_SetFocusWhenToggle = 1
+    end,
+  },
   { "preservim/nerdtree" },
   { "Xuyuanp/nerdtree-git-plugin" },
   { "tiagofumo/vim-nerdtree-syntax-highlight" },
@@ -134,20 +197,6 @@ require("lazy").setup({
   { "ryanoasis/vim-devicons" },
 })
 
--- ❰❰ Terminal Codes ❱❱
--- Terminal key mappings for better compatibility
-vim.cmd([[
-set <F13>=\e[1;2P
-set <F14>=\e[1;2Q
-set <F15>=\e[1;2R
-set <F16>=\e[1;2S
-set <F25>=\e[1;5P
-set <F26>=\e[1;5Q
-set <F27>=\e[1;5R
-set <F28>=\e[1;5S
-set <F37>=\e[1;6P
-]])
-
 -- ❰❰ Plugin Settings ❱❱
 local ignore_files = {
   '__pycache__', '~$', '.egg-info$', '^.cache$', '^.git$', '^.idea',
@@ -159,31 +208,16 @@ local ignore_files = {
 -- Bash Support
 vim.g.BASH_InsertFileHeader = 'yes'
 
--- FZF
-vim.g.fzf_preview_command = 'bat --color=always --plain {-1}'
-vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
-
 -- NERD Tree
 vim.g.NERDTreeIgnore = ignore_files
 vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 28
-
--- Gundo
-vim.g.gundo_width = 30
-vim.g.gundo_close_on_revert = 1
 
 -- Tagbar
 vim.g.tagbar_width = 20
 vim.g.tagbar_compact = 1
 vim.g.tagbar_zoomwidth = 0
 vim.g.tagbar_sort = 0
-
--- GitGutter
-vim.g.gitgutter_realtime = 0
-vim.g.gitgutter_eager = 0
-vim.g.gitgutter_sign_added = '➕'
-vim.g.gitgutter_sign_removed = '➖'
-vim.g.gitgutter_sign_modified_removed = '≃'
 
 -- Indent guides
 vim.g.indent_guides_enable_on_vim_startup = 1
@@ -194,7 +228,7 @@ vim.g.indent_guides_auto_colors = 0
 vim.g.pytest_test_dir = 'test'
 
 -- ❰❰ General Settings ❱❱
-vim.opt.viminfo = "'100,n" .. vim.env.HOME .. "/.vim/viminfo"
+vim.opt.shada = "'100,<50,s10,h"
 vim.opt.mouse = ""
 vim.opt.backup = false
 vim.opt.sessionoptions:remove({ "options", "folds" })
@@ -286,6 +320,14 @@ keymap({ 'n', 'v' }, '<C-j>', 'gj')
 -- Search
 keymap('n', '<leader>b', ':nohlsearch<CR>')
 
+-- Telescope mappings
+keymap('n', '<C-p>', ':Telescope find_files<CR>', { silent = true })
+keymap('n', '<leader>ff', ':Telescope find_files<CR>', { silent = true })
+keymap('n', '<leader>fg', ':Telescope live_grep<CR>', { silent = true })
+keymap('n', '<leader>fb', ':Telescope buffers<CR>', { silent = true })
+keymap('n', '<leader>fh', ':Telescope help_tags<CR>', { silent = true })
+keymap('n', '<leader>fr', ':Telescope oldfiles<CR>', { silent = true })
+
 -- Buffers
 keymap('n', '<C-Left>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-Right>', ':bnext<CR>', { silent = true })
@@ -321,13 +363,14 @@ keymap('n', '<C-S-Left>', ':tabm -1<CR>', { silent = true })
 keymap('n', '<C-S-Right>', ':tabm +1<CR>', { silent = true })
 
 -- Plugin-specific mappings
-keymap('n', '<F3>', ':TComment<CR>', { silent = true })
-keymap('i', '<F3>', '<C-O>:TComment<CR>', { silent = true })
-keymap('v', '<F3>', ':TCommentBlock<CR>', { silent = true })
+-- Comment.nvim uses gcc for line comment, gc for visual selection
+keymap('n', '<F3>', '<Plug>(comment_toggle_linewise_current)', { silent = true })
+keymap('i', '<F3>', '<C-O><Plug>(comment_toggle_linewise_current)', { silent = true })
+keymap('v', '<F3>', '<Plug>(comment_toggle_linewise_visual)', { silent = true })
 keymap('v', '<F4>', ':VSResize<CR>', { silent = true })
 keymap('v', '<F28>', ':VSSplit<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<F6>', '<ESC>:NERDTreeToggle<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<C-F6>', '<ESC>:GundoToggle<CR>', { silent = true })
+keymap({ 'n', 'i' }, '<C-F6>', '<ESC>:UndotreeToggle<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<F7>', '<C-O>:TagbarToggle<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<F4>', '<C-O>za', { silent = true })
 keymap({ 'n', 'i' }, '<F10>', '<C-O>:SSave! ~quicksave<CR>', { silent = true })
@@ -344,8 +387,14 @@ keymap('n', 'gl', ':Git blame<CR>', { silent = true })
 keymap('n', 'gc', ':Git commit | startinsert<CR>', { silent = true })
 keymap('n', 'gu', ':Git reset --soft HEAD~1 | redraw<CR>', { silent = true })
 
--- GitGutter
-keymap('n', '<M-\\>', ':GitGutterToggle<CR>', { silent = true })
+-- Gitsigns
+keymap('n', '<M-\\>', ':Gitsigns toggle_signs<CR>', { silent = true })
+-- Add some useful gitsigns mappings
+keymap('n', ']c', ':Gitsigns next_hunk<CR>', { silent = true })
+keymap('n', '[c', ':Gitsigns prev_hunk<CR>', { silent = true })
+keymap('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', { silent = true })
+keymap('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', { silent = true })
+keymap('n', '<leader>hp', ':Gitsigns preview_hunk<CR>', { silent = true })
 
 -- Indent guides
 keymap('n', '<C-\\>', ':IndentGuidesToggle<CR>', { silent = true })
@@ -369,10 +418,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Whitespace commands
-keymap('n', 'ww', ':StripWhitespace<CR>')
-keymap('n', 'wt', ':ToggleWhitespace<CR>')
-keymap('n', 'ws', ':ToggleStripWhitespaceOnSave<CR>')
+-- Whitespace commands (mini.trailspace)
+keymap('n', 'ww', function() require('mini.trailspace').trim() end, { desc = 'Trim trailing whitespace' })
+keymap('n', 'wt', function() require('mini.trailspace').highlight() end, { desc = 'Toggle whitespace highlighting' })
 
 -- Virtual environments
 keymap('n', 'vl', ':VirtualEnvList<CR>', { silent = true })
@@ -510,6 +558,3 @@ vim.g.tagbar_type_markdown = {
     'k:Heading_L3'
   }
 }
-
--- tComment leader
-vim.g.tcomment_opleader1 = 'tc'
