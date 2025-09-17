@@ -1,6 +1,21 @@
 -- Additional plugins not included in LazyVim
 
 return {
+  -- Obsidian integration
+  {
+    "obsidian-nvim/obsidian.nvim",
+    version = "*", -- use latest release instead of latest commit
+    ft = "markdown",
+    opts = {
+        workspaces = {
+        {
+            name = "personal",
+            path = "~/Nextcloud/Notes",
+        },
+      },
+    },
+  },
+
   -- Git integration + syntax highlighting
   {
     "tpope/vim-fugitive",

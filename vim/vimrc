@@ -84,7 +84,7 @@ Plug 'ryanoasis/vim-devicons'
 " Color schemes
 Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
-Plug 'arcticicestudio/nord-vim'
+Plug 'nordtheme/vim'
 Plug 'chlorm/vim-monokai-truecolor'
 
 call plug#end()
