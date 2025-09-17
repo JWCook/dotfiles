@@ -81,40 +81,21 @@ Custom keymaps are defined in `lua/config/keymaps.lua` and override or extend La
 | Previous/next tab    | `<S-Left>/<S-Right>`      | `:tabp/:tabn`
 | Move tab left/right  | `<C-S-Left>/<C-S-Right>`  | `:tabm -1/:tabm +1`
 
-### Plugin-Specific
+### Other Plugins & Commands (F-keys)
 
-#### File Explorer (Neo-tree)
-| Action               | Keymap        | Command
-| ------               | ------        | -------
-| Toggle file tree     | `<F6>`        | `:Neotree toggle`
-
-#### Undo Tree
-| Action               | Keymap        | Command
-| ------               | ------        | -------
-| Toggle undo tree     | `<C-F6>`      | `:UndotreeToggle`
-
-#### Tagbar (Code Outline)
-| Action               | Keymap        | Command
-| ------               | ------        | -------
-| Toggle tagbar        | `<F7>`        | `:TagbarToggle`
-
-#### Folding
-| Action               | Keymap        | Command
-| ------               | ------        | -------
+| Action               | Keymap      | Command
+| ------               | ------      | -------------------
+| Toggle comment       | `<F3>`        | `gc`
 | Toggle fold          | `<F4>`        | `za`
-
-#### Plugin Updates
-| Action               | Keymap        | Command
-| ------               | ------        | -------
-| Sync plugins         | `<F12>`       | `:Lazy sync`
-| Open Lazy            | `<F24>`       | `:Lazy`
-
-#### Terminal
-| Action               | Keymap        | Command
-| ------               | ------        | -------
+| Toggle file tree     | `<F6>`        | `:Neotree toggle`
+| Toggle undo tree     | `<C-F6>`      | `:UndotreeToggle`
+| Toggle tagbar        | `<F7>`        | `:TagbarToggle`
 | Toggle terminal      | `<F8>`        | `:ToggleTerm`
+| Run Python file      | `<F9>`        | `:w<CR>:exec "!python" shellescape(@%, 1)`
+| Sync plugins         | `<F12>`       | `:Lazy sync`
+| Open LazyVim         | `<F24>`       | `:Lazy`
 
-### Git Integration (Fugitive + Gitsigns)
+### Git Integration
 
 #### Git Commands
 | Action               | Keymap        | Command
@@ -127,7 +108,7 @@ Custom keymaps are defined in `lua/config/keymaps.lua` and override or extend La
 | Git commit           | `gc`          | `:Git commit \| startinsert`
 | Undo last commit     | `gu`          | `:Git reset --soft HEAD~1`
 
-#### Git Hunks (Gitsigns)
+#### Git Hunks
 | Action               | Keymap         | Command
 | ------               | ------         | -------
 | Toggle git signs     | `<M-\\>`       | `:Gitsigns toggle_signs`
@@ -139,10 +120,6 @@ Custom keymaps are defined in `lua/config/keymaps.lua` and override or extend La
 
 ### Development Tools
 
-#### Python
-| Action               | Keymap        | Command
-| ------               | ------        | -------
-| Run Python file     | `<F9>`        | `:w<CR>:exec "!python" shellescape(@%, 1)`
 
 #### External Commands
 | Action               | Keymap        | Command
@@ -189,20 +166,6 @@ LazyVim provides many built-in keymaps. Key defaults include:
 ### Misc
 - `<Leader>qq` - Quit all
 - `<Leader>L` - Open LazyVim changelog
-
-## Additional Plugins
-
-The configuration includes these additional plugins beyond LazyVim defaults:
-
-- **vim-fugitive** - Git integration
-- **undotree** - Undo history visualization
-- **tagbar** - Code outline/navigation
-- **yanky.nvim** - Enhanced yank/paste functionality
-- **vim-bufkill** - Better buffer management
-- **mini.trailspace** - Whitespace management
-- **nvim-surround** - Text object manipulation
-- **toggleterm.nvim** - Terminal integration
-- **vim-tmux-navigator** - Tmux pane navigation
 
 ## General Vim Reference
 

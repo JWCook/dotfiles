@@ -22,7 +22,6 @@ vim/vim/session
 vim/vim/plug-snapshot
 vim/vim/undo
 lazy-lock.json
-lazyvim.json
 
 # Fish
 fundle.fish
