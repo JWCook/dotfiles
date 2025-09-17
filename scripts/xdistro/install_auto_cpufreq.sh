@@ -37,9 +37,9 @@ function ask_operation {
 
 function manual_install {
   if command -v lsb_release > /dev/null; then
-    distro="$(lsb_release -is)"
-    release="$(lsb_release -rs)"
-    codename="$(lsb_release -cs)"
+    export distro="$(lsb_release -is)"
+    export release="$(lsb_release -rs)"
+    export codename="$(lsb_release -cs)"
   fi
   echo "Didn't detect Debian or RedHat or Arch based distro."; exit 1
 }

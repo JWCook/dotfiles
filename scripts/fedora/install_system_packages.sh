@@ -239,4 +239,4 @@ systemctl start dnf-automatic.timer
 systemctl list-timers -- *dnf-*
 
 echo 'Done. System restart required.'
-chsh -s (which fish)
+chsh -s $(which fish)
