@@ -1,0 +1,16 @@
+'$schema' = 'https://yazi-rs.github.io/schemas/yazi.json'
+
+[mgr]
+sort_by         = 'natural'
+linemode        = 'size'
+show_hidden     = true
+title_format    = 'yz: {cwd}'
+
+[plugin]
+prepend_fetchers = [
+    { id = 'git', name = '*', run = 'git' },
+]
+prepend_previewers = [
+    # When 25.9.15+ is released
+    # {name = "*.md", run  = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"'}
+]

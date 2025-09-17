@@ -25,3 +25,7 @@ curl -fsSL \
 # Install bash pre-exec (for atuin support)
 curl -fsSL https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh \
     -o ~/.config/bash/preexec.sh
+
+# Install yazi plugins
+ya pkg add yazi-rs/plugins:full-border
+ya pkg add yazi-rs/plugins:git

@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython  pdb postgres ranger terminator tmux vim wezterm"
+configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython pdb postgres ranger terminator tmux vim wezterm yazi"
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
@@ -139,6 +139,11 @@ install-wsl-conf:
 install-xfce-conf:
     @just symlink xfce/terminal/accels.scm {{config_dir}}/xfce4/terminal/accels.scm
     @just symlink xfce/terminal/terminalrc {{config_dir}}/xfce4/terminal/terminalrc
+
+install-yazi-conf:
+    @just symlink yazi/init.lua {{config_dir}}/yazi/init.lua
+    @just symlink yazi/yazi.toml {{config_dir}}/yazi/yazi.toml
+    @just symlink yazi/keymap.toml {{config_dir}}/yazi/keymap.toml
 
 
 #############################

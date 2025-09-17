@@ -74,8 +74,8 @@ config.keys = {
     -- Tabs
     {
         key = 't',
-        mods = 'CTRL',
-        action = act.SpawnTab 'CurrentPaneDomain',
+        mods = 'CTRL|SHIFT',
+        action = act.SpawnTab('CurrentPaneDomain'),
     },
     {
         key = 'w',

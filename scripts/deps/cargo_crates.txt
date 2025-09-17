@@ -11,4 +11,5 @@ gping
 pik
 procs
 rink
+yazi-build
 zoxide

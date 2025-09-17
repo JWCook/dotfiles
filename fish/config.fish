@@ -195,6 +195,7 @@ alias tt='tig'
 complete -c tt --wraps=tig
 alias uc='rink'
 complete -c uc --wraps=rink
+alias yz='yazi'
 
 if command -q batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision

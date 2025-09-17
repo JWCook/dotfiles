@@ -1,0 +1,40 @@
+'$schema' = 'https://yazi-rs.github.io/schemas/keymap.json'
+
+[mgr]
+prepend_keymap = [
+    { on = '<F2>',      run = 'rename --cursor=before_ext',     desc = 'Rename selected file(s)' },
+    { on = '<F3>',      run = 'hidden toggle',                  desc = 'Toggle hidden files' },
+    { on = '<F8>',      run = 'shell --interactive',            desc = 'Run a shell command' },
+    { on = '<C-F8>',    run = 'shell --block --interactive',    desc = 'Run a shell command' },
+    { on = '<C-f>',     run = 'search --via=fd',             desc = 'Search filenames via fd' },
+    { on = '<C-S-f>',   run = 'search --via=rg',             desc = 'Search file content via ripgrep' },
+
+    # Sorting
+    { on = [ '<F4>', 'm' ], run = [ 'sort mtime --reverse=no', 'linemode mtime' ], desc = 'Sort by modified time' },
+    { on = [ '<F4>', 'M' ], run = [ 'sort mtime --reverse', 'linemode mtime' ],    desc = 'Sort by modified time (reverse)' },
+    { on = [ '<F4>', 'b' ], run = [ 'sort btime --reverse=no', 'linemode btime' ], desc = 'Sort by birth time' },
+    { on = [ '<F4>', 'B' ], run = [ 'sort btime --reverse', 'linemode btime' ],    desc = 'Sort by birth time (reverse)' },
+    { on = [ '<F4>', 'e' ], run = 'sort extension --reverse=no',                   desc = 'Sort by extension' },
+    { on = [ '<F4>', 'E' ], run = 'sort extension --reverse',                      desc = 'Sort by extension (reverse)' },
+    { on = [ '<F4>', 'a' ], run = 'sort alphabetical --reverse=no',                desc = 'Sort alphabetically' },
+    { on = [ '<F4>', 'A' ], run = 'sort alphabetical --reverse',                   desc = 'Sort alphabetically (reverse)' },
+    { on = [ '<F4>', 'n' ], run = 'sort natural --reverse=no',                     desc = 'Sort naturally' },
+    { on = [ '<F4>', 'N' ], run = 'sort natural --reverse',                        desc = 'Sort naturally (reverse)' },
+    { on = [ '<F4>', 's' ], run = [ 'sort size --reverse=no', 'linemode size' ],   desc = 'Sort by size' },
+    { on = [ '<F4>', 'S' ], run = [ 'sort size --reverse', 'linemode size' ],      desc = 'Sort by size (reverse)' },
+    { on = [ '<F4>', 'r' ], run = 'sort random --reverse=no',                      desc = 'Sort randomly' },
+
+    # Tabs
+    { on = '<C-t>',         run = 'tab_create --current',     desc = 'Create a new tab with CWD' },
+    { on = '<C-Left>',      run = 'tab_switch -1 --relative', desc = 'Switch to previous tab' },
+    { on = '<C-Right>',     run = 'tab_switch  1 --relative', desc = 'Switch to next tab' },
+    { on = '<C-S-Left>',    run = 'tab_swap -1',              desc = 'Move current tab left' },
+    { on = '<C-S-Right>',   run = 'tab_swap  1',              desc = 'Move current tab right' },
+
+
+    # Disable some default keymaps
+    { on = ';',         run = 'noop' },
+    { on = ':',         run = 'noop' },
+    { on = 'z',         run = 'noop' },
+    { on = 'Z',         run = 'noop' },
+]
