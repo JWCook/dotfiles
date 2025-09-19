@@ -98,7 +98,6 @@ set PKGS_LIBS '
     protobuf-compiler
     python3-dev
     ruby-dev
-    tree-sitter-cli
 '
 # Image processing libraries
 set PKGS_IMG '

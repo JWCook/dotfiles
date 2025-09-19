@@ -38,7 +38,6 @@ set PKGS_LIBS '
     fontconfig
     gpg
     network-manager-openvpn
-    tree-sitter-cli
 '
 
 # Graphical applications

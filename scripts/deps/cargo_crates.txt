@@ -11,5 +11,6 @@ gping
 pik
 procs
 rink
+tree-sitter-cli
 yazi-build
 zoxide
