@@ -30,14 +30,27 @@ autocmd("BufReadPre", {
     end,
 })
 
--- ❰❰ Tagbar Type Definitions ❱❱
+-- Set tab width to 2 for specific filetypes
+local tab_width_group = augroup("TabWidth", { clear = true })
+autocmd("FileType", {
+  group = tab_width_group,
+  pattern = { "html", "javascript", "json", "lua", "typescript", "vim", "vue", "yaml" },
+  callback = function()
+    vim.schedule(function()
+      vim.opt_local.shiftwidth = 2
+      vim.opt_local.softtabstop = 2
+      vim.opt_local.tabstop = 2
+    end)
+  end,
+})
+
+-- Tagbar Type Definitions
 vim.g.tagbar_type_make = {
     kinds = {
         'm:macros',
         't:targets'
     }
 }
-
 vim.g.tagbar_type_markdown = {
     ctagstype = 'markdown',
     kinds = {
