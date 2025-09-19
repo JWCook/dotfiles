@@ -1,25 +1,10 @@
-""""""""""""""""
-" ❰❰ Python ❱❱ "
-""""""""""""""""
-
-let g:venv_dir = $HOME.'/.virtualenvs/nvim'
-let g:python_host_prog = venv_dir.'/bin/python3'
-let g:python3_host_prog = venv_dir.'/bin/python3'
-let g:python_activate = 'source '.venv_dir.'/bin/activate;'
-let g:pip_update = python_activate.' pip install -U '
-
-
 """""""""""""""""
 " ❰❰ Plugins ❱❱ "
 """""""""""""""""
 
-if has('nvim')
-  call plug#begin('~/.local/share/nvim/plugged')
-else
-  call plug#begin('~/.vim/plugged')
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+call plug#begin('~/.vim/plugged')
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 let g:plug_timeout=120
 
 " UI
@@ -50,7 +35,7 @@ Plug 'NoahTheDuke/vim-just'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'cespare/vim-toml'
-Plug 'Kuniwak/vint', {'do': pip_update.'vim-vint'}
+Plug 'Kuniwak/vint'
 Plug 'WolfgangMehner/bash-support'
 Plug 'frazrepo/vim-rainbow'
 let g:rainbow_active = 1
@@ -58,10 +43,6 @@ let g:rainbow_active = 1
 " Markdown/Docs
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
-
-" Python
-Plug 'alfredodeza/pytest.vim'
-Plug 'jmcantrell/vim-virtualenv'
 
 " Other Utilities (Commands)
 Plug 'qpkorr/vim-bufkill'
@@ -82,8 +63,8 @@ Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'ryanoasis/vim-devicons'
 
 " Color schemes
+Plug 'chriskempson/base16-vim'
 Plug 'morhetz/gruvbox'
-Plug 'nanotech/jellybeans.vim'
 Plug 'nordtheme/vim'
 Plug 'chlorm/vim-monokai-truecolor'
 
@@ -164,7 +145,7 @@ let ignore_files = [
   \]
 
 " Airline
-let g:airline_theme='deep_space'
+let g:airline_theme='base16'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemod=':t'
@@ -275,19 +256,7 @@ let g:indent_guides_auto_colors=0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
-" Pytest
-let g:pytest_test_dir = 'test'
-command! PF w! | Pytest function
-command! PFV w! | Pytest function verbose
-command! PT  w! | Pytest file
-command! PTV w! | Pytest file verbose
-command! PP  w! | Pytest project
-command! PPV w! | Pytest project verbose
-command! PS  Pytest session
-command! PL  Pytest fails
-command! PD  Pytest projecttestwd
-
-" Python (misc)
+" Python
 autocmd FileType python nnoremap <silent> <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
 
 " Startify
@@ -301,20 +270,12 @@ let g:startify_files_number=15
 let g:startify_change_to_vcs_root=1
 let g:startify_skiplist=[ '.gitignore' ]
 let g:startify_bookmarks=[]
-let g:startify_custom_header=vim_header
 let g:startify_session_dir='~/.vim/session'
 " Make Startify play nicely with NERD Tree
 " let g:startify_session_before_save=['silent! NERDTreeTabsClose']
 let g:startify_session_before_save=['silent! NERDTreeClose']
 autocmd User Startified setlocal buftype=
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
-
-" Virtualenvs
-let g:virtualenv_auto_activate=1
-let g:virtualenv_stl_format='⦗%n⦘'
-command! VA VirtualEnvActivate
-nnoremap <silent> vl :VirtualEnvList<CR>
-nnoremap <silent> vd :VirtualEnvDeactivate<CR>
 
 " Whitespace
 nnoremap ww :StripWhitespace<CR>
@@ -403,10 +364,7 @@ au BufNewFile,BufRead *.less set filetype=css
 " Color scheme
 set termguicolors
 try
-  colorscheme gruvbox
-  "Favorites -
-  "  ayu deep-space gruvbox jellybeans monokai nord nightfox terafox palenight
-  "  solarized8_high tender two-firewatch ubaryd
+  colorscheme base16-default-dark
 endtry
 autocmd VimEnter,Colorscheme * :hi VertSplit ctermfg=237 ctermbg=235
 highlight Normal ctermbg=NONE
