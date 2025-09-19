@@ -3,7 +3,7 @@ local keymap = vim.keymap.set
 
 -- ❰❰ Plugin Updates ❱❱
 keymap('n', '<F12>', ':Lazy sync<CR>', { silent = true })
-keymap('n', '<F24>', ':Lazy<CR>', { silent = true })
+keymap('n', '<C-F12>', ':Lazy<CR>', { silent = true })
 
 -- ❰❰ Command Abbreviations ❱❱
 vim.cmd([[
@@ -104,6 +104,9 @@ keymap({ 'n', 'i' }, '<F6>', '<ESC>:Neotree toggle<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<C-F6>', '<ESC>:UndotreeToggle<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<F7>', '<C-O>:TagbarToggle<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<F4>', '<C-O>za', { silent = true })
+
+-- ❰❰ Comment Toggle ❱❱
+keymap({ 'n', 'v' }, '<F3>', function() require('Comment.api').toggle.linewise.current() end, { desc = 'Toggle comment' })
 
 -- ❰❰ Git Mappings ❱❱
 keymap('n', 'gf', ':Gdiff<CR>', { silent = true })

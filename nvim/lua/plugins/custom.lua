@@ -1,6 +1,21 @@
 -- Additional plugins not included in LazyVim
 
 return {
+  -- Obsidian integration
+  {
+    "obsidian-nvim/obsidian.nvim",
+    version = "*", -- use latest release instead of latest commit
+    ft = "markdown",
+    opts = {
+        workspaces = {
+        {
+            name = "personal",
+            path = "~/Nextcloud/Notes",
+        },
+      },
+    },
+  },
+
   -- Git integration + syntax highlighting
   {
     "tpope/vim-fugitive",
@@ -81,7 +96,36 @@ return {
     cmd = { "BD", "BUN" },
   },
 
+  -- Comment toggle
+  {
+    "numToStr/Comment.nvim",
+    opts = {
+      padding = true,
+      sticky = true,
+      ignore = nil,
+      toggler = {
+        line = 'gcc',
+        block = 'gbc',
+      },
+      opleader = {
+        line = 'gc',
+        block = 'gb',
+      },
+      extra = {
+        above = 'gcO',
+        below = 'gco',
+        eol = 'gcA',
+      },
+      mappings = {
+        basic = true,
+        extra = true,
+      },
+      pre_hook = nil,
+      post_hook = nil,
+    },
+  },
   -- Whitespace highlight/trim
+
   {
     "nvim-mini/mini.trailspace",
     event = { "BufReadPost", "BufNewFile" },
@@ -146,6 +190,12 @@ return {
       { "<c-l>",  "<cmd>TmuxNavigateRight<cr>",    desc = "Tmux navigate right" },
       { "<c-\\>", "<cmd>TmuxNavigatePrevious<cr>", desc = "Tmux navigate previous" },
     },
+  },
+
+  -- Disable noice plugin
+  {
+    "folke/noice.nvim",
+    enabled = false,
   },
 
 }

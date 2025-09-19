@@ -2,7 +2,14 @@ return {
   "nvim-lualine/lualine.nvim",
   opts = {
     options = {
-      theme = 'gruvbox',
+      -- theme = "catppuccin",
+      -- theme = "gruvbox",
+      -- theme = "everforest",
+      theme = "evergarden",
+      -- theme = "nord",
+      -- theme = "nordic",
+      -- theme = "tokyonight-night",
+
       component_separators = { left = '', right = '' },
       section_separators = { left = '', right = '' },
     },

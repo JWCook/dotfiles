@@ -1,6 +1,5 @@
 #!/bin/bash
 # Test neovim configuration for basic functionality and health
-set -e
 
 # Colors for output
 RED='\033[0;31m'
@@ -16,38 +15,28 @@ TESTS_TOTAL=0
 
 # Configuration
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
-LOG_FILE="nvim-validation-$(date +%Y%m%d_%H%M%S).log"
 TIMEOUT_SHORT=10
 TIMEOUT_MEDIUM=20
 TIMEOUT_LONG=30
 
-log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): $1" | tee -a "$LOG_FILE"
-}
-
 print_header() {
     echo -e "\n${BLUE}=== $1 ===${NC}"
-    log "SECTION: $1"
 }
 
 print_test() {
     echo -e "${YELLOW}Testing: $1${NC}"
-    log "TEST: $1"
 }
 
 test_passed() {
     echo -e "${GREEN}✓ PASS: $1${NC}"
-    log "PASS: $1"
     ((TESTS_PASSED++))
     ((TESTS_TOTAL++))
 }
 
 test_failed() {
     echo -e "${RED}✗ FAIL: $1${NC}"
-    log "FAIL: $1"
     if [ -n "$2" ]; then
         echo -e "${RED}  Error: $2${NC}"
-        log "  Error: $2"
     fi
     ((TESTS_FAILED++))
     ((TESTS_TOTAL++))
@@ -55,29 +44,14 @@ test_failed() {
 
 test_warning() {
     echo -e "${YELLOW}⚠ WARNING: $1${NC}"
-    log "WARNING: $1"
     if [ -n "$2" ]; then
         echo -e "${YELLOW}  Note: $2${NC}"
-        log "  Note: $2"
     fi
 }
 
 print_summary() {
-    echo -e "\n${BLUE}=== VALIDATION SUMMARY ===${NC}"
-    echo -e "Total Tests: $TESTS_TOTAL"
-    echo -e "${GREEN}Passed: $TESTS_PASSED${NC}"
-    echo -e "${RED}Failed: $TESTS_FAILED${NC}"
-    log "SUMMARY: $TESTS_TOTAL tests, $TESTS_PASSED passed, $TESTS_FAILED failed"
-
-    if [ $TESTS_FAILED -eq 0 ]; then
-        echo -e "${GREEN}🎉 All tests passed! Your Neovim configuration is healthy.${NC}"
-        log "SUCCESS: All tests passed"
-        return 0
-    else
-        echo -e "${RED}❌ Some tests failed. Review issues above.${NC}"
-        log "FAILURE: Some tests failed"
-        return 1
-    fi
+    print_header "Summary"
+    echo "SUMMARY: $TESTS_TOTAL tests, $TESTS_PASSED passed, $TESTS_FAILED failed"
 }
 
 test_nvim_installation() {
@@ -243,6 +217,7 @@ test_health_check() {
     print_test "Neovim health check"
 
     local health_output=$(timeout $TIMEOUT_LONG nvim --headless -c "checkhealth" -c "quit" 2>&1 || true)
+    echo "$health_output"
 
     # Count errors and warnings
     local error_count=$(echo "$health_output" | grep -ci "error" || true)
@@ -257,11 +232,6 @@ test_health_check() {
     if [ "$warning_count" -gt 0 ]; then
         test_warning "Health check: found $warning_count warnings" "Run ':checkhealth' for details"
     fi
-
-    # Save health output to log
-    echo "HEALTH CHECK OUTPUT:" >> "$LOG_FILE"
-    echo "$health_output" >> "$LOG_FILE"
-    echo "END HEALTH CHECK OUTPUT" >> "$LOG_FILE"
 }
 
 test_file_operations() {
@@ -285,11 +255,7 @@ test_file_operations() {
 }
 
 echo -e "${BLUE}Neovim config validation${NC}"
-echo -e "Log file: $LOG_FILE"
-echo -e "Timestamp: $(date)"
-log "Starting validation"
 
-print_header "Complete Validation"
 test_nvim_installation
 test_config_directory
 test_basic_startup

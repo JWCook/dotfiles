@@ -1,8 +1,6 @@
 -- Colorscheme configuration
--- Set gruvbox as default
 
 return {
-  -- Add gruvbox
   {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
@@ -10,37 +8,64 @@ return {
     config = function()
       require("gruvbox").setup({
         terminal_colors = true,
-        undercurl = true,
-        underline = true,
-        bold = true,
-        italic = {
-          strings = true,
-          emphasis = true,
-          comments = true,
-          operators = false,
-          folds = true,
-        },
-        strikethrough = true,
-        invert_selection = false,
-        invert_signs = false,
-        invert_tabline = false,
-        invert_intend_guides = false,
-        inverse = true,
-        contrast = "",
-        palette_overrides = {},
-        overrides = {},
         dim_inactive = false,
         transparent_mode = false,
       })
-      vim.cmd("colorscheme gruvbox")
     end,
   },
 
-  -- Configure LazyVim to use gruvbox
+  {
+    "shaunsingh/nord.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+
+  {
+    "AlexvZyl/nordic.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+
+  {
+    "sainnhe/everforest",
+    lazy = false,
+    priority = 1000,
+  },
+
+  {
+    'everviolet/nvim',
+    name = 'evergarden',
+    lazy = false,
+    priority = 1000,
+    opts = {
+      theme = {
+        variant = 'winter', -- winter|fall|spring|summer
+        accent = 'green',
+      },
+      editor = {
+        transparent_background = false,
+        sign = { color = 'none' },
+        float = {
+            color = 'mantle',
+            solid_border = false,
+      },
+      completion = {
+            color = 'surface0',
+        },
+      },
+    },
+  },
+
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      -- colorscheme = "catppuccin",
+      -- colorscheme = "everforest",
+      colorscheme = "evergarden",
+      -- colorscheme = "gruvbox",
+      -- colorscheme = "nord",
+      -- colorscheme = "nordic",
+      -- colorscheme = "tokyonight-night",
     },
   },
 }

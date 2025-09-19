@@ -74,5 +74,8 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.hidden = true
 
+-- ❰❰ Formatting ❱❱
+vim.g.autoformat = false
+
 -- ❰❰ NetRW ❱❱
 vim.g.netrw_keepdir = 0

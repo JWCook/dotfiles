@@ -27,5 +27,5 @@ curl -fsSL https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-p
     -o ~/.config/bash/preexec.sh
 
 # Install yazi plugins
-ya pkg add yazi-rs/plugins:full-border
-ya pkg add yazi-rs/plugins:git
+ya pkg add yazi-rs/plugins:full-border || echo
+ya pkg add yazi-rs/plugins:git || echo
