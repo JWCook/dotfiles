@@ -2,18 +2,19 @@ set -x HOST_ICON (hostnamectl 2>/dev/null | sed -n 's/\s*Chassis: \w*\s*\(.*\)/\
 
 function fish_prompt
     set last_cmd_status $status
-    set -U fish_prompt_bg_1 293d3d
-    set -U fish_prompt_bg_2 334d4d
-    set -U fish_prompt_bg_3 4b1b4b
-    set -U fish_prompt_bg_4 330d00
-    set -U fish_color_cwd 8cff66
-    set -U fish_color_cwd_sep 40ff00
+    set -U fish_prompt_bg_1 (_strip_color $fish_color_selection)
+    set -U fish_prompt_bg_2 $fish_color_comment
+    set -U fish_prompt_bg_3 (_strip_color $fish_color_selection)
+    set -U fish_prompt_bg_4 $fish_color_comment
+    set -U fish_color_cwd $fish_color_quote
+    set -U fish_color_cwd_sep $fish_color_keyword
     set -U fish_color_cwd_root red
-    set -U fish_color_user 99e600
-    set -U fish_color_branch 1aff8c
-    set -U fish_color_venv 1ad1ff
+    set -U fish_color_user $fish_color_normal
+    set -U fish_color_branch $fish_color_end
+    set -U fish_color_venv $fish_color_operator
+    set -U fish_prompt_error $fish_color_error
     set -U fish_prompt_pwd_dir_length 3
-    set prompt_symbol_color (_get_cmd_color)
+    set prompt_symbol_color (_get_cmd_color $last_cmd_status)
 
     echo -s \
         (set_color -b $fish_prompt_bg_1) \
@@ -24,6 +25,11 @@ function fish_prompt
         (set_color -b black $prompt_symbol_color)' '\
         (set_color normal)
 end
+
+function _strip_color -a color
+    echo -n $color | sed 's/--background=//g'
+end
+
 
 # Format user
 function _get_user
@@ -68,10 +74,10 @@ function _get_virtualenv
 end
 
 # Color prompt symbol if last command failed
-function _get_cmd_color
-    if test $status -eq 0
+function _get_cmd_color -a last_cmd_status
+    if test $last_cmd_status -eq 0
         echo -n -s $fish_prompt_bg_2
     else
-        echo -n -s red
+        echo -n -s $fish_prompt_error
     end
 end
