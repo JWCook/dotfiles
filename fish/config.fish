@@ -195,7 +195,7 @@ alias tt='tig'
 complete -c tt --wraps=tig
 alias uc='rink'
 complete -c uc --wraps=rink
-alias yz='yazi'
+alias yy='yazi'
 
 if command -q batcat
     # bat executable is installed as 'batcat' on Ubuntu due to name collision
@@ -483,8 +483,7 @@ end
  set PG_CONF "$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
  set SETUP_CONF "$DOTFILES/Makefile $DOTFILES_LOCAL/Makefile"
  set SSH_CONF "$DOTFILES_LOCAL/ssh/config"
- set VIM_CONF "$DOTFILES/vim/vimrc"
- set VIM_CONF_ALL "$VIM_CONF $DOTFILES/vim/README.md"
+ set VIM_CONF "$DOTFILES/nvim/lua/config/*.lua $DOTFILES/nvim/lua/plugins/custom.lua $DOTFILES/nvim/README.md"
 
 # Editor shortcuts
 function sb; echo "reloading fish config..."; exec fish; end
@@ -492,7 +491,6 @@ abbr vb "$EDITOR $FISH_CONF"
 abbr vbb "$EDITOR -O2 $FISH_CONF $BASH_CONF_ALL"
 abbr vg "$EDITOR $GIT_CONF"
 abbr vv "$EDITOR $VIM_CONF"
-abbr vvv "$EDITOR -O2 $VIM_CONF_ALL"
 abbr vc "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $FISH_FUNCS $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF"
 abbr svim "sudo -E $EDITOR"
 
