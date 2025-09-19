@@ -144,6 +144,7 @@ install-yazi-conf:
     @just symlink yazi/init.lua {{config_dir}}/yazi/init.lua
     @just symlink yazi/yazi.toml {{config_dir}}/yazi/yazi.toml
     @just symlink yazi/keymap.toml {{config_dir}}/yazi/keymap.toml
+    @just symlink yazi/theme.toml {{config_dir}}/yazi/theme.toml
 
 
 #############################

@@ -39,8 +39,12 @@ config.window_decorations = 'RESIZE'
 --  Colors & Fonts
 ----------------------------------------
 
-config.color_scheme = 'Gruvbox dark, medium (base16)'
+-- config.color_scheme = 'Catppuccin Macchiato'
+-- config.color_scheme = 'Everforest Dark (Gogh)'
+-- config.color_scheme = 'Gruvbox dark, medium (base16)'
+-- config.color_scheme = 'Monokai Remastered'
 -- config.color_scheme = 'nord'
+config.color_scheme = 'Tokyo Night Storm'
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 14.0
 config.window_background_opacity = 0.9
