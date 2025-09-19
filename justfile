@@ -105,6 +105,9 @@ install-kitty-conf:
     @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
     @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
 
+install-nvim-conf:
+    @just symlink nvim {{config_dir}}/nvim
+
 install-pdb-conf:
     @just symlink pdb/pdbrc.py ~/.pdbrc
 
@@ -125,9 +128,6 @@ install-tmux-conf:
 install-vim-conf:
     @just symlink vim/vimrc             ~/.vimrc
     @just symlink vim/vim               ~/.vim
-
-install-nvim-conf:
-    @just symlink nvim {{config_dir}}/nvim
 
 install-wezterm-conf:
     @just symlink wezterm/wezterm.lua {{config_dir}}/wezterm/wezterm.lua
@@ -192,7 +192,7 @@ install-xdistro:
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-cargo update-python
-    @just update-vim-plugins update-repos update-tldr update-auto-cpufreq
+    @just update-nvim-plugins update-repos update-tldr update-auto-cpufreq
     @if command -v snap &> /dev/null; then sudo snap refresh; fi
 
 # Package collections
@@ -236,12 +236,14 @@ install-kitty:
     ./scripts/xdistro/install_kitty.sh
 install-kwin-gestures:
     sudo ./scripts/xdistro/install_kwin_gestures.sh
+update-nvim-plugins:
+    nvim --headless -c "Lazy sync" -c "qa"
 install-ssh-agent-systemd:
     ./scripts/install_ssh_agent_systemd.sh
 install-vim-plug:
     ./scripts/xdistro/install_vim_plug.sh
 update-vim-plugins:
-    nvim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
+    test -x /usr/bin/vim && /usr/bin/vim +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qall
 install-yubico-auth:
     ./scripts/xdistro/install_yubico_auth.fish
 update-tldr:
