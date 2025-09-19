@@ -192,4 +192,10 @@ return {
     },
   },
 
+  -- Disable noice plugin
+  {
+    "folke/noice.nvim",
+    enabled = false,
+  },
+
 }
