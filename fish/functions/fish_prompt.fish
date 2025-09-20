@@ -1,3 +1,5 @@
+set -x HOST_ICON (hostnamectl 2>/dev/null | sed -n 's/\s*Chassis: \w*\s*\(.*\)/\1/p')
+
 function fish_prompt
     set last_cmd_status $status
     set -U fish_prompt_bg_1 293d3d
@@ -33,6 +35,7 @@ function _get_hostname
     set _hostname (string replace "localhost" "🏠" (prompt_hostname))
     set _hostname (string replace "$USER-" "" "$_hostname")
     set _hostname (string replace -- "-7500" "" "$_hostname")
+    set _hostname {$_hostname}$HOST_ICON
     echo -n -s (set_color $fish_color_user) "$_hostname"
 end
 
