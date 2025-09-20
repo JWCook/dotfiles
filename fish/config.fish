@@ -73,6 +73,8 @@ alias ttput='tty -s && tput'
 # ❰❰ Environment ❱❱ #
 #####################
 
+set -gx EDITOR /usr/bin/nvim
+
 # XDG dirs
 set -gx XDG_CACHE_HOME ~/.cache
 set -gx XDG_CONFIG_HOME ~/.config
@@ -89,7 +91,7 @@ set -gx NVM_DIR $XDG_DATA_HOME/nvm
 set -gx PSQLRC $XDG_CONFIG_HOME/pg/psqlrc
 set -gx RUSTUP_HOME $XDG_DATA_HOME/rustup
 
-# Paths - using modern fish_add_path (automatically deduplicates)
+# Add to $PATH
 fish_add_path $CARGO_HOME/bin
 fish_add_path ~/.local/bin
 fish_add_path ~/.local/kitty.app/bin
@@ -105,6 +107,7 @@ fish_add_path /usr/local/sbin
 fish_add_path /usr/local/src/fzf/bin
 fish_add_path node_modules/.bin
 
+# Additional shell config
 source-file ~/.config/fish/config_wsl.fish
 source-file ~/.config/fish/config_local.fish
 source-file ~/.config/tabtab/__tabtab.fish
@@ -124,41 +127,43 @@ end
 # Python stuff
 set -x IGNORE_PATTERNS '*.pyc|*.sw*|.cache|.git|__pycache__'
 set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
-set -gx VIRTUALENVWRAPPER_PYTHON (which python)
+set -gx VIRTUALENVWRAPPER_PYTHON (which python3)
 set -gx VIRTUALENV_DIR ~/.virtualenvs
-
-# Configure pyenv and virtualfish, if installed
 command -q pyenv && pyenv init - | source
 command -q vf && vf install compat_aliases global_requirements projects > /dev/null
 
 # Remove shell greeting message
 set -g fish_greeting
 
+
 #########################
 # ❰❰ General Aliases ❱❱ #
 #########################
-
-set -gx EDITOR /usr/bin/nvim
 
 # Simple Command/App Aliases
 alias ac='npx all-contributors'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
-alias hf='hyperfine'
-alias hq='harlequin'
+abbr  ff fastfetch
+abbr  hf hyperfine
+abbr  hq harlequin
 alias icat='wezterm imgcat'
-abbr npr npm run
-abbr termy PYTHONPATH= terminator -mf
-abbr term-code PYTHONPATH= terminator -mfl code \&
-abbr term-dev PYTHONPATH= terminator -mfl 4-split \&
-abbr term-start PYTHONPATH= terminator -mfl start \&
-abbr retroterm /usr/local/src/retro-term/cool-retro-term \&
-abbr lw sudo logwatch \| less
-abbr ta type -a
-complete -c ta --wraps=type
-alias vim='nvim'
-abbr vimdiff nvim -d
+abbr  lw sudo logwatch \| less
+abbr  npr npm run
+abbr  pg pgcli
+alias ps='procs'
+alias pst='procs --tree'
+alias psw='procs --watch'; complete -c ps --wraps=procs
+alias rr='ranger'; complete -c rr --wraps=ranger
+abbr  sq litecli
+abbr  ta type -a
+alias top='btm --theme gruvbox'; complete -c top --wraps=btm
+alias tt='tig'; complete -c tt --wraps=tig
 alias unalias='functions --erase'
+alias vim='nvim'
+abbr  vv nvim
+abbr  vimdiff nvim -d
+alias yy='yazi'
 
 # If installed, use atuin with Ctrl+R and move fzf.fish history to Ctrl+Alt+R
 if status is-interactive && command -q atuin
@@ -171,34 +176,8 @@ function b64-decode -a b64_str
     echo $b64_str | base64 -d
 end
 
-if command -q zoxide
-    zoxide init fish | source
-    alias cd='z'
-    complete -c cd --wraps=__zoxide_z
-    alias zz='zi'
-    complete -c zz --wraps=__zoxide_zi
-end
-
-# alias fd='fdfind'
-# complete -c fd --wraps=fdfind
-alias ff='fastfetch'
-complete -c ff --wraps=fastfetch
-alias ps='procs'
-alias pst='procs --tree'
-alias psw='procs --watch'
-complete -c ps --wraps=procs
-alias rr='ranger'
-complete -c rr --wraps=ranger
-alias top='btm --theme gruvbox'
-complete -c top --wraps=btm
-alias tt='tig'
-complete -c tt --wraps=tig
-alias uc='rink'
-complete -c uc --wraps=rink
-alias yy='yazi'
-
+# Handle bat executable naming ('batcat' on Ubuntu)
 if command -q batcat
-    # bat executable is installed as 'batcat' on Ubuntu due to name collision
     alias bat='batcat'
     alias cat='batcat'
     complete -c cat --wraps=batcat
@@ -207,6 +186,7 @@ else if command -q bat
     complete -c cat --wraps=bat
 end
 
+# Other bat shortcuts
 alias catp='bat -pp'
 function catj -a path
     cat $path | jq
@@ -214,7 +194,27 @@ end
 function cats -a path
     cat $path | sort
 end
-alias icat='kitty +kitten icat'
+
+# poor man's `man`
+function pman
+    $argv --help &| less -r
+end
+
+# Unit conversion
+function uc -a expr
+    set expr (echo $expr | sed 's/in in$/in inches/')
+    rink $expr
+end
+complete -c uc --wraps=rink
+
+# Use zoxide as cd
+if command -q zoxide
+    zoxide init fish | source
+    alias cd='z'
+    complete -c cd --wraps=__zoxide_z
+    alias zz='zi'
+    complete -c zz --wraps=__zoxide_zi
+end
 
 
 ################
@@ -253,20 +253,17 @@ if command -q eza
     alias ls 'eza -aF --group-directories-first --icons'
     alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
     abbr lls ll --sort size
+    abbr lt ll --tree
+    abbr lr ll -R
     complete -c ll --wraps=eza
-else if command -q colorls
-    alias ls 'colorls -A --group-directories-first --hyperlink'
-    alias ll 'colorls -AGl --group-directories-first --hyperlink'
-    complete -c ll --wraps=colorls
 else
     alias ll 'ls -Alhv --group-directories-first --hyperlink=auto'
     complete -c ll --wraps=ls
+    abbr lt tree
 end
 
 alias llh '/usr/bin/ls -Alhv --group-directories-first --hyperlink=auto'
 alias sll 'sudo -E ls -Alhv --group-directories-first'
-# lt() { tree $@ | color-filesize; }                      # Colored folder tree
-# lt2() { tree -L 2 $@ | color-filesize; }                # Colored folder tree (depth 2)
 # md() { mkdir -p "$@" && cd "$@"; }                      # Create a dir and enter it
 # mode() { stat -c "%a %n" {$argv:-*}; }                  # Get octal file permissions
 abbr pwd-base basename \(pwd\)                       # Base name of the current working dir
@@ -473,24 +470,23 @@ end
 #######################
 
 # Commonly used config files
- set BASH_CONF "$DOTFILES/bash/bashrc"
- set BASH_CONF_ALL "$DOTFILES/bash/bashrc*"
- test -d $DOTFILES_LOCAL && set BASH_CONF_ALL "$BASH_CONF_ALL $DOTFILES_LOCAL/bash/bashrc*"
- set FISH_CONF ~/.config/fish/config*.fish
- set FISH_FUNCS $DOTFILES/fish/functions/*
- set GIT_CONF "$DOTFILES/git/gitconfig"
- set PIP_CONF ~/.config/pip/pip.conf
- set PG_CONF "$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
- set SETUP_CONF "$DOTFILES/Makefile $DOTFILES_LOCAL/Makefile"
- set SSH_CONF "$DOTFILES_LOCAL/ssh/config"
- set VIM_CONF "$DOTFILES/nvim/lua/config/*.lua $DOTFILES/nvim/lua/plugins/custom.lua $DOTFILES/nvim/README.md"
+set BASH_CONF "$DOTFILES/bash/bashrc"
+test -d $DOTFILES_LOCAL && set BASH_CONF "$BASH_CONF $DOTFILES_LOCAL/bash/bashrc*"
+set FISH_CONF ~/.config/fish/config*.fish
+test -d $DOTFILES_LOCAL && set FISH_CONF "$FISH_CONF $DOTFILES_LOCAL/fish/config*.fish"
+set FISH_FUNCS $DOTFILES/fish/functions/*
+set GIT_CONF $DOTFILES/git/*
+set NVIM_CONF "$DOTFILES/nvim/lua/config/*.lua $DOTFILES/nvim/lua/plugins/custom.lua $DOTFILES/nvim/README.md"
+set PIP_CONF ~/.config/pip/pip.conf
+set PG_CONF "$DOTFILES/postgres/psqlrc ~/.auth/pgpass"
+set SETUP_CONF "$DOTFILES/justfile $DOTFILES_LOCAL/justfile"
+set SSH_CONF "$DOTFILES_LOCAL/ssh/config"
 
 # Editor shortcuts
 function sb; echo "reloading fish config..."; exec fish; end
 abbr vb "$EDITOR $FISH_CONF"
-abbr vbb "$EDITOR -O2 $FISH_CONF $BASH_CONF_ALL"
 abbr vg "$EDITOR $GIT_CONF"
-abbr vv "$EDITOR $VIM_CONF"
+abbr vn "$EDITOR $VIM_CONF"
 abbr vc "$EDITOR -O2 $BASH_CONF_ALL $FISH_CONF $FISH_FUNCS $VIM_CONF_ALL $GIT_CONF $PG_CONF $SSH_CONF $SETUP_CONF"
 abbr svim "sudo -E $EDITOR"
 
@@ -659,7 +655,6 @@ abbr gcontinue git rebase --continue
 abbr gskip git rebase --skip
 abbr gscontinue git stash \; git rebase --continue \; git stash pop
 
-
 # Overwrite local branch with remote
 function gbreset -a branch -a remove --wraps=__fish_git_branches
     set remote (coalesce $remote (gremote))
@@ -750,7 +745,6 @@ end
 function git-latest-release-rpm -a repo
     git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
 end
-
 
 function fix-poetry
     git add poetry.lock
@@ -875,7 +869,6 @@ end
 ################
 
 abbr bp bpython
-abbr bb black --line-length 100 --skip-string-normalization
 abbr install-pretty-errors python -m pretty_errors -s -p
 abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
@@ -932,9 +925,9 @@ function ipy
 end
 
 # Pre-commit
-abbr pc-all pre-commit run -a \|\| git status
-abbr -e pc-update
-function pc-update
+abbr pc pre-commit
+abbr pca pre-commit run -a \|\| git status
+function pcu
     pre-commit autoupdate && pre-commit run -a
 end
 
@@ -959,7 +952,7 @@ function in-env
     sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"
 end
 
-# Show a bunch of relevant python environment info
+# Show relevant python environment info
 function py-debug
     printf "PATH:\n"
     path
