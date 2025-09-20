@@ -25,3 +25,10 @@ repos:
     rev: v8.28.0
     hooks:
       - id: gitleaks
+  - repo: local
+    hooks:
+      - id: normalize-kksrc
+        name: Normalize KDE keyboard shortcuts
+        entry: python3 scripts/utils/normalize_kksrc.py
+        language: system
+        files: '\.kksrc$'
