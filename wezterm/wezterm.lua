@@ -119,22 +119,22 @@ config.keys = {
     },
     {
         key = 'LeftArrow',
-        mods = 'ALT',
+        mods = 'CTRL|SHIFT',
         action = act { ActivatePaneDirection = 'Left' },
     },
     {
         key = 'RightArrow',
-        mods = 'ALT',
+        mods = 'CTRL|SHIFT',
         action = act { ActivatePaneDirection = 'Right' },
     },
     {
         key = 'UpArrow',
-        mods = 'ALT',
+        mods = 'CTRL|SHIFT',
         action = act { ActivatePaneDirection = 'Up' },
     },
     {
         key = 'DownArrow',
-        mods = 'ALT',
+        mods = 'CTRL|SHIFT',
         action = act { ActivatePaneDirection = 'Down' },
     },
     {

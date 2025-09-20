@@ -1,19 +1,45 @@
 -- Additional plugins not included in LazyVim
 
 return {
+  -- Disable noice plugin (until it's more stable)
+  {
+    "folke/noice.nvim",
+    enabled = false,
+  },
+
   -- Obsidian integration
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*", -- use latest release instead of latest commit
     ft = "markdown",
-    opts = {
+    config = function()
+      require("obsidian").setup({
+        legacy_commands = false,
         workspaces = {
-        {
+          {
             name = "personal",
+            -- path = "~/Documents/ObsidianVault",
             path = "~/Nextcloud/Notes",
+          },
         },
+        callbacks = {
+          enter_note = function(_, note)
+            vim.keymap.set("n", "<Tab>", function()
+                require("obsidian.api").nav_link("next")
+            end, {
+                buffer = note.bufnr,
+                desc = "Go to next link",
+            })
+            vim.keymap.set("n", "<S-Tab>", function()
+                require("obsidian.api").nav_link("prev")
+            end, {
+                buffer = note.bufnr,
+                desc = "Go to previous link",
+            })
+          end,
       },
-    },
+    })
+    end,
   },
 
   -- Git integration + syntax highlighting
@@ -92,40 +118,19 @@ return {
 
   -- Buffer management
   {
-    "qpkorr/vim-bufkill",
-    cmd = { "BD", "BUN" },
+    "famiu/bufdelete.nvim",
+    lazy = false
   },
 
   -- Comment toggle
   {
     "numToStr/Comment.nvim",
     opts = {
-      padding = true,
-      sticky = true,
-      ignore = nil,
-      toggler = {
-        line = 'gcc',
-        block = 'gbc',
-      },
-      opleader = {
-        line = 'gc',
-        block = 'gb',
-      },
-      extra = {
-        above = 'gcO',
-        below = 'gco',
-        eol = 'gcA',
-      },
-      mappings = {
-        basic = true,
-        extra = true,
-      },
-      pre_hook = nil,
-      post_hook = nil,
+      mappings = false,
     },
   },
-  -- Whitespace highlight/trim
 
+  -- Whitespace highlight/trim
   {
     "nvim-mini/mini.trailspace",
     event = { "BufReadPost", "BufNewFile" },
@@ -133,12 +138,11 @@ return {
       require('mini.trailspace').setup()
     end,
     keys = {
-      { "ww", function() require('mini.trailspace').trim() end, desc = "Trim trailing whitespace" },
       { "wt", function() require('mini.trailspace').highlight() end, desc = "Toggle whitespace highlighting" },
     },
   },
 
-  -- Text manipulation
+  -- Surrounding pair operators
   {
     "kylechui/nvim-surround",
     version = "*", -- Omit to use `main` branch
@@ -153,29 +157,15 @@ return {
     "akinsho/toggleterm.nvim",
     version = "*",
     keys = {
-      { "<F8>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" },
-      { "<F8>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = "t" },
+      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" },
+      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = "t" },
+      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = "i" },
     },
     opts = {
-      size = 20,
-      open_mapping = [[<F8>]],
-      hide_numbers = true,
-      shade_filetypes = {},
-      shade_terminals = true,
-      shading_factor = 2,
-      start_in_insert = true,
-      insert_mappings = true,
-      persist_size = true,
-      direction = "float",
       close_on_exit = true,
-      shell = vim.o.shell,
+      direction = "float",
       float_opts = {
         border = "curved",
-        winblend = 0,
-        highlights = {
-          border = "Normal",
-          background = "Normal",
-        },
       },
     },
   },
@@ -190,12 +180,6 @@ return {
       { "<c-l>",  "<cmd>TmuxNavigateRight<cr>",    desc = "Tmux navigate right" },
       { "<c-\\>", "<cmd>TmuxNavigatePrevious<cr>", desc = "Tmux navigate previous" },
     },
-  },
-
-  -- Disable noice plugin
-  {
-    "folke/noice.nvim",
-    enabled = false,
   },
 
 }

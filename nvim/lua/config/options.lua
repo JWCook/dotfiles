@@ -2,28 +2,6 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
--- ❰❰ Python Environment ❱❱
--- Auto-detect Python virtualenv for Neovim
-local function setup_python_host()
-  local possible_paths = {
-    vim.env.HOME .. '/.virtualenvs/nvim/bin/python3',
-    vim.env.HOME .. '/.pyenv/versions/nvim/bin/python3',
-    vim.env.HOME .. '/.local/share/virtualenvs/nvim/bin/python3',
-    vim.fn.exepath('python3'),
-    vim.fn.exepath('python'),
-  }
-
-  for _, path in ipairs(possible_paths) do
-    if path and vim.fn.executable(path) == 1 then
-      vim.g.python_host_prog = path
-      vim.g.python3_host_prog = path
-      break
-    end
-  end
-end
-
-setup_python_host()
-
 -- ❰❰ General Settings ❱❱
 vim.opt.shada = "'100,<50,s10,h"
 vim.opt.mouse = ""
@@ -74,8 +52,9 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.hidden = true
 
--- ❰❰ Formatting ❱❱
+-- ❰❰ Formatting & Folding ❱❱
 vim.g.autoformat = false
+vim.g.markdown_folding = 1
 
 -- ❰❰ NetRW ❱❱
 vim.g.netrw_keepdir = 0

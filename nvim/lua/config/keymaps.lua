@@ -1,9 +1,14 @@
 -- Default keymaps: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- TODO:
+-- To bind:
+-- toggle block comment
+-- Obsidian smart_action
+local command = vim.api.nvim_create_user_command
 local keymap = vim.keymap.set
 
 -- ❰❰ Plugin Updates ❱❱
 keymap('n', '<F12>', ':Lazy sync<CR>', { silent = true })
-keymap('n', '<C-F12>', ':Lazy<CR>', { silent = true })
+keymap('n', '<F36>', ':Lazy<CR>', { silent = true })
 
 -- ❰❰ Command Abbreviations ❱❱
 vim.cmd([[
@@ -36,12 +41,11 @@ keymap({ 'n', 'v' }, '<C-j>', 'gj')
 keymap('n', '<leader>b', ':nohlsearch<CR>')
 
 -- ❰❰ Telescope Mappings ❱❱
-keymap('n', '<C-p>', ':Telescope find_files<CR>', { silent = true })
-keymap('n', '<leader>ff', ':Telescope find_files<CR>', { silent = true })
-keymap('n', '<leader>fg', ':Telescope live_grep<CR>', { silent = true })
-keymap('n', '<leader>fb', ':Telescope buffers<CR>', { silent = true })
-keymap('n', '<leader>fh', ':Telescope help_tags<CR>', { silent = true })
-keymap('n', '<leader>fr', ':Telescope oldfiles<CR>', { silent = true })
+keymap('n', '<F5>',  ':Telescope find_files<CR>', { silent = true })
+keymap('n', '<F29>', ':Telescope live_grep<CR>', { silent = true })  -- C-F5
+keymap('n', '<F17>', ':Telescope buffers<CR>', { silent = true })  -- S-F5
+keymap('n', '<F53>', ':Telescope oldfiles<CR>', { silent = true })  -- A-F5
+keymap('n', '<F25>', ':Telescope help_tags<CR>', { silent = true })  -- C-F1
 
 -- ❰❰ LSP Keybindings ❱❱
 keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
@@ -61,52 +65,67 @@ keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Show line diagnos
 keymap('n', '<leader>cq', vim.diagnostic.setloclist, { desc = 'Diagnostics to location list' })
 
 -- ❰❰ Trouble (Diagnostics Viewer) ❱❱
-keymap('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle trouble diagnostics' })
-keymap('n', '<leader>td', ':Trouble diagnostics toggle filter.buf=0<CR>', { desc = 'Buffer diagnostics' })
-keymap('n', '<leader>ts', ':Trouble symbols toggle focus=false<CR>', { desc = 'Symbols' })
+keymap('n', '<F8>', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle trouble diagnostics' })
+keymap('n', '<F20>', ':Trouble diagnostics toggle filter.buf=0<CR>', { desc = 'Buffer diagnostics' })
+keymap('n', '<F32>', ':Trouble symbols toggle focus=false<CR>', { desc = 'Symbols' })
 
 -- ❰❰ Buffers ❱❱
 keymap('n', '<C-Left>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-Right>', ':bnext<CR>', { silent = true })
 keymap('n', '<C-h>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-l>', ':bnext<CR>', { silent = true })
+command("BD", ":Bdelete", {})
+command("BN", ":new", {})
 
 -- ❰❰ Windows ❱❱
-keymap({ 'n', 'i' }, '<A-Up>', '<C-O>:wincmd k<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<A-Down>', '<C-O>:wincmd j<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<A-Left>', '<C-O>:wincmd h<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<A-Right>', '<C-O>:wincmd l<CR>', { silent = true })
-keymap('n', '<A-k>', ':wincmd k<CR>', { silent = true })
-keymap('n', '<A-j>', ':wincmd j<CR>', { silent = true })
-keymap('n', '<A-h>', ':wincmd h<CR>', { silent = true })
-keymap('n', '<A-l>', ':wincmd l<CR>', { silent = true })
+keymap('n', '<A-Up>',    ':wincmd k<CR>', { silent = true })
+keymap('n', '<A-Down>',  ':wincmd j<CR>', { silent = true })
+keymap('n', '<A-Left>',  ':wincmd h<CR>', { silent = true })
+keymap('n', '<A-Right>', ':wincmd l<CR>', { silent = true })
+keymap('n', '<A-k>',     ':wincmd k<CR>', { silent = true })
+keymap('n', '<A-j>',     ':wincmd j<CR>', { silent = true })
+keymap('n', '<A-h>',     ':wincmd h<CR>', { silent = true })
+keymap('n', '<A-l>',     ':wincmd l<CR>', { silent = true })
 
 -- ❰❰ Window Resizing ❱❱
 keymap({ 'n', 'i' }, '<M-+>', '<C-O>:wincmd +<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<M-->', '<C-O>:wincmd -<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<M-=>', '<C-O>:wincmd =<CR>', { silent = true })
-
--- ❰❰ Window Maximize ❱❱
 keymap({ 'n', 'i' }, '<C-x>', '<C-O>:resize 45 | vertical resize 100<CR>', { silent = true })
 
--- ❰❰ Splits ❱❱
+-- ❰❰ Window Splits ❱❱
 keymap('n', 'vv', '<C-w>v', { silent = true })
 keymap('n', 'hh', '<C-w>s', { silent = true })
 
 -- ❰❰ Tabs ❱❱
+command("TD", "tabclose", {})
+command("TN", "tabnew | vsp", {})
 keymap({ 'n', 'i' }, '<S-Left>', '<C-O>:tabp<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<S-Right>', '<C-O>:tabn<CR>', { silent = true })
 keymap('n', '<C-S-Left>', ':tabm -1<CR>', { silent = true })
 keymap('n', '<C-S-Right>', ':tabm +1<CR>', { silent = true })
 
--- ❰❰ Plugin-specific Mappings ❱❱
-keymap({ 'n', 'i' }, '<F6>', '<ESC>:Neotree toggle<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<C-F6>', '<ESC>:UndotreeToggle<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<F7>', '<C-O>:TagbarToggle<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<F4>', '<C-O>za', { silent = true })
+-- ❰❰ Other Plugin-specific Mappings ❱❱
+keymap('n', '<F4>', '>za', { silent = true })
+keymap('n', '<F6>', ':Neotree toggle<CR>', { silent = true })
+keymap('n', '<F30>', ':UndotreeToggle<CR>', { silent = true })
+keymap('n', '<F7>', ':TagbarToggle<CR>', { silent = true })
+keymap('n', '<F10>', ':YankyRingHistory<CR>', { silent = true })
 
 -- ❰❰ Comment Toggle ❱❱
-keymap({ 'n', 'v' }, '<F3>', function() require('Comment.api').toggle.linewise.current() end, { desc = 'Toggle comment' })
+keymap('n', '<F3>', function() require('Comment.api').toggle.linewise.current() end, { desc = 'Toggle comment' })
+keymap('v', '<F3>', function()
+  local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+  vim.api.nvim_feedkeys(esc, 'nx', false)
+  require('Comment.api').toggle.linewise(vim.fn.visualmode())
+end, { desc = 'Toggle comment' })
+-- TODO: Not working
+-- keymap('n', '<C-F3>', function() require('Comment.api').toggle.blockwise.current() end, { desc = 'Toggle block comment' })
+-- keymap('v', '<C-F3>', function()
+--   local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+--   vim.api.nvim_feedkeys(esc, 'nx', false)
+--   require('Comment.api').toggle.blockwise(vim.fn.visualmode())
+-- end, { desc = 'Toggle block comment' })
 
 -- ❰❰ Git Mappings ❱❱
 keymap('n', 'gf', ':Gdiff<CR>', { silent = true })
@@ -125,10 +144,8 @@ keymap('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', { silent = true })
 keymap('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', { silent = true })
 keymap('n', '<leader>hp', ':Gitsigns preview_hunk<CR>', { silent = true })
 
--- ❰❰ Python Execution ❱❱
-keymap('n', '<F9>', ':w<CR>:exec "!python" shellescape(@%, 1)<CR>', { silent = true })
-
 -- ❰❰ External Commands ❱❱
+keymap('n', 'py', ':w<CR>:exec "!python3" shellescape(@%, 1)<CR>', { silent = true })
 keymap('n', 'tt', ':!tig<CR>', { silent = true })
 keymap('n', 'th', ':!tig %<CR>', { silent = true })
-keymap('n', 'ls', '!ls -Alhv --group-directories-first<CR>')
+keymap('n', 'll', '!ll<CR>')

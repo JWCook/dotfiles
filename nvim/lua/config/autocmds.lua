@@ -1,10 +1,7 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 --
--- Add any additional autocmds here
--- with `vim.api.nvim_create_autocmd`
---
--- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
+-- Remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
 -- ❰❰ Large File Handling ❱❱
@@ -14,6 +11,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local large_file_group = augroup("LargeFile", { clear = true })
 local large_file_size = 1024 * 1024 * 10 -- 10MB
 
+-- Handle large files
 autocmd("BufReadPre", {
     group = large_file_group,
     callback = function()

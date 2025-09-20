@@ -61,13 +61,13 @@ test_nvim_installation() {
         local version=$(nvim --version | head -1)
         test_passed "Neovim is installed: $version"
 
-        # Check version (warn if < 0.8.0)
+        # Check version (warn if < 0.10.0)
         local version_num=$(nvim --version | head -1 | grep -o 'v[0-9]\+\.[0-9]\+' | tr -d 'v')
         if [ -n "$version_num" ]; then
             local major=$(echo "$version_num" | cut -d. -f1)
             local minor=$(echo "$version_num" | cut -d. -f2)
-            if [ "$major" -eq 0 ] && [ "$minor" -lt 8 ]; then
-                test_warning "Neovim version is quite old ($version_num)" "Consider upgrading to 0.8.0+"
+            if [ "$major" -eq 0 ] && [ "$minor" -lt 10 ]; then
+                test_warning "Neovim version is old ($version_num)" "Consider upgrading to 0.10.0+"
             fi
         fi
     else
