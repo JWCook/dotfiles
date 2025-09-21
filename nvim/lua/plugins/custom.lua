@@ -7,6 +7,24 @@ return {
     enabled = false,
   },
 
+  -- Disable Snacks dashboard (using alpha)
+  {
+    "snacks.nvim",
+    opts = {
+      dashboard = { enabled = false },
+    },
+  },
+
+  -- Disable markdown linting (use with lang.markdown extra)
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   opts = function(_, opts)
+  --     -- Remove markdown linters
+  --     opts.linters_by_ft = opts.linters_by_ft or {}
+  --     opts.linters_by_ft.markdown = nil
+  --   end,
+  -- },
+
   -- Obsidian integration
   {
     "obsidian-nvim/obsidian.nvim",

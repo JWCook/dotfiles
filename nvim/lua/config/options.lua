@@ -3,6 +3,7 @@
 -- Add any additional options here
 
 -- ❰❰ General Settings ❱❱
+-- vim.opt.conceallevel = 0
 vim.opt.shada = "'100,<50,s10,h"
 vim.opt.mouse = ""
 vim.opt.backup = false

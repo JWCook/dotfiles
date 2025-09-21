@@ -3,6 +3,8 @@
 -- To bind:
 -- toggle block comment
 -- Obsidian smart_action
+-- Obsidian rename -> F2
+-- Obsidian quick_switch
 local command = vim.api.nvim_create_user_command
 local keymap = vim.keymap.set
 
