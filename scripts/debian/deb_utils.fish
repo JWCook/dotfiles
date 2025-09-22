@@ -5,9 +5,10 @@
 # --------------------
 
 function release-var -a key
-    grep "^$key=" /etc/os-release | cut -d '=' -f 2-
+    grep "^$key=" /etc/os-release | cut -d '=' -f 2- | sed "s/\"//g"
 end
 set NAME (release-var NAME)
+set DISTRO_ID (release-var ID)
 set VERSION_ID (release-var VERSION_ID)
 set VERSION_CODENAME (release-var VERSION_CODENAME)
 

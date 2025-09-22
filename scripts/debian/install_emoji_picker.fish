@@ -1,29 +1,29 @@
 #!/usr/bin/env fish
 
-set GH_OWNER "gazatu"
-set GH_REPO "im-emoji-picker"
-set DISTRO_ID (grep "^ID=" "/etc/os-release" | sed "s/ID=//" | sed "s/\"//g")
-set DISTRO_VERSION_ID (grep "^VERSION_ID=" "/etc/os-release" | sed "s/VERSION_ID=//" | sed "s/\"//g")
+set script_dir (dirname (dirname (status filename)))
+source $script_dir/debian/deb_utils.fish
+set repo "gazatu/im-emoji-picker"
 
+# Find input framework
 if command -v ibus > /dev/null
-    set FRAMEWORK "ibus"
+    set input_framework "ibus"
 else if command -v fcitx5 > /dev/null
-    set FRAMEWORK "fcitx5"
+    set input_framework "fcitx5"
 else
-    echo "no input method framework found"
-    exit 1
+    echo "no input method framework found" && exit 1
 end
 
 # Find artifact URL
-set RELEASE_JSON "/tmp/$GH_REPO-latest.json"
-curl -s "https://api.github.com/repos/$GH_OWNER/$GH_REPO/releases/latest" -o "$RELEASE_JSON"
-set URL (jq -r ".assets | .[] | .browser_download_url | select(. | (test(\"$DISTRO_ID\") and test(\"$DISTRO_VERSION_ID\") and test(\"$FRAMEWORK\")))" "$RELEASE_JSON")
-if test -z "$URL"
-    echo "No artifact found"
-    exit 1
+echo "Finding artifact for $DISTRO_ID $VERSION_ID ($input_framework)..."
+set release_json $(mktemp --suffix=.json)
+curl -s "https://api.github.com/repos/$repo/releases/latest" -o "$release_json"
+set pkg_url (jq -r ".assets | .[] | .browser_download_url | select(. | (test(\"$DISTRO_ID\") and test(\"$VERSION_ID\") and test(\"$input_framework\")))" "$release_json")
+if test -z "$pkg_url"
+    echo "No artifact found" && exit 1
+else
+    echo "Found: $pkg_url"
 end
-rm $RELEASE_JSON
 
-set ARTIFACT_PATH "/tmp/"(basename "$URL")
-curl -sL "$URL" -o "$ARTIFACT_PATH"
-sudo apt install -y "$ARTIFACT_PATH"; and rm $ARTIFACT_PATH
+set artifact_path "/tmp/"(basename "$pkg_url")
+curl -sL "$pkg_url" -o "$artifact_path"
+sudo apt install -y "$artifact_path" && rm $artifact_path && rm $release_json
