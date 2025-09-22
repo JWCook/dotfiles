@@ -7,7 +7,7 @@
 # A simple command for demonstration purposes follows.
 # -----------------------------------------------------------------------------
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 # You can import any python module as needed.
 import os
@@ -41,11 +41,11 @@ class my_edit(Command):
             target_filename = self.fm.thisfile.path
 
         # This is a generic function to print text in ranger.
-        self.fm.notify("Let's edit the file " + target_filename + "!")
+        self.fm.notify("Let's edit the file " + target_filename + '!')
 
         # Using bad=True in fm.notify allows you to print error messages:
         if not os.path.exists(target_filename):
-            self.fm.notify("The given file does not exist!", bad=True)
+            self.fm.notify('The given file does not exist!', bad=True)
             return
 
         # This executes a function from ranger.core.acitons, a module with a
