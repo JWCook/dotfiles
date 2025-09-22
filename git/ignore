@@ -8,6 +8,8 @@
 .~*
 .aider*
 .claude/
+.debug/
+.notes
 CLAUDE.md
 PLAN.md
 *.kate-swp
