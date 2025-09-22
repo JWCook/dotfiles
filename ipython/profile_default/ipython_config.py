@@ -1,3 +1,4 @@
+# ruff: noqa: F821
 # Configuration file for ipython.
 
 # Autoreload modules
@@ -8,13 +9,13 @@ c.InteractiveShellApp.exec_lines.append('%autoreload 2')
 # Don't prompt on exit
 c.TerminalInteractiveShell.confirm_exit = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Configurable configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # InteractiveShellApp configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # A Mixin for applications that start InteractiveShell instances.
 #
@@ -79,18 +80,18 @@ c.TerminalInteractiveShell.confirm_exit = False
 # Reraise exceptions encountered loading IPython extensions?
 # c.InteractiveShellApp.reraise_ipython_extension_failures = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # LoggingConfigurable configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # A parent class for Configurables that log.
 #
 # Subclasses have a log trait, and the default behavior is to get the logger
 # from the currently running Application.
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # SingletonConfigurable configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # A configurable that only allows one instance.
 #
@@ -98,9 +99,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # *any* subclass. To create and retrieve such a class use the
 # :meth:`SingletonConfigurable.instance` method.
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Application configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # This is an application.
 
@@ -113,9 +114,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # Set the log level by value or name.
 # c.Application.log_level = 30
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # BaseIPythonApplication configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # IPython: an enhanced interactive Python shell.
 
@@ -149,9 +150,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # error.  The default is to append a short message to the usual traceback
 # c.BaseIPythonApplication.verbose_crash = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # TerminalIPythonApp configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Whether to display a banner upon starting IPython.
 # c.TerminalIPythonApp.display_banner = True
@@ -163,9 +164,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # Start IPython quickly by skipping the loading of config files.
 # c.TerminalIPythonApp.quick = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # InteractiveShell configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # An enhanced, interactive shell for Python.
 
@@ -192,7 +193,7 @@ c.TerminalInteractiveShell.confirm_exit = False
 # c.InteractiveShell.automagic = True
 
 # The part of the banner to be printed before the profile
-# c.InteractiveShell.banner1 = 'Python 2.7.5 (default, Nov 20 2015, 02:00:19) \nType "copyright", "credits" or "license" for more information.\n\nIPython 5.0.0 -- An enhanced Interactive Python.\n?         -> Introduction and overview of IPython\'s features.\n%quickref -> Quick reference.\nhelp      -> Python\'s own help system.\nobject?   -> Details about \'object\', use \'object??\' for extra details.\n'
+# c.InteractiveShell.banner1 = ''
 
 # The part of the banner to be printed after the profile
 # c.InteractiveShell.banner2 = ''
@@ -306,9 +307,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 #
 # c.InteractiveShell.xmode = 'Context'
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # TerminalInteractiveShell configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Set to confirm when you try to exit IPython with an EOF (Control-D in Unix,
 # Control-Z/Enter in Windows). By typing 'exit' or 'quit', you can force a
@@ -362,15 +363,15 @@ c.TerminalInteractiveShell.confirm_exit = False
 # Automatically set the terminal title
 # c.TerminalInteractiveShell.term_title = True
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # HistoryAccessorBase configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # An abstract class for History Accessors
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # HistoryAccessor configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Access the history database without adding to it.
 #
@@ -406,9 +407,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # end but not the back ticks), to avoid creating an history file.
 # c.HistoryAccessor.hist_file = u''
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # HistoryManager configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # A class to organize all history-related functionality in one place.
 
@@ -419,9 +420,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # Should the history database include output? (default: no)
 # c.HistoryManager.db_log_output = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # ProfileDir configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # An object to manage the profile directory and its resources.
 #
@@ -435,9 +436,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # `profile` option.
 # c.ProfileDir.location = u''
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # BaseFormatter configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # A base formatter class that is configurable.
 #
@@ -473,9 +474,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 #
 # c.BaseFormatter.type_printers = {}
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # PlainTextFormatter configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # The default pretty-printer.
 #
@@ -519,9 +520,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 #
 # c.PlainTextFormatter.verbose = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Completer configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Activate greedy completion PENDING DEPRECTION. this is now mostly taken care
 # of with Jedi.
@@ -530,9 +531,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # etc., but can be unsafe because the code is actually evaluated on TAB.
 # c.Completer.greedy = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # IPCompleter configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Extension of the completer class with IPython-specific features
 
@@ -564,9 +565,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # When 0: nothing will be excluded.
 # c.IPCompleter.omit__names = 2
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Magics configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Base class for implementing magic functions.
 #
@@ -585,9 +586,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 #
 # See :mod:`magic_functions` for examples of actual implementation classes.
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # ScriptMagics configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Magics for talking to scripts
 #
@@ -609,9 +610,9 @@ c.TerminalInteractiveShell.confirm_exit = False
 # the right interpreter.
 # c.ScriptMagics.script_paths = {}
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # StoreMagics configuration
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Lightweight persistence for python variables.
 #

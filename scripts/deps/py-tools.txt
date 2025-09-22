@@ -8,6 +8,7 @@ litecli
 llm --with llm-perplexity --with llm-openrouter
 pgcli
 pre-commit
+prek
 py-spy
 ranger-fm --with pillow
 rich-cli
