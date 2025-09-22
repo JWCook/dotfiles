@@ -887,7 +887,7 @@ abbr ntest nox -e test
 # uv
 abbr uvr uv run
 abbr uvn uv run nox
-abbr uvpc uv run --default-index https://pypi.org/simple pre-commit run -a
+abbr uvpc uv run --default-index https://pypi.org/simple prek run -a
 abbr uvl uv lock --default-index https://pypi.org/simple
 abbr uvt uv tool
 abbr -e uvs
@@ -925,10 +925,10 @@ function ipy
 end
 
 # Pre-commit
-abbr pc pre-commit
-abbr pca pre-commit run -a \|\| git status
+abbr pc prek
+abbr pca prek run -a \|\| git status
 function pcu
-    pre-commit autoupdate && pre-commit run -a
+    prek autoupdate && prek run -a
 end
 
 abbr sv source .venv/bin/activate.fish

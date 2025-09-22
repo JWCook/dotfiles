@@ -824,8 +824,8 @@ alias nlint='nox -e lint'
 alias ntest='nox -e test'
 
 # Pre-commit
-alias pc-all='pre-commit run -a'
-alias pc-update='pre-commit autoupdate; pre-commit run -a'
+alias pca='prek run -a || git status'
+alias pcu='prek autoupdate; pre-commit run -a'
 
 # Determine if we are running in a virtualenv
 alias in-env='python -c\
