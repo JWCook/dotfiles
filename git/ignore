@@ -10,6 +10,7 @@
 .claude/
 .debug/
 .notes
+.scratch/
 CLAUDE.md
 PLAN.md
 *.kate-swp

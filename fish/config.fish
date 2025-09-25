@@ -253,7 +253,7 @@ if command -q eza
     alias ls 'eza -aF --group-directories-first --icons'
     alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
     abbr lls ll --sort size
-    abbr lt ll --tree
+    abbr lt ll --tree --git-ignore
     abbr lr ll -R
     complete -c ll --wraps=eza
 else
@@ -759,6 +759,7 @@ end
 ################
 
 abbr dps docker ps -a
+abbr dpsc docker ps --format "{{.Names}}" | sort
 abbr dlog docker logs -f
 abbr dstat docker stats
 
@@ -874,6 +875,7 @@ abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
 abbr pipg pip freeze \| grep -i
 abbr pt pytest
+abbr py-serve python -m http.server
 
 # Tox / Nox
 abbr te tox -e
