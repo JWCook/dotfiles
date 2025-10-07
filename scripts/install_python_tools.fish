@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
-set BOOTSTRAPS $HOME/bootstrap
+set BOOTSTRAPS ./bootstrap
 set FISH_COMPLETE_DEST ~/.config/fish/completions/poetry.fish
 set BASH_COMPLETE_DEST ~/.config/bash/completions/poetry.bash-completion
 set PYTHON_VERSIONS \

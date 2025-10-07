@@ -19,6 +19,8 @@ set PKGS_TOOLS '
     lolcat
     nala
     neovim
+    parted
+    pv
     ripgrep
     rsync
     silversearcher-ag

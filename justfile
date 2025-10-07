@@ -146,6 +146,14 @@ install-yazi-conf:
     @just symlink yazi/keymap.toml {{config_dir}}/yazi/keymap.toml
     @just symlink yazi/theme.toml {{config_dir}}/yazi/theme.toml
 
+install-completions:
+    atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash
+    atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
+    procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash
+    procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
+    just --completions fish > ~/.config/fish/completions/just.fish
+    just --completions bash > ~/.config/bash/completions/just.bash
+
 
 #############################
 # Packages: Distro-specific #
@@ -181,6 +189,15 @@ install-arch:
 update-arch:
     sudo pacman -Syu
 
+# TODO: some differences with installing cross-distro packages:
+#   - rust packages installed via AUR instead of cargo
+#   - need to install/configure nvm/node before installing some AUR packages
+install-manjaro:
+    sudo ./scripts/manjaro/install_system_packages.fish
+update-manjaro:
+    sudo pacman -Syu
+    paru -Sua --noconfirm
+
 
 ##########################
 # Packages: Cross-Distro #
@@ -188,11 +205,11 @@ update-arch:
 
 # Install all cross-distro packages
 install-xdistro:
-    @just _parallel install-cargo-packages install-python-tools install-fonts
-    @just install-auto-cpufreq install-grc install-node install-vim-plug install-yubico-auth
+    @just _parallel install-rust install-cargo-packages install-python-tools install-fonts
+    @just install-auto-cpufreq install-completions install-grc install-node install-yubico-auth
 # Update all cross-distro packages
 update-xdistro:
-    @just _parallel update-cargo update-python
+    @just _parallel update-rust update-cargo update-python
     @just update-nvim-plugins update-repos update-tldr update-auto-cpufreq
     @if command -v snap &> /dev/null; then sudo snap refresh; fi
 
@@ -222,6 +239,13 @@ update-repos:
 # Individual packages
 # -------------------
 # Note: Most of these are only necessary in cases where the base repo is far behind
+
+install-rust:
+    command -v rustup &> /dev/null \
+        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    rustup update
+    rustup default stable
+update-rust: install-rust
 
 install-auto-cpufreq:
     # TODO: only install for laptops/other battery-powered devices?
