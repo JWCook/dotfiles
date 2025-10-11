@@ -10,6 +10,7 @@ set PKGS_TOOLS '
     bottom
     curl
     delta
+    difftastic
     duf
     dust
     eza
@@ -23,26 +24,30 @@ set PKGS_TOOLS '
     fzf
     git
     git-delta
+    glow
+    gping
     htop
     hyperfine
+    inetutils
     jq
     lolcat
-    neovim
     ncdu
+    neovim
     net-tools
     nmap
+    openssh
     p7zip
     procs
     pv
     qpdf
+    rink
     ripgrep
     rsync
     rustup
     shellcheck
-    the_silver_searcher
+    smartmontool
     sqlite
-    openssh
-    inetutils
+    the_silver_searcher
     tidy
     tig
     tldr
@@ -50,10 +55,12 @@ set PKGS_TOOLS '
     toilet
     traceroute
     tree
+    tree-sitter-cli
     unzip
     valgrind
     vim
     wget
+    yazi
     zathura
     zoxide
 '
@@ -112,12 +119,17 @@ set PKGS_IMG '
 
 # Graphical applications
 set PKGS_GUI_APPS '
+    discord
     gimp
     guake
     keepassxc
     kicad
     nextcloud-client
+    obsidian
+    rapid-photo-downloader
     rawtherapee
+    signal-desktop
+    wezterm
 '
 
 set PKGS_GAMES '
@@ -154,34 +166,19 @@ set PKGS_DOCKER '
     containerd
 '
 
-# AUR packages (installed via paru)
-set PKGS_AUR_CLI '
-    difftastic
-    glow
-    gping
-    pik
-    rink
-    tree-sitter-cli
-    yazi
-'
-
-set PKGS_AUR_GUI '
+set PKGS_AUR '
     claude-desktop-bin
-    discord
     duplicati-beta-bin
     etcher-bin
     fritzing
     librewolf-bin
     localsend-bin
-    obsidian
     pdfsam
-    rapid-photo-downloader
-    signal-desktop
+    pik
     sublime-text-4
     ventoy-bin
     visual-studio-code-bin
     winboat-bin
-    wezterm
     xnviewmp
 '
 
@@ -227,11 +224,10 @@ end
 # --------------------
 
 set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_GUI_APPS $PKGS_GAMES $PKGS_MEDIA $PKGS_KDE $PKGS_DOCKER"
-set AUR_PACKAGES "$PKGS_AUR_CLI $PKGS_AUR_GUI"
-
 update-repos
 sudo pacman-mirrors --country United_States --api --protocol https
 sudo pacman -Syu --noconfirm
+
 echo -e "Installing packages from official repos\n--------------------\n"
 echo $PACKAGES_TO_INSTALL | xargs sudo pacman -S --needed --noconfirm
 
@@ -239,7 +235,7 @@ echo $PACKAGES_TO_INSTALL | xargs sudo pacman -S --needed --noconfirm
 init-gpg
 install-paru
 echo -e "Installing AUR packages\n--------------------\n"
-echo $AUR_PACKAGES | xargs paru -S --needed --noconfirm
+echo $PKGS_AUR | xargs paru -S --needed --noconfirm
 
 # Configure Docker
 sudo systemctl enable --now docker.service
