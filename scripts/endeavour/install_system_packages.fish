@@ -9,7 +9,6 @@ set PKGS_TOOLS '
     bat
     bottom
     curl
-    delta
     difftastic
     duf
     dust
@@ -45,7 +44,7 @@ set PKGS_TOOLS '
     rsync
     rustup
     shellcheck
-    smartmontool
+    smartmontools
     sqlite
     the_silver_searcher
     tidy
@@ -96,6 +95,7 @@ set PKGS_LIBS '
     libxt
     luarocks
     ncurses
+    ntfs-3g
     odt2txt
     openssl
     pandoc
@@ -127,6 +127,7 @@ set PKGS_GUI_APPS '
     nextcloud-client
     obsidian
     rapid-photo-downloader
+    rustdesk-bin
     rawtherapee
     signal-desktop
     wezterm
@@ -152,7 +153,6 @@ set PKGS_MEDIA '
 
 # Packages for KDE Plasma desktop environment
 set PKGS_KDE '
-    copyq
     plasma-systemmonitor
     spectacle
     kdeconnect
@@ -166,6 +166,7 @@ set PKGS_DOCKER '
     containerd
 '
 
+# AUR packages (installed via paru)
 set PKGS_AUR '
     claude-desktop-bin
     duplicati-beta-bin
@@ -178,6 +179,7 @@ set PKGS_AUR '
     sublime-text-4
     ventoy-bin
     visual-studio-code-bin
+    yubico-authenticator-bin
     winboat-bin
     xnviewmp
 '
@@ -225,9 +227,12 @@ end
 
 set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_GUI_APPS $PKGS_GAMES $PKGS_MEDIA $PKGS_KDE $PKGS_DOCKER"
 update-repos
-sudo pacman-mirrors --country United_States --api --protocol https
-sudo pacman -Syu --noconfirm
 
+# Update mirrors using reflector (EndeavourOS uses reflector instead of pacman-mirrors)
+echo -e "Updating mirrors with reflector\n--------------------\n"
+sudo reflector --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
+sudo pacman -Syu --noconfirm
 echo -e "Installing packages from official repos\n--------------------\n"
 echo $PACKAGES_TO_INSTALL | xargs sudo pacman -S --needed --noconfirm
 
@@ -244,19 +249,13 @@ sudo usermod -aG docker $USER
 
 # Enable SSH agent
 systemctl --user enable --now ssh-agent.service
+systemctl enable --now pcscd
 
 # Enable IWD (if using it instead of wpa_supplicant)
 # sudo systemctl enable --now iwd.service
-#
+
 # Set fish as default shell
 if type -q fish
     chsh -s (which fish)
     echo "Default shell set to fish"
-end
-
-# Install hardware drivers (Manjaro's hardware detection)
-if type -q mhwd
-    echo "Installing hardware drivers..."
-    sudo mhwd -a pci free 0300  # Install free graphics drivers
-    sudo mhwd -a pci nonfree 0300  # Install proprietary graphics drivers if needed
 end

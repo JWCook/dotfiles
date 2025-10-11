@@ -11,7 +11,7 @@ case $DISTRO in
         sudo apt-get install -y $PACKAGES;;
     "Fedora Linux")
         sudo dnf install -y $PACKAGES;;
-    "Arch Linux" | "Manjaro Linux")
+    "Arch Linux" | "EndeavourOS" | "Manjaro Linux")
         sudo pacman -Sy --noconfirm $PACKAGES;;
     *)
         echo "Unsupported platform: $DISTRO" && exit 1;;

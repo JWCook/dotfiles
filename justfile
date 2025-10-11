@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython pdb postgres ranger terminator tmux vim wezterm yazi"
+configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython nvim pdb postgres ranger terminator tmux vim wezterm yazi"
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
@@ -192,9 +192,12 @@ update-arch:
 # TODO: some differences with installing cross-distro packages:
 #   - rust packages installed via AUR instead of cargo
 #   - need to install/configure nvm/node before installing some AUR packages
-install-manjaro:
-    sudo ./scripts/manjaro/install_system_packages.fish
-update-manjaro:
+install-endeavour:
+    @just install-node
+    ./scripts/endeavour/install_system_packages.fish
+    @just install-python-tools #install-fonts
+    @just install-completions install-grc install-yubico-auth
+update-endeavour:
     sudo pacman -Syu
     paru -Sua --noconfirm
 
@@ -206,7 +209,8 @@ update-manjaro:
 # Install all cross-distro packages
 install-xdistro:
     @just _parallel install-rust install-cargo-packages install-python-tools install-fonts
-    @just install-auto-cpufreq install-completions install-grc install-node install-yubico-auth
+    @just install-completions install-grc install-node install-yubico-auth
+    # @just install-auto-cpufreq
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-rust update-cargo update-python
