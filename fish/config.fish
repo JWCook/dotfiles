@@ -1215,11 +1215,60 @@ end
 # TODO: Separate config files per distro, if/when needed
 
 # Tests
+function system-is-deb
+    test -f /etc/debian_version
+end
 function system-is-rpm
     /usr/bin/rpm -q -f /usr/bin/rpm &> /dev/null
 end
-function system-is-deb
-    test -f /etc/debian_version
+
+# Arch-based
+# ------------------------------
+abbr pac-update sudo pacman -Syu
+abbr pac-add    sudo pacman -S --noconfirm
+abbr pac-rm     sudo pacman -R --noconfirm
+abbr pac-info        pacman -Qi
+abbr pac-ls          pacman -Qe
+abbr pac-ll          pacman -Q
+abbr pac-search      pacman -Ss
+
+abbr aur-update      paru -Sua
+abbr aur-add         paru -S --needed
+abbr aur-rm          paru -R
+abbr aur-info        paru -Si
+abbr aur-ls          pacman -Qm
+
+# Debian-based
+# ------------------------------
+function update-apt
+    print-title "Updating system packages..."
+    sudo apt-get update
+    sudo apt-get -y --allow-unauthenticated\
+        dist-upgrade | lc-hgradient-delay
+end
+
+function update-apt-unattended
+    print-title "Updating system packages..."
+    sudo apt-get update
+    sudo apt-get -y --allow-unauthenticated\
+        -o Dpkg::Options::="--force-confdef"\
+        -o Dpkg::Options::="--force-confnew"\
+        dist-upgrade | lc-hgradient-delay
+end
+
+abbr suspend-pm pm-suspend
+abbr hibernate-pm pm-hibernate
+
+# Install a .deb file from url
+function install-deb -a deb_url
+    set deb_tempfile (mktemp --suffix=.deb)
+    wget -O $deb_tempfile $deb_url
+sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
+end
+
+# List all installed packages, sorted by size
+function package-sizes
+    dpkg-query -W -f='${Installed-Size;8}  ${Package}\n' | sort -n
 end
 
 # Fedora-based
@@ -1257,38 +1306,6 @@ abbr lsko ls-old-kernels
 
 command -q update-grub || abbr update-grub sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
-# Debian-based
-# ------------------------------
-function update-apt
-    print-title "Updating system packages..."
-    sudo apt-get update
-    sudo apt-get -y --allow-unauthenticated\
-        dist-upgrade | lc-hgradient-delay
-end
-
-function update-apt-unattended
-    print-title "Updating system packages..."
-    sudo apt-get update
-    sudo apt-get -y --allow-unauthenticated\
-        -o Dpkg::Options::="--force-confdef"\
-        -o Dpkg::Options::="--force-confnew"\
-        dist-upgrade | lc-hgradient-delay
-end
-
-abbr suspend-pm pm-suspend
-abbr hibernate-pm pm-hibernate
-
-# Install a .deb file from url
-function install-deb -a deb_url
-    set deb_tempfile (mktemp --suffix=.deb)
-    wget -O $deb_tempfile $deb_url
-    sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
-end
-
-# List all installed packages, sorted by size
-function package-sizes
-    dpkg-query -W -f='${Installed-Size;8}  ${Package}\n' | sort -n
-end
 
 ##########################
 # ❰❰ Proxied Commands ❱❱ #

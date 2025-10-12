@@ -199,7 +199,7 @@ install-endeavour:
     @just install-completions install-grc install-yubico-auth
 update-endeavour:
     sudo pacman -Syu
-    paru -Sua --noconfirm
+    paru -Sua
 
 
 ##########################
