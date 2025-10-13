@@ -23,6 +23,7 @@ set PKGS_TOOLS '
     fzf
     git
     git-delta
+    github-cli
     glow
     gping
     htop

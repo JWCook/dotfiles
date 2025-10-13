@@ -1,0 +1,7 @@
+version: 1
+aliases:
+  co: pr checkout
+color_labels: enabled
+git_protocol: ssh
+prompt: enabled
+prefer_editor_prompt: disabled

@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli fastfetch figlet fish git grc guake harlequin htop ipython nvim pdb postgres ranger terminator tmux vim wezterm yazi"
+configs := "bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython nvim pdb postgres ranger terminator tmux vim wezterm yazi"
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
@@ -69,6 +69,9 @@ install-figlet-conf:
 # Download and install selected monospace fonts
 install-fonts:
     ./scripts/install_fonts.sh
+
+install-gh-conf:
+    @just symlink gh/config.yml ~/.config/gh/config.yml
 
 install-git-conf:
     rm -f ~/.gitconfig
