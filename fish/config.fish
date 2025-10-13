@@ -82,9 +82,10 @@ set -gx XDG_DATA_HOME ~/.local/share
 set -gx XDG_STATE_HOME ~/.local/state
 
 # Relocate some files from home dir to XDG dirs
-set -gx CARGO_HOME ~/.local/share/cargo
+set -gx CARGO_HOME $XDG_DATA_HOME/cargo
 set -gx DOTNET_CLI_HOME $XDG_DATA_HOME/dotnet
 set -gx GNUPGHOME $XDG_DATA_HOME/gnupg
+set -gx GOPATH $XDG_DATA_HOME/go
 set -gx GTK2_RC_FILES $XDG_CONFIG_HOME/gtk-2.0/gtkrc
 set -gx HISTFILE $XDG_CONFIG_HOME/bash/history
 set -gx NVM_DIR $XDG_DATA_HOME/nvm
@@ -261,7 +262,7 @@ if command -q eza
     alias ls 'eza -aF --group-directories-first --icons'
     alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale'
     abbr lls ll --sort size
-    abbr lt ll --tree --git-ignore
+    abbr lt ll --tree --git-ignore -L 2
     abbr lr ll -R
     complete -c ll --wraps=eza
 else

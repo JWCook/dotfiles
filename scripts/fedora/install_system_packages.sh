@@ -87,7 +87,7 @@ PKGS_APPS='
     xsel
 '
 # Graphical applications
-PKGS_GUI_APPS='
+PKGS_DESKTOP='
     chromium
     code
     firefox
@@ -194,7 +194,7 @@ PACKAGES_TO_INSTALL="$PKG_RPM_URIS $PKGS_APPS $PKGS_LIBS $PKGS_MEDIA $PKGS_IMG"
 while getopts "rgnx" option; do
     case "${option}" in
         r) install_repos;;
-        g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA";;
+        g) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_DESKTOP $PKGS_MEDIA";;
         n) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_GNOME";;
         x) PACKAGES_TO_INSTALL="$PACKAGES_TO_INSTALL $PKGS_XFCE";;
     esac

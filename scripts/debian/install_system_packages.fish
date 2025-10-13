@@ -43,7 +43,7 @@ set PKGS_LIBS '
 '
 
 # Graphical applications
-set PKGS_GUI_APPS '
+set PKGS_DESKTOP '
     gimp
     guake
     keepassxc
@@ -97,7 +97,7 @@ end
 set PACKAGES_TO_INSTALL $PKGS_TOOLS
 argparse 'g' -- $argv
 if set -q _flag_g
-    set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_LIBS"
+    set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_DESKTOP $PKGS_LIBS"
 end
 
 # Install packages

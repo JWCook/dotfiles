@@ -1,5 +1,6 @@
 atuin
 bottom
+choose
 difftastic
 du-dust
 hyperfine

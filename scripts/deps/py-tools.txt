@@ -1,4 +1,4 @@
-aider-chat[playwright] --python 3.11
+aider-chat[playwright] --python 3.13
 asciinema
 datasette
 files-to-prompt
@@ -7,12 +7,9 @@ httpie
 litecli
 llm --with llm-perplexity --with llm-openrouter
 pgcli
-pre-commit
 prek
 py-spy
-ranger-fm --with pillow
 rich-cli
 ruff
 virtualfish
 yamllint
-yq

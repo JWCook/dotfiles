@@ -29,26 +29,19 @@ set PKGS_TOOLS '
     lolcat
     nala
     ncdu
-    net-tools
-    nmap
     p7zip-full
     pv
     qpdf
     ripgrep
     rsync
-    rustup
     shellcheck
-    silversearcher-ag
     sqlite3
-    ssh
-    telnet
     starship
     tidy
     tig
     tldr
     tmux
     toilet
-    traceroute
     tree
     unzip
     valgrind
@@ -56,20 +49,31 @@ set PKGS_TOOLS '
     wget
     zathura
 '
+
+# Network tools
+set PKGS_NET '
+    iwd
+    net-tools
+    network-manager-openvpn
+    nmap
+    ntp
+    ntpdate
+    ssh
+    telnet
+    traceroute
+    whois
+'
+
 # System utilities, drivers, etc.
 set PKGS_SYS '
     fontconfig
-    iwd
-    network-manager-openvpn
-    ntp
-    ntpdate
     thermald
     ubuntu-drivers-common
     xclip
     xsel
 '
-# Libraries, mostly needed for compiling other applications
-# TODO: Re-evaluate how many of these are still needed
+
+# Compilers, libraries for compiling other applications, optional features, etc.
 set PKGS_LIBS '
     bash-completion
     build-essential
@@ -99,7 +103,9 @@ set PKGS_LIBS '
     protobuf-compiler
     python3-dev
     ruby-dev
+    rustup
 '
+
 # Image processing libraries
 set PKGS_IMG '
     exempi
@@ -109,37 +115,45 @@ set PKGS_IMG '
     libexiv2-doc
     libimage-exiftool-perl
 '
-#   amazon-ecr-credential-helper
+
 # Graphical applications
-set PKGS_GUI_APPS '
+set PKGS_DESKTOP '
     gimp
     guake
     keepassxc
     nextcloud-desktop
 '
+
+# Media players and codecs
 set PKGS_MEDIA '
     gstreamer1.0-plugins-base
     gstreamer1.0-plugins-good
     vlc
     x265
 '
+
 # Packages for Gnome desktop environment
 set PKGS_GNOME '
     copyq
     gnome-tweak-tool
     gconf-editor
 '
+
 # Packages for KDE Plasma desktop environment
 set PKGS_KDE '
 '
+
 # Packages for Xfce desktop environment
 set PKGS_XFCE '
 '
+
 # Additional packages for WSL
 set PKGS_WSL '
     dbus-x11
     socat
 '
+
+# Snap packages
 set PKGS_SNAP '
     discord
 '
@@ -191,13 +205,13 @@ end
 # --------------------
 
 # Determine packages to install based on shell arguments
-set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_LANG"
+set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_NET $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_LANG"
 argparse 'g' 'n' 'k' 'w' 'x' -- $argv
 or begin
     exit 1
 end
 if set -q _flag_g
-    set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_GUI_APPS $PKGS_MEDIA"
+    set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_DESKTOP $PKGS_MEDIA"
 end
 if set -q _flag_n
     set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_GNOME"

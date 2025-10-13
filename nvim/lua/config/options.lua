@@ -14,7 +14,7 @@ vim.opt.wildignore =
 "*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm"
 vim.opt.scrolloff = 1
 vim.opt.sidescrolloff = 5
-vim.opt.undodir = vim.env.HOME .. "/.vim/undo"
+-- vim.opt.undodir = vim.env.HOME .. "/.vim/undo"
 vim.opt.undofile = true
 vim.opt.laststatus = 2
 

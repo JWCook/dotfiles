@@ -196,12 +196,12 @@ update-arch:
 # TODO: some differences with installing cross-distro packages:
 #   - rust packages installed via AUR instead of cargo
 #   - need to install/configure nvm/node before installing some AUR packages
-install-endeavour:
+install-endeavouros:
     @just install-node
     ./scripts/endeavour/install_system_packages.fish
     @just install-python-tools #install-fonts
     @just install-completions install-grc install-yubico-auth
-update-endeavour:
+update-endeavouros:
     sudo pacman -Syu
     paru -Sua
 

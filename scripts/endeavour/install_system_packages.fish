@@ -3,81 +3,91 @@
 # Package categories
 # --------------------
 
-# Terminal applications
-set PKGS_TOOLS '
+# Main terminal applications & coreutils replacements
+set PKGS_TERM '
     atuin
     bat
     bottom
-    curl
+    choose
     difftastic
     duf
     dust
     eza
-    fastfetch
     fd
-    feh
-    ffmpeg
-    figlet
     fish
-    freerdp
     fzf
+    gping
+    pik
+    procs
+    pv
+    ripgrep
+    starship
+    tmux
+    yazi
+    zoxide
+'
+
+# Other CLI/TUI tools
+set PKGS_TOOLS '
+    curl
+    fastfetch
+    feh
+    figlet
     git
     git-delta
     github-cli
     glow
-    gping
-    htop
     hyperfine
-    inetutils
     jq
     lolcat
     ncdu
     neovim
-    net-tools
-    nmap
-    openssh
-    p7zip
-    procs
-    pv
     qpdf
     rink
-    ripgrep
     rsync
-    rustup
     shellcheck
-    smartmontools
     sqlite
-    the_silver_searcher
     tidy
     tig
     tldr
-    tmux
     toilet
-    traceroute
     tree
     tree-sitter-cli
     unzip
     valgrind
     vim
     wget
-    yazi
     zathura
-    zoxide
+    yq
+'
+
+# Network tools
+set PKGS_NET '
+    freerdp
+    inetutils
+    iwd
+    net-tools
+    nmap
+    ntp
+    openssh
+    traceroute
+    whois
 '
 
 # System utilities, drivers, etc.
 set PKGS_SYS '
+    cups
+    cups-pdf
     fontconfig
-    iwd
-    networkmanager-openvpn
-    ntp
+    smartmontools
     thermald
     xclip
     xsel
 '
 
-# Libraries, mostly needed for compiling other applications
+# Compilers, libraries for compiling other applications, optional features, etc.
 set PKGS_LIBS '
+    7zip
     base-devel
     bash-completion
     bzip2
@@ -115,25 +125,40 @@ set PKGS_IMG '
     exempi
     exiv2
     imagemagick
+    libwebp
     perl-image-exiftool
 '
 
 # Graphical applications
-set PKGS_GUI_APPS '
+set PKGS_DESKTOP '
+    audacity
     discord
     gimp
     guake
     keepassxc
     kicad
+    libreoffice-fresh
     nextcloud-client
     obsidian
     rapid-photo-downloader
-    rustdesk-bin
     rawtherapee
     signal-desktop
     wezterm
 '
 
+# KDE applications
+set PKGS_KDE '
+    ark
+    kate
+    kcalc
+    kdeconnect
+    okular
+    partitionmanager
+    plasma-systemmonitor
+    spectacle
+'
+
+# Gaming-related appllications and drivers
 set PKGS_GAMES '
     steam
     gamemode
@@ -145,18 +170,17 @@ set PKGS_GAMES '
     lib32-vulkan-radeon
 '
 
+# Media players and codecs
 set PKGS_MEDIA '
+    ffmpeg
+    flac
     gst-plugins-base
     gst-plugins-good
+    lame
     vlc
+    vlc-plugin-ffmpeg
+    x264
     x265
-'
-
-# Packages for KDE Plasma desktop environment
-set PKGS_KDE '
-    plasma-systemmonitor
-    spectacle
-    kdeconnect
 '
 
 # Docker packages
@@ -176,13 +200,24 @@ set PKGS_AUR '
     librewolf-bin
     localsend-bin
     pdfsam
-    pik
+    rustdesk-bin
     sublime-text-4
     ventoy-bin
     visual-studio-code-bin
     yubico-authenticator-bin
     winboat-bin
     xnviewmp
+'
+
+# Packages to remove after system setup
+set PKGS_REMOVE '
+    eos-apps-info
+    eos-breeze-sddm
+    eos-packagelist
+    eos-qogir-icons
+    eos-quickstart
+    eos-settings-plasma
+    welcome
 '
 
 # Helper functions
@@ -226,16 +261,29 @@ end
 # Installation
 # --------------------
 
-set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_GUI_APPS $PKGS_GAMES $PKGS_MEDIA $PKGS_KDE $PKGS_DOCKER"
-update-repos
+set ALL_PACKAGES "
+    $PKGS_TERM
+    $PKGS_TOOLS
+    $PKGS_NET
+    $PKGS_SYS
+    $PKGS_LIBS
+    $PKGS_IMG
+    $PKGS_DESKTOP
+    $PKGS_GAMES
+    $PKGS_MEDIA
+    $PKGS_KDE
+    $PKGS_DOCKER
+"
 
 # Update mirrors using reflector (EndeavourOS uses reflector instead of pacman-mirrors)
 echo -e "Updating mirrors with reflector\n--------------------\n"
 sudo reflector --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 
+# Install pacman packages
+update-repos
 sudo pacman -Syu --noconfirm
 echo -e "Installing packages from official repos\n--------------------\n"
-echo $PACKAGES_TO_INSTALL | xargs sudo pacman -S --needed --noconfirm
+echo $ALL_PACKAGES | xargs sudo pacman -S --needed --noconfirm
 
 # Install AUR packages
 init-gpg
@@ -260,3 +308,6 @@ if type -q fish
     chsh -s (which fish)
     echo "Default shell set to fish"
 end
+
+# Remove some pre-installed packages
+sudo pacman -R --noconfirm $PKGS_REMOVE
