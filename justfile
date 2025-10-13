@@ -24,7 +24,9 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython nvim pdb postgres ranger terminator tmux vim wezterm yazi"
+configs := "atuin bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython nvim pdb postgres starship tmux vim wezterm yazi"
+# "albert kitty ghostty ranger terminator xfce"
+
 install-conf:
     @for conf in {{configs}}; do \
         just install-$conf-conf || true; \
@@ -65,10 +67,6 @@ install-fish-conf:
 
 install-figlet-conf:
     @just symlink figlet ~/.figlet
-
-# Download and install selected monospace fonts
-install-fonts:
-    ./scripts/install_fonts.sh
 
 install-gh-conf:
     @just symlink gh/config.yml ~/.config/gh/config.yml
@@ -120,6 +118,9 @@ install-postgres-conf:
 
 install-ranger-conf:
     @just symlink ranger {{config_dir}}/ranger
+
+install-starship-conf:
+    @just symlink starship/starship.toml ~/.config/starship.toml
 
 install-terminator-conf:
     @just symlink terminator {{config_dir}}/terminator
@@ -222,6 +223,10 @@ update-xdistro:
 
 # Package collections
 # -------------------
+
+# Download and install selected monospace fonts
+install-fonts:
+    ./scripts/install_fonts.sh
 
 install-cargo-packages:
     ./scripts/install_cargo_packages.sh

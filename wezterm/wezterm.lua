@@ -45,7 +45,7 @@ config.window_decorations = 'RESIZE'
 -- config.color_scheme = 'Monokai Remastered'
 -- config.color_scheme = 'nord'
 config.color_scheme = 'Tokyo Night Storm'
-config.font = wezterm.font 'JetBrains Mono'
+config.font = wezterm.font 'JetBrainsMono NF'
 config.font_size = 14.0
 config.window_background_opacity = 0.9
 

@@ -135,6 +135,9 @@ command -q vf && vf install compat_aliases global_requirements projects > /dev/n
 # Remove shell greeting message
 set -g fish_greeting
 
+# Prompt
+command -q starship && starship init fish | source
+
 
 #########################
 # ❰❰ General Aliases ❱❱ #

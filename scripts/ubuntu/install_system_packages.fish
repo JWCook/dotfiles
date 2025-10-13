@@ -42,6 +42,7 @@ set PKGS_TOOLS '
     sqlite3
     ssh
     telnet
+    starship
     tidy
     tig
     tldr
