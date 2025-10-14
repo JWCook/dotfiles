@@ -136,8 +136,13 @@ command -q vf && vf install compat_aliases global_requirements projects > /dev/n
 set -g fish_greeting
 
 # Prompt
-command -q starship && starship init fish | source
-
+function starship_transient_prompt_func
+    starship module character
+end
+if command -q starship
+    starship init fish | source
+    enable_transience
+end
 
 #########################
 # ❰❰ General Aliases ❱❱ #

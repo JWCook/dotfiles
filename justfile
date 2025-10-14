@@ -58,7 +58,7 @@ install-fastfetch-conf:
 install-fish-conf:
     @just symlink fish/config.fish                           {{config_dir}}/fish/config.fish
     @just symlink fish/style.fish                            {{config_dir}}/fish/style.fish
-    @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
+    # @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
     @just symlink fish/functions/atuin_key_bindings.fish     {{config_dir}}/fish/functions/fish_user_key_bindings.fish
     @just symlink fish/functions/fish_user_key_bindings.fish {{config_dir}}/fish/functions/atuin_key_bindings.fish
     mkdir -p {{config_dir}}/fish/completions
