@@ -3,16 +3,16 @@
 format = """
 [](color_user)\
 $os$username$hostname\
-[](bg:color_dir fg:color_user)\
+[](fg:prev_bg bg:color_dir)\
 $directory\
-[](fg:color_dir bg:color_git)\
+[](fg:prev_bg bg:color_git)\
 $git_branch$git_status\
-[](fg:color_git bg:color_lang)\
-$c$cpp$golang$java$kotlin$lua$nodejs$php$python$ruby$rust\
-[](fg:color_lang bg:color_bg1)\
-$docker_context\
-[ ](fg:color_bg1)\
-$line_break$character"""
+[](fg:prev_bg bg:color_lang)\
+$c$cpp$docker_context$golang$java$kotlin$lua$nodejs$php$python$ruby$rust\
+$status\
+[ ](fg:color_lang)\
+$line_break$character
+"""
 
 right_format = """
 [](color_bg1)\
@@ -22,50 +22,107 @@ $battery\
 [ ](fg:color_bg0)\
 """
 
-palette = 'gruvbox-dark'
+palette = 'gruvbox-yellow'
+# palette = 'gruvbox-green'
+# palette = 'gruvbox-blue'
+# palette = 'gruvbox-rainbow'
 # palette = 'tokyo-night'
 # palette = 'catppuccin-mocha'
 
-[palettes.gruvbox-dark]
+[palettes.gruvbox-yellow]
+color_fg0       = '#282828'
+color_fg1       = '#ebdbb2'
+color_bg0       = '#3c3836'
+color_bg1       = '#665c54'
+color_user      = '#fabd2f'
+color_dir       = '#a89984'
+color_git       = '#665c54'
+color_lang      = '#3c3836'
+color_success   = '#98971a'
+color_failure   = '#d65d0e'
+color_batt      = '#fabd2f'
+color_char      = '#fabd2f'
+
+[palettes.gruvbox-green]
+color_fg0       = '#282828'
+color_fg1       = '#ebdbb2'
+color_bg0       = '#3c3836'
+color_bg1       = '#665c54'
+color_user      = '#b8bb26'
+color_dir       = '#a89984'
+color_git       = '#665c54'
+color_lang      = '#3c3836'
+color_success   = '#b8bb26'
+color_failure   = '#d65d0e'
+color_batt      = '#b8bb26'
+color_char      = '#b8bb26'
+
+[palettes.gruvbox-blue]
+color_fg0       = '#282828'
+color_fg1       = '#ebdbb2'
+color_bg0       = '#3c3836'
+color_bg1       = '#665c54'
+color_dir       = '#a89984'
+color_git       = '#665c54'
+color_user      = '#83a598'
+color_lang      = '#3c3836'
+color_success   = '#b8bb26'
+color_failure   = '#d65d0e'
+color_batt      = '#83a598'
+color_char      = '#83a598'
+
+[palettes.gruvbox-rainbow]
 color_fg0       = '#fbf1c7'
 color_fg1       = '#fbf1c7'
 color_bg0       = '#3c3836'
 color_bg1       = '#665c54'
-color_lang      = '#458588'
-color_git       = '#689d6a'
 color_user      = '#d65d0e'
 color_dir       = '#d79921'
+color_git       = '#689d6a'
+color_lang      = '#458588'
+color_success   = '#98971a'
+color_failure   = '#d65d0e'
+color_batt      = '#d65d0e'
+color_char      = '#fabd2f'
 
 [palettes.tokyo-night]
-color_fg0       = '#e3e5e5'
+color_fg0       = '#090c0c'
 color_fg1       = '#769ff0'
 color_bg0       = '#1d2230'
 color_bg1       = '#212736'
-color_lang      = '#212736'
-color_git       = '#394260'
-color_user      = '#769ff0'
+color_user      = '#a3aed2'
 color_dir       = '#769ff0'
+color_git       = '#394260'
+color_lang      = '#212736'
+color_success   = '#98971a'
+color_failure   = '#ff9e64'
+color_batt      = '#bb9af7'
+color_char      = '#769ff0'
 
 [palettes.catppuccin-mocha]
 color_fg0       = '#11111b'
 color_fg1       = '#11111b'
-color_bg0       = '#b4befe'
+color_bg0       = '#585b70'
 color_bg1       = '#74c7ec'
-color_lang      = '#a6e3a1'
-color_git       = '#f9e2af'
 color_user      = '#f38ba8'
 color_dir       = '#fab387'
+color_git       = '#f9e2af'
+color_lang      = '#a6e3a1'
+color_success   = '#98971a'
+color_failure   = '#d65d0e'
+color_batt      = '#b4befe'
+color_char      = '#74c7ec'
 
 [os]
 disabled = false
-style = "bg:color_user fg:color_fg1"
+style = "bg:color_user fg:color_fg0"
 
 [os.symbols]
 Alpine = ""
 Amazon = ""
 Arch = "󰣇"
 Debian = "󰣚"
-# EndeavourOS = " "
+# EndeavourOS = " " ""
 EndeavourOS = "󰣇"
 Fedora = "󰣛"
 Linux = "󰌽"
@@ -86,21 +143,26 @@ format = '[ $user ]($style)'
 
 [hostname]
 ssh_only = true
+ssh_symbol = " "
 format = '[$ssh_symbol$hostname]($style)'
-style = "bg:color_user fg:color_fg1"
+style = "bg:color_user fg:color_fg0"
 trim_at = '.companyname.com'
 disabled = false
 
 [directory]
-style = "fg:color_fg1 bg:color_dir"
+style = "fg:color_fg0 bg:color_dir"
 format = "[ $path ]($style)"
 truncation_length = 3
-truncation_symbol = "…/"
+truncation_symbol = "/"
+truncate_to_repo = false
+fish_style_pwd_dir_length = 1
 
 [directory.substitutions]
+".config" = ""
 "Documents" = "󰈙 "
 "Downloads" = " "
 "Music" = "󰝚 "
+"Nextcloud" = ""
 "Pictures" = " "
 "workspace" = "󰲋 "
 
@@ -113,27 +175,36 @@ format = '[[ $symbol $branch ](fg:color_fg1 bg:color_git)]($style)'
 style = "bg:color_git"
 format = '[[($all_status$ahead_behind )](fg:color_fg1 bg:color_git)]($style)'
 
-[docker_context]
-symbol = ""
-style = "bg:color_bg1"
-format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg1)]($style)'
+[status]
+disabled = false
+success_style = 'fg:color_lang bg:color_success'
+failure_style = 'fg:color_lang bg:color_failure'
+format = """
+[ $symbol $status]($style)\
+[](bg:none $style inverted)"""
+symbol = ""
+# success_symbol = " "
 
 [time]
 disabled = false
 use_12hr = true
 format = '[$time]($style)'
 time_format = '%I:%M'
-style = 'fg:color_fg0 bg:color_bg1'
+style = 'fg:color_fg1 bg:color_bg1'
 
 [battery]
 format = '[$symbol$percentage]($style)'
 
 [[battery.display]]
-style = 'fg:color_dir bg:color_bg0'
+style = 'fg:color_batt bg:color_bg0'
 threshold = 80
 
+[character]
+success_symbol = '[❯](color_char)'
+error_symbol = '[❯](color_failure)'
 
-# Languages
+
+# Languages / Tools
 # ----------
 
 [c]
@@ -145,6 +216,11 @@ format = '[[ $symbol ](fg:color_fg1 bg:color_lang)]($style)'
 # symbol = " "
 # style = "bg:color_lang"
 # format = '[[ $symbol ](fg:color_fg1 bg:color_lang)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:color_bg1"
+format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg1)]($style)'
 
 [golang]
 symbol = ""
@@ -178,8 +254,8 @@ format = '[[ $symbol ](fg:color_fg1 bg:color_lang)]($style)'
 
 [python]
 symbol = ""
-style = "bg:color_lang"
-format = '[$symbol($version )(\($virtualenv\) )]($style)'
+style = "fg:color_fg1 bg:color_lang"
+format = '[ $symbol($version )(\($virtualenv\) )]($style)'
 version_format = '$major.$minor'
 
 [ruby]
