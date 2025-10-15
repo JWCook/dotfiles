@@ -1361,3 +1361,13 @@ function fastfetch_first_term
     end
 end
 fastfetch_first_term
+
+
+####################
+# ❰❰ DE-Specific ❱❱ #
+####################
+
+# Sometimes kwin needs a little kick to apply window rules
+alias kwin-apply='qdbus6 org.kde.KWin /KWin reconfigure'
+alias kwin-restart='kwin_wayland --replace'
+
