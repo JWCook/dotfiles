@@ -163,6 +163,9 @@ abbr  pg pgcli
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'; complete -c ps --wraps=procs
+abbr rga rg -. --no-ignore
+abbr rgc rg --context=5
+abbr rgz rg --search-zip
 alias rr='ranger'; complete -c rr --wraps=ranger
 abbr  sq litecli
 abbr  ta type -a
@@ -1370,4 +1373,3 @@ fastfetch_first_term
 # Sometimes kwin needs a little kick to apply window rules
 alias kwin-apply='qdbus6 org.kde.KWin /KWin reconfigure'
 alias kwin-restart='kwin_wayland --replace'
-
