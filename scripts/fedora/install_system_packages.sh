@@ -73,7 +73,6 @@ PKGS_APPS='
     shellcheck
     snapd
     telnet
-    the_silver_searcher
     tig
     tldr
     tmux

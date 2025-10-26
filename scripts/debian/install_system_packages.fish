@@ -13,6 +13,7 @@ set PKGS_TOOLS '
     duf
     fish
     fzf
+    gh
     git
     htop
     jq
@@ -23,7 +24,6 @@ set PKGS_TOOLS '
     pv
     ripgrep
     rsync
-    silversearcher-ag
     sqlite3
     ssh
     tidy

@@ -18,7 +18,7 @@ just
 lolcat
 neovim
 pv
-the_silver_searcher
+ripgrep
 tig
 tmux
 traceroute

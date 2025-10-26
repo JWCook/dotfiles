@@ -744,6 +744,8 @@ end
 # GitHub
 # ------------------------------
 
+abbr gh-login gh auth login --hostname github.com -p ssh --skip-ssh-key
+
 # Get latest version info from a project's GitHub Releases
 function git-releases -a repo
     curl -s "https://api.github.com/repos/$repo/releases/latest"
