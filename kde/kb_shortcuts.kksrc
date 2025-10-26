@@ -1,5 +1,6 @@
 [ActivityManager][Global Shortcuts]
 switch-to-activity-303815f9-a7d0-4526-b154-5e239ef476bc=
+switch-to-activity-88f3a7dc-605c-4b01-adfa-59dd6aadaf7e=
 switch-to-activity-c3da1322-782d-4314-8c01-143c7022fc64=
 
 [KDE Keyboard Layout Switcher][Global Shortcuts]
@@ -136,7 +137,7 @@ Expose=
 ExposeAll=Launch (C)
 ExposeClass=
 ExposeClassCurrentDesktop=
-Grid View=Meta+G
+Grid View=Meta+Ctrl+Tab; Meta+G
 Increase Opacity=
 Kill Window=Meta+Ctrl+Esc
 Move Tablet to Next Output=
@@ -337,6 +338,11 @@ RectangularRegionScreenShot=Meta+Shift+Print
 WindowUnderCursorScreenShot=Meta+Ctrl+Print
 _launch=Meta+Shift+S; Print
 
+[org.kde.touchpadshortcuts.desktop][Global Shortcuts]
+DisableTouchpad=Touchpad Off
+EnableTouchpad=Touchpad On
+ToggleTouchpad=Meta+Ctrl+Touchpad Toggle; Meta+Ctrl+Zenkaku Hankaku; Touchpad Toggle
+
 [org_kde_powerdevil][Global Shortcuts]
 Decrease Keyboard Brightness=Keyboard Brightness Down
 Decrease Screen Brightness=Monitor Brightness Down
@@ -402,3 +408,6 @@ Previous Profile=Meta+Ctrl+P
 Toggle screen map selection=Meta+Ctrl+M
 Toggle stylus mode=Meta+Ctrl+S
 Toggle touch tool=
+
+[yakuake][Global Shortcuts]
+toggle-window-state=Ctrl+F12
