@@ -337,8 +337,8 @@ function tgz-dir -a src -a dest
 end
 
 # Recursive rsync copy w/ progress
-function cprv -a d1 -a d2
-    rsync --archive --whole-file --human-readable --info=progress2 "$d1" "$d2";
+function cprv
+    rsync -ahWz --info=progress2 $argv
 end
 
 # Recursively convert all files in a dir to Unix line endings
