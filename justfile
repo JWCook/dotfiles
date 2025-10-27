@@ -11,12 +11,10 @@ install:
     ./scripts/install_bootstrap_packages.sh
     @just install-conf
     @just install-{{distro}}
-    @just install-xdistro
 
 # Run update scripts for the current distro
 update:
     @just update-{{distro}}
-    @just update-xdistro
 
 
 ##########
@@ -165,12 +163,15 @@ install-completions:
 
 install-debian:
     sudo ./scripts/debian/install_system_packages.fish
+    @just install-xdistro
 update-debian:
     @sudo -v
     sudo nala upgrade -y
+    @just update-xdistro
 
 install-ubuntu:
     sudo ./scripts/ubuntu/install_system_packages.fish -g -k
+    @just install-xdistro
     @just install-fzf
 update-ubuntu: update-debian
     @just install-fzf
@@ -179,14 +180,17 @@ install-wsl:
     @just install-wsl-conf
     sudo ./scripts/ubuntu/install_system_packages.fish -w
     sudo ./scripts/wsl/configure_fonts.sh
+    @just install-xdistro
 update-wsl: update-ubuntu
 
 install-fedora:
     sudo ./scripts/fedora/install_system_packages.sh -r -g -n
+    @just install-xdistro
     @just install-ssh-agent-systemd
 update-fedora:
     @sudo -v
     sudo dnf upgrade -y
+    @just update-xdistro
 
 install-arch:
     sudo ./scripts/arch/install_system_packages.sh
@@ -202,8 +206,9 @@ install-endeavouros:
     @just install-python-tools #install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
-    sudo pacman -Syu
+    sudo pacman -Syu --noconfirm
     paru -Sua
+    @just update-python update-nvim-plugins update-repos update-tldr update-auto-cpufreq
 
 
 ##########################
@@ -264,7 +269,7 @@ install-auto-cpufreq:
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
     @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:
-    - sudo auto-cpufreq --update
+    - command -v auto-cpufrequ && sudo auto-cpufreq --update
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:
