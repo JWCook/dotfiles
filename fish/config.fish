@@ -214,7 +214,10 @@ end
 
 # Unit conversion
 function uc -a expr
-    set expr (echo $expr | sed 's/in in$/in inches/')
+    # Replace ambiguous "in" (LHS or RHS) with "inches"
+    set expr (echo $expr \
+        | sed 's/in in$/in inches/' \
+        | sed -E 's/^([0-9]+)\s*(in )in/\1 inches in/')
     rink $expr
 end
 complete -c uc --wraps=rink
