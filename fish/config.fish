@@ -1004,7 +1004,7 @@ end
 # Get all available versions of a package as a formatted list
 function pip-versions -a package_name
     set version_list (\
-        pip install \
+        uvx pip install \
         --index-url=https://pypi.python.org/simple \
         "$package_name==0.0.0-alpha0" 2>&1 \
         | grep 'from versions:' \
