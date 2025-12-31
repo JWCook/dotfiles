@@ -1,6 +1,7 @@
 -- Replace LazyVim's default nvim-cmp with blink.cmp
 
 return {
+     { "saghen/blink.cmp", enabled = false },
 --   { "hrsh7th/nvim-cmp", enabled = false },
 --   { "hrsh7th/cmp-buffer", enabled = false },
 --   { "hrsh7th/cmp-path", enabled = false },
