@@ -30,6 +30,7 @@ set PKGS_TERM '
 # Other CLI/TUI tools
 set PKGS_TOOLS '
     curl
+    doxx
     fastfetch
     feh
     figlet
@@ -72,6 +73,7 @@ set PKGS_NET '
     openssh
     traceroute
     whois
+    wireguard-tools
 '
 
 # System utilities, drivers, etc.
@@ -194,18 +196,17 @@ set PKGS_DOCKER '
 # AUR packages (installed via paru)
 set PKGS_AUR '
     claude-desktop-bin
-    duplicati-beta-bin
+    doggo-bin
     etcher-bin
     fritzing
+    kopia-bin
     librewolf-bin
     localsend-bin
     pdfsam
-    rustdesk-bin
     sublime-text-4
     ventoy-bin
     visual-studio-code-bin
     yubico-authenticator-bin
-    winboat-bin
     xnviewmp
 '
 
