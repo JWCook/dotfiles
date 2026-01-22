@@ -947,7 +947,7 @@ end
 abbr pc prek
 abbr pca prek run -a \|\| git status
 function pcu
-    prek autoupdate && prek run -a
+    prek auto-update && prek run -a
 end
 
 abbr sv source .venv/bin/activate.fish
