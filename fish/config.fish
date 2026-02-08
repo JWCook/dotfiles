@@ -892,7 +892,11 @@ abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
 abbr pipg pip freeze \| grep -i
 abbr pt pytest
-abbr py-serve python -m http.server
+abbr -e py-serve
+function py-serve -a directory
+    set directory (coalesce $directory '.')
+    uv run -m http.server 8181 --bind 0.0.0.0 --directory $directory
+end
 
 # Tox / Nox
 abbr te tox -e
