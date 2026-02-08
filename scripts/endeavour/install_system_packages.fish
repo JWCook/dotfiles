@@ -29,6 +29,7 @@ set PKGS_TERM '
 
 # Other CLI/TUI tools
 set PKGS_TOOLS '
+    aha
     curl
     doxx
     fastfetch
@@ -101,7 +102,7 @@ set PKGS_LIBS '
     go
     gpgme
     graphviz
-    jre21-openjdk
+    jdk21-openjdk
     libffi
     libx11
     libxpm
@@ -146,6 +147,7 @@ set PKGS_DESKTOP '
     rawtherapee
     signal-desktop
     wezterm
+    wine
 '
 
 # KDE applications
@@ -200,6 +202,7 @@ set PKGS_AUR '
     etcher-bin
     fritzing
     kopia-bin
+    kopia-ui-bin
     librewolf-bin
     localsend-bin
     pdfsam

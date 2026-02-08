@@ -98,6 +98,7 @@ set PKGS_LIBS '
     libxt-dev
     luarocks
     odt2txt
+    openjdk-21-jdk
     pandoc
     ncurses-dev
     protobuf-compiler
