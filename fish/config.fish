@@ -165,6 +165,7 @@ alias pst='procs --tree'
 alias psw='procs --watch'; complete -c ps --wraps=procs
 abbr rga rg -. --no-ignore
 abbr rgc rg --context=5
+abbr rgi rg -i
 abbr rgz rg --search-zip
 alias rr='ranger'; complete -c rr --wraps=ranger
 abbr  sq litecli
