@@ -93,6 +93,16 @@ function install-ghostty
     install-deb $DEB_URL
 end
 
+function install-gh
+    type -q gh && exit 0
+    echo -e "Installing GitHub CLI\n--------------------\n"
+
+    install-gpg "https://cli.github.com/packages/githubcli-archive-keyring.gpg" "/etc/apt/keyrings/githubcli-archive-keyring.gpg"
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        > /etc/apt/sources.list.d/github-cli.list
+    apt update && apt install -y gh
+end
+
 function install-glow
     type -q glow && exit 0
     echo -e "Installing glow\n--------------------\n"
@@ -169,6 +179,7 @@ function install-wezterm
 end
 
 function install-extras
+    install-gh
     install-glow
     install-neovim
 end

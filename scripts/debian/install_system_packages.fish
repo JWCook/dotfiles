@@ -13,7 +13,6 @@ set PKGS_TOOLS '
     duf
     fish
     fzf
-    gh
     git
     htop
     jq
