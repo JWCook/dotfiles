@@ -739,7 +739,7 @@ end
 function grm-tag -a tag
     git tag -d $tag
     git push origin :refs/tags/$tag
-    git push upstream :refs/tags/$tag
+    git remote | grep -q '^upstream$' && git push upstream :refs/tags/$tag
 end
 
 
