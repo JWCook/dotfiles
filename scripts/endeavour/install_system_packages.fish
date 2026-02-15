@@ -35,6 +35,7 @@ set PKGS_TOOLS '
     fastfetch
     feh
     figlet
+    gdb
     git
     git-delta
     github-cli
@@ -44,11 +45,13 @@ set PKGS_TOOLS '
     lolcat
     ncdu
     neovim
+    perf
     qpdf
     rink
     rsync
     shellcheck
     sqlite
+    strace
     tidy
     tig
     tldr
@@ -119,6 +122,7 @@ set PKGS_LIBS '
     ruby
     rustup
     sqlite
+    texlive
     wl-clipboard
     xz
 '
