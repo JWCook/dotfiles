@@ -641,11 +641,9 @@ function gball
     git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
 end
 
-# Prune branches that have been deleted remotely
+# Prune branches and tags that have been deleted remotely
 function gbprune
-    set gone_branches (git fetch -p && git branch -vv | awk '/: gone]/{print $1}')
-    printf "Deleting branches: $gone_branches"
-    git branch -D $gone_branches
+    git fetch --prune --prune-tags
 end
 
 # Interactive rebase (onto main by default)
