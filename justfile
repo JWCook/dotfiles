@@ -251,6 +251,9 @@ install-cargo-packages:
     ./scripts/install_cargo_packages.sh
 update-cargo: install-cargo-packages
 
+install-go:
+    sudo ./scripts/xdistro/install_go.sh
+
 install-node:
     ./scripts/install_node.fish
 update-npm:
