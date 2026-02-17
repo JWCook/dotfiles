@@ -165,6 +165,10 @@ set PKGS_KDE '
     plasma-systemmonitor
     spectacle
 '
+# krita
+# digikam
+# remmina
+# libvncserver
 
 # Gaming-related appllications and drivers
 set PKGS_GAMES '
@@ -216,6 +220,8 @@ set PKGS_AUR '
     yubico-authenticator-bin
     xnviewmp
 '
+# lstr
+# winboat-bin
 
 # Packages to remove after system setup
 set PKGS_REMOVE '
