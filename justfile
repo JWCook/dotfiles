@@ -289,6 +289,7 @@ update-auto-cpufreq:
     - command -v auto-cpufrequ && sudo auto-cpufreq --update
 install-claude-code:
     curl -fsSL https://claude.ai/install.sh | bash
+    npm install -g @anthropic-ai/sandbox-runtime
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:

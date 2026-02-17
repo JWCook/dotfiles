@@ -24,6 +24,7 @@ set PKGS_TOOLS '
     ripgrep
     rsync
     sqlite3
+    socat
     ssh
     tidy
     tig
@@ -54,7 +55,8 @@ set PKGS_DESKTOP '
 # --------------------
 
 # Docker packages
-set PKGS_DOCKER '
+set PKGS_CONTAINER '
+    bubblewrap
     containerd.io
     docker-ce
     docker-ce-cli
@@ -70,7 +72,7 @@ function install-docker
 
     echo "deb [arch=amd64 signed-by=$DOCKER_KEY] https://download.docker.com/linux/debian $VERSION_CODENAME stable" \
       > /etc/apt/sources.list.d/docker.list
-    apt update && echo $PKGS_DOCKER | xargs apt install -y
+    apt update && echo $PKGS_CONTAINER | xargs apt install -y
 end
 
 # Mirrors used by nala for parallel downloads
