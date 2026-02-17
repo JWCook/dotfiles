@@ -257,7 +257,6 @@ end
 ###############################
 
 # Recursive folder size
-abbr -e du
 if command -q dust
     alias du='dust'
 else
@@ -402,7 +401,6 @@ abbr listen lsof -P -i -n \| grcat conf.nmap
 function local-ip
     ifconfig | awk "/inet/ { print $argv[2] } " | sed -e s/addr://
 end
-abbr -e public-ip
 alias public-ip='curl -s ifconfig.me'
 abbr netconn netstat -pan --inet
 abbr tracert traceroute
@@ -441,7 +439,6 @@ end
 abbr date-update sudo ntpdate $NTP_SERVER
 # Formatted local user list
 abbr lu column -ts: /etc/passwd \| sort
-abbr -e lu-current
 function lu-current  # Currently logged on users
     w -hs | cut -d " " -f1 | sort | uniq
 end
@@ -614,7 +611,6 @@ function gadd
     git status --short --branch
 end
 
-abbr -e gunstage
 function gunstage
     set paths (default-pwd $argv)
     git restore --staged $paths
@@ -721,7 +717,6 @@ end
 # ------------------------------
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
-abbr -e glog-branch
 function glog-branch
      git log main.. --pretty=format:%s --reverse
 end
@@ -749,29 +744,26 @@ end
 # GitHub
 # ------------------------------
 
-abbr gh-login gh auth login --hostname github.com -p ssh --skip-ssh-key
+abbr gh-issues gh issue list
+abbr gh-pr gh pr view
+function gh-login
+    gh auth status || gh auth login --hostname github.com -p ssh --skip-ssh-key --web
+end
 
 # Get latest version info from a project's GitHub Releases
-function git-releases -a repo
+function gh-releases -a repo
     curl -s "https://api.github.com/repos/$repo/releases/latest"
 end
-function git-latest-release -a repo
+function gh-latest-release -a repo
     git-releases $repo | jq -r .tag_name
 end
-function git-latest-release-link -a repo
+function gh-latest-release-link -a repo
     git-releases $repo | jq -r '.assets[0].browser_download_url'
 end
-function git-latest-release-rpm -a repo
+function gh-latest-release-rpm -a repo
     git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
 end
 
-function fix-poetry
-    git add poetry.lock
-    git reset HEAD poetry.lock
-    git checkout poetry.lock
-    poetry update
-    git add poetry.lock
-end
 
 ################
 # ❰❰ Docker ❱❱ #
@@ -894,7 +886,6 @@ abbr lsv lsvirtualenv -b
 alias rmv='vf rm'
 abbr pipg pip freeze \| grep -i
 abbr pt pytest
-abbr -e py-serve
 function py-serve -a directory
     set directory (coalesce $directory '.')
     uv run -m http.server 8181 --bind 0.0.0.0 --directory $directory
@@ -915,7 +906,6 @@ abbr uvn uv run nox
 abbr uvpc uv run --default-index https://pypi.org/simple prek run -a
 abbr uvl uv lock --default-index https://pypi.org/simple
 abbr uvt uv tool
-abbr -e uvs
 function uvs
     set sync_args '--all-extras' '--all-groups'
     test -f uv.lock && set sync_args $sync_args '--frozen'
