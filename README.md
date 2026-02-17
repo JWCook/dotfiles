@@ -12,3 +12,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -
 git clone https://github.com/JWCook/dotfiles && cd dotfiles
 just install
 ```
+
+# Linting
+```sh
+prek run -a
+```
