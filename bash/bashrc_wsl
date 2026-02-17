@@ -58,5 +58,3 @@ function startme() {
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}')
 
-# Start Docker daemon automatically when logging in if not running.
-wsl.exe -u root -e sh -c "service docker status > /dev/null || service docker start"
