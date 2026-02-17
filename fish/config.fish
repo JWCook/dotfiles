@@ -552,7 +552,6 @@ abbr gf git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull
 alias gpp='git pull --rebase && gbprune'
-abbr gpr git pull --rebase
 abbr gpush git push
 abbr gfpush git push --force-with-lease
 abbr gffpush git push --force
@@ -573,11 +572,23 @@ function gfpushu -a branch
     git push -f origin $branch
 end
 
+# Git pull with stash and/or rebase (if necessary)
 function gpr
     git fetch --all
-    git stash
-    git pull --rebase
-    git stash pop
+
+    # Check if remote has new commits
+    if test (git rev-list HEAD..@{u} 2>/dev/null | wc -l) -eq 0
+        echo "Already up to date with remote"
+    # Stash uncommitted changes, if needed
+    else if test -n "$(git status --porcelain)"
+        git stash
+        git pull --rebase
+        git stash pop
+    else
+        git pull --rebase
+    end
+
+    git fetch --prune --prune-tags
 end
 
 function grm
@@ -588,7 +599,7 @@ end
 
 function gpu -a branch
     set branch (coalesce $branch (gbranch))
-    git pull upstream $branch
+    git pull --rebase upstream $branch
     git push origin $branch
 end
 
@@ -769,7 +780,8 @@ end
 # ❰❰ Docker ❱❱ #
 ################
 
-abbr dps docker ps -a
+# abbr dps docker ps -a
+abbr -e dps
 abbr dpsc docker ps --format "{{.Names}}" | sort
 abbr dlog docker logs -f
 abbr dstat docker stats
