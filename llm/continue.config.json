@@ -1,0 +1,11 @@
+{
+    "models": [
+        {
+            "title": "OpenRouter Claude 4.6 Sonnet",
+            "provider": "openrouter",
+            "model": "anthropic/claude-4.6-sonnet",
+            "apiBase": "https://openrouter.ai/api/v1",
+            "apiKey": "{OPENROUTER_KEY}"
+        }
+    ]
+}

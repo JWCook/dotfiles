@@ -1,0 +1,1 @@
+Please review this whole repo again, and update .notes/CLAUDE.md. Remove any outdated/inaccurate details. Add information relevant to helping you navigate the repo in future sessions, including project structure, libraries and features used, and relevant design decisions. Don't include details on past states or intermediate changes, just the current state.

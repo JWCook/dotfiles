@@ -1,0 +1,16 @@
+model: openrouter/anthropic/claude-4.6-sonnet
+api-key:
+  - openrouter={OPENROUTER_KEY}
+input-history-file: .aider-input
+chat-history-file: .aider-history.md
+cache-prompts: true
+
+# Theme
+# See https://pygments.org/styles for available themes
+code-theme: nord-darker
+dark-mode: true
+
+# Git
+auto-commits: false
+dirty-commits: false
+gitignore: false

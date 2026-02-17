@@ -4,7 +4,9 @@ default:
 
 # Detect distro or WSL
 distro := `uname -r | grep -q microsoft && echo 'wsl' || (. /etc/os-release && echo $ID)`
+
 config_dir := env_var_or_default("XDG_CONFIG_HOME", "~/.config")
+pwd := justfile_directory()
 
 # Run install scripts for the current distro
 install:
@@ -22,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "atuin bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython nvim pdb postgres starship tmux vim wezterm yazi"
+configs := "atuin bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython llm nvim pdb postgres starship tmux vim wezterm yazi"
 # "albert kitty ghostty ranger terminator xfce"
 
 install-conf:
@@ -33,11 +35,19 @@ install-conf:
 install-gnome-conf: install-gnome-terminal-conf
     ./scripts/configure_gnome.sh
 
+install-aider-conf:
+    @just symlink llm/aider.conf.yml ~/.aider.conf.yml
+
 install-albert-conf:
     @just symlink albert/albert.conf {{config_dir}}/albert/albert.conf
 
 install-atuin-conf:
     @just symlink atuin/config.toml {{config_dir}}/atuin/config.toml
+
+install-claude-conf:
+    @just symlink llm/AGENTS.md ~/.claude/CLAUDE.md
+    @just symlink llm/claude/settings.json ~/.claude/settings.json
+    @just symlink llm/claude/commands ~/.claude/commands
 
 install-bash-conf:
     @just symlink bash/bashrc       ~/.bashrc
@@ -103,6 +113,10 @@ install-ipython-conf:
 install-kitty-conf:
     @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
     @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
+
+install-llm-conf:
+    @just symlink llm/aliases.json ~/.config/io.datasette.llm/aliases.json
+    @just symlink llm/default_model.txt ~/.config/io.datasette.llm/default_model.txt
 
 install-nvim-conf:
     @just symlink nvim {{config_dir}}/nvim
@@ -270,6 +284,8 @@ install-auto-cpufreq:
     @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:
     - command -v auto-cpufrequ && sudo auto-cpufreq --update
+install-claude-code:
+    curl -fsSL https://claude.ai/install.sh | bash
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:
