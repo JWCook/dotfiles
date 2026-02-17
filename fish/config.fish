@@ -721,7 +721,10 @@ end
 # ------------------------------
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
-abbr glog-branch glog main..HEAD
+abbr -e glog-branch
+function glog-branch
+     git log main.. --pretty=format:%s --reverse
+end
 abbr glog-remote git fetch \; glog HEAD..origin/main
 abbr glol glog \| lc-gradient-delay
 abbr gcstat git shortlog --summary --numbered
