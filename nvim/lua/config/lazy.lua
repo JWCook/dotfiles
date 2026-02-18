@@ -25,6 +25,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
+  concurrency = 5,
   -- automatically check for plugin updates
   checker = {
     enabled = true,
