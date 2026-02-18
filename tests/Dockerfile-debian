@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:trixie
 
 # Create test-user with sudo privileges and no password
 RUN apt-get update \
