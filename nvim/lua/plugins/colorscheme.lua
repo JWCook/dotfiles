@@ -3,8 +3,7 @@
 return {
   {
     "ellisonleao/gruvbox.nvim",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
     config = function()
       require("gruvbox").setup({
         terminal_colors = true,
@@ -16,26 +15,22 @@ return {
 
   {
     "shaunsingh/nord.nvim",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
   },
 
   {
     "AlexvZyl/nordic.nvim",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
   },
 
   {
     "sainnhe/everforest",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
   },
 
   {
     'everviolet/nvim',
     name = 'evergarden',
-    lazy = false,
     priority = 1000,
     opts = {
       theme = {
