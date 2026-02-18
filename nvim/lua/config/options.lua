@@ -43,7 +43,8 @@ vim.opt.smartcase = true
 -- ❰❰ User Interface ❱❱
 vim.opt.number = true
 vim.opt.fillchars:append("vert:▚")
-vim.opt.foldmethod = "indent"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.showmatch = true
 vim.opt.mat = 2

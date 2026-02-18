@@ -134,20 +134,6 @@ return {
     },
   },
 
-  -- Buffer management
-  {
-    "famiu/bufdelete.nvim",
-    lazy = false
-  },
-
-  -- Comment toggle
-  {
-    "numToStr/Comment.nvim",
-    opts = {
-      mappings = false,
-    },
-  },
-
   -- Whitespace highlight/trim
   {
     "nvim-mini/mini.trailspace",

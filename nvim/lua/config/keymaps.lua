@@ -1,7 +1,6 @@
 -- Default keymaps: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- TODO:
 -- To bind:
--- toggle block comment
 -- Obsidian smart_action
 -- Obsidian rename -> F2
 -- Obsidian quick_switch
@@ -28,7 +27,7 @@ ca Q q
 keymap('n', ';', ':', { noremap = true })
 keymap('v', ';', ':', { noremap = true })
 keymap('n', 'ev', ':vsplit ~/.config/nvim/init.lua<CR>')
-keymap('n', 'sv', ':luafile ~/.config/nvim/init.lua<CR>')
+keymap('n', 'sv', ':Lazy reload<CR>')
 keymap('n', 'rr', ':redraw!<CR>')
 keymap('n', 'q:', '<nop>')
 keymap('n', 'Q', '<nop>')
@@ -61,8 +60,8 @@ keymap('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
 keymap('n', '<leader>cf', function() require("conform").format({ async = true }) end, { desc = 'Format code' })
 
 -- ❰❰ Diagnostics ❱❱
-keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
-keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+keymap('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end, { desc = 'Previous diagnostic' })
+keymap('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end, { desc = 'Next diagnostic' })
 keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
 keymap('n', '<leader>cq', vim.diagnostic.setloclist, { desc = 'Diagnostics to location list' })
 
@@ -76,7 +75,7 @@ keymap('n', '<C-Left>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-Right>', ':bnext<CR>', { silent = true })
 keymap('n', '<C-h>', ':bprev<CR>', { silent = true })
 keymap('n', '<C-l>', ':bnext<CR>', { silent = true })
-command("BD", ":Bdelete", {})
+command("BD", function() Snacks.bufdelete() end, {})
 command("BN", ":new", {})
 
 -- ❰❰ Windows ❱❱
@@ -115,28 +114,10 @@ keymap('n', '<F7>', ':TagbarToggle<CR>', { silent = true })
 keymap('n', '<F10>', ':YankyRingHistory<CR>', { silent = true })
 
 -- ❰❰ Comment Toggle ❱❱
-keymap('n', '<F3>', function() require('Comment.api').toggle.linewise.current() end, { desc = 'Toggle comment' })
-keymap('v', '<F3>', function()
-  local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-  vim.api.nvim_feedkeys(esc, 'nx', false)
-  require('Comment.api').toggle.linewise(vim.fn.visualmode())
-end, { desc = 'Toggle comment' })
--- TODO: Not working
--- keymap('n', '<C-F3>', function() require('Comment.api').toggle.blockwise.current() end, { desc = 'Toggle block comment' })
--- keymap('v', '<C-F3>', function()
---   local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
---   vim.api.nvim_feedkeys(esc, 'nx', false)
---   require('Comment.api').toggle.blockwise(vim.fn.visualmode())
--- end, { desc = 'Toggle block comment' })
-
--- ❰❰ Git Mappings ❱❱
-keymap('n', 'gf', ':Gdiff<CR>', { silent = true })
-keymap('n', 'gs', ':Git<CR>', { silent = true })
-keymap('n', 'gp', ':Git pull<CR>', { silent = true })
-keymap('n', 'gw', ':Gwrite<CR>', { silent = true })
-keymap('n', 'gl', ':Git blame<CR>', { silent = true })
-keymap('n', 'gc', ':Git commit | startinsert<CR>', { silent = true })
-keymap('n', 'gu', ':Git reset --soft HEAD~1 | redraw<CR>', { silent = true })
+keymap('n', '<F3>', 'gcc', { remap = true, desc = 'Toggle line comment' })
+keymap('v', '<F3>', 'gc', { remap = true, desc = 'Toggle comment on selection' })
+keymap('n', '<C-F3>', 'gbc', { remap = true, desc = 'Toggle block comment' })
+keymap('v', '<C-F3>', 'gb', { remap = true, desc = 'Toggle block comment on selection' })
 
 -- ❰❰ Gitsigns ❱❱
 keymap('n', '<M-\\>', ':Gitsigns toggle_signs<CR>', { silent = true })
