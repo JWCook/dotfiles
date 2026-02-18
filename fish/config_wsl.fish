@@ -1,3 +1,6 @@
+# Add wsl.exe and others to the path without enabling full interop
+fish_add_path /mnt/c/Windows/System32
+
 # Additional config + aliases specific to WSL
 set -gx WIN_HOME (wslpath "C:/Users/$USER")
 set -gx WIN_WORKSPACE (wslpath 'D:/workspace')
