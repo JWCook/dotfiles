@@ -755,11 +755,25 @@ end
 # GitHub
 # ------------------------------
 
-abbr gh-issues gh issue list
 abbr gh-pr gh pr view
 function gh-login
     gh auth status || gh auth login --hostname github.com -p ssh --skip-ssh-key --web
 end
+function ghi -a issue
+    if test -z $issue
+        gh issue list
+    else
+        gh issue view $issue
+    end
+end
+function ghp -a pr
+    if test -z $pr
+        gh pr list
+    else
+        gh pr view $issue
+    end
+end
+
 
 # Get latest version info from a project's GitHub Releases
 function gh-releases -a repo
