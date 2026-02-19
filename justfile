@@ -64,9 +64,9 @@ install-fastfetch-conf:
     @just symlink fastfetch/config.jsonc {{config_dir}}/fastfetch/config.jsonc
 
 install-fish-conf:
+    # @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
     @just symlink fish/config.fish                           {{config_dir}}/fish/config.fish
     @just symlink fish/style.fish                            {{config_dir}}/fish/style.fish
-    # @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
     @just symlink fish/functions/atuin_key_bindings.fish     {{config_dir}}/fish/functions/fish_user_key_bindings.fish
     @just symlink fish/functions/fish_user_key_bindings.fish {{config_dir}}/fish/functions/atuin_key_bindings.fish
     mkdir -p {{config_dir}}/fish/completions
@@ -211,18 +211,15 @@ install-arch:
 update-arch:
     sudo pacman -Syu
 
-# TODO: some differences with installing cross-distro packages:
-#   - rust packages installed via AUR instead of cargo
-#   - need to install/configure nvm/node before installing some AUR packages
 install-endeavouros:
     @just install-node
     ./scripts/endeavour/install_system_packages.fish
-    @just install-python-tools #install-fonts
+    @just install-python-tools install-rust install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
     sudo pacman -Syu --noconfirm
     paru -Sua
-    @just update-python update-nvim-plugins update-repos update-tldr update-auto-cpufreq
+    @just update-python update-rust update-nvim-plugins update-repos update-tldr update-auto-cpufreq
 
 
 ##########################
