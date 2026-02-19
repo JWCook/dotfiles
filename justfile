@@ -163,12 +163,15 @@ install-yazi-conf:
     @just symlink yazi/theme.toml {{config_dir}}/yazi/theme.toml
 
 install-completions:
-    atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash
-    atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
-    procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash
-    procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
-    just --completions fish > ~/.config/fish/completions/just.fish
-    just --completions bash > ~/.config/bash/completions/just.bash
+    - command -v atuin &> /dev/null \
+        && atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash \
+        && atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
+    - command -v procs &> /dev/null \
+        && procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash \
+        && procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
+    - command -v just  &> /dev/null \
+        &&just --completions fish > ~/.config/fish/completions/just.fish \
+        && just --completions bash > ~/.config/bash/completions/just.bash
 
 
 #############################
