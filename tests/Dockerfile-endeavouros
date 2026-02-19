@@ -1,0 +1,25 @@
+FROM alex5402/endeavouros
+
+# Create test-user with sudo privileges and no password
+# and update keyring (outdated in base image)
+RUN pacman -Sy --noconfirm archlinux-keyring \  
+    && pacman -Syu --noconfirm \
+    && useradd -m test-user \
+    && echo "test-user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/test-user \
+    && chmod 0440 /etc/sudoers.d/test-user
+
+COPY --chown=test-user:test-user . /home/test-user/dotfiles
+
+# Switch to test-user and run the init script
+USER test-user
+WORKDIR /home/test-user/dotfiles
+ENV PATH="/home/test-user/.local/bin:${PATH}"
+
+# Run init scripts and capture output
+RUN scripts/install_bootstrap_packages.sh \
+    > /home/test-user/stdout.txt 2> /home/test-user/stderr.txt
+RUN (just install || true) \
+    >> /home/test-user/stdout.txt 2>> /home/test-user/stderr.txt
+    # && (just install-endeavouros || true) \
+    # >> /home/test-user/stdout.txt 2>> /home/test-user/stderr.txt
+CMD ["bash", "-c", "echo '=== STDOUT ==='; cat /home/test-user/stdout.txt; echo -e '\\n=== STDERR ==='; cat /home/test-user/stderr.txt"]
