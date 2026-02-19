@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 # Install node tools and versions
-set NODE_VERSIONS 18 20 22 latest
-set DEFAULT_NODE_VERSION 22
+set NODE_VERSIONS 18 20 22 24 latest
+set DEFAULT_NODE_VERSION 24
 
 # Install nvm (bash)
 mkdir -p bootstrap
