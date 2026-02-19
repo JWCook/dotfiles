@@ -1,5 +1,9 @@
 #!/usr/bin/env fish
 
+# Options:
+# -e: Install extra desktop applications
+# -g: Install game apps + drivers
+
 # Package categories
 # --------------------
 
@@ -138,19 +142,39 @@ set PKGS_IMG '
 
 # Graphical applications
 set PKGS_DESKTOP '
-    audacity
-    discord
+    claude-desktop-bin
+    etcher-bin
     gimp
     guake
     keepassxc
-    kicad
+    kopia-bin
+    kopia-ui-bin
     libreoffice-fresh
+    librewolf-bin
+    localsend-bin
     nextcloud-client
     obsidian
+    pdfsam
     rapid-photo-downloader
-    rawtherapee
     signal-desktop
+    sublime-text-4
+    ventoy-bin
+    visual-studio-code-bin
     wezterm
+    xnviewmp
+    yubico-authenticator-bin
+'
+set PKGS_DESKTOP_EXTRA '
+    audacity
+    digikam
+    discord
+    fritzing
+    kicad
+    krita
+    libvncserver
+    rawtherapee
+    remmina
+    winboat-bin
     wine
 '
 
@@ -165,10 +189,6 @@ set PKGS_KDE '
     plasma-systemmonitor
     spectacle
 '
-# krita
-# digikam
-# remmina
-# libvncserver
 
 # Gaming-related appllications and drivers
 set PKGS_GAMES '
@@ -203,26 +223,6 @@ set PKGS_DOCKER '
     containerd
 '
 
-# AUR packages (installed via paru)
-set PKGS_AUR '
-    claude-desktop-bin
-    doggo-bin
-    etcher-bin
-    fritzing
-    kopia-bin
-    kopia-ui-bin
-    librewolf-bin
-    localsend-bin
-    pdfsam
-    sublime-text-4
-    ventoy-bin
-    visual-studio-code-bin
-    yubico-authenticator-bin
-    xnviewmp
-'
-# lstr
-# winboat-bin
-
 # Packages to remove after system setup
 set PKGS_REMOVE '
     eos-apps-info
@@ -256,13 +256,13 @@ function install-paru
 end
 
 # Add/update pacman repos
-function update-repos
+function add-game-util-repos
     # Enable multilib for 32-bit libraries
     if not grep -q "^\[multilib\]" /etc/pacman.conf
         sudo sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
     end
 
-    # Add LizardByte repo
+    # Add LizardByte repo for sunshine server
     if not grep -q "^\[lizardbyte\]" /etc/pacman.conf
         sudo printf '%s\n' '' \
         '[lizardbyte]' \
@@ -283,27 +283,34 @@ set ALL_PACKAGES "
     $PKGS_LIBS
     $PKGS_IMG
     $PKGS_DESKTOP
-    $PKGS_GAMES
     $PKGS_MEDIA
     $PKGS_KDE
     $PKGS_DOCKER
 "
 
-# Update mirrors using reflector (EndeavourOS uses reflector instead of pacman-mirrors)
+# Determine packages to install based on shell arguments
+argparse 'e' 'g' -- $argv
+or begin
+    exit 1
+end
+if set -q _flag_e
+    set ALL_PACKAGES "$ALL_PACKAGES $PKGS_DESKTOP_EXTRA"
+end
+if set -q _flag_g
+    set ALL_PACKAGES "$ALL_PACKAGES $PKGS_GAMES"
+    add-game-util-repos
+end
+
+# Update mirrors (EndeavourOS uses reflector instead of pacman-mirrors)
 echo -e "Updating mirrors with reflector\n--------------------\n"
 sudo reflector --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 
-# Install pacman packages
-update-repos
-sudo pacman -Syu --noconfirm
-echo -e "Installing packages from official repos\n--------------------\n"
-echo $ALL_PACKAGES | xargs sudo pacman -S --needed --noconfirm
-
-# Install AUR packages
+# Install official + AUR packages
 init-gpg
 install-paru
-echo -e "Installing AUR packages\n--------------------\n"
-echo $PKGS_AUR | xargs paru -S --needed --noconfirm
+paru -Syu --noconfirm
+echo -e "Installing packages\n--------------------\n"
+echo $ALL_PACKAGES | xargs sudo paru -S --needed --noconfirm
 
 # Configure Docker
 sudo systemctl enable --now docker.service
