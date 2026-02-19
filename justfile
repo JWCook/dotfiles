@@ -209,10 +209,10 @@ update-fedora:
     sudo dnf upgrade -y
     @just update-xdistro
 
-install-arch:
-    sudo ./scripts/arch/install.sh
-update-arch:
-    sudo pacman -Syu
+install-steamos:
+    sudo ./scripts/steamos/install.sh
+update-steamos:
+    sudo pacman -Syu --noconfirm
 
 install-endeavouros:
     @just install-node install-rust  # required for subsequent steps
@@ -220,8 +220,7 @@ install-endeavouros:
     @just install-python-tools install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
-    sudo pacman -Syu --noconfirm
-    paru -Sua
+    paru -Syu
     @just update-python update-rust update-nvim-plugins update-repos update-tldr update-auto-cpufreq
 
 
@@ -282,7 +281,6 @@ install-rust:
 update-rust: install-rust
 
 install-auto-cpufreq:
-    # TODO: only install for laptops/other battery-powered devices?
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
     @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:
