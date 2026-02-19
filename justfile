@@ -179,7 +179,7 @@ install-completions:
 #############################
 
 install-debian:
-    sudo ./scripts/debian/install_system_packages.fish
+    sudo ./scripts/debian/install.fish
     @just install-xdistro
 update-debian:
     @sudo -v
@@ -187,7 +187,7 @@ update-debian:
     @just update-xdistro
 
 install-ubuntu:
-    sudo ./scripts/ubuntu/install_system_packages.fish -g -k
+    sudo ./scripts/ubuntu/install.fish -g -k
     @just install-xdistro
     @just install-fzf
 update-ubuntu: update-debian
@@ -195,13 +195,13 @@ update-ubuntu: update-debian
 
 install-wsl:
     @just install-wsl-conf
-    sudo ./scripts/ubuntu/install_system_packages.fish -w
+    sudo ./scripts/ubuntu/install.fish -w
     sudo ./scripts/wsl/configure_fonts.sh
     @just install-xdistro
 update-wsl: update-ubuntu
 
 install-fedora:
-    sudo ./scripts/fedora/install_system_packages.sh -r -g -n
+    sudo ./scripts/fedora/install.sh -r -g -n
     @just install-xdistro
     @just install-ssh-agent-systemd
 update-fedora:
@@ -210,13 +210,13 @@ update-fedora:
     @just update-xdistro
 
 install-arch:
-    sudo ./scripts/arch/install_system_packages.sh
+    sudo ./scripts/arch/install.sh
 update-arch:
     sudo pacman -Syu
 
 install-endeavouros:
     @just install-node install-rust  # required for subsequent steps
-    ./scripts/endeavour/install_system_packages.fish
+    ./scripts/endeavour/install.fish
     @just install-python-tools install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
