@@ -53,9 +53,11 @@ function prompt-confirm
     end
 end
 
-# Source a file, if it exists
-function source-file -a src_file
-    test -f "$src_file" && source $argv
+# Source one or more files, if they exist
+function source-file
+    for f in $argv
+        test -f "$f" && source "$f"
+    end
 end
 
 # Source an executable, if it exists on path
@@ -109,8 +111,7 @@ fish_add_path /usr/local/src/fzf/bin
 fish_add_path node_modules/.bin
 
 # Additional shell config
-source-file ~/.config/fish/config_wsl.fish
-source-file ~/.config/fish/config_local.fish
+source-file ~/.config/fish/config_*.fish
 source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
