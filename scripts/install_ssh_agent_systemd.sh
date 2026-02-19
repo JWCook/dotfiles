@@ -2,7 +2,7 @@
 USER_SYSTEMD_DIR=~/.config/systemd/user/
 
 mkdir -p $USER_SYSTEMD_DIR
-cp ssh/ssh-agent.service $USER_SYSTEMD_DIR/
+cp scripts/ssh-agent.service $USER_SYSTEMD_DIR/
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
 
