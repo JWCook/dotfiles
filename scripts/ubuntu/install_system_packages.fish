@@ -96,6 +96,7 @@ set PKGS_LIBS '
     libx11-dev
     libxpm-dev
     libxt-dev
+    libatomic1
     luarocks
     odt2txt
     openjdk-21-jdk
