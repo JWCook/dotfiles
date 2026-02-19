@@ -238,7 +238,7 @@ set PKGS_REMOVE '
 # --------------------
 
 function init-gpg
-    echo -e "Initializing GPG\n--------------------\n"
+    echo "Initializing GPG\n--------------------\n"
     mkdir -p ~/.local/share/gnupg
     chmod 700 ~/.local/share/gnupg
     gpg --list-keys > /dev/null 2>&1 || true
@@ -247,12 +247,12 @@ end
 
 function install-paru
     type -q paru && return 0
-    rustup default stable
-    echo -e "Installing paru\n--------------------\n"
+    echo "Installing paru\n--------------------\n"
     set temp_dir (mktemp -d) && cd $temp_dir
-    cd $temp_dir && git clone https://aur.archlinux.org/paru.git
-    cd paru && makepkg -si --noconfirm
-    cd ~ && rm -rf $temp_dir
+    git clone https://aur.archlinux.org/paru.git
+    # Requires rust + cargo, but they will already be installed via rustup installer
+    cd paru && makepkg -id --noconfirm
+    rm -rf $temp_dir
 end
 
 # Add/update pacman repos
@@ -302,15 +302,15 @@ if set -q _flag_g
 end
 
 # Update mirrors (EndeavourOS uses reflector instead of pacman-mirrors)
-echo -e "Updating mirrors with reflector\n--------------------\n"
+echo "Updating mirrors with reflector\n--------------------\n"
 sudo reflector --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 
 # Install official + AUR packages
 init-gpg
 install-paru
 paru -Syu --noconfirm
-echo -e "Installing packages\n--------------------\n"
-echo $ALL_PACKAGES | xargs sudo paru -S --needed --noconfirm
+echo "Installing packages\n--------------------\n"
+echo $ALL_PACKAGES | xargs paru -S --needed --noconfirm
 
 # Configure Docker
 sudo systemctl enable --now docker.service

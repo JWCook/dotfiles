@@ -212,9 +212,9 @@ update-arch:
     sudo pacman -Syu
 
 install-endeavouros:
-    @just install-node
+    @just install-node install-rust  # required for subsequent steps
     ./scripts/endeavour/install_system_packages.fish
-    @just install-python-tools install-rust install-fonts
+    @just install-python-tools install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
     sudo pacman -Syu --noconfirm
