@@ -273,9 +273,9 @@ update-repos:
 
 install-rust:
     command -v rustup &> /dev/null \
-        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    rustup update
-    rustup default stable
+        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    . "$HOME/.cargo/env" && rustup update
+    . "$HOME/.cargo/env" && rustup default stable
 update-rust: install-rust
 
 install-auto-cpufreq:
