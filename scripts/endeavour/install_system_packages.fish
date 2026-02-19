@@ -330,5 +330,9 @@ if type -q fish
     echo "Default shell set to fish"
 end
 
-# Remove some pre-installed packages
-sudo pacman -R --noconfirm $PKGS_REMOVE
+# Remove some pre-installed packages (if present)
+for pkg in $PKGS_REMOVE
+    if pacman -Q $pkg > /dev/null 2>&1
+        sudo pacman -R --noconfirm $pkg
+    end
+end
