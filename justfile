@@ -163,13 +163,13 @@ install-yazi-conf:
     @just symlink yazi/theme.toml {{config_dir}}/yazi/theme.toml
 
 install-completions:
-    - command -v atuin &> /dev/null \
+    - command -v atuin >/dev/null 2>&1 \
         && atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash \
         && atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
-    - command -v procs &> /dev/null \
+    - command -v procs >/dev/null 2>&1 \
         && procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash \
         && procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
-    - command -v just  &> /dev/null \
+    - command -v just  >/dev/null 2>&1 \
         &&just --completions fish > ~/.config/fish/completions/just.fish \
         && just --completions bash > ~/.config/bash/completions/just.bash
 
@@ -238,7 +238,7 @@ install-xdistro:
 update-xdistro:
     @just _parallel update-rust update-cargo update-python
     @just update-nvim-plugins update-repos update-tldr update-auto-cpufreq
-    @if command -v snap &> /dev/null; then sudo snap refresh; fi
+    @if command -v snap >/dev/null 2>&1; then sudo snap refresh; fi
 
 # Package collections
 # -------------------
@@ -275,7 +275,7 @@ update-repos:
 # Note: Most of these are only necessary in cases where the base repo is far behind
 
 install-rust:
-    command -v rustup &> /dev/null \
+    command -v rustup >/dev/null 2>&1 \
         || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     . "$HOME/.cargo/env" && rustup update
     . "$HOME/.cargo/env" && rustup default stable
