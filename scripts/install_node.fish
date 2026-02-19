@@ -18,7 +18,7 @@ for node_version in $NODE_VERSIONS
 end
 
 # Set default node version
-bash -c "source ~/.nvm/nvm.sh && nvm alias default $DEFAULT_NODE_VERSION"
+bash -c "source $NVM_DIR/nvm.sh && nvm alias default $DEFAULT_NODE_VERSION"
 set -U nvm_default_version $DEFAULT_NODE_VERSION
 
 # Install NPM pacakges
