@@ -98,7 +98,7 @@
         "defaultMode": "plan"
     },
     "sandbox": {
-        "enabled": false,
+        "enabled": true,
         "autoAllowBashIfSandboxed": true,
         "network": {
             "allowedDomains": [
@@ -108,10 +108,10 @@
                 "*.npmjs.org",
                 "*.readthedocs.io"
             ],
-            "allowUnixSockets": ["/var/run/docker.sock"],
-            "allowLocalBinding": true
+            "allowUnixSockets": [],
+            "allowLocalBinding": false
         },
-        "excludedCommands": ["docker"]
+        "excludedCommands": []
     },
     "alwaysThinkingEnabled": false,
     "effortLevel": "medium"
