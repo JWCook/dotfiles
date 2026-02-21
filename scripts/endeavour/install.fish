@@ -1,5 +1,9 @@
 #!/usr/bin/env fish
 
+# Options:
+# -e: Install extra desktop applications
+# -g: Install game apps + drivers
+
 # Package categories
 # --------------------
 
@@ -75,6 +79,7 @@ set PKGS_NET '
     nmap
     ntp
     openssh
+    socat
     traceroute
     whois
     wireguard-tools
@@ -96,6 +101,7 @@ set PKGS_LIBS '
     7zip
     base-devel
     bash-completion
+    bubblewrap
     bzip2
     cifs-utils
     cmake
@@ -138,19 +144,39 @@ set PKGS_IMG '
 
 # Graphical applications
 set PKGS_DESKTOP '
-    audacity
-    discord
+    claude-desktop-bin
+    etcher-bin
     gimp
     guake
     keepassxc
-    kicad
+    kopia-bin
+    kopia-ui-bin
     libreoffice-fresh
+    librewolf-bin
+    localsend-bin
     nextcloud-client
     obsidian
+    pdfsam
     rapid-photo-downloader
-    rawtherapee
     signal-desktop
+    sublime-text-4
+    ventoy-bin
+    visual-studio-code-bin
     wezterm
+    xnviewmp
+    yubico-authenticator-bin
+'
+set PKGS_DESKTOP_EXTRA '
+    audacity
+    digikam
+    discord
+    fritzing
+    kicad
+    krita
+    libvncserver
+    rawtherapee
+    remmina
+    winboat-bin
     wine
 '
 
@@ -165,10 +191,6 @@ set PKGS_KDE '
     plasma-systemmonitor
     spectacle
 '
-# krita
-# digikam
-# remmina
-# libvncserver
 
 # Gaming-related appllications and drivers
 set PKGS_GAMES '
@@ -203,26 +225,6 @@ set PKGS_DOCKER '
     containerd
 '
 
-# AUR packages (installed via paru)
-set PKGS_AUR '
-    claude-desktop-bin
-    doggo-bin
-    etcher-bin
-    fritzing
-    kopia-bin
-    kopia-ui-bin
-    librewolf-bin
-    localsend-bin
-    pdfsam
-    sublime-text-4
-    ventoy-bin
-    visual-studio-code-bin
-    yubico-authenticator-bin
-    xnviewmp
-'
-# lstr
-# winboat-bin
-
 # Packages to remove after system setup
 set PKGS_REMOVE '
     eos-apps-info
@@ -238,7 +240,7 @@ set PKGS_REMOVE '
 # --------------------
 
 function init-gpg
-    echo -e "Initializing GPG\n--------------------\n"
+    echo "Initializing GPG\n--------------------\n"
     mkdir -p ~/.local/share/gnupg
     chmod 700 ~/.local/share/gnupg
     gpg --list-keys > /dev/null 2>&1 || true
@@ -247,22 +249,22 @@ end
 
 function install-paru
     type -q paru && return 0
-    rustup default stable
-    echo -e "Installing paru\n--------------------\n"
+    echo "Installing paru\n--------------------\n"
     set temp_dir (mktemp -d) && cd $temp_dir
-    cd $temp_dir && git clone https://aur.archlinux.org/paru.git
-    cd paru && makepkg -si --noconfirm
-    cd ~ && rm -rf $temp_dir
+    git clone https://aur.archlinux.org/paru.git
+    # Requires rust + cargo, but they will already be installed via rustup installer
+    cd paru && makepkg -id --noconfirm
+    rm -rf $temp_dir
 end
 
 # Add/update pacman repos
-function update-repos
+function add-game-util-repos
     # Enable multilib for 32-bit libraries
     if not grep -q "^\[multilib\]" /etc/pacman.conf
         sudo sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
     end
 
-    # Add LizardByte repo
+    # Add LizardByte repo for sunshine server
     if not grep -q "^\[lizardbyte\]" /etc/pacman.conf
         sudo printf '%s\n' '' \
         '[lizardbyte]' \
@@ -283,27 +285,34 @@ set ALL_PACKAGES "
     $PKGS_LIBS
     $PKGS_IMG
     $PKGS_DESKTOP
-    $PKGS_GAMES
     $PKGS_MEDIA
     $PKGS_KDE
     $PKGS_DOCKER
 "
 
-# Update mirrors using reflector (EndeavourOS uses reflector instead of pacman-mirrors)
-echo -e "Updating mirrors with reflector\n--------------------\n"
+# Determine packages to install based on shell arguments
+argparse 'e' 'g' -- $argv
+or begin
+    exit 1
+end
+if set -q _flag_e
+    set ALL_PACKAGES "$ALL_PACKAGES $PKGS_DESKTOP_EXTRA"
+end
+if set -q _flag_g
+    set ALL_PACKAGES "$ALL_PACKAGES $PKGS_GAMES"
+    add-game-util-repos
+end
+
+# Update mirrors (EndeavourOS uses reflector instead of pacman-mirrors)
+echo "Updating mirrors with reflector\n--------------------\n"
 sudo reflector --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 
-# Install pacman packages
-update-repos
-sudo pacman -Syu --noconfirm
-echo -e "Installing packages from official repos\n--------------------\n"
-echo $ALL_PACKAGES | xargs sudo pacman -S --needed --noconfirm
-
-# Install AUR packages
+# Install official + AUR packages
 init-gpg
 install-paru
-echo -e "Installing AUR packages\n--------------------\n"
-echo $PKGS_AUR | xargs paru -S --needed --noconfirm
+paru -Syu --noconfirm
+echo "Installing packages\n--------------------\n"
+echo $ALL_PACKAGES | xargs paru -S --needed --noconfirm
 
 # Configure Docker
 sudo systemctl enable --now docker.service
@@ -323,5 +332,9 @@ if type -q fish
     echo "Default shell set to fish"
 end
 
-# Remove some pre-installed packages
-sudo pacman -R --noconfirm $PKGS_REMOVE
+# Remove some pre-installed packages (if present)
+for pkg in $PKGS_REMOVE
+    if pacman -Q $pkg > /dev/null 2>&1
+        sudo pacman -R --noconfirm $pkg
+    end
+end

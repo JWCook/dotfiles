@@ -64,9 +64,9 @@ install-fastfetch-conf:
     @just symlink fastfetch/config.jsonc {{config_dir}}/fastfetch/config.jsonc
 
 install-fish-conf:
+    # @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
     @just symlink fish/config.fish                           {{config_dir}}/fish/config.fish
     @just symlink fish/style.fish                            {{config_dir}}/fish/style.fish
-    # @just symlink fish/functions/fish_prompt.fish            {{config_dir}}/fish/functions/fish_prompt.fish
     @just symlink fish/functions/atuin_key_bindings.fish     {{config_dir}}/fish/functions/fish_user_key_bindings.fish
     @just symlink fish/functions/fish_user_key_bindings.fish {{config_dir}}/fish/functions/atuin_key_bindings.fish
     mkdir -p {{config_dir}}/fish/completions
@@ -163,12 +163,15 @@ install-yazi-conf:
     @just symlink yazi/theme.toml {{config_dir}}/yazi/theme.toml
 
 install-completions:
-    atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash
-    atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
-    procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash
-    procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
-    just --completions fish > ~/.config/fish/completions/just.fish
-    just --completions bash > ~/.config/bash/completions/just.bash
+    - command -v atuin >/dev/null 2>&1 \
+        && atuin gen-completions --shell bash > ~/.config/bash/completions/atuin.bash \
+        && atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
+    - command -v procs >/dev/null 2>&1 \
+        && procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash \
+        && procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
+    - command -v just  >/dev/null 2>&1 \
+        &&just --completions fish > ~/.config/fish/completions/just.fish \
+        && just --completions bash > ~/.config/bash/completions/just.bash
 
 
 #############################
@@ -176,7 +179,7 @@ install-completions:
 #############################
 
 install-debian:
-    sudo ./scripts/debian/install_system_packages.fish
+    sudo ./scripts/debian/install.fish
     @just install-xdistro
 update-debian:
     @sudo -v
@@ -184,7 +187,7 @@ update-debian:
     @just update-xdistro
 
 install-ubuntu:
-    sudo ./scripts/ubuntu/install_system_packages.fish -g -k
+    sudo ./scripts/ubuntu/install.fish -g -k
     @just install-xdistro
     @just install-fzf
 update-ubuntu: update-debian
@@ -192,13 +195,13 @@ update-ubuntu: update-debian
 
 install-wsl:
     @just install-wsl-conf
-    sudo ./scripts/ubuntu/install_system_packages.fish -w
+    sudo ./scripts/ubuntu/install.fish -w
     sudo ./scripts/wsl/configure_fonts.sh
     @just install-xdistro
 update-wsl: update-ubuntu
 
 install-fedora:
-    sudo ./scripts/fedora/install_system_packages.sh -r -g -n
+    sudo ./scripts/fedora/install.sh -r -g -n
     @just install-xdistro
     @just install-ssh-agent-systemd
 update-fedora:
@@ -206,23 +209,19 @@ update-fedora:
     sudo dnf upgrade -y
     @just update-xdistro
 
-install-arch:
-    sudo ./scripts/arch/install_system_packages.sh
-update-arch:
-    sudo pacman -Syu
+install-steamos:
+    sudo ./scripts/steamos/install.sh
+update-steamos:
+    sudo pacman -Syu --noconfirm
 
-# TODO: some differences with installing cross-distro packages:
-#   - rust packages installed via AUR instead of cargo
-#   - need to install/configure nvm/node before installing some AUR packages
 install-endeavouros:
-    @just install-node
-    ./scripts/endeavour/install_system_packages.fish
-    @just install-python-tools #install-fonts
+    @just install-node install-rust  # required for subsequent steps
+    ./scripts/endeavour/install.fish
+    @just install-python-tools install-fonts
     @just install-completions install-grc install-yubico-auth
 update-endeavouros:
-    sudo pacman -Syu --noconfirm
-    paru -Sua
-    @just update-python update-nvim-plugins update-repos update-tldr update-auto-cpufreq
+    paru -Syu
+    @just update-python update-rust update-nvim-plugins update-repos update-tldr update-auto-cpufreq
 
 
 ##########################
@@ -238,7 +237,7 @@ install-xdistro:
 update-xdistro:
     @just _parallel update-rust update-cargo update-python
     @just update-nvim-plugins update-repos update-tldr update-auto-cpufreq
-    @if command -v snap &> /dev/null; then sudo snap refresh; fi
+    @if command -v snap >/dev/null 2>&1; then sudo snap refresh; fi
 
 # Package collections
 # -------------------
@@ -275,14 +274,13 @@ update-repos:
 # Note: Most of these are only necessary in cases where the base repo is far behind
 
 install-rust:
-    command -v rustup &> /dev/null \
-        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    rustup update
-    rustup default stable
+    command -v rustup >/dev/null 2>&1 \
+        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    . "$HOME/.cargo/env" && rustup update
+    . "$HOME/.cargo/env" && rustup default stable
 update-rust: install-rust
 
 install-auto-cpufreq:
-    # TODO: only install for laptops/other battery-powered devices?
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
     @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:

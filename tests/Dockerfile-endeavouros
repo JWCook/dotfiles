@@ -1,9 +1,9 @@
-FROM debian:trixie
+FROM alex5402/endeavouros
 
 # Create test-user with sudo privileges and no password
-RUN apt-get update \
-    && apt-get install -y sudo \
-    && rm -rf /var/lib/apt/lists/* \
+# and update keyring (outdated in base image)
+RUN pacman -Sy --noconfirm archlinux-keyring \
+    && pacman -Syu --noconfirm \
     && useradd -m test-user \
     && echo "test-user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/test-user \
     && chmod 0440 /etc/sudoers.d/test-user
