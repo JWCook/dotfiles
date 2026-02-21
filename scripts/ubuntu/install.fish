@@ -58,6 +58,7 @@ set PKGS_NET '
     nmap
     ntp
     ntpdate
+    socat
     ssh
     telnet
     traceroute
@@ -76,6 +77,7 @@ set PKGS_SYS '
 # Compilers, libraries for compiling other applications, optional features, etc.
 set PKGS_LIBS '
     bash-completion
+    bubblewrap
     build-essential
     cifs-utils
     cmake
@@ -152,7 +154,6 @@ set PKGS_XFCE '
 # Additional packages for WSL
 set PKGS_WSL '
     dbus-x11
-    socat
 '
 
 # Snap packages

@@ -79,6 +79,7 @@ set PKGS_NET '
     nmap
     ntp
     openssh
+    socat
     traceroute
     whois
     wireguard-tools
@@ -100,6 +101,7 @@ set PKGS_LIBS '
     7zip
     base-devel
     bash-completion
+    bubblewrap
     bzip2
     cifs-utils
     cmake
