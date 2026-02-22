@@ -15,6 +15,12 @@ return {
     },
   },
 
+  -- Disable auto-pairing of quotes/brackets
+  {
+    "nvim-mini/mini.pairs",
+    enabled = false,
+  },
+
   -- Disable markdown linting (use with lang.markdown extra)
   -- {
   --   "mfussenegger/nvim-lint",
