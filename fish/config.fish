@@ -552,7 +552,7 @@ abbr gdt git dft
 abbr gf git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull
-alias gpp='git pull --rebase && gbprune'
+alias gpp='git pull --rebase'
 abbr gpush git push
 abbr gfpush git push --force-with-lease
 abbr gffpush git push --force
@@ -618,14 +618,20 @@ abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
 
 function gadd
-    set paths (default-pwd $argv)
-    git add $paths
+    if test (count $argv) -eq 0
+        git add .
+    else
+        git add -- $argv
+    end
     git status --short --branch
 end
 
 function gunstage
-    set paths (default-pwd $argv)
-    git restore --staged $paths
+    if test (count $argv) -eq 0
+        git restore --staged .
+    else
+        git restore --staged -- $argv
+    end
     git status --short --branch
 end
 
@@ -649,9 +655,13 @@ function gball
     git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
 end
 
-# Prune branches and tags that have been deleted remotely
+# Prune branches and tags that have been deleted remotely (with confirmation)
 function gbprune
     git fetch --prune --prune-tags
+    set merged_braches (git branch -vv | grep ': gone]' | awk '{print $1}')
+    if test (count $merged_branches) -gt 0
+        echo $merged_branches | fzf --multi --sync --bind start:select-all | xargs git branch -D
+    end
 end
 
 # Interactive rebase (onto main by default)
