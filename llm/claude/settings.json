@@ -38,7 +38,9 @@
             "Bash(pytest:*)",
             "Bash(python -m pytest:*)",
             "Bash(rg:*)",
+            "Bash(ruff:*)",
             "Bash(scalene:*)",
+            "Bash(tail:*)",
             "Bash(timeout 30 uv run:*)",
             "Bash(tree:*)",
             "Bash(uv add:*)",
@@ -55,20 +57,29 @@
             "Read(.notes/**)",
             "Edit(.notes/**)",
             "Write(.notes/**)",
+            "WebFetch(domain:agentskills.io)",
+            "WebFetch(domain:altair-viz.github.io)",
+            "WebFetch(domain:api.github.com)",
+            "WebFetch(domain:api.inaturalist.org)",
+            "WebFetch(domain:cdnjs.com)",
             "WebFetch(domain:doc.qt.io)",
+            "WebFetch(domain:docs.anthropic.com)",
             "WebFetch(domain:docs.astral.sh)",
             "WebFetch(domain:docs.gitlab.com)",
             "WebFetch(domain:docs.pytest.org)",
             "WebFetch(domain:docs.python.org)",
+            "WebFetch(domain:files.pythonhosted.org)",
             "WebFetch(domain:github.com)",
+            "WebFetch(domain:jupyter-docker-stacks.readthedocs.io)",
+            "WebFetch(domain:myst-nb.readthedocs.io)",
             "WebFetch(domain:peps.python.org)",
             "WebFetch(domain:pypi.org)",
             "WebFetch(domain:python.org)",
-            "WebFetch(domain:raw.githubusercontent.com)",
-            "WebFetch(domain:readthedocs.io)",
             "WebFetch(domain:*.readthedocs.io)",
+            "WebFetch(domain:readthedocs.io)",
             "WebFetch(domain:specs.opencontainers.org)",
             "WebFetch(domain:stackoverflow.com)",
+            "WebFetch(domain:vega.github.io)",
             "mcp__ide__getDiagnostics",
             "WebSearch"
         ],
@@ -102,6 +113,7 @@
         "autoAllowBashIfSandboxed": true,
         "network": {
             "allowedDomains": [
+                "raw.githubusercontent.com",
                 "crates.io",
                 "github.com",
                 "pypi.org",
@@ -113,6 +125,5 @@
         },
         "excludedCommands": []
     },
-    "alwaysThinkingEnabled": false,
-    "effortLevel": "medium"
+    "alwaysThinkingEnabled": false
 }
