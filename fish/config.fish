@@ -549,7 +549,8 @@ end
 # ------------------------------
 abbr gd git diff
 abbr gdt git dft
-abbr gf git fetch --all \&\& git status
+abbr gf git fetch \&\& git status
+abbr gfa git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull
 alias gpp='git pull --rebase'
@@ -565,7 +566,11 @@ abbr gsv git status -vv
 abbr gsw git switch
 abbr gsc git switch -c
 abbr gstlist git stash list \; git stash show
+
 alias gremote='git remote | head -n 1'
+function gremote-exists -a remote
+    git remote get-url $remote >/dev/null 2>&1
+end
 
 function gfpushu -a branch
     set branch (coalesce $branch (gbranch))
@@ -575,21 +580,19 @@ end
 
 # Git pull with stash and/or rebase (if necessary)
 function gpr
-    git fetch --all
+    git fetch --prune --prune-tags
 
     # Check if remote has new commits
     if test (git rev-list HEAD..@{u} 2>/dev/null | wc -l) -eq 0
         echo "Already up to date with remote"
     # Stash uncommitted changes, if needed
-    else if test -n "$(git status --porcelain)"
+    else if not git diff-index --quiet HEAD
         git stash
         git pull --rebase
         git stash pop
     else
         git pull --rebase
     end
-
-    git fetch --prune --prune-tags
 end
 
 function grm
@@ -598,6 +601,17 @@ function grm
     git status
 end
 
+# Push to any mirrors configured for the repo
+function gpm
+    gbprune
+    git push
+    for remote in (git config --get-regexp '^remote\..*\.mirror$' \
+        | awk -F'[ .]' '{print $2}')
+        git push $remote
+    end
+end
+
+# Pull from upstream and push to fork (origin)
 function gpu -a branch
     set branch (coalesce $branch (gbranch))
     git pull --rebase upstream $branch
@@ -613,13 +627,13 @@ abbr gfirst git rev-parse --short \(git rev-list --max-parents=0 HEAD\)
 abbr gmend git commit --amend
 abbr gmendc git commit --amend --no-edit
 abbr gpatch git add --patch
-abbr grevise git add --all \; git commit --amend --no-edit
+abbr grevise git add -u \; git commit --amend --no-edit
 abbr grecommit git commit -c ORIG_HEAD --no-edit
 abbr guncommit git reset --soft HEAD~1
 
 function gadd
     if test (count $argv) -eq 0
-        git add .
+        git add -u
     else
         git add -- $argv
     end
@@ -658,7 +672,9 @@ end
 # Prune branches and tags that have been deleted remotely (with confirmation)
 function gbprune
     git fetch --prune --prune-tags
-    set merged_braches (git branch -vv | grep ': gone]' | awk '{print $1}')
+    set merged_branches (git for-each-ref \
+        --format='%(refname:short) %(upstream:track)' refs/heads \
+        | awk '/\[gone\]$/ {print $1}')
     if test (count $merged_branches) -gt 0
         echo $merged_branches | fzf --multi --sync --bind start:select-all | xargs git branch -D
     end
@@ -667,7 +683,13 @@ end
 # Interactive rebase (onto main by default)
 function grebase -a branch --wraps=__fish_git_branches
     set branch (coalesce $branch 'main')
-    git rebase --interactive --rebase-merges $branch
+    if not git diff-index --quiet HEAD
+        git stash
+        git rebase --interactive --rebase-merges $branch
+        git stash pop
+    else
+        git rebase --interactive --rebase-merges $branch
+    end
 end
 
 function gsrebase -a branch --wraps=__fish_git_branches
@@ -766,7 +788,6 @@ end
 # GitHub
 # ------------------------------
 
-abbr gh-pr gh pr view
 function gh-login
     gh auth status || gh auth login --hostname github.com -p ssh --skip-ssh-key --web
 end
@@ -784,6 +805,7 @@ function ghp -a pr
         gh pr view $issue
     end
 end
+abbr ghpp gh pr create --draft --body \'\' --title \'\'
 
 
 # Get latest version info from a project's GitHub Releases
