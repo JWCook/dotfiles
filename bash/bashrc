@@ -46,6 +46,7 @@ source-file ~/.config/bash/preexec.sh
 source-file ~/.config/tabtab/__tabtab.bash              # Additional shell completion scripts
 source-file ~/.bashrc_wsl                               # Additional config for WSL
 source-file ~/.local/share/icons-in-terminal/icons_bash.sh
+source-file ~/.local/bin/env
 source-file $NVM_DIR/nvm.sh
 source-file $NVM_DIR/bash_completion
 source-file /usr/local/src/fzf/shell/completion.bash

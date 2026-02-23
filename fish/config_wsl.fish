@@ -5,7 +5,7 @@ fish_add_path /mnt/c/Windows/System32
 set -gx WIN_HOME (wslpath "C:/Users/$USER")
 set -gx WIN_WORKSPACE (wslpath 'D:/workspace')
 set -gx APPDATA "$WIN_HOME/AppData"
-set -x COLORTERM truecolor
+set -gx COLORTERM truecolor
 
 abbr open-ps powershell.exe /c start
 alias sp-open-wsl='powershell.exe /c start docs/_build/html/index.html'
