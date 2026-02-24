@@ -49,6 +49,10 @@ install-claude-conf:
     @just symlink llm/claude/settings.json ~/.claude/settings.json
     @just symlink llm/claude/commands ~/.claude/commands
 
+install-codex-conf:
+    # npm i -g @openai/codex
+    @just symlink llm/codex/default.rules ~/.codex/rules/default.rules
+
 install-bash-conf:
     @just symlink bash/bashrc       ~/.bashrc
     @just symlink bash/bashrc_style ~/.bashrc_style
@@ -286,7 +290,10 @@ install-auto-cpufreq:
 update-auto-cpufreq:
     - command -v auto-cpufrequ && sudo auto-cpufreq --update
 install-claude-code:
-    curl -fsSL https://claude.ai/install.sh | bash
+    - command -v claude >/dev/null 2>&1 \
+        || curl -fsSL https://claude.ai/install.sh | bash
+    - command -v ccusage >/dev/null 2>&1 \
+        || npm install -g ccusage
     npm install -g @anthropic-ai/sandbox-runtime
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
