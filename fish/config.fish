@@ -567,7 +567,13 @@ abbr gsw git switch
 abbr gsc git switch -c
 abbr gstlist git stash list \; git stash show
 
-alias gremote='git remote | head -n 1'
+function gremote
+    if git remote | grep -qx origin
+        echo origin
+    else
+        git remote | head -n 1
+    end
+end
 function gremote-exists -a remote
     git remote get-url $remote >/dev/null 2>&1
 end
@@ -757,6 +763,57 @@ function git-head-transplant -a branch
     git push origin $branch
 end
 
+# Worktrees
+# ------------------------------
+abbr gwprune git worktree prune
+abbr gwl git worktree list
+
+# Create a worktree, optionally with new branch or existing remote branch
+function gwt -a branch
+    set wt_dir "$(_get_gwbranch $branch)"
+    git branch $branch || true
+    git worktree add ../$wt_dir $branch
+    cd ../$wt_dir
+
+    # Set upstream to remote branch if it already exists
+    set remote (gremote)
+    if git ls-remote --exit-code --heads $remote $branch &> /dev/null
+        git branch --set-upstream-to=$remote/$branch
+    end
+end
+
+# Create a worktree based on a PR
+function gwpr -a pr_number
+    set remote (gremote)
+    set branch "pr/$pr_number"
+    git fetch $remote pull/$pr_number/head:$branch
+    gwt $branch
+end
+
+# Move to worktree branch dir
+function gwcd -a branch
+    set repo (basename (_get_gwroot))
+    cd ../$repo-$branch
+end
+
+# Move to worktree root dir
+function gwroot
+    cd (_get_gwroot)
+end
+
+# Remove a worktree
+function gwrm -a branch
+    git worktree remove ../(_get_gwbranch $branch)
+    gwroot
+end
+
+function _get_gwroot
+    git worktree list --porcelain | grep '^worktree' | head -n 1 | awk '{print $2}'
+end
+function _get_gwbranch -a branch
+    echo "$(basename (pwd))-$branch"
+end
+
 # Log
 # ------------------------------
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
@@ -784,13 +841,17 @@ function grm-tag -a tag
     git remote | grep -q '^upstream$' && git push upstream :refs/tags/$tag
 end
 
-
 # GitHub
 # ------------------------------
+
+abbr ghs gh status
+abbr ghpp gh pr create --draft --body \'\' --title \'\'
 
 function gh-login
     gh auth status || gh auth login --hostname github.com -p ssh --skip-ssh-key --web
 end
+
+# List issues or view a specific one
 function ghi -a issue
     if test -z $issue
         gh issue list
@@ -798,15 +859,24 @@ function ghi -a issue
         gh issue view $issue
     end
 end
+
+# List PRs or view a specific one
 function ghp -a pr
     if test -z $pr
         gh pr list
     else
-        gh pr view $issue
+        gh pr view $pr
     end
 end
-abbr ghpp gh pr create --draft --body \'\' --title \'\'
 
+# List workflow runs or view a specific one
+function ghr -a run
+    if test -z $pr
+        gh run list
+    else
+        gh run view $run
+    end
+end
 
 # Get latest version info from a project's GitHub Releases
 function gh-releases -a repo
