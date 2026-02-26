@@ -157,6 +157,7 @@ alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-in
 abbr  ff fastfetch
 abbr  hf hyperfine
 abbr  hq harlequin
+alias gg='lazygit'
 alias icat='wezterm imgcat'
 abbr  lw sudo logwatch \| less
 abbr  npr npm run

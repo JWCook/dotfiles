@@ -16,6 +16,7 @@ set PKGS_TOOLS '
     git
     htop
     jq
+    lazygit
     lolcat
     nala
     neovim

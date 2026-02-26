@@ -118,6 +118,9 @@ install-kitty-conf:
     @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
     @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
 
+install-lazygit-conf:
+    @just symlink lazygit/config.yml ~/.config/lazygit/config.yml
+
 install-llm-conf:
     @just symlink llm/aliases.json ~/.config/io.datasette.llm/aliases.json
     @just symlink llm/default_model.txt ~/.config/io.datasette.llm/default_model.txt
@@ -236,7 +239,7 @@ update-endeavouros:
 install-xdistro:
     @just _parallel install-rust install-cargo-packages install-python-tools install-fonts
     @just install-completions install-grc install-node install-yubico-auth
-    # @just install-auto-cpufreq
+    # @just install-auto-cpufreq lazygit
 # Update all cross-distro packages
 update-xdistro:
     @just _parallel update-rust update-cargo update-python
@@ -303,6 +306,9 @@ install-kitty:
     ./scripts/xdistro/install_kitty.sh
 install-kwin-gestures:
     sudo ./scripts/xdistro/install_kwin_gestures.sh
+install-lazygit:
+    ./scripts/xdistro/install_lazygit.fish
+update-lazygit: install-lazygit
 update-nvim-plugins:
     nvim --headless -c "Lazy sync" -c "qa"
 install-ssh-agent-systemd:

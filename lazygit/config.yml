@@ -1,0 +1,8 @@
+disableStartupPopups: true
+gui:
+  showBottomLine: false
+  # showRandomTip: false
+  skipAmendWarning: true
+  skipStashWarning: true
+update:
+  method: never

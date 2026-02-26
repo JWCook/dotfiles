@@ -46,6 +46,7 @@ set PKGS_TOOLS '
     glow
     hyperfine
     jq
+    lazygit
     lolcat
     ncdu
     neovim
