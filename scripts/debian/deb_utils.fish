@@ -15,7 +15,7 @@ set VERSION_CODENAME (release-var VERSION_CODENAME)
 # Install a signing key (GPG)
 function install-gpg -a url -a path
     echo "Installing key: $url"
-    curl -fsSL "$url" | gpg --dearmor > "$path"
+    curl -fsSL "$url" | gpg --dearmor >"$path"
     chmod a+r "$path"
 end
 
@@ -32,14 +32,14 @@ function install-deb -a url
     set deb_tempfile $(mktemp --suffix=.deb)
     curl -fsSL $url -o $deb_tempfile
     apt install -y --fix-broken $deb_tempfile \
-    && sleep 1 && rm -v $deb_tempfile
+        && sleep 1 && rm -v $deb_tempfile
 end
 
 # Get URL of latest release deb file from GitHub releases (assumes tag-based releases)
 function gh-latest-release -a repo
     curl -fsSL "https://api.github.com/repos/$repo/releases/latest" \
-    | jq -r '.assets[] | select(.name | test("\\\\.deb")) | .browser_download_url' \
-    | tail -n 1
+        | jq -r '.assets[] | select(.name | test("\\\\.deb")) | .browser_download_url' \
+        | tail -n 1
 end
 
 
@@ -51,8 +51,7 @@ function install-sublime-text
     echo -e "Installing Sublime Text\n--------------------\n"
 
     install-gpg "https://download.sublimetext.com/sublimehq-pub.gpg" "/etc/apt/trusted.gpg.d/sublimehq-archive.gpg"
-    echo "deb https://download.sublimetext.com/ apt/stable/" \
-        > /etc/apt/sources.list.d/sublime-text.list
+    echo "deb https://download.sublimetext.com/ apt/stable/" >/etc/apt/sources.list.d/sublime-text.list
     apt update && apt install -y sublime-text
 end
 
@@ -98,8 +97,7 @@ function install-gh
     echo -e "Installing GitHub CLI\n--------------------\n"
 
     install-gpg "https://cli.github.com/packages/githubcli-archive-keyring.gpg" "/etc/apt/keyrings/githubcli-archive-keyring.gpg"
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-        > /etc/apt/sources.list.d/github-cli.list
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" >/etc/apt/sources.list.d/github-cli.list
     apt update && apt install -y gh
 end
 
@@ -108,8 +106,7 @@ function install-glow
     echo -e "Installing glow\n--------------------\n"
 
     install-gpg "https://repo.charm.sh/apt/gpg.key" "/etc/apt/keyrings/charm.gpg"
-    echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" \
-        > /etc/apt/sources.list.d/charm.list
+    echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" >/etc/apt/sources.list.d/charm.list
     apt update && apt install -y glow
 end
 
@@ -126,7 +123,7 @@ function install-localsend
     echo -e "Installing Localsend\n--------------------\n"
 
     # appindicator package name varies by distro
-    apt install -y libayatana-appindicator 2> /dev/null || apt install -y libayatana-appindicator3-1
+    apt install -y libayatana-appindicator 2>/dev/null || apt install -y libayatana-appindicator3-1
     install-deb "$(gh-latest-release localsend/localsend)"
 end
 
@@ -148,8 +145,7 @@ function install-signal
     echo -e "Installing Signal\n--------------------\n"
 
     install-gpg "https://updates.signal.org/desktop/apt/keys.asc" "/usr/share/keyrings/signal-desktop-keyring.gpg"
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" \
-        > /etc/apt/sources.list.d/signal.list
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" >/etc/apt/sources.list.d/signal.list
     apt update && apt install -y signal-desktop
 end
 
@@ -173,8 +169,7 @@ function install-wezterm
     type -q wezterm && exit 0
     echo -e "Installing Wezterm\n--------------------\n"
     install-gpg "https://apt.fury.io/wez/gpg.key" "/usr/share/keyrings/wezterm-fury.gpg"
-    echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' \
-        > /etc/apt/sources.list.d/wezterm.list
+    echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' >/etc/apt/sources.list.d/wezterm.list
     apt update && apt install -y wezterm
 end
 

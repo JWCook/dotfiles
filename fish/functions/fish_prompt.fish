@@ -21,7 +21,7 @@ function fish_prompt
         (_get_cwd) (set_color -b $fish_prompt_bg_3 $fish_prompt_bg_2) \
         (_get_branch) (set_color -b $fish_prompt_bg_4 $fish_prompt_bg_3) \
         (_get_virtualenv) (set_color -b $prompt_symbol_color $fish_prompt_bg_4) \
-        (set_color -b black $prompt_symbol_color)' '\
+        (set_color -b black $prompt_symbol_color)' ' \
         (set_color normal)
 end
 
@@ -42,7 +42,7 @@ end
 # Format current working directory
 function _get_cwd
     # Change color if running as root
-    if [ $USER = "root" ]
+    if [ $USER = root ]
         set color_cwd $fish_color_cwd_root
     else
         set color_cwd $fish_color_cwd

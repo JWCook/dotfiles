@@ -180,8 +180,7 @@ function install-docker
     echo -e "Installing docker\n--------------------\n"
 
     install-gpg "https://download.docker.com/linux/ubuntu/gpg" "/etc/apt/keyrings/docker.gpg"
-    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $VERSION_CODENAME stable" \
-      > /etc/apt/sources.list.d/docker.list
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $VERSION_CODENAME stable" >/etc/apt/sources.list.d/docker.list
     apt update && apt install -y $PKGS_DOCKER
 end
 
@@ -198,8 +197,7 @@ function install-mirrors
     echo -e "Installing repo mirrors\n--------------------\n"
     rm /etc/apt/sources.list.d/nala-sources.list
     for mirror in $NALA_MIRRORS
-        echo "deb $mirror $VERSION_CODENAME main restricted universe multiverse" \
-            >> /etc/apt/sources.list.d/nala-sources.list
+        echo "deb $mirror $VERSION_CODENAME main restricted universe multiverse" >>/etc/apt/sources.list.d/nala-sources.list
     end
     nala update
 end
@@ -210,7 +208,7 @@ end
 
 # Determine packages to install based on shell arguments
 set PACKAGES_TO_INSTALL "$PKGS_TOOLS $PKGS_NET $PKGS_SYS $PKGS_LIBS $PKGS_IMG $PKGS_LANG"
-argparse 'g' 'n' 'k' 'w' 'x' -- $argv
+argparse g n k w x -- $argv
 or begin
     exit 1
 end

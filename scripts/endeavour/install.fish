@@ -244,8 +244,8 @@ function init-gpg
     echo "Initializing GPG\n--------------------\n"
     mkdir -p ~/.local/share/gnupg
     chmod 700 ~/.local/share/gnupg
-    gpg --list-keys > /dev/null 2>&1 || true
-    gpg-connect-agent --dirmngr /bye > /dev/null 2>&1 || true
+    gpg --list-keys >/dev/null 2>&1 || true
+    gpg-connect-agent --dirmngr /bye >/dev/null 2>&1 || true
 end
 
 function install-paru
@@ -268,10 +268,10 @@ function add-game-util-repos
     # Add LizardByte repo for sunshine server
     if not grep -q "^\[lizardbyte\]" /etc/pacman.conf
         sudo printf '%s\n' '' \
-        '[lizardbyte]' \
-        'SigLevel = Optional' \
-        'Server = https://github.com/LizardByte/pacman-repo/releases/latest/download' \
-        | sudo tee -a /etc/pacman.conf
+            '[lizardbyte]' \
+            'SigLevel = Optional' \
+            'Server = https://github.com/LizardByte/pacman-repo/releases/latest/download' \
+            | sudo tee -a /etc/pacman.conf
     end
 end
 
@@ -292,7 +292,7 @@ set ALL_PACKAGES "
 "
 
 # Determine packages to install based on shell arguments
-argparse 'e' 'g' -- $argv
+argparse e g -- $argv
 or begin
     exit 1
 end
@@ -335,7 +335,7 @@ end
 
 # Remove some pre-installed packages (if present)
 for pkg in $PKGS_REMOVE
-    if pacman -Q $pkg > /dev/null 2>&1
+    if pacman -Q $pkg >/dev/null 2>&1
         sudo pacman -R --noconfirm $pkg
     end
 end

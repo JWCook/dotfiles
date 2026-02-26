@@ -15,7 +15,7 @@ set PYTHON_VERSIONS \
 
 
 # Read arguments
-argparse 'u/update' -- $argv
+argparse u/update -- $argv
 set UPDATE_ONLY (set -q _flag_update && echo true || echo false)
 
 # Boostrap scripts
@@ -74,7 +74,7 @@ echo "Installing/updating CLI tools"
 if not $UPDATE_ONLY
     while read -l package
         echo $package | xargs uv tool install
-    end < scripts/deps/py-tools.txt
+    end <scripts/deps/py-tools.txt
     # optional:
     # ~/.local/share/uv/tools/aider-chat/bin/python -m playwright install --with-deps chromium
 else

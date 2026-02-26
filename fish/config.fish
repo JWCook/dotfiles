@@ -24,7 +24,9 @@ end
 
 # Check fish shell script syntax
 function fish-check
-    for f in **/*.fish; fish -n $f; end
+    for f in **/*.fish
+        fish -n $f
+    end
 end
 
 # Most frequently used commands
@@ -33,8 +35,8 @@ function hist-frequency -a local
         atuin stats --count 30
     else
         history \
-        | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' \
-        | sort -rn | less
+            | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' \
+            | sort -rn | less
     end
 end
 
@@ -46,7 +48,7 @@ end
 # Prompt for confirmation before continuing
 function prompt-confirm
     read -P " Continue? [Y/N]" -n 1 _input
-    if string match -qi "$_input" "Y"
+    if string match -qi "$_input" Y
         return 0
     else
         return 1
@@ -132,7 +134,7 @@ set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 set -gx VIRTUALENVWRAPPER_PYTHON (which python3)
 set -gx VIRTUALENV_DIR ~/.virtualenvs
 command -q pyenv && pyenv init - | source
-command -q vf && vf install compat_aliases global_requirements projects > /dev/null
+command -q vf && vf install compat_aliases global_requirements projects >/dev/null
 
 # Remove shell greeting message
 set -g fish_greeting
@@ -154,14 +156,14 @@ end
 alias ac='npx all-contributors'
 alias feh='feh --borderless'
 alias feh-montage='feh --montage --thumb-height 150 --thumb-width 150 --index-info "%nn%wx%h"'
-abbr  ff fastfetch
-abbr  hf hyperfine
-abbr  hq harlequin
-alias gg='lazygit'
+abbr ff fastfetch
+abbr hf hyperfine
+abbr hq harlequin
+alias gg='lazygit'; complete -c gg --wraps=lazygit
 alias icat='wezterm imgcat'
-abbr  lw sudo logwatch \| less
-abbr  npr npm run
-abbr  pg pgcli
+abbr lw sudo logwatch \| less
+abbr npr npm run
+abbr pg pgcli
 alias ps='procs'
 alias pst='procs --tree'
 alias psw='procs --watch'; complete -c ps --wraps=procs
@@ -170,14 +172,14 @@ abbr rgc rg --context=5
 abbr rgi rg -i
 abbr rgz rg --search-zip
 alias rr='ranger'; complete -c rr --wraps=ranger
-abbr  sq litecli
-abbr  ta type -a
+abbr sq litecli
+abbr ta type -a
 alias top='btm --theme gruvbox'; complete -c top --wraps=btm
 alias tt='tig'; complete -c tt --wraps=tig
 alias unalias='functions --erase'
 alias vim='nvim'
-abbr  vv nvim
-abbr  vimdiff nvim -d
+abbr vv nvim
+abbr vimdiff nvim -d
 alias yy='yazi'
 
 # If installed, use atuin with Ctrl+R and move fzf.fish history to Ctrl+Alt+R
@@ -425,7 +427,7 @@ end
 
 # Mount a network share
 function mount-share -a remote_share local_mountpoint creds_file
-    if not mountpoint "$local_mountpoint" &> /dev/null
+    if not mountpoint "$local_mountpoint" &>/dev/null
         sudo mkdir -p "$local_mountpoint"
         sudo mount -v -t cifs -o credentials="$creds_file" "$remote_share" "$local_mountpoint"
     else
@@ -441,7 +443,7 @@ end
 abbr date-update sudo ntpdate $NTP_SERVER
 # Formatted local user list
 abbr lu column -ts: /etc/passwd \| sort
-function lu-current  # Currently logged on users
+function lu-current # Currently logged on users
     w -hs | cut -d " " -f1 | sort | uniq
 end
 # List/format directories on PATH
@@ -449,14 +451,15 @@ alias path='echo -e {$PATH//:/\\n}  | lc-gradient --seed=8'
 # List all executables on PATH
 function path-exes
     echo "$PATH" | tr ':' '\n' \
-        | xargs -I {} find '{}' -maxdepth 1 -executable -type f 2> /dev/null \
+        | xargs -I {} find '{}' -maxdepth 1 -executable -type f 2>/dev/null \
         | sed 's/.*\///' | sort
 end
 # List user processes
 alias psu='ps -u $USER -o pid,%cpu,%mem,bsdtime,command'
 # Distribution info
 function distinfo
-    cat /etc/os-release; lsb_release -a
+    cat /etc/os-release
+    lsb_release -a
 end
 
 # Hardware
@@ -498,7 +501,10 @@ set SETUP_CONF "$DOTFILES/justfile $DOTFILES_LOCAL/justfile"
 set SSH_CONF "$DOTFILES_LOCAL/ssh/config"
 
 # Editor shortcuts
-function sb; echo "reloading fish config..."; exec fish; end
+function sb
+    echo "reloading fish config..."
+    exec fish
+end
 abbr vb "$EDITOR $FISH_CONF"
 abbr vg "$EDITOR $GIT_CONF"
 abbr vn "$EDITOR $VIM_CONF"
@@ -592,7 +598,7 @@ function gpr
     # Check if remote has new commits
     if test (git rev-list HEAD..@{u} 2>/dev/null | wc -l) -eq 0
         echo "Already up to date with remote"
-    # Stash uncommitted changes, if needed
+        # Stash uncommitted changes, if needed
     else if not git diff-index --quiet HEAD
         git stash
         git pull --rebase
@@ -778,7 +784,7 @@ function gwt -a branch
 
     # Set upstream to remote branch if it already exists
     set remote (gremote)
-    if git ls-remote --exit-code --heads $remote $branch &> /dev/null
+    if git ls-remote --exit-code --heads $remote $branch &>/dev/null
         git branch --set-upstream-to=$remote/$branch
     end
 end
@@ -820,7 +826,7 @@ end
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
 function glog-branch
-     git log main.. --pretty=format:%s --reverse
+    git log main.. --pretty=format:%s --reverse
 end
 abbr glog-remote git fetch \; glog HEAD..origin/main
 abbr glol glog \| lc-gradient-delay
@@ -1037,8 +1043,8 @@ abbr uvpc uv run --default-index https://pypi.org/simple prek run -a
 abbr uvl uv lock --default-index https://pypi.org/simple
 abbr uvt uv tool
 function uvs
-    set sync_args '--all-extras' '--all-groups'
-    test -f uv.lock && set sync_args $sync_args '--frozen'
+    set sync_args --all-extras --all-groups
+    test -f uv.lock && set sync_args $sync_args --frozen
     uv sync $sync_args
 end
 complete -c uvs --wraps='uv sync'
@@ -1084,16 +1090,16 @@ end
 
 # Get site-packages directory of currently active interpreter (e.g., within a virtualenv)
 function py-site-packages
-    python -c\
-    "from distutils.sysconfig import get_python_lib;\
+    python -c \
+        "from distutils.sysconfig import get_python_lib;\
     print(get_python_lib())"
 end
 abbr vsp py-site-packages
 
 # Determine if we are running in a virtualenv
 function in-env
-    python -c\
-    "import sys;\
+    python -c \
+        "import sys;\
     sys.exit(0 if hasattr(sys, \"real_prefix\") else 1)"
 end
 
@@ -1107,7 +1113,7 @@ function py-debug
     printf "\nsite-packages:"
     py-site-packages
     printf "In a virtualenv?"
-    in-env && echo 'Yes' || echo 'No'
+    in-env && echo Yes || echo No
 
     printf "\nExecutables:\n"
     which python && python --version
@@ -1123,7 +1129,8 @@ end
 
 # Install python packages from a specific requirements file
 function pip-install-req -a req_file
-    echo; print-title "Installing $req_file..."
+    echo
+    print-title "Installing $req_file..."
     test -e $req_file && pip install -Ur $req_file | lc-gradient --seed=100
 end
 
@@ -1162,10 +1169,10 @@ function pipr
         for _file in $req_files
             pip-install-req $_file
         end
-    else if grep -q poetry pyproject.toml 2> /dev/null
+    else if grep -q poetry pyproject.toml 2>/dev/null
         poetry install -v
     else
-        pip install -Ue  '.'
+        pip install -Ue '.'
     end
 
 end
@@ -1198,8 +1205,8 @@ end
 function py-cleanup
     set _dir (default-pwd $argv)
     find $_dir -name "*.pyc" -type f -delete -printf "%h/%f\n"
-    find $_dir -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
-    find $_dir -name "*.egg-info" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2> /dev/null
+    find $_dir -name __pycache__ -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
+    find $_dir -name "*.egg-info" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
 end
 function vim-cleanup
     set _dir (default-pwd $argv)
@@ -1406,7 +1413,7 @@ abbr hibernate-pm pm-hibernate
 function install-deb -a deb_url
     set deb_tempfile (mktemp --suffix=.deb)
     wget -O $deb_tempfile $deb_url
-sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
+    sudo dpkg -i $deb_tempfile && sleep 1 && rm $deb_tempfile
 end
 
 # List all installed packages, sorted by size
@@ -1455,7 +1462,7 @@ command -q update-grub || abbr update-grub sudo grub2-mkconfig -o /boot/grub2/gr
 ##########################
 
 # Proxychains executable varies by distro
-if type -a proxychains4 &> /dev/null
+if type -a proxychains4 &>/dev/null
     alias proxychains='proxychains4'
 end
 alias px 'proxychains -q'

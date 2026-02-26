@@ -32,6 +32,18 @@ repos:
         args: ["--exclude=SC2155,SC2164", "--severity=error"]
   - repo: local
     hooks:
+      - id: fish-syntax
+        name: Check fish syntax
+        entry: fish -n
+        language: system
+        files: '\.fish$'
+        exclude: '^vim/|^fish/config\.fish$'
+      - id: fish-indent
+        name: Check fish formatting
+        entry: fish_indent --check
+        language: system
+        files: '\.fish$'
+        exclude: '^vim/|^fish/config\.fish$'
       - id: normalize-kksrc
         name: Normalize KDE keyboard shortcuts
         entry: python3 scripts/utils/normalize_kksrc.py

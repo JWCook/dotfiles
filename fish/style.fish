@@ -60,7 +60,7 @@ end
 
 # Bash commands using GRC
 set -x GRC (which grc)
-if [ "$TERM" != "dumb" ] && ! test -z "$GRC" && test -e "$GRC"
+if [ "$TERM" != dumb ] && ! test -z "$GRC" && test -e "$GRC"
     alias colorize="$GRC -es --colour=auto"
     alias as='colorize as'
     alias configure='colorize ./configure'
@@ -100,7 +100,7 @@ end
 # Other Commands
 set -x LS_COLORS "di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:"
 function color-filesize
-    sed -r\
+    sed -r \
         "s/([0-9\.]+K)/$(set_color green)\1$(set_color normal)/g;\
         s/([0-9\.]+M)/$(set_color cyan)\1$(set_color normal)/g;\
         s/([0-9\.]+G)/$(set_color --bold red)\1$(set_color normal)/g"
@@ -159,7 +159,7 @@ end
 # Misc string coloring/formatting
 alias ratelimit 'pv -qL80k'
 function randombit
-    shuf -i 0-1 -n 1 -z  | tr "\0" " "
+    shuf -i 0-1 -n 1 -z | tr "\0" " "
 end
 # function randomchars
 #     grep -o --binary-files=text "[[:alpha:]]" /dev/urandom |\

@@ -71,8 +71,7 @@ function install-docker
     set DOCKER_KEY /etc/apt/keyrings/docker.asc
     install-asc "https://download.docker.com/linux/debian/gpg" "$DOCKER_KEY"
 
-    echo "deb [arch=amd64 signed-by=$DOCKER_KEY] https://download.docker.com/linux/debian $VERSION_CODENAME stable" \
-      > /etc/apt/sources.list.d/docker.list
+    echo "deb [arch=amd64 signed-by=$DOCKER_KEY] https://download.docker.com/linux/debian $VERSION_CODENAME stable" >/etc/apt/sources.list.d/docker.list
     apt update && echo $PKGS_CONTAINER | xargs apt install -y
 end
 
@@ -87,7 +86,7 @@ function install-mirrors
     echo -e "Installing repo mirrors\n--------------------\n"
     rm /etc/apt/sources.list.d/nala-sources.list
     for mirror in $NALA_MIRRORS
-        echo "deb $mirror $VERSION_CODENAME main" >> /etc/apt/sources.list.d/nala-sources.list
+        echo "deb $mirror $VERSION_CODENAME main" >>/etc/apt/sources.list.d/nala-sources.list
     end
     nala update
 end
@@ -97,7 +96,7 @@ end
 
 # Determine packages to install based on shell arguments
 set PACKAGES_TO_INSTALL $PKGS_TOOLS
-argparse 'g' -- $argv
+argparse g -- $argv
 if set -q _flag_g
     set PACKAGES_TO_INSTALL "$PACKAGES_TO_INSTALL $PKGS_DESKTOP $PKGS_LIBS"
 end

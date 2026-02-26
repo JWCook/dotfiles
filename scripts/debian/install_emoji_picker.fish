@@ -2,13 +2,13 @@
 
 set script_dir (dirname (dirname (status filename)))
 source $script_dir/debian/deb_utils.fish
-set repo "gazatu/im-emoji-picker"
+set repo gazatu/im-emoji-picker
 
 # Find input framework
-if command -v ibus > /dev/null
-    set input_framework "ibus"
-else if command -v fcitx5 > /dev/null
-    set input_framework "fcitx5"
+if command -v ibus >/dev/null
+    set input_framework ibus
+else if command -v fcitx5 >/dev/null
+    set input_framework fcitx5
 else
     echo "no input method framework found" && exit 1
 end

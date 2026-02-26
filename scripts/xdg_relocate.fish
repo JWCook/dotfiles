@@ -5,12 +5,15 @@ function safe_mv -a old_path -a xdg_path
     # Variable for XDG path not set
     if test -z $xdg_path || test -z $old_path
         echo "Missing XDG path for $old_path"
+
     # Old path doesn't exist
     else if ! test -e $old_path
         echo "Skipping $old_path (does not exist)"
+
     # Both old and new paths exist
     else if test -e $old_path && test -e $xdg_path
         rm -rfv $old_path
+
     # Only old path exists
     else if test -e $old_path && ! test -e $xdg_path
         mkdir -p (dirname $xdg_path)
