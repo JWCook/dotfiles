@@ -689,7 +689,7 @@ function gbprune
         --format='%(refname:short) %(upstream:track)' refs/heads \
         | awk '/\[gone\]$/ {print $1}')
     if test (count $merged_branches) -gt 0
-        echo $merged_branches | fzf --multi --sync --bind start:select-all | xargs git branch -D
+        string join \n $merged_branches | fzf --multi --sync --bind start:select-all | xargs git branch -D
     end
 end
 
@@ -861,7 +861,7 @@ end
 # List issues or view a specific one
 function ghi -a issue
     if test -z $issue
-        gh issue list
+        gh issue list -L 80
     else
         gh issue view $issue
     end
