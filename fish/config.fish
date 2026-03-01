@@ -904,8 +904,9 @@ end
 # ❰❰ Docker ❱❱ #
 ################
 
-# abbr dps docker ps -a
-abbr -e dps
+if ! type -a dps &>/dev/null
+    abbr dps docker ps -a
+end
 abbr dpsc docker ps --format "{{.Names}}" | sort
 abbr dlog docker logs -f
 abbr dstat docker stats
