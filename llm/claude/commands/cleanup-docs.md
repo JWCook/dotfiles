@@ -1,0 +1,1 @@
+I would like you to examine this whole codebase and its docs (both docstrings and Markdown/MyST docs), and identify any out-of-date, inaccurate, or inconsistent information in the documentation. Produce a summary of these items rather than editing the docs yourself.

@@ -1,0 +1,1 @@
+Look over the recently added tests again, and look for opportunities for improvements: simplifications, code cleanup, combining tests with pytest parametrize, etc. Look for overly broad mocking that should be more precise. Look for weak assertions that don't test anything meaningful (either remove, or replace with better assertions).

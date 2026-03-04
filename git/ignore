@@ -11,6 +11,7 @@
 .debug/
 .notes
 .scratch/
+AGENTS.md
 CLAUDE.md
 PLAN.md
 *.kate-swp

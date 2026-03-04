@@ -1,6 +1,7 @@
 # Project notes
-- Check repo for a `.notes` directory. That may contain `.CLAUDE.md` and optionally plan and summary documents.
-- If you're creating `CLAUDE.md`/plans/summaries, place them under `.notes/`.
+- Always read `AGENTS.md` if present in the project directory
+- If you're creating plans/summaries, place them under `.notes/`.
+- When looking for previous plans/summaries, check for a `.notes` directory.
 
 # General Principles
 - **Incremental progress over big bangs** - Small changes that compile and pass tests
