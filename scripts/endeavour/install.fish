@@ -33,6 +33,7 @@ set PKGS_TERM '
 
 # Other CLI/TUI tools
 set PKGS_TOOLS '
+    act
     aha
     curl
     doxx

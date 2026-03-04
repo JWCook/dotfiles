@@ -99,6 +99,7 @@ function install-gh
     install-gpg "https://cli.github.com/packages/githubcli-archive-keyring.gpg" "/etc/apt/keyrings/githubcli-archive-keyring.gpg"
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" >/etc/apt/sources.list.d/github-cli.list
     apt update && apt install -y gh
+    gh extension install https://github.com/nektos/gh-act
 end
 
 function install-glow
