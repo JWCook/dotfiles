@@ -1383,11 +1383,15 @@ abbr pac-ls          pacman -Qe
 abbr pac-ll          pacman -Q
 abbr pac-search      pacman -Ss
 
-abbr aur-update      paru -Sua
+abbr aur-update      paru -Syu
 abbr aur-add         paru -S --needed
-abbr aur-rm          paru -R
+abbr aur-clean       paru -Sc
 abbr aur-info        paru -Si
+abbr aur-log         paru -Qc
+abbr aur-rm          paru -Rc
 abbr aur-ls          pacman -Qm
+abbr aur-check       paru -Qu
+abbr paruu           paru -Syu
 
 # Debian-based
 # ------------------------------
