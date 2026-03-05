@@ -44,6 +44,10 @@ install-albert-conf:
 install-atuin-conf:
     @just symlink atuin/config.toml {{config_dir}}/atuin/config.toml
 
+install-auto-cpufreq-conf:
+    @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
+    sudo auto-cpufreq --install
+
 install-claude-conf:
     @just symlink llm/AGENTS.md ~/.claude/CLAUDE.md
     @just symlink llm/claude/settings.json ~/.claude/settings.json
@@ -289,7 +293,6 @@ update-rust: install-rust
 
 install-auto-cpufreq:
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
-    @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
 update-auto-cpufreq:
     - command -v auto-cpufrequ && sudo auto-cpufreq --update
 install-claude-code:
