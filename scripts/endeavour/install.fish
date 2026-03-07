@@ -130,7 +130,6 @@ set PKGS_LIBS '
     ruby
     rustup
     sqlite
-    texlive
     wl-clipboard
     xz
 '
