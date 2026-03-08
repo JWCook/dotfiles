@@ -117,9 +117,10 @@ source-file ~/.config/fish/config_*.fish
 source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
-set -x DOTFILES ~/dotfiles
+set -gx DOTFILES ~/dotfiles
 test -d "$DOTFILES_LOCAL" || set -x DOTFILES_LOCAL ~/dotfiles-local
-set -x WORKSPACE ~/workspace
+set -gx WORKSPACE ~/workspace
+set -gx WORKTREES ~/workspace/@wt
 abbr cw cd $WORKSPACE
 
 # Set ssh-agent socket, if it's set up as a systemd service
@@ -574,6 +575,10 @@ abbr gsw git switch
 abbr gsc git switch -c
 abbr gstlist git stash list \; git stash show
 
+function __fish_git_branches
+  git branch --no-color -a 2>/dev/null | sed 's/^..//'
+end
+
 function gremote
     if git remote | grep -qx origin
         echo origin
@@ -775,12 +780,22 @@ end
 abbr gwprune git worktree prune
 abbr gwl git worktree list
 
-# Create a worktree, optionally with new branch or existing remote branch
+# Create a worktree (or cd to existing one), optionally with new branch or existing remote branch
 function gwt -a branch
+    set -l existing_wt (git worktree list --porcelain | awk -v target="refs/heads/$branch" '
+        $1 == "worktree" { wt = $2 }
+        $1 == "branch" && $2 == target { print wt; exit }
+    ')
+    if test -n "$existing_wt"
+        cd $existing_wt
+        return 0
+    end
+
+    mkdir -p $WORKTREES
     set wt_dir "$(_get_gwbranch $branch)"
     git branch $branch || true
-    git worktree add ../$wt_dir $branch
-    cd ../$wt_dir
+    git worktree add $WORKTREES/$wt_dir $branch
+    cd $WORKTREES/$wt_dir
 
     # Set upstream to remote branch if it already exists
     set remote (gremote)
@@ -788,6 +803,7 @@ function gwt -a branch
         git branch --set-upstream-to=$remote/$branch
     end
 end
+complete -c gwt --wraps=__fish_git_branches
 
 # Create a worktree based on a PR
 function gwpr -a pr_number
@@ -797,20 +813,14 @@ function gwpr -a pr_number
     gwt $branch
 end
 
-# Move to worktree branch dir
-function gwcd -a branch
-    set repo (basename (_get_gwroot))
-    cd ../$repo-$branch
-end
-
 # Move to worktree root dir
-function gwroot
+function gwtr
     cd (_get_gwroot)
 end
 
 # Remove a worktree
 function gwrm -a branch
-    git worktree remove ../(_get_gwbranch $branch)
+    git worktree remove $WORKTREES/(_get_gwbranch $branch)
     gwroot
 end
 
