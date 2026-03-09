@@ -108,6 +108,7 @@ set PKGS_LIBS '
     cifs-utils
     cmake
     ctags
+    exfat-utils
     gnupg
     gnutls
     go
