@@ -3,6 +3,7 @@ set BOOTSTRAPS ./bootstrap
 set FISH_COMPLETE_DEST ~/.config/fish/completions/poetry.fish
 set BASH_COMPLETE_DEST ~/.config/bash/completions/poetry.bash-completion
 set PYTHON_VERSIONS \
+    3.14 \
     3.13 \
     3.12 \
     3.11 \

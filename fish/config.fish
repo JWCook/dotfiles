@@ -69,6 +69,26 @@ function source-bin
     test -f "$executable_path" && source "$executable_path"
 end
 
+# Source a .env file, ignoring comments and blank or malformed lines
+function source-env
+    set -l env_file $argv[1]
+    if not test -f "$env_file"; or not test -r "$env_file"
+        echo "Error: File '$env_file' not found or not readable." >&2
+        return 1
+    end
+
+    cat "$env_file" | while read -l line
+        set -l trimmed (string trim -- $line)
+        if test -z "$trimmed"; or string match -qr '^#' -- $trimmed
+            continue
+        end
+        set -l parts (string split -m 1 '=' -- $trimmed)
+        if test (count $parts) -eq 2
+            set -gx $parts[1] $parts[2]
+        end
+    end
+end
+
 # Safe tput, only for TTY sessions
 alias ttput='tty -s && tput'
 
@@ -118,7 +138,7 @@ source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
 set -gx DOTFILES ~/dotfiles
-test -d "$DOTFILES_LOCAL" || set -x DOTFILES_LOCAL ~/dotfiles-local
+test -d "$DOTFILES_LOCAL" || set -gx DOTFILES_LOCAL ~/dotfiles-local
 set -gx WORKSPACE ~/workspace
 set -gx WORKTREES ~/workspace/@wt
 abbr cw cd $WORKSPACE
@@ -148,6 +168,15 @@ if command -q starship
     starship init fish | source
     enable_transience
 end
+
+function env-keys -a envfile
+    grep -v '^#' "$envfile" | cut -d'=' -f1 | sed 's/$/=/'
+end
+function env-permissions -a search_dir
+    set search_dir (coalesce $search_dir ~)
+    fd -H '^\.env$' $search_dir -x chmod -v 600 {}
+end
+
 
 #########################
 # ❰❰ General Aliases ❱❱ #
@@ -821,7 +850,7 @@ end
 # Remove a worktree
 function gwrm -a branch
     git worktree remove $WORKTREES/(_get_gwbranch $branch)
-    gwroot
+    gwtr
 end
 
 function _get_gwroot
