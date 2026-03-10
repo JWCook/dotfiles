@@ -24,7 +24,7 @@ update:
 ##########
 
 # Install config for all terminal applications
-configs := "atuin bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython llm nvim pdb postgres starship tmux vim wezterm yazi"
+configs := "atuin bash dbcli fastfetch figlet fish gh git grc guake harlequin htop ipython nvim pdb postgres starship tmux vim wezterm yazi"
 # "albert kitty ghostty ranger terminator xfce"
 
 install-conf:
@@ -35,9 +35,6 @@ install-conf:
 install-gnome-conf: install-gnome-terminal-conf
     ./scripts/configure_gnome.sh
 
-install-aider-conf:
-    @just symlink llm/aider.conf.yml ~/.aider.conf.yml
-
 install-albert-conf:
     @just symlink albert/albert.conf {{config_dir}}/albert/albert.conf
 
@@ -47,15 +44,6 @@ install-atuin-conf:
 install-auto-cpufreq-conf:
     @just symlink auto-cpufreq/auto-cpufreq.conf {{config_dir}}/auto-cpufreq/auto-cpufreq.conf
     sudo auto-cpufreq --install
-
-install-claude-conf:
-    @just symlink llm/AGENTS.md ~/.claude/CLAUDE.md
-    @just symlink llm/claude/settings.json ~/.claude/settings.json
-    @just symlink llm/claude/commands ~/.claude/commands
-
-install-codex-conf:
-    # npm i -g @openai/codex
-    @just symlink llm/codex/default.rules ~/.codex/rules/default.rules
 
 install-bash-conf:
     @just symlink bash/bashrc       ~/.bashrc
@@ -129,10 +117,6 @@ install-kitty-conf:
 
 install-lazygit-conf:
     @just symlink lazygit/config.yml ~/.config/lazygit/config.yml
-
-install-llm-conf:
-    @just symlink llm/aliases.json ~/.config/io.datasette.llm/aliases.json
-    @just symlink llm/default_model.txt ~/.config/io.datasette.llm/default_model.txt
 
 install-nvim-conf:
     @just symlink nvim {{config_dir}}/nvim
@@ -300,12 +284,6 @@ install-auto-cpufreq:
     sudo ./scripts/xdistro/install_auto_cpufreq.sh --install
 update-auto-cpufreq:
     - command -v auto-cpufrequ && sudo auto-cpufreq --update
-install-claude-code:
-    - command -v claude >/dev/null 2>&1 \
-        || curl -fsSL https://claude.ai/install.sh | bash
-    - command -v ccusage >/dev/null 2>&1 \
-        || npm install -g ccusage
-    npm install -g @anthropic-ai/sandbox-runtime
 install-fzf:
     ./scripts/xdistro/install_fzf.sh
 install-grc:

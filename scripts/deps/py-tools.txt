@@ -5,7 +5,7 @@ files-to-prompt
 harlequin
 httpie
 litecli
-llm --with llm-perplexity --with llm-openrouter
+llm --with llm-perplexity --with llm-openrouter --with llm-gemini
 pgcli
 prek
 py-spy
