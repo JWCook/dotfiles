@@ -118,6 +118,11 @@ install-ipython-conf:
     @just symlink ipython/profile_default/ipython_config.py ~/.ipython/profile_default/ipython_config.py
     @just symlink ipython/profile_default/startup           ~/.ipython/profile_default/startup
 
+install-kde-conf:
+    @just symlink kde/klipperrc ~/.config/klipperrc
+    @just symlink kde/konsolerc ~/.config/konsolerc
+    @just symlink kde/konsole.profile ~/.local/share/konsole/default.profile
+
 install-kitty-conf:
     @just symlink kitty/kitty.conf {{config_dir}}/kitty/kitty.conf
     @just symlink kitty/open-actions.conf {{config_dir}}/kitty/open-actions.conf
@@ -229,7 +234,7 @@ install-endeavouros:
     @just install-node install-rust  # required for subsequent steps
     ./scripts/endeavour/install.fish
     @just install-python-tools install-fonts
-    @just install-completions install-grc install-yubico-auth
+    @just install-completions install-grc install-kde-conf install-yubico-auth
 update-endeavouros:
     paru -Syu
     @just update-python update-rust update-nvim-plugins update-repos update-tldr update-auto-cpufreq

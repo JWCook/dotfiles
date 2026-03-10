@@ -1,6 +1,6 @@
 [Appearance]
-ColorScheme=Solarized
-Font=JetBrainsMono Nerd Font,12,-1,5,50,0,0,0,0,0
+ColorScheme=EndeavourOS
+Font=JetBrainsMono Nerd Font Mono,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 UseFontLineChararacters=true
 
 [Cursor Options]
@@ -12,6 +12,8 @@ DimWhenInactive=true
 Environment=TERM=xterm-256color,COLORTERM=truecolor
 Name=default
 Parent=FALLBACK/
+TerminalColumns=120
+TerminalRows=30
 
 [Scrolling]
 HistorySize=20000
