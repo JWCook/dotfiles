@@ -11,8 +11,8 @@
 .debug/
 .notes
 .scratch/
+.env
 AGENTS.md
-CLAUDE.md
 PLAN.md
 *.kate-swp
 *.sw*
