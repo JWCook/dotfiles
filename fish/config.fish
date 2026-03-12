@@ -820,10 +820,16 @@ function gwt -a branch
         return 0
     end
 
+    # Make a new worktree if it doesn't already exist
     mkdir -p $WORKTREES
     set wt_dir "$(_get_gwbranch $branch)"
     git branch $branch || true
     git worktree add $WORKTREES/$wt_dir $branch
+
+    # Copy .venv if it exists
+    if test -d .venv
+        copy-venv .venv $WORKTREES/$wt_dir/.venv
+    end
     cd $WORKTREES/$wt_dir
 
     # Set upstream to remote branch if it already exists
@@ -843,14 +849,26 @@ function gwpr -a pr_number
 end
 
 # Move to worktree root dir
-function gwtr
+function gwroot
     cd (_get_gwroot)
 end
+alias gwtr='gwroot'
 
 # Remove a worktree
 function gwrm -a branch
     git worktree remove $WORKTREES/(_get_gwbranch $branch)
     gwtr
+end
+
+# Remove a worktree and switch to its branch in root repo
+function gwmerge -a branch
+    set wt_path $WORKTREES/(_get_gwbranch $branch)
+    if not git -C $wt_path diff-index --quiet HEAD
+        echo "Worktree '$wt_path' has uncommitted changes! " && return 1
+    end
+
+    gwrm $branch
+    git switch $branch
 end
 
 function _get_gwroot
@@ -1239,6 +1257,24 @@ function mkv -a env_name
     set -e PYTHONPATH
     py-cleanup
     pipr
+end
+
+# Copy a python virtualenv and update paths
+function copy-venv -a old_path -a new_path
+    if test -z "$old_path" -o -z "$new_path"
+        echo "Usage: copy-venv <old_path> <new_path>" >&2 && return 1
+    else if not test -d "$old_path"
+        echo "'$old_path' is not a directory" >&2 && return 1
+    else if test -e "$new_path"
+        echo "'$new_path' already exists" >&2 && return 1
+    end
+
+    mkdir -p (dirname $new_path)
+    cp -r "$old_path" "$new_path"
+
+    for f in (grep -rl "$old_path" "$new_path")
+        sed -i "s|$old_path|$new_path|g" "$f"
+    end
 end
 
 # Clean up leftover junk
