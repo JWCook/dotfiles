@@ -242,6 +242,13 @@ function cats -a path
     cat $path | sort
 end
 
+# Background and disown (default to the last job)
+function bgd -a pid
+    set pid (coalesce $pid (jobs -pl | tail -1))
+    bg $pid
+    disown $pid
+end
+
 # poor man's `man`
 function pman
     $argv --help &| less -r
