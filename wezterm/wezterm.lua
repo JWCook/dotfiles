@@ -159,4 +159,15 @@ config.keys = {
     },
 }
 
+config.mouse_bindings = {
+    -- On left mouse release, complete selection into primary selection only
+    -- (not system clipboard). This replaces the default which uses
+    -- CompleteSelectionOrOpenLinkAtMouseCursor('PrimarySelection').
+    {
+        event = { Up = { streak = 1, button = 'Left' } },
+        mods = 'NONE',
+        action = act.CompleteSelection('PrimarySelection'),
+    },
+}
+
 return config
