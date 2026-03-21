@@ -1246,3 +1246,5 @@ pdf-split-page-ranges() {
 # [[ $TERM_START_CMD ]] && { eval "$TERM_START_CMD"; }
 
 # [ -z "$PS1" ] || cmd-exist fastfetch && fastfetch
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi

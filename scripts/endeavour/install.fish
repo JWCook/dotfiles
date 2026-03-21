@@ -68,6 +68,7 @@ set PKGS_TOOLS '
     valgrind
     vim
     wget
+    worktrunk
     zathura
     yq
 '

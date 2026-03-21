@@ -170,8 +170,10 @@ install-completions:
         && procs --gen-completion-out bash > ~/.config/bash/completions/procs.bash \
         && procs --gen-completion-out fish > ~/.config/fish/completions/procs.fish
     - command -v just  >/dev/null 2>&1 \
-        &&just --completions fish > ~/.config/fish/completions/just.fish \
+        && just --completions fish > ~/.config/fish/completions/just.fish \
         && just --completions bash > ~/.config/bash/completions/just.bash
+    - command -v wt  >/dev/null 2>&1 \
+        && wt config shell install -y fish
 
 
 #############################
