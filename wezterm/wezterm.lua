@@ -168,6 +168,27 @@ config.mouse_bindings = {
         mods = 'NONE',
         action = act.CompleteSelection('PrimarySelection'),
     },
+    -- Mousewheel scroll distance
+    {
+      event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+      mods = 'NONE',
+      action = wezterm.action.ScrollByLine(-3),
+    },
+    {
+      event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+      mods = 'NONE',
+      action = wezterm.action.ScrollByLine(3),
+    },
+    {
+      event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+      mods = 'CTRL',
+      action = wezterm.action.ScrollByPage(-1),
+    },
+    {
+      event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+      mods = 'CTRL',
+      action = wezterm.action.ScrollByPage(1),
+    },
 }
 
 return config
