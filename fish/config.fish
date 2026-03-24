@@ -206,6 +206,8 @@ abbr sq litecli
 abbr ta type -a
 alias top='btm --theme gruvbox'; complete -c top --wraps=btm
 alias tt='tig'; complete -c tt --wraps=tig
+abbr tvl tv list-channels
+abbr tvr tv git-repos
 alias unalias='functions --erase'
 alias vim='nvim'
 abbr vv nvim
@@ -263,6 +265,10 @@ function uc -a expr
     rink $expr
 end
 complete -c uc --wraps=rink
+
+# if command -q tv
+#     tv init fish | source
+# end
 
 # Use zoxide as cd
 if command -q zoxide
