@@ -672,6 +672,14 @@ function gpu -a branch
     git push origin $branch
 end
 
+# Recursively find all git repos under a given directory
+function find-repos -a root_dir
+    set root_dir (coalesce $root_dir .)
+    find $root_dir -type d -name ".git" | while read -l d
+        echo (string replace '/.git' '' $d)
+    end
+end
+
 # Commits
 # ------------------------------
 abbr gab git absorb
@@ -718,6 +726,11 @@ alias gbranch='git rev-parse --abbrev-ref HEAD'
 abbr gb git branch -vv
 abbr gbmv git branch -m
 
+# Get default git branch
+function gbranch-default
+    git symbolic-ref refs/remotes/origin/HEAD | sed 's|refs/remotes/origin/||'
+end
+
 # List all remote branches
 function gball
     git for-each-ref --sort=-committerdate --format=\"$GREF_FORMAT\" refs/remotes/
@@ -734,9 +747,9 @@ function gbprune
     end
 end
 
-# Interactive rebase (onto main by default)
+# Interactive rebase
 function grebase -a branch --wraps=__fish_git_branches
-    set branch (coalesce $branch 'main')
+    set branch (coalesce $branch (gbranch-default))
     if not git diff-index --quiet HEAD
         git stash
         git rebase --interactive --rebase-merges $branch
@@ -748,12 +761,12 @@ end
 
 function gsrebase -a branch --wraps=__fish_git_branches
     git stash
-    git rebase --interactive --rebase-merges (coalesce $branch 'main')
+    git rebase --interactive --rebase-merges (coalesce $branch (gbranch-default))
     git stash pop
 end
 
 function grebase-upstream -a branch --wraps=__fish_git_branches
-    set branch (coalesce $branch 'main')
+    set branch (coalesce $branch (gbranch-default))
     git fetch upstream
     git rebase --interactive --rebase-merges upstream/$branch
 end
@@ -890,9 +903,11 @@ end
 set -xg GLOG_FORMAT "%C(blue)%h  %C(cyan)%ad  %C(reset)%s%C(green) [%cn] %C(yellow)%d"
 abbr glog git log --pretty=format:\"$GLOG_FORMAT\" --decorate --date=short
 function glog-branch
-    git log main.. --pretty=format:%s --reverse
+    git log (gbranch-default).. --pretty=format:%s --reverse
 end
-abbr glog-remote git fetch \; glog HEAD..origin/main
+function glog-remote
+    git fetch && git log HEAD..origin/(gbranch-default)
+end
 abbr glol glog \| lc-gradient-delay
 abbr gcstat git shortlog --summary --numbered
 abbr gcstat-all git rev-list --count HEAD
