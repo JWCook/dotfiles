@@ -1,10 +1,18 @@
+# Additional config + aliases specific to WSL
+
 # Add wsl.exe and others to the path without enabling full interop
 fish_add_path /mnt/c/Windows/System32
 
-# Additional config + aliases specific to WSL
-set -gx WIN_HOME (wslpath "C:/Users/$USER")
-set -gx WIN_WORKSPACE (wslpath 'D:/workspace')
+set -gx WIN_HOME (wslpath (cmd.exe /c "echo %USERPROFILE%" 2>/dev/null | string trim) 2>/dev/null)
 set -gx APPDATA "$WIN_HOME/AppData"
+
+set -l _win_workspace (wslpath "D:/Workspace" 2>/dev/null)
+if test -d "$_win_workspace"
+    set -gx WIN_WORKSPACE $_win_workspace
+else
+    set -gx WIN_WORKSPACE "$WIN_HOME/Workspace"
+end
+
 set -gx COLORTERM truecolor
 
 abbr open-ps powershell.exe /c start
