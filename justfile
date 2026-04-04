@@ -174,6 +174,8 @@ install-completions:
         && just --completions bash > ~/.config/bash/completions/just.bash
     - command -v wt  >/dev/null 2>&1 \
         && wt config shell install -y fish
+    - command -v tv  >/dev/null 2>&1 \
+        && just symlink fish/conf.d/tv.fish ~/.config/fish/conf.d/tv.fish
 
 
 #############################

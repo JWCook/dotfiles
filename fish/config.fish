@@ -266,10 +266,6 @@ function uc -a expr
 end
 complete -c uc --wraps=rink
 
-# if command -q tv
-#     tv init fish | source
-# end
-
 # Use zoxide as cd
 if command -q zoxide
     zoxide init fish | source
