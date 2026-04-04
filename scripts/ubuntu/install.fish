@@ -28,6 +28,7 @@ set PKGS_TOOLS '
     jq
     lazygit
     lolcat
+    moreutils
     nala
     ncdu
     p7zip-full

@@ -49,6 +49,7 @@ set PKGS_TOOLS '
     jq
     lazygit
     lolcat
+    moreutils
     ncdu
     neovim
     perf
