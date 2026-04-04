@@ -91,6 +91,8 @@ set PKGS_NET '
 
 # System utilities, drivers, etc.
 set PKGS_SYS '
+    bluez
+    bluez-utils
     cups
     cups-pdf
     fontconfig
@@ -319,8 +321,9 @@ echo "Installing packages\n--------------------\n"
 echo $ALL_PACKAGES | xargs paru -S --needed --noconfirm
 
 # Configure Docker
-sudo systemctl enable --now docker.service
+sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now containerd.service
+sudo systemctl enable --now docker.service
 sudo usermod -aG docker $USER
 
 # Enable SSH agent
