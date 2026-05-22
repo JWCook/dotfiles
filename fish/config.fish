@@ -1017,9 +1017,11 @@ function drl -a container
     docker logs -f "$container"
 end
 
-function drm -a container
-    docker stop "$container"
-    docker rm "$container"
+function drm
+    for container in $argv
+        docker stop "$container"
+        docker rm "$container"
+    end
 end
 
 # Docker-Compose
