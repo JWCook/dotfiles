@@ -191,6 +191,8 @@ abbr hf hyperfine
 abbr hq harlequin
 alias gg='lazygit'; complete -c gg --wraps=lazygit
 alias icat='wezterm imgcat'
+abbr ja just all
+abbr jr just run
 abbr lw sudo logwatch \| less
 abbr npr npm run
 abbr pg pgcli
