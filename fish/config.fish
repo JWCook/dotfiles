@@ -1487,6 +1487,8 @@ abbr pac-info        pacman -Qi
 abbr pac-ls          pacman -Qe
 abbr pac-ll          pacman -Q
 abbr pac-search      pacman -Ss
+abbr pac-deps        pactree
+abbr pac-upstream    pactree -r
 
 abbr aur-update      paru -Syu
 abbr aur-add         paru -S --needed

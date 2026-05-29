@@ -252,6 +252,8 @@ function init-gpg
     chmod 700 ~/.local/share/gnupg
     gpg --list-keys >/dev/null 2>&1 || true
     gpg-connect-agent --dirmngr /bye >/dev/null 2>&1 || true
+    # librewolf-bin maintainer key
+    gpg --keyserver hkps://keys.openpgp.org --recv-keys 915585A1C36690B1 2>&1
 end
 
 function install-paru

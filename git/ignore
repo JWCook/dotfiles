@@ -3,6 +3,7 @@
 .eclipse/
 .idea/
 .tmp/
+.venv/
 .vim/
 .vscode/
 .~*
@@ -18,3 +19,5 @@ PLAN.md
 *.kate-swp
 *.sw*
 *.code-workspace
+
+**/.claude/settings.local.json
