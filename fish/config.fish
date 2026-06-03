@@ -775,10 +775,46 @@ function grebase-upstream -a branch --wraps=__fish_git_branches
     git rebase --interactive --rebase-merges upstream/$branch
 end
 
-abbr gabort git rebase --abort || git merge --abort
-abbr gcontinue git rebase --continue
-abbr gskip git rebase --skip
-abbr gscontinue git stash \; git rebase --continue \; git stash pop
+function gabort
+    set git_dir (git rev-parse --git-dir 2>/dev/null) || return 1
+    if test -d "$git_dir/rebase-merge" -o -d "$git_dir/rebase-apply"
+        git rebase --abort
+    else if test -f "$git_dir/MERGE_HEAD"
+        git merge --abort
+    else if test -f "$git_dir/CHERRY_PICK_HEAD"
+        git cherry-pick --abort
+    else
+        echo "No rebase, merge, or cherry-pick in progress"
+        return 1
+    end
+end
+
+function gcontinue
+    set git_dir (git rev-parse --git-dir 2>/dev/null) || return 1
+    if test -d "$git_dir/rebase-merge" -o -d "$git_dir/rebase-apply"
+        git rebase --continue
+    else if test -f "$git_dir/MERGE_HEAD"
+        git merge --continue
+    else if test -f "$git_dir/CHERRY_PICK_HEAD"
+        git cherry-pick --continue
+    else
+        echo "No rebase, merge, or cherry-pick in progress"
+        return 1
+    end
+end
+
+function gskip
+    set git_dir (git rev-parse --git-dir 2>/dev/null) || return 1
+    if test -d "$git_dir/rebase-merge" -o -d "$git_dir/rebase-apply"
+        git rebase --skip
+    else if test -f "$git_dir/CHERRY_PICK_HEAD"
+        git cherry-pick --skip
+    else
+        echo "No rebase or cherry-pick in progress"
+        return 1
+    end
+end
+abbr gscontinue git stash \; gcontinue \; git stash pop
 
 # Overwrite local branch with remote
 function gbreset -a branch -a remove --wraps=__fish_git_branches
