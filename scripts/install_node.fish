@@ -23,4 +23,9 @@ set -U nvm_default_version $DEFAULT_NODE_VERSION
 
 # Install NPM pacakges
 npm install -g npm@latest
-npm install -g neovim yarn actions-up
+npm install -g \
+    actions-up \
+    neovim \
+    typescript \
+    typescript-language-server \
+    yarn
