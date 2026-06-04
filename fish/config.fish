@@ -900,6 +900,13 @@ function gwt -a branch
 end
 complete -c gwt --wraps=__fish_git_branches
 
+# Generic persistent worktrees
+alias gwt0='gwroot'
+alias gwt1='gwt wt1'
+alias gwt2='gwt wt2'
+alias gwt3='gwt wt3'
+alias gwt4='gwt wt4'
+
 # Create a worktree based on a PR
 function gwpr -a pr_number
     set remote (gremote)
@@ -912,7 +919,6 @@ end
 function gwroot
     cd (_get_gwroot)
 end
-alias gwtr='gwroot'
 
 # Remove a worktree
 function gwrm -a branch
