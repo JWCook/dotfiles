@@ -350,6 +350,11 @@ function massif
         | awk '{print $1/1024/1024}'
 end
 
+# Get full path to newest file in dir
+function newest -a path
+    fd . "$path" -d 1 -t f -X ls -t | head -n 1
+end
+
 function dims -a path
     file $path | grep -Eo "[[:digit:]]+ *x *[[:digit:]]+"
 end
@@ -601,7 +606,7 @@ abbr gf git fetch \&\& git status
 abbr gfa git fetch --all \&\& git status
 abbr ggr git grep
 abbr gp git pull
-alias gpp='git pull --rebase'
+alias gpp='git pull --rebase && gbprune'
 abbr gpush git push
 abbr gfpush git push --force-with-lease
 abbr gffpush git push --force
@@ -901,11 +906,12 @@ end
 complete -c gwt --wraps=__fish_git_branches
 
 # Generic persistent worktrees
-alias gwt0='gwroot'
-alias gwt1='gwt wt1'
-alias gwt2='gwt wt2'
-alias gwt3='gwt wt3'
-alias gwt4='gwt wt4'
+alias wt='gwt'
+alias wt0='gwroot'
+alias wt1='gwt wt1'
+alias wt2='gwt wt2'
+alias wt3='gwt wt3'
+alias wt4='gwt wt4'
 
 # Create a worktree based on a PR
 function gwpr -a pr_number
@@ -993,7 +999,7 @@ function ghi -a issue
 end
 
 # List PRs or view a specific one
-function ghp -a pr
+function ghpr -a pr
     if test -z $pr
         gh pr list
     else
@@ -1003,7 +1009,7 @@ end
 
 # List workflow runs or view a specific one
 function ghr -a run
-    if test -z $pr
+    if test -z $run
         gh run list
     else
         gh run view $run
@@ -1015,13 +1021,59 @@ function gh-releases -a repo
     curl -s "https://api.github.com/repos/$repo/releases/latest"
 end
 function gh-latest-release -a repo
-    git-releases $repo | jq -r .tag_name
+    gh-releases $repo | jq -r .tag_name
 end
 function gh-latest-release-link -a repo
-    git-releases $repo | jq -r '.assets[0].browser_download_url'
+    gh-releases $repo | jq -r '.assets[0].browser_download_url'
 end
 function gh-latest-release-rpm -a repo
-    git-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
+    gh-releases $repo | jq -r '.assets[] | select(.name | endswith("x86_64.rpm")).browser_download_url'
+end
+
+# GitLab
+# ------------------------------
+
+abbr gls glab auth status
+abbr glp  glab mr create --draft --fill
+abbr glpp glab mr create --draft --fill-commit-body --title ''
+
+function glab-login
+    glab auth status || glab auth login --hostname gitlab.com
+end
+
+# List issues or view a specific one
+function gli -a issue
+    if test -z $issue
+        glab issue list
+    else
+        glab issue view $issue
+    end
+end
+
+# List MRs or view a specific one
+function glpr -a mr
+    if test -z $mr
+        glab mr list
+    else
+        glab mr view $mr
+    end
+end
+
+# List pipeline runs or open interactive CI view
+function glci -a pipeline
+    if test -z $pipeline
+        glab ci list
+    else
+        glab ci view
+    end
+end
+
+# Get release info for a project (format: namespace/repo or full URL)
+function glab-releases -a repo
+    glab release list --repo $repo
+end
+function glab-latest-release -a repo
+    glab release list --repo $repo | head -1
 end
 
 
