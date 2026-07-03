@@ -1,4 +1,4 @@
-'$schema' = 'https://yazi-rs.github.io/schemas/yazi.json'
+#:schema https://yazi-rs.github.io/schemas/yazi.json
 
 [mgr]
 sort_by         = 'natural'
@@ -8,7 +8,7 @@ title_format    = 'yz: {cwd}'
 
 [plugin]
 prepend_fetchers = [
-    { id = 'git', name = '*', run = 'git' },
+    { id = 'git', url = '*', run = 'git', group = 'git' },
 ]
 prepend_previewers = [
     # When 25.9.15+ is released
