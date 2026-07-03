@@ -32,6 +32,10 @@ prepend_keymap = [
     { on = '<C-S-Right>',   run = 'tab_swap  1',              desc = 'Move current tab right' },
 
 
+    # Home/End navigation
+    { on = '<Home>', run = 'arrow -99999999', desc = 'Move cursor to top' },
+    { on = '<End>',  run = 'arrow  99999999', desc = 'Move cursor to bottom' },
+
     # Disable some default keymaps
     { on = ';',         run = 'noop' },
     { on = ':',         run = 'noop' },

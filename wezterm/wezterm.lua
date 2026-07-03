@@ -2,6 +2,19 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {}
 
+local function split(direction)
+    return wezterm.action_callback(function(window, pane)
+        local cwd = pane:get_current_working_dir()
+        window:perform_action(
+            act.SplitPane {
+                direction = direction,
+                command = { cwd = cwd and cwd.file_path or nil },
+            },
+            pane
+        )
+    end)
+end
+
 -- OS-specific settings
 ----------------------------------------
 
@@ -33,6 +46,7 @@ end
 hide_tab_bar_if_only_one_tab = true
 config.enable_scroll_bar = true
 config.check_for_updates = false
+config.scrollback_lines = 20000
 config.window_close_confirmation = 'NeverPrompt'
 config.window_decorations = 'RESIZE'
 
@@ -49,6 +63,10 @@ config.color_scheme = 'Tokyo Night Storm'
 config.font = wezterm.font 'JetBrainsMono NF'
 config.font_size = 14.0
 config.window_background_opacity = 0.9
+config.inactive_pane_hsb = {
+    saturation = 0.7,
+    brightness = 0.7,
+}
 
 config.window_background_gradient = {
   colors = {
@@ -97,21 +115,46 @@ config.keys = {
         mods = 'CTRL|SHIFT',
         action = act { ActivateTabRelative = -1 },
     },
+    {
+        key = 'PageDown',
+        mods = 'CTRL|SHIFT',
+        action = act { MoveTabRelative = 1 },
+    },
+    {
+        key = 'PageUp',
+        mods = 'CTRL|SHIFT',
+        action = act { MoveTabRelative = -1 },
+    },
     -- Splits
     {
         key = 'y',
         mods = 'CTRL|SHIFT',
-        action = act { SplitHorizontal = { domain = 'CurrentPaneDomain' } },
+        action = split('Right'),
     },
     {
         key = 'h',
         mods = 'CTRL|SHIFT',
-        action = act { SplitVertical = { domain = 'CurrentPaneDomain' } },
+        action = split('Down'),
+    },
+    {
+        key = '=',
+        mods = 'ALT',
+        action = split('Right'),
+    },
+    {
+        key = '-',
+        mods = 'ALT',
+        action = split('Down'),
     },
     {
         key = 'x',
         mods = 'CTRL|SHIFT',
         action = act.TogglePaneZoomState,
+    },
+    {
+        key = 'Space',
+        mods = 'CTRL|SHIFT',
+        action = act.ActivateCopyMode,
     },
     {
         key = 'x',

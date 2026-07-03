@@ -114,6 +114,7 @@ increase_volume=Volume Up
 increase_volume_small=Shift+Volume Up
 mic_mute=Meta+Volume Mute; Microphone Mute
 mute=Volume Mute
+push_to_talk=
 
 [ksmserver][Global Shortcuts]
 Halt Without Confirmation=
@@ -140,6 +141,7 @@ ExposeClassCurrentDesktop=
 Grid View=Meta+Ctrl+Tab; Meta+G
 Increase Opacity=
 Kill Window=Meta+Ctrl+Esc
+Move Tablet to Next LogicalOutput=
 Move Tablet to Next Output=
 MoveMouseToCenter=
 MoveMouseToFocus=
@@ -156,10 +158,10 @@ Switch One Desktop Down=Ctrl+Alt+Down
 Switch One Desktop Up=Ctrl+Alt+Up
 Switch One Desktop to the Left=Ctrl+Alt+Left
 Switch One Desktop to the Right=Ctrl+Alt+Right
-Switch Window Down=Meta+Alt+Down
-Switch Window Left=Meta+Alt+Left
-Switch Window Right=Meta+Alt+Right
-Switch Window Up=Meta+Alt+Up
+Switch Window Down=
+Switch Window Left=
+Switch Window Right=
+Switch Window Up=
 Switch to Desktop 1=Meta+F1
 Switch to Desktop 10=
 Switch to Desktop 11=
@@ -173,12 +175,17 @@ Switch to Desktop 18=
 Switch to Desktop 19=
 Switch to Desktop 2=Meta+F2
 Switch to Desktop 20=
+Switch to Desktop 21=
+Switch to Desktop 22=
+Switch to Desktop 23=
+Switch to Desktop 24=
+Switch to Desktop 25=
 Switch to Desktop 3=Meta+F3
 Switch to Desktop 4=Meta+F4
 Switch to Desktop 5=Meta+F5
 Switch to Desktop 6=Meta+F6
-Switch to Desktop 7=
-Switch to Desktop 8=
+Switch to Desktop 7=Meta+F7
+Switch to Desktop 8=Meta+F8
 Switch to Desktop 9=
 Switch to Next Desktop=
 Switch to Next Screen=
@@ -198,6 +205,7 @@ Switch to Screen to the Left=
 Switch to Screen to the Right=
 Toggle Night Color=
 Toggle Window Raise/Lower=
+ToggleCurrentThumbnail=
 Walk Through Desktop List=Meta+Ctrl+Tab
 Walk Through Desktop List (Reverse)=
 Walk Through Desktops=
@@ -252,6 +260,7 @@ Window Quick Tile Top Left=
 Window Quick Tile Top Right=
 Window Raise=
 Window Resize=
+Window Restore=Meta+Backspace
 Window Shade=
 Window Shrink Horizontal=
 Window Shrink Vertical=
@@ -268,6 +277,11 @@ Window to Desktop 18=
 Window to Desktop 19=
 Window to Desktop 2=Meta+Ctrl+F2
 Window to Desktop 20=
+Window to Desktop 21=
+Window to Desktop 22=
+Window to Desktop 23=
+Window to Desktop 24=
+Window to Desktop 25=
 Window to Desktop 3=Meta+Ctrl+F3
 Window to Desktop 4=Meta+Ctrl+F4
 Window to Desktop 5=Meta+Ctrl+F5
@@ -300,6 +314,10 @@ pausemedia=Media Pause
 playmedia=
 playpausemedia=Media Play
 previousmedia=Media Previous
+seekbackwardmedia=Media Rewind
+seekbackwardmedialong=
+seekforwardmedia=Media Fast Forward
+seekforwardmedialong=
 stopmedia=Media Stop
 
 [org.kde.dolphin.desktop][Global Shortcuts]
@@ -322,6 +340,10 @@ ShowOSD=Display; Meta+P
 
 [org.kde.plasma-systemmonitor.desktop][Global Shortcuts]
 _launch=Ctrl+Shift+Esc; Meta+Esc
+applications=
+history=
+overview=
+processes=
 
 [org.kde.plasma.emojier.desktop][Global Shortcuts]
 _launch=Meta+.; Meta+Ctrl+Alt+Shift+Space
@@ -359,6 +381,7 @@ Turn Off Screen=
 powerProfile=Battery; Meta+B
 
 [plasmashell][Global Shortcuts]
+Slideshow Wallpaper Next Image=
 activate application launcher=Meta
 activate task manager entry 1=Meta+1
 activate task manager entry 10=
@@ -373,7 +396,7 @@ activate task manager entry 9=Meta+9
 activate widget 107=
 activate widget 29=
 activate widget 3=Alt+F1
-clear-history=
+clear history=
 clipboard_action=Meta+Ctrl+X
 cycle-panels=Meta+Alt+P
 cycleNextAction=
@@ -392,7 +415,7 @@ switch to previous activity=
 toggle do not disturb=
 
 [systemsettings.desktop][Global Shortcuts]
-_launch=Tools
+_launch=Meta+I; Tools
 kcm-kscreen=
 kcm-lookandfeel=
 kcm-powerdevilprofilesconfig=

@@ -79,19 +79,18 @@ command("BD", function() Snacks.bufdelete() end, {})
 command("BN", ":new", {})
 
 -- ❰❰ Windows ❱❱
-keymap('n', '<A-Up>',    ':wincmd k<CR>', { silent = true })
-keymap('n', '<A-Down>',  ':wincmd j<CR>', { silent = true })
-keymap('n', '<A-Left>',  ':wincmd h<CR>', { silent = true })
-keymap('n', '<A-Right>', ':wincmd l<CR>', { silent = true })
-keymap('n', '<A-k>',     ':wincmd k<CR>', { silent = true })
-keymap('n', '<A-j>',     ':wincmd j<CR>', { silent = true })
-keymap('n', '<A-h>',     ':wincmd h<CR>', { silent = true })
-keymap('n', '<A-l>',     ':wincmd l<CR>', { silent = true })
+keymap('n', '<A-S-Up>',    ':wincmd k<CR>', { silent = true })
+keymap('n', '<A-S-Down>',  ':wincmd j<CR>', { silent = true })
+keymap('n', '<A-S-Left>',  ':wincmd h<CR>', { silent = true })
+keymap('n', '<A-S-Right>', ':wincmd l<CR>', { silent = true })
+keymap('n', '<A-k>'  ,     ':wincmd k<CR>', { silent = true })
+keymap('n', '<A-j>',       ':wincmd j<CR>', { silent = true })
+keymap('n', '<A-h>',       ':wincmd h<CR>', { silent = true })
+keymap('n', '<A-l>',       ':wincmd l<CR>', { silent = true })
 
 -- ❰❰ Window Resizing ❱❱
 keymap({ 'n', 'i' }, '<M-+>', '<C-O>:wincmd +<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<M-->', '<C-O>:wincmd -<CR>', { silent = true })
-keymap({ 'n', 'i' }, '<M-=>', '<C-O>:wincmd =<CR>', { silent = true })
 keymap({ 'n', 'i' }, '<C-x>', '<C-O>:resize 45 | vertical resize 100<CR>', { silent = true })
 
 -- ❰❰ Window Splits ❱❱
