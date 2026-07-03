@@ -136,6 +136,7 @@ set PKGS_LIBS '
     ruby
     rustup
     sqlite
+    tesseract-data-eng
     wl-clipboard
     xz
 '
