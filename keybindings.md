@@ -1,4 +1,63 @@
-# Neovim Custom Keymap Reference
+# Keybindings
+
+# KDE
+
+## Windows
+| Action                              | Keymap                    |
+| ------                              | ------                    |
+| Tile left/right/up/down             | `Meta+Arrow`              |
+| Maximize                            | `Meta+PgUp`               |
+| Minimize                            | `Meta+PgDown`             |
+| Move to next/prev screen            | `Meta+Shift+Right/Left`   |
+| Switch windows                      | `Alt+Tab`             |
+| Switch windows (reverse)            | `Alt+Shift+Tab`       |
+| Switch windows (same app)           | `Alt+\``              |
+| Switch windows (same app, reverse)  | `Alt+~`                |
+| Overview                            | `Meta+Tab`             |
+| Grid view                           | `Meta+G`/`Meta+Ctrl+Tab` |
+
+## Virtual Desktops
+| Action                              | Keymap                    |
+| ------                              | ------                    |
+| Switch desktop                      | `Meta+Ctrl+Arrow`         |
+| Switch to desktop N                 | `Meta+F1`–`Meta+F8`       |
+| Move window to desktop              | `Meta+Ctrl+Shift+Arrow`   |
+| Move window to desktop N            | `Meta+Ctrl+F1`–`F6`       |
+
+## Global Shortcuts
+| Action                      | Keymap                |
+| ------                      | ------                |
+| App launcher                | `Meta`                |
+| Taskbar entry N             | `Meta+1`–`Meta+9`     |
+| File manager (Dolphin)      | `Meta+E`              |
+| Terminal (Guake)            | `Meta+T`
+| System monitor              | `Meta+Esc`            |
+| Screenshot                  | `Meta+Shift+S`        |
+| Record region               | `Meta+R`              |
+| Zoom in/out                 | `Meta++` / `Meta+-`   |
+| Emoji picker                | `Meta+.`              |
+
+---
+
+# Wezterm
+
+Command                    | Action
+-----                      |-----
+`Ctrl+Shift+T`               | New tab
+`Ctrl+W`                     | Close tab
+`Ctrl+Tab` / `Ctrl+Shift+Tab`   | Next/prev tab
+`Ctrl+Shift+PgDn/PgUp`       | Move tab right/left
+`Ctrl+Shift+N`               | New window
+`Ctrl+Shift+X`               | Zoom/unzoom pane
+`Ctrl+Shift+Space`           | Enter copy mode
+`Alt+=` / `Ctrl+Shift+Y`       | Vertical split
+`Alt+-` / `Ctrl+Shift+H`       | Horizontal split
+`Alt+⬆️/⬇️/⬅️/➡️`            | Move to pane
+`Ctrl+Alt+⬆️/⬇️/⬅️/➡️`       | Resize pane
+
+---
+
+# Neovim
 
 ## Movement
 | Action                         | Keymap            | Description
@@ -11,14 +70,14 @@
 | ------               | ------             | -------
 | Previous buffer      | `<C-Left>/<C-h>`   | `:bprev`
 | Next buffer          | `<C-Right>/<C-l>`  | `:bnext`
-| Close buffer         | `:BD`              | `:Bdelete`
+| Close buffer         | `:BD`              | `Snacks.bufdelete()`
 
 ## Windows
 | Action               | Keymap                    | Command
 | ------               | ------                    | -------
 | Navigate windows     | `<A-S-Up/Down/Left/Right>`  | `:wincmd [kjhl]`
 | Navigate windows     | `<A-k/j/h/l>`             | `:wincmd [kjhl]`
-| Resize windows       | `<M-+/-/=>`               | `:wincmd [+-=]`
+| Resize windows       | `<M-+/->`                 | `:wincmd [+-]`
 | Maximize window      | `<C-x>`                   | `:resize 45 \| vertical resize 100`
 | Vertical split       | `vv`                      | `<C-w>v`
 | Horizontal split     | `hh`                      | `<C-w>s`
@@ -38,7 +97,7 @@
 | Search Help tags          | `<C-F1>`  | `:Telescope help_tags`
 |                           | `<F2>`    |
 | Toggle comment            | `<F3>`    | `gc`
-| Toggle fold               | `<F4>`    | `za`
+| Toggle fold               | `<F4>`    | `>za`
 | Search filenames          | `F5`      | `:Telescope find_files`
 | Search file content       | `<C-F5>`  | `:Telescope live_grep`
 | Search buffers            | `<S-F5>`  | `:Telescope buffers`
@@ -101,13 +160,30 @@
 ## External Commands
 | Action               | Keymap        | Command
 | ------               | ------        | -------
-| Run Python file      | `py`          | `python $1`
+| Run Python file      | `py`          | `python3 %`
 | Open tig             | `tt`          | `tig`
 | Tig current file     | `th`          | `tig $1`
-| List files           | `ll`          | `ls -Al`
+| List files           | `ll`          | `ll` (shell alias)
 
 ## Whitespace
 | Action               | Keymap        | Description
 | ------               | ------        | -----------
 | Trim whitespace      | `ww`          | Remove trailing whitespace
 | Toggle whitespace    | `wt`          | Toggle whitespace highlighting
+
+---
+
+# Yazi
+
+| Action                          | Keymap        |
+| ------                          | ------        |
+| Rename                          | `<F2>`        |
+| Sort                            | `<F4>`        |
+| Run shell command               | `<F8>`        |
+| Toggle hidden files             | `<C-h>`       |
+| Search filenames (fd)           | `<C-f>`       |
+| Search file content (ripgrep)   | `<C-S-f>`     |
+| New tab (CWD)                   | `<C-t>`           |
+| Close tab                       | `<C-S-w>`         |
+| Previous/next tab               | `<C-Left/Right>`  |
+| Move tab left/right             | `<C-S-Left/Right>`|
