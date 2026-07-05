@@ -87,6 +87,11 @@ keymap('n', '<A-k>'  ,     ':wincmd k<CR>', { silent = true })
 keymap('n', '<A-j>',       ':wincmd j<CR>', { silent = true })
 keymap('n', '<A-h>',       ':wincmd h<CR>', { silent = true })
 keymap('n', '<A-l>',       ':wincmd l<CR>', { silent = true })
+-- Window quadrants (for macros)
+keymap('n', '<A-C-S-F1>', '<cmd>wincmd k<CR><cmd>wincmd h<CR>', { silent = true })
+keymap('n', '<A-C-S-F2>', '<cmd>wincmd k<CR><cmd>wincmd l<CR>', { silent = true })
+keymap('n', '<A-C-S-F3>', '<cmd>wincmd j<CR><cmd>wincmd h<CR>', { silent = true })
+keymap('n', '<A-C-S-F4>', '<cmd>wincmd j<CR><cmd>wincmd l<CR>', { silent = true })
 
 -- ❰❰ Window Resizing ❱❱
 keymap({ 'n', 'i' }, '<M-+>', '<C-O>:wincmd +<CR>', { silent = true })

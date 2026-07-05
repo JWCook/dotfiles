@@ -16,7 +16,7 @@
 ## Windows
 | Action               | Keymap                    | Command
 | ------               | ------                    | -------
-| Navigate windows     | `<A-Up/Down/Left/Right>`  | `:wincmd [kjhl]`
+| Navigate windows     | `<A-S-Up/Down/Left/Right>`  | `:wincmd [kjhl]`
 | Navigate windows     | `<A-k/j/h/l>`             | `:wincmd [kjhl]`
 | Resize windows       | `<M-+/-/=>`               | `:wincmd [+-=]`
 | Maximize window      | `<C-x>`                   | `:resize 45 \| vertical resize 100`

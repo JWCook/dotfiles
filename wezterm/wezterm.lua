@@ -181,6 +181,44 @@ config.keys = {
         mods = 'ALT',
         action = act { ActivatePaneDirection = 'Down' },
     },
+    -- Direct quadrant mappings (for macros)
+    -- Using act.Multiple here doesn't work due to https://github.com/wezterm/wezterm/issues/4390
+    {
+        key = 'F1',
+        mods = 'ALT|SHIFT',
+        action = wezterm.action_callback(function(window, pane)
+          window:perform_action(act.ActivatePaneDirection('Up'), pane)
+          wezterm.sleep_ms(5)
+          window:perform_action(act.ActivatePaneDirection('Left'), pane)
+        end),
+    },
+    {
+        key = 'F2',
+        mods = 'ALT|SHIFT',
+        action = wezterm.action_callback(function(window, pane)
+          window:perform_action(act.ActivatePaneDirection('Up'), pane)
+          wezterm.sleep_ms(5)
+          window:perform_action(act.ActivatePaneDirection('Right'), pane)
+        end),
+    },
+    {
+        key = 'F3',
+        mods = 'ALT|SHIFT',
+        action = wezterm.action_callback(function(window, pane)
+          window:perform_action(act.ActivatePaneDirection('Down'), pane)
+          wezterm.sleep_ms(5)
+          window:perform_action(act.ActivatePaneDirection('Left'), pane)
+        end),
+    },
+    {
+        key = 'F4',
+        mods = 'ALT|SHIFT',
+        action = wezterm.action_callback(function(window, pane)
+          window:perform_action(act.ActivatePaneDirection('Down'), pane)
+          wezterm.sleep_ms(5)
+          window:perform_action(act.ActivatePaneDirection('Right'), pane)
+        end),
+    },
     {
         key = 'LeftArrow',
         mods = 'CTRL|ALT',

@@ -154,10 +154,10 @@ Setup Window Shortcut=
 Show Desktop=Meta+D
 ShowDesktopGrid=Meta+Ctrl+W; Meta+F8
 Suspend Compositing=Alt+Shift+F12
-Switch One Desktop Down=Ctrl+Alt+Down
-Switch One Desktop Up=Ctrl+Alt+Up
-Switch One Desktop to the Left=Ctrl+Alt+Left
-Switch One Desktop to the Right=Ctrl+Alt+Right
+Switch One Desktop Down=Meta+Ctrl+Down
+Switch One Desktop Up=Meta+Ctrl+Up
+Switch One Desktop to the Left=Meta+Ctrl+Left
+Switch One Desktop to the Right=Meta+Ctrl+Right
 Switch Window Down=
 Switch Window Left=
 Switch Window Right=
@@ -237,10 +237,10 @@ Window Move=
 Window Move Center=
 Window No Border=
 Window On All Desktops=
-Window One Desktop Down=Ctrl+Alt+Shift+Down
-Window One Desktop Up=Ctrl+Alt+Shift+Up
-Window One Desktop to the Left=Ctrl+Alt+Shift+Left
-Window One Desktop to the Right=Ctrl+Alt+Shift+Right
+Window One Desktop Down=Meta+Ctrl+Shift+Down
+Window One Desktop Up=Meta+Ctrl+Shift+Up
+Window One Desktop to the Left=Meta+Ctrl+Shift+Left
+Window One Desktop to the Right=Meta+Ctrl+Shift+Right
 Window One Screen Down=
 Window One Screen Up=
 Window One Screen to the Left=
@@ -320,6 +320,9 @@ seekforwardmedia=Media Fast Forward
 seekforwardmedialong=
 stopmedia=Media Stop
 
+[org.chromium.Chromium][Global Shortcuts]
+4D138871C032F25A244D566194234A57-Ctrl+Alt+Space=
+
 [org.kde.dolphin.desktop][Global Shortcuts]
 _launch=Meta+E
 
@@ -332,8 +335,8 @@ NewWindow=
 _launch=
 
 [org.kde.krunner.desktop][Global Shortcuts]
-RunClipboard=Alt+Shift+F2
-_launch=Alt+F2; Alt+Space; Search
+RunClipboard=
+_launch=Alt+Space; Search
 
 [org.kde.kscreen.desktop][Global Shortcuts]
 ShowOSD=Display; Meta+P
@@ -397,6 +400,7 @@ activate widget 107=
 activate widget 29=
 activate widget 3=Alt+F1
 clear history=
+clear-history=
 clipboard_action=Meta+Ctrl+X
 cycle-panels=Meta+Alt+P
 cycleNextAction=
