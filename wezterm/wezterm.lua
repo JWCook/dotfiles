@@ -2,6 +2,9 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {}
 
+-- Helper functions
+----------------------------------------
+
 local function split(direction)
     return wezterm.action_callback(function(window, pane)
         local cwd = pane:get_current_working_dir()
@@ -14,6 +17,28 @@ local function split(direction)
         )
     end)
 end
+
+-- Using act.Multiple here doesn't work due to https://github.com/wezterm/wezterm/issues/4390
+local function activate_quadrant(dir1, dir2)
+    return wezterm.action_callback(function(window, pane)
+        for _, pane_info in ipairs(window:active_tab():panes_with_info()) do
+            if pane_info.is_zoomed then return end
+        end
+        window:perform_action(act.ActivatePaneDirection(dir1), pane)
+        wezterm.sleep_ms(5)
+        window:perform_action(act.ActivatePaneDirection(dir2), pane)
+    end)
+end
+
+local function when_not_zoomed(action)
+    return wezterm.action_callback(function(window, pane)
+        for _, pane_info in ipairs(window:active_tab():panes_with_info()) do
+            if pane_info.is_zoomed then return end
+        end
+        window:perform_action(action, pane)
+    end)
+end
+
 
 -- OS-specific settings
 ----------------------------------------
@@ -129,22 +154,22 @@ config.keys = {
     {
         key = 'y',
         mods = 'CTRL|SHIFT',
-        action = split('Right'),
+        action = when_not_zoomed(split('Right')),
     },
     {
         key = 'h',
         mods = 'CTRL|SHIFT',
-        action = split('Down'),
+        action = when_not_zoomed(split('Down')),
     },
     {
         key = '=',
         mods = 'ALT',
-        action = split('Right'),
+        action = when_not_zoomed(split('Right')),
     },
     {
         key = '-',
         mods = 'ALT',
-        action = split('Down'),
+        action = when_not_zoomed(split('Down')),
     },
     {
         key = 'x',
@@ -164,80 +189,64 @@ config.keys = {
     {
         key = 'LeftArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = 'Left' },
+        action = when_not_zoomed(act.ActivatePaneDirection('Left')),
     },
     {
         key = 'RightArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = 'Right' },
+        action = when_not_zoomed(act.ActivatePaneDirection('Right')),
     },
     {
         key = 'UpArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = 'Up' },
+        action = when_not_zoomed(act.ActivatePaneDirection('Up')),
     },
     {
         key = 'DownArrow',
         mods = 'ALT',
-        action = act { ActivatePaneDirection = 'Down' },
-    },
-    -- Direct quadrant mappings (for macros)
-    -- Using act.Multiple here doesn't work due to https://github.com/wezterm/wezterm/issues/4390
-    {
-        key = 'F1',
-        mods = 'ALT|SHIFT',
-        action = wezterm.action_callback(function(window, pane)
-          window:perform_action(act.ActivatePaneDirection('Up'), pane)
-          wezterm.sleep_ms(5)
-          window:perform_action(act.ActivatePaneDirection('Left'), pane)
-        end),
-    },
-    {
-        key = 'F2',
-        mods = 'ALT|SHIFT',
-        action = wezterm.action_callback(function(window, pane)
-          window:perform_action(act.ActivatePaneDirection('Up'), pane)
-          wezterm.sleep_ms(5)
-          window:perform_action(act.ActivatePaneDirection('Right'), pane)
-        end),
-    },
-    {
-        key = 'F3',
-        mods = 'ALT|SHIFT',
-        action = wezterm.action_callback(function(window, pane)
-          window:perform_action(act.ActivatePaneDirection('Down'), pane)
-          wezterm.sleep_ms(5)
-          window:perform_action(act.ActivatePaneDirection('Left'), pane)
-        end),
-    },
-    {
-        key = 'F4',
-        mods = 'ALT|SHIFT',
-        action = wezterm.action_callback(function(window, pane)
-          window:perform_action(act.ActivatePaneDirection('Down'), pane)
-          wezterm.sleep_ms(5)
-          window:perform_action(act.ActivatePaneDirection('Right'), pane)
-        end),
+        action = when_not_zoomed(act.ActivatePaneDirection('Down')),
     },
     {
         key = 'LeftArrow',
         mods = 'CTRL|ALT',
-        action = act.AdjustPaneSize { 'Left', 5 },
+        action = when_not_zoomed(act.AdjustPaneSize { 'Left', 5 }),
     },
     {
         key = 'RightArrow',
         mods = 'CTRL|ALT',
-        action = act.AdjustPaneSize { 'Right', 5 },
+        action = when_not_zoomed(act.AdjustPaneSize { 'Right', 5 }),
     },
     {
         key = 'UpArrow',
         mods = 'CTRL|ALT',
-        action = act.AdjustPaneSize { 'Up', 5 },
+        action = when_not_zoomed(act.AdjustPaneSize { 'Up', 5 }),
     },
     {
         key = 'DownArrow',
         mods = 'CTRL|ALT',
-        action = act.AdjustPaneSize { 'Down', 5 },
+        action = when_not_zoomed(act.AdjustPaneSize { 'Down', 5 }),
+    },
+
+    -- Direct quadrant mappings (for macros)
+    {
+        key = 'F1',
+        mods = 'ALT|SHIFT',
+        action = activate_quadrant('Up', 'Left'),
+    },
+    {
+        key = 'F2',
+        mods = 'ALT|SHIFT',
+        action = activate_quadrant('Up', 'Right'),
+    },
+    {
+        key = 'F3',
+        mods = 'ALT|SHIFT',
+        action = activate_quadrant('Down', 'Left'),
+    },
+    {
+        key = 'F4',
+        mods = 'ALT|SHIFT',
+        action = activate_quadrant('Down', 'Right'),
     },
 }
 
