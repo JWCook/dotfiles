@@ -947,7 +947,7 @@ function _get_gwroot
     git worktree list --porcelain | grep '^worktree' | head -n 1 | awk '{print $2}'
 end
 function _get_gwbranch -a branch
-    echo "$(basename (pwd))-$branch"
+    echo "$(basename (_get_gwroot))-$branch"
 end
 
 # Log
