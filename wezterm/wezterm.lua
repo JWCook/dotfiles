@@ -129,6 +129,11 @@ config.keys = {
         action = act.SpawnTab("CurrentPaneDomain"),
     },
     {
+      key = "t",
+      mods = "META",
+      action = act.DisableDefaultAssignment,
+    },
+    {
         key = "w",
         mods = "CTRL",
         action = act({ CloseCurrentTab = { confirm = false } }),
