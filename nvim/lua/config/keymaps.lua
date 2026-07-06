@@ -79,6 +79,10 @@ command("BD", function() Snacks.bufdelete() end, {})
 command("BN", ":new", {})
 
 -- ❰❰ Windows ❱❱
+keymap('n', '<A-Up>',    ':wincmd k<CR>', { silent = true })
+keymap('n', '<A-Down>',  ':wincmd j<CR>', { silent = true })
+keymap('n', '<A-Left>',  ':wincmd h<CR>', { silent = true })
+keymap('n', '<A-Right>', ':wincmd l<CR>', { silent = true })
 keymap('n', '<A-S-Up>',    ':wincmd k<CR>', { silent = true })
 keymap('n', '<A-S-Down>',  ':wincmd j<CR>', { silent = true })
 keymap('n', '<A-S-Left>',  ':wincmd h<CR>', { silent = true })

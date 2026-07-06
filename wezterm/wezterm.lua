@@ -30,10 +30,15 @@ local function activate_quadrant(dir1, dir2)
     end)
 end
 
-local function when_not_zoomed(action)
+local function when_not_zoomed(action, passthrough)
     return wezterm.action_callback(function(window, pane)
         for _, pane_info in ipairs(window:active_tab():panes_with_info()) do
-            if pane_info.is_zoomed then return end
+            if pane_info.is_zoomed then
+                if passthrough then
+                    window:perform_action(passthrough, pane)
+                end
+                return
+            end
         end
         window:perform_action(action, pane)
     end)
@@ -189,22 +194,22 @@ config.keys = {
     {
         key = 'LeftArrow',
         mods = 'ALT',
-        action = when_not_zoomed(act.ActivatePaneDirection('Left')),
+        action = when_not_zoomed(act.ActivatePaneDirection('Left'),  act.SendKey { key = 'LeftArrow',  mods = 'ALT' }),
     },
     {
         key = 'RightArrow',
         mods = 'ALT',
-        action = when_not_zoomed(act.ActivatePaneDirection('Right')),
+        action = when_not_zoomed(act.ActivatePaneDirection('Right'), act.SendKey { key = 'RightArrow', mods = 'ALT' }),
     },
     {
         key = 'UpArrow',
         mods = 'ALT',
-        action = when_not_zoomed(act.ActivatePaneDirection('Up')),
+        action = when_not_zoomed(act.ActivatePaneDirection('Up'),    act.SendKey { key = 'UpArrow',    mods = 'ALT' }),
     },
     {
         key = 'DownArrow',
         mods = 'ALT',
-        action = when_not_zoomed(act.ActivatePaneDirection('Down')),
+        action = when_not_zoomed(act.ActivatePaneDirection('Down'),  act.SendKey { key = 'DownArrow',  mods = 'ALT' }),
     },
     {
         key = 'LeftArrow',
