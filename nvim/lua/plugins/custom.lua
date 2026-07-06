@@ -49,20 +49,20 @@ return {
         callbacks = {
           enter_note = function(_, note)
             vim.keymap.set("n", "<Tab>", function()
-                require("obsidian.api").nav_link("next")
+              require("obsidian.api").nav_link("next")
             end, {
-                buffer = note.bufnr,
-                desc = "Go to next link",
+              buffer = note.bufnr,
+              desc = "Go to next link",
             })
             vim.keymap.set("n", "<S-Tab>", function()
-                require("obsidian.api").nav_link("prev")
+              require("obsidian.api").nav_link("prev")
             end, {
-                buffer = note.bufnr,
-                desc = "Go to previous link",
+              buffer = note.bufnr,
+              desc = "Go to previous link",
             })
           end,
-      },
-    })
+        },
+      })
     end,
   },
 
@@ -122,9 +122,9 @@ return {
       preserve_cursor_position = { enabled = true },
     },
     keys = {
-      { "y", "<Plug>(YankyYank)", mode = {"n", "x"}, desc = "Yank text" },
-      { "p", "<Plug>(YankyPutAfter)", mode = {"n", "x"}, desc = "Put yanked text after cursor" },
-      { "P", "<Plug>(YankyPutBefore)", mode = {"n", "x"}, desc = "Put yanked text before cursor" },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
       { "<c-p>", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
       { "<c-n>", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
       { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
@@ -145,10 +145,16 @@ return {
     "nvim-mini/mini.trailspace",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require('mini.trailspace').setup()
+      require("mini.trailspace").setup()
     end,
     keys = {
-      { "wt", function() require('mini.trailspace').highlight() end, desc = "Toggle whitespace highlighting" },
+      {
+        "wt",
+        function()
+          require("mini.trailspace").highlight()
+        end,
+        desc = "Toggle whitespace highlighting",
+      },
     },
   },
 
@@ -159,7 +165,7 @@ return {
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup({})
-    end
+    end,
   },
 
   -- Terminal integration
@@ -179,5 +185,4 @@ return {
       },
     },
   },
-
 }

@@ -10,23 +10,25 @@ return {
       -- theme = "nordic",
       -- theme = "tokyonight-night",
 
-      component_separators = { left = '', right = '' },
-      section_separators = { left = '', right = '' },
+      component_separators = { left = "", right = "" },
+      section_separators = { left = "", right = "" },
     },
     sections = {
-      lualine_c = { {
-        'filename',
-        file_status = true,
-        newfile_status = false,
-        path = 1,
-      } }
+      lualine_c = {
+        {
+          "filename",
+          file_status = true,
+          newfile_status = false,
+          path = 1,
+        },
+      },
     },
     tabline = {
       lualine_a = { {
-        'buffers',
+        "buffers",
         show_filename_only = true,
         mode = 2,
-      } }
-    }
+      } },
+    },
   },
 }

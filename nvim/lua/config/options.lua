@@ -11,7 +11,7 @@ vim.opt.sessionoptions:remove({ "options", "folds" })
 vim.opt.timeoutlen = 200
 vim.opt.ttimeoutlen = 50
 vim.opt.wildignore =
-"*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm"
+  "*/__pycache__/*,*/.tox/*,*.o,*.a,*~,*.class,*.gif,*.jpg,*.la,*.mo,*.obj,*.png,*.pyc,*.so,*.sw*,*.xpm"
 vim.opt.scrolloff = 1
 vim.opt.sidescrolloff = 5
 -- vim.opt.undodir = vim.env.HOME .. "/.vim/undo"

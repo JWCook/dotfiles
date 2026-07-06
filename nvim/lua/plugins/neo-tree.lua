@@ -3,8 +3,8 @@ return {
   keys = {
     { "<F6>", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
     -- Disable some default bindings
-    { "<leader>e",  false },
-    { "<leader>E",  false },
+    { "<leader>e", false },
+    { "<leader>E", false },
     { "<leader>fe", false },
     { "<leader>fE", false },
   },
@@ -37,7 +37,7 @@ return {
           unstaged = "✗",
           staged = "✓",
           conflict = "",
-        }
+        },
       },
     },
   },
