@@ -364,6 +364,11 @@ end
 # ❰❰ File Operations ❱❱ #
 #########################
 
+# Copy file contents to clipboard
+function cpb -a f1
+    xclip -selection clipboard < (realpath $f1)
+end
+
 # Swap two files
 function swap -a f1 -a f2
     # Neither file exists (or were not specified)
@@ -930,7 +935,7 @@ end
 # Remove a worktree
 function gwrm -a branch
     git worktree remove $WORKTREES/(_get_gwbranch $branch)
-    gwtr
+    gwroot
 end
 
 # Remove a worktree and switch to its branch in root repo
