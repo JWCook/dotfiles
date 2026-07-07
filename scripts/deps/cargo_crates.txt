@@ -3,6 +3,7 @@ bottom
 choose
 difftastic
 du-dust
+gimoji
 hyperfine
 impala
 eza

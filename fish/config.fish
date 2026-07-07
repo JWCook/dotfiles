@@ -195,6 +195,7 @@ abbr ja just all
 abbr jr just run
 abbr lw sudo logwatch \| less
 abbr npr npm run
+abbr oj gimoji
 abbr pg pgcli
 alias ps='procs'
 alias pst='procs --tree'
