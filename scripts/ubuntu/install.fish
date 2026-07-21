@@ -88,19 +88,20 @@ set PKGS_LIBS '
     golang
     gpg
     graphviz-dev
+    libatomic1
     libbz2-dev
+    libclang-dev
     libffi-dev
     libffi8
     libgnutls28-dev
     libgpgme11-dev
-    libreadline-dev
     liblzma-dev
+    libreadline-dev
     libsqlite3-dev
     libssl-dev
     libx11-dev
     libxpm-dev
     libxt-dev
-    libatomic1
     luarocks
     odt2txt
     openjdk-21-jdk
