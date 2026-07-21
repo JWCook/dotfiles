@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+rustup update
+
 # Install crates
 cat scripts/deps/cargo_crates.txt | xargs cargo install
 
