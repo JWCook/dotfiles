@@ -129,9 +129,9 @@ config.keys = {
         action = act.SpawnTab("CurrentPaneDomain"),
     },
     {
-      key = "t",
-      mods = "META",
-      action = act.DisableDefaultAssignment,
+        key = "t",
+        mods = "META",
+        action = act.DisableDefaultAssignment,
     },
     {
         key = "w",
