@@ -191,9 +191,11 @@ set PKGS_DESKTOP_EXTRA '
 # KDE applications
 set PKGS_KDE '
     ark
+    kamoso
     kate
     kcalc
     kdeconnect
+    kdiskmark
     okular
     partitionmanager
     plasma-systemmonitor
