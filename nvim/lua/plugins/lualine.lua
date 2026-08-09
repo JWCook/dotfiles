@@ -5,7 +5,7 @@ return {
       -- theme = "catppuccin",
       -- theme = "gruvbox",
       -- theme = "everforest",
-      theme = "evergarden",
+      theme = require("config.colors"),
       -- theme = "nord",
       -- theme = "nordic",
       -- theme = "tokyonight-night",

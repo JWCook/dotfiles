@@ -42,6 +42,7 @@ keymap({ "n", "v" }, "<C-j>", "gj")
 keymap("n", "<leader>b", ":nohlsearch<CR>")
 
 -- ❰❰ Telescope Mappings ❱❱
+-- Terminal sends F13-F48/F53 for Shift/Ctrl/Alt+F1-F12 combos (see :h function-key);
 keymap("n", "<F5>", ":Telescope find_files<CR>", { silent = true })
 keymap("n", "<F29>", ":Telescope live_grep<CR>", { silent = true }) -- C-F5
 keymap("n", "<F17>", ":Telescope buffers<CR>", { silent = true }) -- S-F5
@@ -49,26 +50,12 @@ keymap("n", "<F53>", ":Telescope oldfiles<CR>", { silent = true }) -- A-F5
 keymap("n", "<F25>", ":Telescope help_tags<CR>", { silent = true }) -- C-F1
 
 -- ❰❰ LSP Keybindings ❱❱
-keymap("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-keymap("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
-keymap("n", "gr", vim.lsp.buf.references, { desc = "Find references" })
+-- gd, gD, gr, K, \ca, \cr, \cf are bound by LazyVim's buffer-local + LSPs
 keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-keymap("n", "K", vim.lsp.buf.hover, { desc = "Show hover documentation" })
 keymap("n", "<leader>ck", vim.lsp.buf.signature_help, { desc = "Show signature help" })
-keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
-keymap("n", "<leader>cf", function()
-  require("conform").format({ async = true })
-end, { desc = "Format code" })
 
 -- ❰❰ Diagnostics ❱❱
-keymap("n", "[d", function()
-  vim.diagnostic.jump({ count = -1 })
-end, { desc = "Previous diagnostic" })
-keymap("n", "]d", function()
-  vim.diagnostic.jump({ count = 1 })
-end, { desc = "Next diagnostic" })
-keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+-- [d, ]d, <leader>cd are already bound by LazyVim's default diagnostic keymaps
 keymap("n", "<leader>cq", vim.diagnostic.setloclist, { desc = "Diagnostics to location list" })
 
 -- ❰❰ Trouble (Diagnostics Viewer) ❱❱
@@ -127,7 +114,7 @@ keymap("n", "<C-S-Left>", ":tabm -1<CR>", { silent = true })
 keymap("n", "<C-S-Right>", ":tabm +1<CR>", { silent = true })
 
 -- ❰❰ Other Plugin-specific Mappings ❱❱
-keymap("n", "<F4>", ">za", { silent = true })
+keymap("n", "<F4>", "za", { silent = true })
 keymap("n", "<F6>", ":Neotree toggle<CR>", { silent = true })
 keymap("n", "<F30>", ":UndotreeToggle<CR>", { silent = true })
 keymap("n", "<F7>", ":TagbarToggle<CR>", { silent = true })
@@ -151,4 +138,4 @@ keymap("n", "<leader>hp", ":Gitsigns preview_hunk<CR>", { silent = true })
 keymap("n", "py", ':w<CR>:exec "!python3" shellescape(@%, 1)<CR>', { silent = true })
 keymap("n", "tt", ":!tig<CR>", { silent = true })
 keymap("n", "th", ":!tig %<CR>", { silent = true })
-keymap("n", "ll", "!ll<CR>")
+keymap("n", "ll", ":!ll<CR>", { silent = true })

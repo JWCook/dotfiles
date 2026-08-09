@@ -110,6 +110,20 @@ return {
       vim.g.tagbar_autoclose = 1
       vim.g.tagbar_autofocus = 1
       vim.g.tagbar_sort = 0
+      vim.g.tagbar_type_make = {
+        kinds = {
+          "m:macros",
+          "t:targets",
+        },
+      }
+      vim.g.tagbar_type_markdown = {
+        ctagstype = "markdown",
+        kinds = {
+          "h:Heading_L1",
+          "i:Heading_L2",
+          "k:Heading_L3",
+        },
+      }
     end,
   },
 
@@ -173,9 +187,7 @@ return {
     "akinsho/toggleterm.nvim",
     version = "*",
     keys = {
-      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" },
-      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = "t" },
-      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = "i" },
+      { "<F9>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal", mode = { "n", "t", "i" } },
     },
     opts = {
       close_on_exit = true,

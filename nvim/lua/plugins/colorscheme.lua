@@ -56,7 +56,7 @@ return {
     opts = {
       -- colorscheme = "catppuccin",
       -- colorscheme = "everforest",
-      colorscheme = "evergarden",
+      colorscheme = require("config.colors"),
       -- colorscheme = "gruvbox",
       -- colorscheme = "nord",
       -- colorscheme = "nordic",

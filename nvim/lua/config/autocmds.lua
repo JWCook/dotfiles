@@ -41,19 +41,3 @@ autocmd("FileType", {
     end)
   end,
 })
-
--- Tagbar Type Definitions
-vim.g.tagbar_type_make = {
-  kinds = {
-    "m:macros",
-    "t:targets",
-  },
-}
-vim.g.tagbar_type_markdown = {
-  ctagstype = "markdown",
-  kinds = {
-    "h:Heading_L1",
-    "i:Heading_L2",
-    "k:Heading_L3",
-  },
-}
