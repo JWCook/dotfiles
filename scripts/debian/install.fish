@@ -41,6 +41,7 @@ set PKGS_LIBS '
     fontconfig
     gpg
     network-manager-openvpn
+    squashfs-tools
 '
 
 # Graphical applications

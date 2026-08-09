@@ -65,6 +65,7 @@ set PKGS_TOOLS '
     toilet
     tree
     tree-sitter-cli
+    squashfs-tools
     unzip
     valgrind
     vim
