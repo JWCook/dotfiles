@@ -31,9 +31,9 @@
     },
     "wifi",
     "battery",
-    "poweradapter",
+    "poweradapter"
     // "locale",
-    "break",
-    "colors"
+    // "break",
+    // "colors"
   ]
 }
