@@ -1412,6 +1412,7 @@ function py-cleanup
     find $_dir -name "*.pyc" -type f -delete -printf "%h/%f\n"
     find $_dir -name "__pycache__" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
     find $_dir -name "*.egg-info" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
+    find $_dir -name ".mypy_cache" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
     find $_dir -name ".pytest_cache" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
     find $_dir -name "pytest-of-*" -prune -type d -printf "%h/%f\n" -exec rm -rf '{}' \; 2>/dev/null
 end
