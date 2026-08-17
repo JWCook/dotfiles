@@ -113,7 +113,7 @@ set PKGS_LIBS '
     cifs-utils
     cmake
     ctags
-    exfat-utils
+    exfatprogs
     gnupg
     gnutls
     go
@@ -153,7 +153,7 @@ set PKGS_IMG '
 
 # Graphical applications
 set PKGS_DESKTOP '
-    claude-desktop-bin
+    claude-desktop
     etcher-bin
     gimp
     guake
@@ -161,11 +161,11 @@ set PKGS_DESKTOP '
     kopia-bin
     kopia-ui-bin
     libreoffice-fresh
-    librewolf-bin
+    librewolf
     localsend-bin
     nextcloud-client
     obsidian
-    pdfsam
+    pdfsam-bin
     rapid-photo-downloader
     signal-desktop
     sublime-text-4
@@ -335,16 +335,20 @@ sudo usermod -aG docker $USER
 
 # Enable SSH agent
 systemctl --user enable --now ssh-agent.service
-systemctl enable --now pcscd
+sudo systemctl enable --now pcscd
 
 # Enable IWD (if using it instead of wpa_supplicant)
 # sudo systemctl enable --now iwd.service
 
 # Set fish as default shell
 if type -q fish
-    chsh -s (which fish)
+    sudo chsh -s (which fish) $USER
     echo "Default shell set to fish"
 end
+
+# discover any other OS partitions
+sudo os-prober
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # Remove some pre-installed packages (if present)
 for pkg in $PKGS_REMOVE

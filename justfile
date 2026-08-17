@@ -219,7 +219,7 @@ update-steamos:
     sudo pacman -Syu --noconfirm
 
 install-endeavouros:
-    @just install-node install-rust  # required for subsequent steps
+    @just install-fish-conf install-node install-rust  # required for subsequent steps
     ./scripts/endeavour/install.fish
     @just install-python-tools install-fonts
     @just install-completions install-grc install-kde-conf install-yubico-auth
@@ -278,11 +278,14 @@ update-repos:
 # Note: Most of these are only necessary in cases where the base repo is far behind
 
 install-rust:
-    command -v rustup >/dev/null 2>&1 \
-        || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    . "$HOME/.cargo/env" && rustup update
-    . "$HOME/.cargo/env" && rustup default stable
-    . "$HOME/.cargo/env" && rustup component add rust-analyzer
+    #!/usr/bin/env bash
+    export CARGO_HOME=$XDG_DATA_HOME/cargo
+    #command -v rustup >/dev/null 2>&1 \
+    #    || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh -s -- -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh -s -- -y
+    "$CARGO_HOME/bin/rustup" update
+    "$CARGO_HOME/bin/rustup" default stable
+    "$CARGO_HOME/bin/rustup" component add rust-analyzer
 
 update-rust: install-rust
 
