@@ -311,8 +311,8 @@ end
 
 # Customize ls
 if command -q eza
-    alias ls 'eza -aF --group-directories-first --icons'
-    alias ll 'eza -alF --git --group-directories-first --icons --time-style=long-iso --color-scale=all'
+    alias ls 'eza -aF --group-directories-first'
+    alias ll 'eza -alF --git --group-directories-first --icons=always --time-style=long-iso --color-scale=all'
     abbr lls ll --sort size
     abbr lt ll --tree --git-ignore -L 2
     abbr lr ll -R
