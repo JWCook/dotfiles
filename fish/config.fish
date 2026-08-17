@@ -389,10 +389,11 @@ end
 alias tgz='tar -I "gzip -9" -cvf'
 abbr tx tar -xvf
 
-# Compress a large directory with progress
-function tgz-dir -a src -a dest
-    set dest (coalesce "$dest" (basename "$dest"))
-    tar cf - "$src" -P | pv -s $(/bin/du -sb "$src" | awk '{print $1}') | gzip
+# Compress one or more directories with progress
+# Usage: tgz-dir [dest] [src]...
+function tgz-dir -a dest
+    set -l srcs $argv[2..-1]
+    tar cf - $srcs -P | pv -s (/bin/du -scb $srcs | tail -1 | awk '{print $1}') | gzip > $dest
 end
 
 # Recursive rsync copy w/ progress
