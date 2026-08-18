@@ -55,10 +55,13 @@ function prompt-confirm
     end
 end
 
-# Source one or more files, if they exist
+# Source one or more files (or glob patterns), if they exist
 function source-file
-    for f in $argv
-        test -f "$f" && source "$f"
+    for pattern in $argv
+        eval "set -l files $pattern"
+        for f in $files
+            test -f "$f" && source "$f"
+        end
     end
 end
 
@@ -133,7 +136,7 @@ fish_add_path /usr/local/src/fzf/bin
 fish_add_path node_modules/.bin
 
 # Additional shell config
-source-file ~/.config/fish/config_*.fish
+source-file "~/.config/fish/config_*.fish"
 source-file ~/.config/tabtab/__tabtab.fish
 # source-file ~/.local/share/icons-in-terminal/icons.fish
 
