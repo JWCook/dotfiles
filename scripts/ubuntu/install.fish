@@ -41,7 +41,7 @@ set PKGS_TOOLS '
     starship
     tidy
     tig
-    tldr
+    tldr-py
     tmux
     toilet
     tree
@@ -58,8 +58,8 @@ set PKGS_NET '
     net-tools
     network-manager-openvpn
     nmap
-    ntp
-    ntpdate
+    ntpsec
+    ntpsec-ntpdate
     socat
     ssh
     telnet
@@ -127,7 +127,7 @@ set PKGS_IMG '
 set PKGS_DESKTOP '
     gimp
     guake
-    keepassxc
+    keepassxc-full
     nextcloud-desktop
 '
 
