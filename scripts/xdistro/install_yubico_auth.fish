@@ -2,6 +2,7 @@
 set dl_url https://developers.yubico.com/yubioath-flutter/Releases/yubico-authenticator-latest-linux.tar.gz
 set dl_temp /tmp/yubico.tar.gz
 set install_dir ~/.local/share/yubico-auth
+mkdir -p ~/.local/share/applications ~/.local/bin
 
 # Download and extract
 echo 'Installing Yubico Authenticator'
@@ -15,5 +16,4 @@ rm $dl_temp
 # Symlink and install desktop file
 rm ~/.local/bin/yubico-auth
 ln -s $install_dir/authenticator ~/.local/bin/yubico-auth
-mkdir -p ~/.local/share/applications
 $install_dir/desktop_integration.sh --install
